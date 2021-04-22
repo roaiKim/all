@@ -13,7 +13,6 @@ module.exports = {
             ]
         }]
     },
-    recordsPath: path.resolve(__dirname, "record.json"),
     resolveLoader: {
         modules: [
             "node_modules", path.resolve(__dirname, "loaders")
