@@ -1,0 +1,17 @@
+{
+  "name": "babel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
+    "@babel/plugin-transform-arrow-functions": "^7.13.0",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.14.1",
+    "core-js": "3"
+  },
+  "scripts": {
+    "compiler": "babel src --out-dir dist"
+  }
+}
