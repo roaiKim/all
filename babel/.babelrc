@@ -1,9 +1,11 @@
 {
-    "plugins": ["@babel/plugin-transform-arrow-functions"],
+    "plugins": ["@babel/plugin-transform-arrow-functions", ["@babel/plugin-transform-runtime", {
+        "corejs": 3
+    }]],
     "presets": [
-        ["@babel/preset-env", {
+        ["@babel/preset-env"/* , {
             "useBuiltIns": "usage",
             "corejs": 3
-        }]
+        } */]
     ]
 }
