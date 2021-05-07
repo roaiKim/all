@@ -8,7 +8,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 
 module.exports = {
     devServer: {
-        port: 3000,
+        port: 5320,
         hot: true,
         historyApiFallback: true,
         compress: true
@@ -61,6 +61,7 @@ module.exports = {
             template: `${env.src}/index.html`
         }),
         new CleanWebpackPlugin(),
+        new webpack.HotModuleReplacementPlugin()
         // new BundleAnalyzerPlugin()
     ]
 }
