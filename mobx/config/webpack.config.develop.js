@@ -7,14 +7,14 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 
 module.exports = {
     devServer: {
-        port: 3000,
+        port: 5000,
         hot: true,
         historyApiFallback: true,
         compress: true
     },
     mode: "development",
     entry: {
-        main: `${env.src}/index.jsx`
+        main: `${env.src}/office/index.jsx`
     },
     output: {
         filename: "static/js/[name].js",
