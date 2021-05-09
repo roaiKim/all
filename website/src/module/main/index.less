@@ -1,0 +1,42 @@
+@import "asset/css/normalize.less";
+
+.ro-main-wrap {
+    
+
+    .ro-nav {
+        width: 280px;
+        height: 100%;
+        position: fixed;
+        box-shadow: 0 0 15px 0 rgb(0 0 0 / 5%);
+
+        > section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // background: @main-nav-background-color;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 20px 0 15px;
+
+            img {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    }
+
+    .ro-main {
+        background: @main-body-color;
+        margin-left: 280px;
+        min-height: 900px;
+        padding: 30px;
+
+        .ro-main-header {
+            position: relative;
+            width: 100%;
+            background: white;
+            min-height: 70px;
+            border-radius: 5px;
+        }
+    }
+}
