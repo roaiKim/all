@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 import React from "react";
 import Op from "./Op";
+import "asset/css/global/index.less";
 /* import "core-js/stable";
 import "regenerator-runtime/runtime"; */
 

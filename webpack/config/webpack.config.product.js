@@ -69,12 +69,28 @@ module.exports = {
                         ["@babel/preset-env", {
                             useBuiltIns: "usage",
                             corejs: 3
-                        }]
+                        }],
+                        // "@babel/preset-typescript"
                     ],
                     plugins: [
                         ["@babel/plugin-transform-runtime"],
                         ["@babel/plugin-proposal-class-properties", { "loose": true }]
                     ]
+                }
+            },
+            {
+                test: /\.(less|css)$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "less-loader"
+                ]
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/,
+                loader: "url-loader",
+                options: {
+                    limit: 1024
                 }
             }
         ]
@@ -84,7 +100,7 @@ module.exports = {
             template: `${env.src}/index.html`
         }),
         new CleanWebpackPlugin(),
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         /* new HtmlWebpackExternalsPlugin({
             externals: [
                 {
