@@ -1,6 +1,6 @@
 import React from "react"
 import {MenuFoldOutlined, ExpandOutlined, SettingOutlined, BellOutlined} from "icon"
-import { Input } from 'antd';
+import { Input, Badge } from 'antd';
 
 export default class extends React.PureComponent {
     constructor(props){
@@ -19,8 +19,10 @@ export default class extends React.PureComponent {
                 <ExpandOutlined />
             </div>
             <div className="ro-icon ro-right-aside ro-flex ro-align-items">
-                <Input.Search />
-                <BellOutlined />
+                <Input placeholder="Select" />
+                <Badge size="small" count={5} overflowCount={99} offset={[-10, 10]}>
+                    <BellOutlined />
+                </Badge>
                 <a href="#" className="ro-profile">
                     <span>rosen</span>
                     <img src={require("asset/images/global/header.jpg")}></img>
