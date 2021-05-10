@@ -1,5 +1,6 @@
 import React from "react"
 import Menu from "./Menu";
+import Header from "./Header";
 import "./index.less";
 
 export default class extends React.PureComponent {
@@ -16,7 +17,7 @@ export default class extends React.PureComponent {
         return <aside className="ro-main-wrap">
             <Menu />
             <main className="ro-main">
-                <header className="ro-main-header">sssssss</header>
+                <Header />
                 <div></div>
             </main>
         </aside>
