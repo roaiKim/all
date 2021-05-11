@@ -18,7 +18,7 @@ module.exports = {
         main: `${env.src}/index.jsx`
     },
     output: {
-        filename: "static/js/[name].js",
+        filename: "asset/js/[name].js",
         publicPath: "/",
     },
     devtool: "cheap-module-source-map",
@@ -26,7 +26,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
         modules: [env.src, "node_modules"],
         alias: {
-            icon: "@ant-design/icons"
+            "@icon": "@ant-design/icons"
         }
     },
     optimization: {
@@ -50,11 +50,9 @@ module.exports = {
                     ],
                     plugins: [
                         ["@babel/plugin-transform-runtime"],
-                        ["@babel/plugin-proposal-class-properties",{
-                            loose: true
-                        }],
+                        ["@babel/plugin-proposal-class-properties"],
                         ["import",{
-                            libraryName: "antd", libraryDirectory: "es", style: true
+                            libraryName: "antd", libraryDirectory: "es", style: "css"
                         }]
                     ]
                 }

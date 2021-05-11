@@ -1,5 +1,5 @@
 import React from "react"
-import {MenuFoldOutlined, ExpandOutlined, SettingOutlined, BellOutlined} from "icon"
+import {MenuFoldOutlined, ExpandOutlined, SettingOutlined, BellOutlined} from "@icon"
 import { Input, Badge } from 'antd';
 
 export default class extends React.PureComponent {

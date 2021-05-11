@@ -6,6 +6,8 @@ const HTMLPlugin = require("html-webpack-plugin")
 const {CleanWebpackPlugin} = require("clean-webpack-plugin")
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const TerserWebpackPlugin = require("terser-webpack-plugin");
+const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const HtmlWebpackExternalsPlugin = require("html-webpack-externals-plugin");
 
 function cacheGroupsName (module, chunks, cacheGroupKey) {
@@ -20,7 +22,7 @@ module.exports = {
     },
     output: {
         path: env.build,
-        filename: "static/js/[name].[chunkhash:8].js",
+        filename: "asset/js/[name].[chunkhash:8].js",
         publicPath: "/",
     },
     devtool: "nosources-source-map",
@@ -28,7 +30,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
         modules: [env.src, "node_modules"],
         alias: {
-
+            "@icon": "@ant-design/icons"
         }
     },
     /* externalsType: 'script',
@@ -54,13 +56,20 @@ module.exports = {
                 extractComments: {
                     condition: false
                 }
+            }),
+            new OptimizeCSSAssetsPlugin({
+                cssProcessorOptions: {
+                    map: {
+                        inline: false,
+                    },
+                },
             })
         ]
     },
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.(j|t)sx?$/,
                 loader: "babel-loader",
                 exclude: /node_modules/,
                 options: {
@@ -73,9 +82,7 @@ module.exports = {
                     ],
                     plugins: [
                         ["@babel/plugin-transform-runtime"],
-                        ["@babel/plugin-proposal-class-properties",{
-                            loose: true
-                        }],
+                        ["@babel/plugin-proposal-class-properties"],
                         ["import",{
                             libraryName: "antd", libraryDirectory: "es", style: true
                         }]
@@ -85,7 +92,8 @@ module.exports = {
             {
                 test: /\.(less|css)$/,
                 use: [
-                    "style-loader",
+                    MiniCSSExtractPlugin.loader,
+                    // "style-loader",
                     "css-loader",
                     {
                         loader: "less-loader",
@@ -101,17 +109,22 @@ module.exports = {
                 test: /\.(png|jpe?g|gif)$/,
                 loader: "url-loader",
                 options: {
-                    limit: 1024
+                    esModule: false,
+                    limit: 1024,
+                    name: "asset/imgages/[name].[hash:8].[ext]"
                 }
             }
         ]
     },
     plugins: [
+        new MiniCSSExtractPlugin({
+            filename: "asset/css/[name].[contenthash:8].css",
+        }),
         new HTMLPlugin({
             template: `${env.src}/index.html`
         }),
         new CleanWebpackPlugin(),
-        // new BundleAnalyzerPlugin(),
+        new BundleAnalyzerPlugin(),
         /* new HtmlWebpackExternalsPlugin({
             externals: [
                 {
