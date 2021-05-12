@@ -73,13 +73,20 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif)$/,
+                test: /\.(png|jpe?g|gif|svg)$/,
                 loader: "url-loader",
                 options: {
                     esModule: false,
                     limit: 1024,
-                    name: "asset/imgages/[name].[hash:8].[ext]"
+                    name: "asset/img/[name].[hash:8].[ext]"
                 }
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                loader: "file-loader",
+                options: {
+                    name: "asset/font/[name].[hash:8].[ext]",
+                },
             }
         ]
     },

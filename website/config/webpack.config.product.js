@@ -33,22 +33,18 @@ module.exports = {
             "@icon": "@ant-design/icons"
         }
     },
-    /* externalsType: 'script',
-    externals: {
-        "react": ["https://unpkg.com/react@17/umd/react.production.min.js", "React"],
-        "react-dom": ["https://unpkg.com/react-dom@17/umd/react-dom.production.min.js", "ReactDOM"]
-    }, */
     optimization: {
         runtimeChunk: "single",
         splitChunks: {
             automaticNameDelimiter: "-",
-            cacheGroups: {
+            maxAsyncRequests: 12,
+            /* cacheGroups: {
                 react: {
                     test: /(react|react-dom)/,
                     name: cacheGroupsName,
                     chunks: "all"
                 }
-            }
+            } */
         },
         minimizer: [
             new TerserWebpackPlugin({
@@ -65,6 +61,11 @@ module.exports = {
                 },
             })
         ]
+    },
+    performance: {
+        // 入口体积应小于 700KB, 单个文件应小于 409600 KB
+        maxEntrypointSize: 716800,
+        maxAssetSize: 409600,
     },
     module: {
         rules: [
@@ -93,7 +94,6 @@ module.exports = {
                 test: /\.(less|css)$/,
                 use: [
                     MiniCSSExtractPlugin.loader,
-                    // "style-loader",
                     "css-loader",
                     {
                         loader: "less-loader",
@@ -106,13 +106,20 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif)$/,
+                test: /\.(png|jpe?g|gif|svg)$/,
                 loader: "url-loader",
                 options: {
                     esModule: false,
                     limit: 1024,
-                    name: "asset/imgages/[name].[hash:8].[ext]"
+                    name: "asset/img/[name].[hash:8].[ext]"
                 }
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                loader: "file-loader",
+                options: {
+                    name: "asset/font/[name].[hash:8].[ext]",
+                },
             }
         ]
     },
@@ -124,8 +131,12 @@ module.exports = {
             template: `${env.src}/index.html`
         }),
         new CleanWebpackPlugin(),
-        new BundleAnalyzerPlugin(),
-        /* new HtmlWebpackExternalsPlugin({
+        new webpack.ProgressPlugin(),
+        new BundleAnalyzerPlugin({
+            analyzerMode: "static",  // 生成 HTML 的方式
+            openAnalyzer: false
+        }),
+        new HtmlWebpackExternalsPlugin({
             externals: [
                 {
                     module: "react",
@@ -138,7 +149,7 @@ module.exports = {
                     global: "ReactDOM"
                 }
             ]
-        }) */
+        })
     ]
 }
 
