@@ -33,6 +33,11 @@ module.exports = {
             "@icon": "@ant-design/icons"
         }
     },
+    externalsType: 'script',
+    externals: {
+        "react": ["react/react.production.min.js", "React"],
+        "react-dom": ["react/react-dom.production.min.js", "ReactDOM"]
+    },
     optimization: {
         runtimeChunk: "single",
         splitChunks: {
@@ -136,20 +141,56 @@ module.exports = {
             analyzerMode: "static",  // 生成 HTML 的方式
             openAnalyzer: false
         }),
-        new HtmlWebpackExternalsPlugin({
+        /* new HtmlWebpackExternalsPlugin({
             externals: [
                 {
                     module: "react",
-                    entry: "https://unpkg.com/react@17/umd/react.production.min.js",
-                    global: "React"
+                    // entry: "umd/react.production.min.js",
+                    entry: {
+                        path: "react",
+                        type: "js",
+                        cwpPatternConfig: {
+                            from: "react/umd/react.production.min.js",
+                            to: "react"
+                        }
+                    },
+                    global: "React",
+                    // supplements: ["umd"],
+                    // outputPath: "build",
+                    // publicPath: "abc",
+                    // supplements: [{
+                    //     path: "react",
+                    //     cwpPatternConfig: {
+                    //         from: "react/umd",
+                    //         to: "react"
+                    //     }
+                    // }]
                 },
                 {
                     module: "react-dom",
-                    entry: "https://unpkg.com/react-dom@17/umd/react-dom.production.min.js",
-                    global: "ReactDOM"
+                    // entry: "umd/react-dom.production.min.js",
+                    entry: {
+                        path: "react",
+                        type: "js",
+                        cwpPatternConfig: {
+                            from: "react-dom/umd/react-dom.production.min.js",
+                            to: "react"
+                        }
+                    },
+                    global: "ReactDOM",
+                    // supplements: ["build/asset/react"],
+                    // outputPath: "build",
+                    // publicPath: "abc",
+                    // supplements: [{
+                    //     path: "react-dom",
+                    //     cwpPatternConfig: {
+                    //         from: "react-dom/umd",
+                    //         to: "react"
+                    //     }
+                    // }]
                 }
             ]
-        })
+        }) */
     ]
 }
 
