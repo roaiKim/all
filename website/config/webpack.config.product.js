@@ -141,56 +141,21 @@ module.exports = {
             analyzerMode: "static",  // 生成 HTML 的方式
             openAnalyzer: false
         }),
-        /* new HtmlWebpackExternalsPlugin({
+        new HtmlWebpackExternalsPlugin({
             externals: [
                 {
                     module: "react",
-                    // entry: "umd/react.production.min.js",
-                    entry: {
-                        path: "react",
-                        type: "js",
-                        cwpPatternConfig: {
-                            from: "react/umd/react.production.min.js",
-                            to: "react"
-                        }
-                    },
+                    entry: "umd/react.production.min.js",
                     global: "React",
-                    // supplements: ["umd"],
-                    // outputPath: "build",
-                    // publicPath: "abc",
-                    // supplements: [{
-                    //     path: "react",
-                    //     cwpPatternConfig: {
-                    //         from: "react/umd",
-                    //         to: "react"
-                    //     }
-                    // }]
                 },
                 {
                     module: "react-dom",
-                    // entry: "umd/react-dom.production.min.js",
-                    entry: {
-                        path: "react",
-                        type: "js",
-                        cwpPatternConfig: {
-                            from: "react-dom/umd/react-dom.production.min.js",
-                            to: "react"
-                        }
-                    },
+                    entry: "umd/react-dom.production.min.js",
                     global: "ReactDOM",
-                    // supplements: ["build/asset/react"],
-                    // outputPath: "build",
-                    // publicPath: "abc",
-                    // supplements: [{
-                    //     path: "react-dom",
-                    //     cwpPatternConfig: {
-                    //         from: "react-dom/umd",
-                    //         to: "react"
-                    //     }
-                    // }]
                 }
-            ]
-        }) */
+            ],
+            outputPath: "asset"
+        })
     ]
 }
 
