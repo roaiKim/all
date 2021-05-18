@@ -1,12 +1,13 @@
 @import "asset/css/normalize.less";
 
 .ro-main-wrap {
-    
-
+    display: flex;
+    height: 100%;
     .ro-nav {
-        width: 280px;
+        max-width: 280px;
+        min-width: 220px;
         height: 100%;
-        position: fixed;
+        // position: fixed;
         box-shadow: 0 0 15px 0 rgb(0 0 0 / 5%);
 
         > section {
@@ -26,11 +27,12 @@
     }
 
     .ro-main {
+        flex: 1;
         background: @main-body-color;
-        margin-left: 280px;
-        min-height: 900px;
+        // margin-left: 280px;
+        // min-height: 900px;
         padding: 30px;
-
+        overflow-y: auto;
         .ro-main-header {
             position: relative;
             width: 100%;

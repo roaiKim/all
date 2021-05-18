@@ -33,23 +33,18 @@ module.exports = {
             "@icon": "@ant-design/icons"
         }
     },
-    externalsType: 'script',
-    externals: {
-        "react": ["react/react.production.min.js", "React"],
-        "react-dom": ["react/react-dom.production.min.js", "ReactDOM"]
-    },
     optimization: {
         runtimeChunk: "single",
         splitChunks: {
             automaticNameDelimiter: "-",
             maxAsyncRequests: 12,
-            /* cacheGroups: {
+            cacheGroups: {
                 react: {
                     test: /(react|react-dom)/,
-                    name: cacheGroupsName,
+                    name: "react-react-dom",
                     chunks: "all"
                 }
-            } */
+            }
         },
         minimizer: [
             new TerserWebpackPlugin({
@@ -68,7 +63,7 @@ module.exports = {
         ]
     },
     performance: {
-        // 入口体积应小于 700KB, 单个文件应小于 409600 KB
+        // 入口体积应小于 700KB, 单个文件应小于 400 KB
         maxEntrypointSize: 716800,
         maxAssetSize: 409600,
     },
@@ -138,23 +133,8 @@ module.exports = {
         new CleanWebpackPlugin(),
         new webpack.ProgressPlugin(),
         new BundleAnalyzerPlugin({
-            analyzerMode: "static",  // 生成 HTML 的方式
-            openAnalyzer: false
-        }),
-        new HtmlWebpackExternalsPlugin({
-            externals: [
-                {
-                    module: "react",
-                    entry: "umd/react.production.min.js",
-                    global: "React",
-                },
-                {
-                    module: "react-dom",
-                    entry: "umd/react-dom.production.min.js",
-                    global: "ReactDOM",
-                }
-            ],
-            outputPath: "asset"
+            // analyzerMode: "static",  // 生成 HTML 的方式
+            // openAnalyzer: false
         })
     ]
 }

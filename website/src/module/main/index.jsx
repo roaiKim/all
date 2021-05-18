@@ -18,7 +18,9 @@ export default class extends React.PureComponent {
             <Menu />
             <main className="ro-main" style={{minHeight: bodyHeight}}>
                 <Header />
-                <div></div>
+                {[1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,1,18,19,20,23,24].map((_) => <div key={_} style={{height: 120}}>
+                    hahahahhhah hahahahha 
+                </div>)}
             </main>
         </aside>
     }
