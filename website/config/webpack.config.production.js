@@ -22,7 +22,7 @@ module.exports = {
     },
     output: {
         path: env.build,
-        filename: "asset/js/[name].[chunkhash:8].js",
+        filename: "static/js/[name].[chunkhash:8].js",
         publicPath: "/",
     },
     devtool: "nosources-source-map",
@@ -117,21 +117,21 @@ module.exports = {
                 options: {
                     esModule: false,
                     limit: 1024,
-                    name: "asset/img/[name].[hash:8].[ext]"
+                    name: "static/img/[name].[hash:8].[ext]"
                 }
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 loader: "file-loader",
                 options: {
-                    name: "asset/font/[name].[hash:8].[ext]",
+                    name: "static/font/[name].[hash:8].[ext]",
                 },
             }
         ]
     },
     plugins: [
         new MiniCSSExtractPlugin({
-            filename: "asset/css/[name].[contenthash:8].css",
+            filename: "static/css/[name].[contenthash:8].css",
         }),
         new HTMLPlugin({
             template: `${env.src}/index.html`
