@@ -133,10 +133,8 @@ module.exports = {
         new CleanWebpackPlugin(),
         new webpack.ProgressPlugin(),
         new BundleAnalyzerPlugin({
-            // analyzerMode: "static",  // 生成 HTML 的方式
-            // openAnalyzer: false
+            analyzerMode: "static",  // 生成 HTML 的方式
+            openAnalyzer: false
         })
     ]
 }
-
-
