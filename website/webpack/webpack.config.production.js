@@ -134,7 +134,8 @@ module.exports = {
             filename: "static/css/[name].[contenthash:8].css",
         }),
         new HTMLPlugin({
-            template: `${env.src}/index.html`
+            template: `${env.src}/index.html`,
+            favicon: `${env.src}/favicon.ico`,
         }),
         new CleanWebpackPlugin(),
         new webpack.ProgressPlugin(),
