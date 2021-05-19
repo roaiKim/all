@@ -14,14 +14,17 @@ export default class extends React.PureComponent {
     render(){
         const {bodyHeight} = this.state
 
-        return <aside className="ro-main-wrap">
+        return <article className="ro-main-wrap">
             <Menu />
-            <main className="ro-main" style={{minHeight: bodyHeight}}>
+            <section className="ro-main" style={{minHeight: bodyHeight}}>
                 <Header />
-                {[1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,1,18,19,20,23,24].map((_) => <div key={_} style={{height: 120}}>
-                    hahahahhhah hahahahha 
-                </div>)}
-            </main>
-        </aside>
+                <main className="ro-body-container">
+                    {[1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,23,24].map((_) => <div key={_} style={{height: 120}}>
+                        hahahahhhah hahahahha 
+                    </div>)}
+                </main>
+                <footer>--</footer>
+            </section>
+        </article>
     }
 }

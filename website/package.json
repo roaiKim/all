@@ -34,8 +34,8 @@
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "start": "webpack serve --config ./config/webpack.config.development.js",
-    "build": "webpack --config ./config/webpack.config.production.js"
+    "start": "webpack serve --config ./webpack/webpack.config.development.js",
+    "build": "webpack --config ./webpack/webpack.config.production.js"
   },
   "devDependencies": {
     "webpack-cli": "^4.5.0"
