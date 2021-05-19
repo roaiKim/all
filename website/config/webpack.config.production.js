@@ -51,6 +51,12 @@ module.exports = {
                 parallel: true,
                 extractComments: {
                     condition: false
+                },
+                terserOptions: {
+                    compress: {
+                        // drop_console: true,
+                        pure_funcs: ["console.log"] // 生产环境过滤掉 console.log... 如果实在要调试 可以用 console.info 暂时代替下
+                    }
                 }
             }),
             new OptimizeCSSAssetsPlugin({
