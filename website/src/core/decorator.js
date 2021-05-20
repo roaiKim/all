@@ -15,8 +15,7 @@ export function Loading(identifier = "global") {
         try {
             app.store.dispatch(loadingAction(true, identifier));
             await handler();
-        }
-        finally {
+        } finally {
             app.store.dispatch(loadingAction(false, identifier));
         }
     });

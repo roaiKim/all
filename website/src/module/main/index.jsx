@@ -1,30 +1,39 @@
-import React from "react"
-import Menu from "./Menu";
-import Header from "./Header";
-import "./index.less";
+import { Lifecycle, Loading, Module, register } from 'core';
+import { MainService } from "@api/MainService";
+import Main from './component';
 
-export default class extends React.PureComponent {
-    constructor(props){
-        super(props)
-        this.state = {
-            bodyHeight: document.body.clientHeight || 0
-        }
-    }
- 
-    render(){
-        const {bodyHeight} = this.state
+const initialState = {
+  user: "ro",
+  pathname: null,
+  record: null,
+  collapsed: true
+};
 
-        return <article className="ro-main-wrap">
-            <Menu />
-            <section className="ro-main" style={{minHeight: bodyHeight}}>
-                <Header />
-                <main className="ro-body-container">
-                    {[1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,23,24].map((_) => <div key={_} style={{height: 120}}>
-                        hahahahhhah hahahahha 
-                    </div>)}
-                </main>
-                <footer>--</footer>
-            </section>
-        </article>
+class MainModule extends Module {
+  @Lifecycle()
+  onRegister() {
+    this.fetchCurrentUser();
+  }
+
+  @Lifecycle()
+  onRender(routeParameters, location) {
+    // this.setState({ pathname: location.pathname || '' });
+  }
+
+  @Loading('mask')
+  async fetchCurrentUser() {
+    const response = await MainService.getOrder({"limit":10,"phone":"15899999999","pageSize":10,"pageNo":1,"offset":0,"orderNumber":null});
+    if (response.code === 0) {
+      this.setState({ record: response.data });
     }
+  }
+
+  async toggleCollapseMenu() {
+    const collapsed = this.state.collapsed
+    this.setState({ collapsed: !collapsed });
+  }
 }
+
+const module = register(new MainModule('main', initialState));
+export const actions = module.getActions();
+export const MainComponent = module.attachLifecycle(Main);

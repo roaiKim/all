@@ -30,7 +30,8 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
         modules: [env.src, "node_modules"],
         alias: {
-            "@icon": "@ant-design/icons"
+            "@icon": "@ant-design/icons",
+            "@api": "service/api"
         }
     },
     optimization: {
@@ -89,6 +90,7 @@ module.exports = {
                     ],
                     plugins: [
                         ["@babel/plugin-transform-runtime"],
+                        ["@babel/plugin-proposal-decorators", {legacy: true}],
                         ["@babel/plugin-proposal-class-properties"],
                         ["import",{
                             libraryName: "antd", libraryDirectory: "es", style: true

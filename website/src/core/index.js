@@ -1,4 +1,4 @@
-export { startApp } from "./platform/bootstrap";
+export { bootstrarp } from "./platform/bootstrap";
 export { Module } from "./platform/Module";
 export { async } from "./util/async";
 export { ajax } from "./util/network";

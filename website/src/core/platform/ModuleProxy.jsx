@@ -21,12 +21,13 @@ export class ModuleProxy {
             static displayName = `ModuleBoundary(${moduleName})`;
             constructor(props) {
                 super(props);
-                this.lifecycleSaga();
+                this.initialLifecycle();
             }
             componentDidUpdate(prevProps) {
                 const prevLocation = prevProps.location;
-                const currentLocation = this.props.location;
-                const currentRouteParams = this.props.match ? this.props.match.params : null;
+                const props = this.props;
+                const currentLocation = props.location;
+                const currentRouteParams = props.match ? props.match.params : null;
                 if (currentLocation && currentRouteParams && prevLocation !== currentLocation && lifecycleListener.onRender.isLifecycle) {
                     app.store.dispatch(actions.onRender(currentRouteParams, currentLocation));
                 }
@@ -39,7 +40,7 @@ export class ModuleProxy {
                     app.store.dispatch(setStateAction(moduleName, initialState, `@@${moduleName}/@@reset`));
                 }
             }
-            async lifecycleSaga() {
+            async initialLifecycle() {
                 const props = this.props;
                 if (lifecycleListener.onRender.isLifecycle) {
                     if ('match' in props && 'location' in props) {

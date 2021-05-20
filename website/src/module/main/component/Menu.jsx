@@ -1,25 +1,27 @@
 import React from "react"
 import { Menu } from 'antd';
+import { connect } from 'react-redux';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 
 const { SubMenu } = Menu;
-export default class extends React.PureComponent {
+class MemuComponent extends React.PureComponent {
     constructor(props){
         super(props)
     }
  
     render(){
-
+        const {collapsed} = this.props;
         return (
             <nav className="ro-nav">
                 <section>
                     <img src={require("asset/images/global/logo.jpeg")}></img>
-                    <h3>Website</h3>
+                    {
+                        !collapsed && <h3>Website</h3>
+                    }
                 </section>
                 <Menu
                     onClick={this.handleClick}
-                    // defaultSelectedKeys={['1']}
-                    // defaultOpenKeys={['sub1']}
+                    inlineCollapsed={collapsed}
                     mode="inline"
                 >
                     <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
@@ -51,3 +53,11 @@ export default class extends React.PureComponent {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        collapsed: state.app.main.collapsed
+    }
+}
+
+export default connect(mapStateToProps)(MemuComponent);

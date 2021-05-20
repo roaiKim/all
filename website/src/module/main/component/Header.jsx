@@ -1,13 +1,19 @@
 import React from "react"
 import {MenuFoldOutlined, ExpandOutlined, SettingOutlined, BellOutlined} from "@icon"
 import { Input, Badge } from 'antd';
+import { actions } from 'module/main';
+import { connect } from 'react-redux';
 
-export default class extends React.PureComponent {
+class Header extends React.PureComponent {
     constructor(props){
         super(props)
         this.state = {
 
         }
+    }
+
+    toggleCollapseMenu = () => {
+        this.props.dispatch(actions.toggleCollapseMenu())
     }
  
     render(){
@@ -15,7 +21,7 @@ export default class extends React.PureComponent {
 
         return (<header className="ro-main-header">
             <div className="ro-icon ro-left-aside">
-                <MenuFoldOutlined />
+                <MenuFoldOutlined onClick={this.toggleCollapseMenu}/>
                 <ExpandOutlined />
             </div>
             <div className="ro-icon ro-right-aside ro-flex ro-align-items">
@@ -32,3 +38,5 @@ export default class extends React.PureComponent {
         </header>)
     }
 }
+
+export default connect()(Header);

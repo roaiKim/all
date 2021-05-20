@@ -2,26 +2,20 @@ import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { withRouter } from 'react-router';
 import { app } from '../app';
-function renderDOM(EntryComponent) {
-    const rootElement = document.createElement('main');
-    rootElement.style.transition = 'all 150ms ease-in 100ms';
-    rootElement.style.opacity = '0';
-    rootElement.style.transform = 'translateY(-10px) scale(0.96)';
-    rootElement.id = 'react-app-root';
-    document.body.appendChild(rootElement);
-    const RoutedEntryComponent = withRouter(EntryComponent);
+export function bootstrarp(option) {
+    renderRoot(option.entryComponent, option.rootContainer || injectRootContainer());
+}
+function renderRoot(EntryComponent, rootContainer) {
     ReactDOM.render(<Provider store={app.store}>
       <ConnectedRouter history={app.browserHistory}>
-        <RoutedEntryComponent />
+        <EntryComponent />
       </ConnectedRouter>
-    </Provider>, rootElement, () => {
-        const rootElement = document.getElementById('react-app-root');
-        rootElement.style.transform = 'none';
-        rootElement.style.opacity = '1';
-    });
+    </Provider>, rootContainer);
 }
-export function startApp(config) {
-    renderDOM(config.componentType);
+function injectRootContainer() {
+    const rootContainer = document.createElement("main");
+    rootContainer.id = "react-app-root";
+    document.body.appendChild(rootContainer);
+    return rootContainer;
 }
