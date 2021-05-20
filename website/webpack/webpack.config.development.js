@@ -94,7 +94,8 @@ module.exports = {
     },
     plugins: [
         new HTMLPlugin({
-            template: `${env.src}/index.html`
+            template: `${env.src}/index.html`,
+            favicon: `${env.src}/favicon.ico`,
         }),
         new CleanWebpackPlugin(),
         new webpack.HotModuleReplacementPlugin()
