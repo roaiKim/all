@@ -6,13 +6,13 @@ const initialState = {
   user: "ro",
   pathname: null,
   record: null,
-  collapsed: true
+  collapsed: localStorage.getItem("COLLAPSED_MENU") === "true"
 };
 
 class MainModule extends Module {
   @Lifecycle()
   onRegister() {
-    this.fetchCurrentUser();
+    // this.fetchCurrentUser();
   }
 
   @Lifecycle()
@@ -29,8 +29,10 @@ class MainModule extends Module {
   }
 
   async toggleCollapseMenu() {
-    const collapsed = this.state.collapsed
+    const collapsed = this.state.collapsed;
     this.setState({ collapsed: !collapsed });
+    // 设置 localStorage
+    localStorage.setItem("COLLAPSED_MENU", !collapsed)
   }
 }
 
