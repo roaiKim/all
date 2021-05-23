@@ -12,6 +12,7 @@ const initialState = {
 class MainModule extends Module {
   @Lifecycle()
   onRegister() {
+    this.login();
     this.fetchCurrentUser();
   }
 
@@ -22,7 +23,15 @@ class MainModule extends Module {
 
   @Loading('mask')
   async fetchCurrentUser() {
-    const response = await MainService.getOrder({"limit":10,"phone":"15899999999","pageSize":10,"pageNo":1,"offset":0,"orderNumber":null});
+    const response = await MainService.getUser();
+    if (response.code === 0) {
+      this.setState({ record: response.data });
+    }
+  }
+
+  @Loading('mask')
+  async login() {
+    const response = await MainService.login();
     if (response.code === 0) {
       this.setState({ record: response.data });
     }
