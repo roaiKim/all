@@ -11,7 +11,14 @@ module.exports = {
         port: 8000,
         hot: true,
         historyApiFallback: true,
-        compress: true
+        compress: true,
+        proxy: {
+            "/api": {
+                target: "http://127.0.0.1:3200",
+                secure: false,
+                changeOrigin: true,
+            }
+        }
     },
     mode: "development",
     entry: {

@@ -12,7 +12,7 @@ const initialState = {
 class MainModule extends Module {
   @Lifecycle()
   onRegister() {
-    this.login();
+    // this.login();
     this.fetchCurrentUser();
   }
 
@@ -24,14 +24,18 @@ class MainModule extends Module {
   @Loading('mask')
   async fetchCurrentUser() {
     const response = await MainService.getUser();
+    console.log("fetchCurrentUser", response);
     if (response.code === 0) {
       this.setState({ record: response.data });
+    } else {
+      // this.login();
     }
   }
 
   @Loading('mask')
   async login() {
     const response = await MainService.login();
+    console.log("login");
     if (response.code === 0) {
       this.setState({ record: response.data });
     }
