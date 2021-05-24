@@ -2,7 +2,7 @@ import React from "react"
 import { Menu } from 'antd';
 import { connect } from 'react-redux';
 import { SettingOutlined } from '@ant-design/icons';
-import cacheMenu from "module/MenuLoader"
+import cacheMenu from "service/MenuLoader"
 
 const { SubMenu } = Menu;
 class MemuComponent extends React.PureComponent {
