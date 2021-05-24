@@ -6,13 +6,10 @@ export class MainService {
     } */
 
     static getUser(request) {
-        return ajax("GET", "/api/user/check", request, {bail: true});
+        return ajax("GET", "/api/user/check", {}, request, {bail: true}, true);
     }
 
-    static login() {
-        return ajax("POST", "/api/user/login", {
-            "name": "woaini",
-            "password": "1234"
-        }, {bail: true});
+    static login(request) {
+        return ajax("POST", "/api/user/login", {}, request);
     }
 }

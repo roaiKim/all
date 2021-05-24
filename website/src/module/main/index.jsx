@@ -23,18 +23,26 @@ class MainModule extends Module {
 
   @Loading('mask')
   async fetchCurrentUser() {
-    const response = await MainService.getUser();
-    console.log("fetchCurrentUser", response);
-    if (response.code === 0) {
-      this.setState({ record: response.data });
+    const response1 = await MainService.getUser().then((response) => {
+      console.log("fetchCurrentUser response", response );
+      return response
+    }).catch((error) => {
+      console.log("fetchCurrentUser error", error );
+    });
+    console.log("fetchCurrentUser response1", response1 );
+    /* if (response1.status === 401) {
+      this.login();
     } else {
-      // this.login();
-    }
+      this.setState({ record: response1.data });
+    } */
   }
 
   @Loading('mask')
   async login() {
-    const response = await MainService.login();
+    const response = await MainService.login({
+        "name": "woaini",
+        "password": "1234"
+    });
     console.log("login");
     if (response.code === 0) {
       this.setState({ record: response.data });
