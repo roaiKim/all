@@ -32,7 +32,7 @@ class MemuComponent extends React.PureComponent {
                         <Menu.Item key="11">Option 11</Menu.Item>
                         <Menu.Item key="12">Option 12</Menu.Item>
                         {
-                            cacheMenu.map(({path, title}) => <Menu.Item key={path}>{title}</Menu.Item>)
+                            // cacheMenu.map(({path, title}) => <Menu.Item key={path}>{title}</Menu.Item>)
                         }
                     </SubMenu>
                 </Menu>
