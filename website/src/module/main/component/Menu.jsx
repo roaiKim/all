@@ -1,9 +1,8 @@
 import React from "react";
 import { Menu } from "antd";
 import { connect } from "react-redux";
-import { SettingOutlined } from "@ant-design/icons";
-
-// import cacheMenu from "service/MenuLoader";
+import { SettingOutlined } from "@icon";
+import cacheMenu from "service/MenuLoader";
 
 const { SubMenu } = Menu;
 class MemuComponent extends React.PureComponent {
@@ -11,6 +10,7 @@ class MemuComponent extends React.PureComponent {
     render() {
         const { collapsed } = this.props;
 
+        // console.log(cacheMenu)
         return (
             <nav className="ro-nav">
                 <section>
@@ -31,7 +31,7 @@ class MemuComponent extends React.PureComponent {
                         <Menu.Item key="12">Option 12</Menu.Item>
                         {
 
-                            // cacheMenu.map(({path, title}) => <Menu.Item key={path}>{title}</Menu.Item>)
+                            // cacheMenu.map(({ path, title }) => <Menu.Item key={path}>{title}</Menu.Item>)
                         }
                     </SubMenu>
                 </Menu>
