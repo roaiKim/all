@@ -27,7 +27,7 @@
             }
         }
     },
-    "ignorePatterns": "**/*.less",
+    "ignorePatterns": ["**/*.less", "webpack/**"],
     "rules": {
         "react/prop-types": "off",
         "react/no-typos": "error",
