@@ -41,8 +41,8 @@
   "scripts": {
     "start": "webpack serve --config ./webpack/webpack.config.development.js",
     "build": "webpack --config ./webpack/webpack.config.production.js",
-    "eslint": "./node_modules/.bin/eslint src/module/** --config .eslintrc.json",
-    "eslint:fix": "./node_modules/.bin/eslint --fix src/module/** --config .eslintrc.json"
+    "eslint": "./node_modules/.bin/eslint src/** --config .eslintrc.json",
+    "eslint:fix": "./node_modules/.bin/eslint --fix src/** --config .eslintrc.json"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

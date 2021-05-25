@@ -1,14 +1,15 @@
 import { app } from "./app";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { setStateAction } from "./reducer";
+
 export function register(module) {
     const moduleName = module.name;
     if (!app.store.getState().app[moduleName]) {
-        const initialState = module.initialState;
+        const { initialState } = module;
         app.store.dispatch(setStateAction(moduleName, initialState, `@@${moduleName}/@@init`));
     }
     const actions = {};
-    getKeys(module).forEach(actionType => {
+    getKeys(module).forEach((actionType) => {
         const method = module[actionType];
         const qualifiedActionType = `${moduleName}/${actionType}`;
         method.actionName = qualifiedActionType;
@@ -24,9 +25,9 @@ export function register(module) {
 export async function executeAction(handler, ...payload) {
     try {
         await handler(...payload);
-    }
-    catch (error) {
-        // TODO 这里需要错误处理
+    } catch (error) {
+
+    // TODO 这里需要错误处理
     }
 }
 function getKeys(module) {

@@ -6,10 +6,12 @@ const initialState = {
 };
 
 class UploadModule extends Module {
+
   @Lifecycle()
-  onRender() {
-    console.log("upload module action");
-  }
+    onRender() {
+        console.log("upload module action");
+    }
+
 }
 
 const module = register(new UploadModule("upload", initialState));

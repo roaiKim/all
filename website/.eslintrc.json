@@ -34,7 +34,7 @@
         "no-console": "off",
         "no-prototype-builtins": "off",
         "semi": ["error", "always"],
-        "indent": [ "error", 2 ],
+        "indent": [ "error", 4 ],
         "quotes": ["error", "double"],
         "block-spacing": "error",
         "space-before-blocks": "error",
@@ -63,6 +63,12 @@
         "class-methods-use-this":"off",
         "import/no-cycle": "off",
         "global-require":"off",
-        "jsx-a11y/anchor-is-valid": "off"
+        "jsx-a11y/anchor-is-valid": "off",
+        "padded-blocks": ["error", {"classes": "always"}],
+        "import/prefer-default-export": "off",
+        "react/jsx-props-no-spreading": "off",
+        "no-unused-expressions": ["error", {"allowShortCircuit": true}],
+        "no-use-before-define": ["error", { "functions": false, "classes": false }],
+        "react/static-property-placement": ["error", "static public field", {"defaultProps": "static public field"}]
     }
 }

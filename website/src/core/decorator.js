@@ -1,5 +1,6 @@
 import { app } from "./app";
 import { loadingAction } from "./reducer";
+
 export function createActionHandlerDecorator(interceptor) {
     return (target, propertyKey, descriptor) => {
         const fn = descriptor.value;
