@@ -32,6 +32,7 @@ export async function executeAction(handler, ...payload) {
 }
 function getKeys(module) {
     const keys = [];
+    // eslint-disable-next-line no-restricted-syntax
     for (const propertyName of Object.getOwnPropertyNames(Object.getPrototypeOf(module))) {
         if (module[propertyName] instanceof Function && propertyName !== "constructor") {
             keys.push(propertyName);

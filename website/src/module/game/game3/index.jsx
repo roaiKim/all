@@ -6,10 +6,12 @@ const initialState = {
 };
 
 class Game3Module extends Module {
+
   @Lifecycle()
-  onRender() {
-    console.log("game3 module action");
-  }
+    onRender() {
+        console.log("game3 module action");
+    }
+
 }
 
 const module = register(new Game3Module("game3", initialState));

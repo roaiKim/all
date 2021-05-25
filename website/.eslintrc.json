@@ -27,16 +27,21 @@
             }
         }
     },
-    "ignorePatterns": ["**/*.less", "webpack/**"],
+    "ignorePatterns": ["**/*.less", "webpack/**", "**/*.html", "src/*.ico", "src/asset/**"],
     "rules": {
         "react/prop-types": "off",
         "react/no-typos": "error",
+        "max-len": ["error", 160],
+        "react/jsx-indent": ["error", 4, {"indentLogicalExpressions": true}],
+        "max-classes-per-file": ["error"],
+        "react/jsx-indent-props": ["error", 4],
+        "one-var-declaration-per-line": ["error"],
         "no-console": "off",
         "no-prototype-builtins": "off",
         "semi": ["error", "always"],
         "indent": [ "error", 4 ],
         "quotes": ["error", "double"],
-        "block-spacing": "error",
+        "block-spacing": ["error", "always"],
         "space-before-blocks": "error",
         "object-curly-spacing": ["error", "always"],
         "no-duplicate-imports": "error",

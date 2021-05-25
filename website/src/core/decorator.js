@@ -1,9 +1,11 @@
+/* eslint-disable func-names */
 import { app } from "./app";
 import { loadingAction } from "./reducer";
 
 export function createActionHandlerDecorator(interceptor) {
     return (target, propertyKey, descriptor) => {
         const fn = descriptor.value;
+        // eslint-disable-next-line no-param-reassign
         descriptor.value = function (...args) {
             const rootState = app.store.getState();
             interceptor(fn.bind(this, ...args), rootState);
@@ -23,6 +25,7 @@ export function Loading(identifier = "global") {
 }
 export function Lifecycle() {
     return (target, propertyKey, descriptor) => {
+        // eslint-disable-next-line no-param-reassign
         descriptor.value.isLifecycle = true;
         return descriptor;
     };

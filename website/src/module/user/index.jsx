@@ -6,10 +6,12 @@ const initialState = {
 };
 
 class UserModule extends Module {
+
   @Lifecycle()
-  onRender() {
-    console.log("user module action");
-  }
+    onRender() {
+        console.log("user module action");
+    }
+
 }
 
 const module = register(new UserModule("user", initialState));

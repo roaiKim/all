@@ -13,7 +13,7 @@ class Main extends React.PureComponent {
     render() {
         return (
             <article className="ro-module-wrap ro-upload-module">
-            Upload module
+                Upload module
             </article>
         );
     }
