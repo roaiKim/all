@@ -96,12 +96,13 @@ function mapMenu() {
                     map[prev][paths[j]] = item;
                     prev = null;
                 } else {
-                    if (prev) {
+
+                    /* if (prev) {
                         map[prev][paths[j]] = {};
 
                     } else {
                         map[paths[j]] = {};
-                    }
+                    } */
                     prev = paths[j];
 
                     // map[paths[j]].
