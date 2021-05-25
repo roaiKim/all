@@ -1,8 +1,8 @@
-import { Lifecycle, Module, register } from 'core';
-import Main from './component';
+import { Lifecycle, Module, register } from "core";
+import Main from "./component";
 
 const initialState = {
-  
+
 };
 
 class UploadModule extends Module {
@@ -12,6 +12,6 @@ class UploadModule extends Module {
   }
 }
 
-const module = register(new UploadModule('upload', initialState));
+const module = register(new UploadModule("upload", initialState));
 export const actions = module.getActions();
 export const MainComponent = module.attachLifecycle(Main);

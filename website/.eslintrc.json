@@ -20,6 +20,14 @@
     "plugins": [
         "react"
     ],
+    "settings": {
+        "import/resolver": {
+            "webpack": {
+                "config": "./webpack/webpack.config.development.js"
+            }
+        }
+    },
+    "ignorePatterns": "**/*.less",
     "rules": {
         "react/prop-types": "off",
         "react/no-typos": "error",
@@ -52,6 +60,9 @@
         "space-unary-ops": "error",
         "eol-last": "error",
         "lines-around-comment": ["error", {"beforeLineComment": true}],
-        "class-methods-use-this":"off"
+        "class-methods-use-this":"off",
+        "import/no-cycle": "off",
+        "global-require":"off",
+        "jsx-a11y/anchor-is-valid": "off"
     }
 }

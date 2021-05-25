@@ -1,8 +1,8 @@
-import { Lifecycle, Module, register } from 'core';
-import Main from './component';
+import { Lifecycle, Module, register } from "core";
+import Main from "./component";
 
 const initialState = {
-  
+
 };
 
 class UserModule extends Module {
@@ -12,6 +12,6 @@ class UserModule extends Module {
   }
 }
 
-const module = register(new UserModule('user', initialState));
+const module = register(new UserModule("user", initialState));
 export const actions = module.getActions();
 export const MainComponent = module.attachLifecycle(Main);
