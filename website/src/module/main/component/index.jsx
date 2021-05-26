@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { showLoading, Route } from "core";
-import { Switch } from "react-router-dom";
+import { Switch, Router } from "react-router-dom";
 import { cacheMenu } from "service/MenuLoader";
 import Menu from "./Menu";
 import Header from "./Header";
@@ -18,7 +18,8 @@ class Main extends React.PureComponent {
 
     render() {
         const { bodyHeight } = this.state;
-        console.log("cacheMenu|cacheMenu", cacheMenu);
+
+        console.log("cacheMenu", cacheMenu);
         return (
             <article className="ro-main-wrap">
                 <Menu />

@@ -38,8 +38,10 @@ module.exports = {
         }
     },
     optimization: {
+        runtimeChunk: "single",
         splitChunks: {
             automaticNameDelimiter: "-",
+            maxAsyncRequests: 12,
         }
     },
     module: {

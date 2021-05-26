@@ -4,6 +4,6 @@ export default {
     path: "/user",
     title: "用户管理",
     icon: "",
-    Component: async(() => import("./index"), "MainComponent"),
+    Component: async(() => import(/* webpackChunkName: "user" */ "./index"), "MainComponent"),
     permissions: [],
 };
