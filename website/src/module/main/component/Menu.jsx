@@ -10,7 +10,7 @@ class MemuComponent extends React.PureComponent {
     render() {
         const { collapsed } = this.props;
 
-        // console.log(cacheMenu)
+        console.log("MenucacheMenu", cacheMenu);
         return (
             <nav className="ro-nav">
                 <section>
