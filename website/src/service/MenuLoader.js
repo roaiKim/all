@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "development") {
     window._map = map;
 }
 
-function mapMenu() {
+(function mapMenu() {
 
     // console.log("cacheMenu", JSON.stringify(cacheMenu.map((_) => ({ path: _.path }))));
     cacheMenu.forEach((item) => {
@@ -57,6 +57,12 @@ function mapMenu() {
 
         // }
     });
-}
+}());
 
-export default (mapMenu(), map);
+/* const cacheRoute = cacheMenu.map((item) => ({
+    path: item.path,
+    title: item.title,
+    icon: item.icon,
+})); */
+
+export default { map, cacheMenu };
