@@ -65,4 +65,4 @@ if (process.env.NODE_ENV === "development") {
     icon: item.icon,
 })); */
 
-export default { map, cacheMenu };
+export { map, cacheMenu };

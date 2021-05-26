@@ -4,6 +4,6 @@ export default {
     path: "/user",
     title: "用户管理",
     icon: "",
-    component: async(() => import("./index"), "MainComponent"),
+    Component: async(() => import("./index"), "MainComponent"),
     permissions: [],
 };

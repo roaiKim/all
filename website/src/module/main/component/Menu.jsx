@@ -2,7 +2,7 @@ import React from "react";
 import { Menu } from "antd";
 import { connect } from "react-redux";
 import { SettingOutlined } from "@icon";
-import cacheMenu from "service/MenuLoader";
+import { cacheMenu } from "service/MenuLoader";
 
 const { SubMenu } = Menu;
 class MemuComponent extends React.PureComponent {
@@ -10,7 +10,6 @@ class MemuComponent extends React.PureComponent {
     render() {
         const { collapsed } = this.props;
 
-        console.log("MenucacheMenu", cacheMenu);
         return (
             <nav className="ro-nav">
                 <section>

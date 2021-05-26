@@ -4,6 +4,6 @@ export default {
     path: "/upload",
     title: "上传下载",
     icon: "",
-    component: async(() => import("./index"), "MainComponent"),
+    Component: async(() => import("./index"), "MainComponent"),
     permissions: [],
 };
