@@ -74,6 +74,7 @@
         "react/jsx-props-no-spreading": "off",
         "no-unused-expressions": ["error", {"allowShortCircuit": true}],
         "no-use-before-define": ["error", { "functions": false, "classes": false }],
-        "react/static-property-placement": ["error", "static public field", {"defaultProps": "static public field"}]
+        "react/static-property-placement": ["error", "static public field", {"defaultProps": "static public field"}],
+        "linebreak-style": "off"
     }
 }
