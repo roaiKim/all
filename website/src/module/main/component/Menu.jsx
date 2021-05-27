@@ -2,15 +2,35 @@ import React from "react";
 import { Menu } from "antd";
 import { connect } from "react-redux";
 import { SettingOutlined } from "@icon";
-import cacheMenu from "service/MenuLoader";
+import { map, cacheMenu } from "service/MenuLoader";
 
 const { SubMenu } = Menu;
 class MemuComponent extends React.PureComponent {
 
+    renderMenu(menu) {
+        return (
+            menu.children
+                ? (
+                    <SubMenu key={menu.id} title={menu.title}>
+                        {
+
+                            menu.children.map((item) => this.renderMenu(item))
+                        }
+                    </SubMenu>
+                )
+                : (
+                    <Menu.Item icon={(menu.icon && (menu.page && menu.page.icon)) || null} key={(menu.page && menu.page.path) || ""}>
+                        {(menu.page && menu.page.title) || "请指定名称"}
+                    </Menu.Item>
+                )
+        );
+    }
+
     render() {
         const { collapsed } = this.props;
 
-        console.log("MenucacheMenu", cacheMenu);
+        console.log("MenucacheMenu", map, cacheMenu);
+
         return (
             <nav className="ro-nav">
                 <section>
@@ -29,11 +49,10 @@ class MemuComponent extends React.PureComponent {
                         <Menu.Item key="10">Option 10</Menu.Item>
                         <Menu.Item key="11">Option 11</Menu.Item>
                         <Menu.Item key="12">Option 12</Menu.Item>
-                        {
-
-                            // cacheMenu.map(({ path, title }) => <Menu.Item key={path}>{title}</Menu.Item>)
-                        }
                     </SubMenu>
+                    {
+                        map.map((item) => this.renderMenu(item))
+                    }
                 </Menu>
             </nav>
         );
