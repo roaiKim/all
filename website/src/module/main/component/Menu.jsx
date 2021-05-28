@@ -12,7 +12,7 @@ class MemuComponent extends React.PureComponent {
         return (
             menu.children
                 ? (
-                    <SubMenu key={menu.id} title={menu.title}>
+                    <SubMenu key={menu.id} title={menu.title} icon={menu && menu.icon}>
                         {
 
                             menu.children.map((item) => this.renderMenu(item))
@@ -20,8 +20,8 @@ class MemuComponent extends React.PureComponent {
                     </SubMenu>
                 )
                 : (
-                    <Menu.Item icon={(menu.icon && (menu.page && menu.page.icon)) || null} key={(menu.page && menu.page.path) || ""}>
-                        {(menu.page && menu.page.title) || "请指定名称"}
+                    <Menu.Item icon={(menu.icon || (menu.page && menu.page.icon)) || null} key={(menu.page && menu.page.path) || ""}>
+                        <Link to={(menu.page && menu.page.path) || "/"}>{(menu.page && menu.page.title) || "请指定名称"}</Link>
                     </Menu.Item>
                 )
         );
@@ -43,13 +43,6 @@ class MemuComponent extends React.PureComponent {
                     inlineCollapsed={collapsed}
                     mode="inline"
                 >
-                    <SubMenu key="sub4" icon={<SettingOutlined />} title="Navigation Three">
-                        <Menu.Item key="9">
-                            <Link to="/upload">用户上传</Link>
-                        </Menu.Item>
-                        <Menu.Item key="10"><Link to="/user">用户信息</Link></Menu.Item>
-                        <Menu.Item key="12">Option 12</Menu.Item>
-                    </SubMenu>
                     {
                         map.map((item) => this.renderMenu(item))
                     }

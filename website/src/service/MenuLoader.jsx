@@ -1,4 +1,8 @@
 /* eslint-disable no-lonely-if */
+import {
+    AppleOutlined, AndroidOutlined, WindowsOutlined, ChromeOutlined,
+} from "@icon";
+import React from "react";
 
 const module = require.context("module/", true, /\.menu\.js$/);
 
@@ -12,15 +16,19 @@ const map = [];
 const menuMap = {
     game: {
         title: "游戏game资源",
+        icon: <AppleOutlined className="ro-menu-icon" />,
     },
     upload: {
         title: "游戏upload资源",
+        icon: <AndroidOutlined className="ro-menu-icon" />,
     },
     user: {
         title: "游戏user资源",
+        icon: <WindowsOutlined className="ro-menu-icon" />,
     },
     game4: {
         title: "GAME4",
+        icon: <ChromeOutlined className="ro-menu-icon" />,
     },
 };
 
@@ -36,7 +44,6 @@ if (process.env.NODE_ENV === "development") {
         const { path } = item;
         const paths = path.split("/").filter((_) => _);
         if (paths.length === 1) {
-            console.log("menuMap[path[0]]", menuMap[paths[0]], paths[0]);
             map.push({
                 id: paths[0],
                 ...menuMap[paths[0]],
