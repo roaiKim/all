@@ -2,8 +2,7 @@ import React from "react";
 import { Menu } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { SettingOutlined } from "@icon";
-import { map } from "service/MenuLoader";
+import { cacheMenu } from "service/MenuLoader";
 
 const { SubMenu } = Menu;
 class MemuComponent extends React.PureComponent {
@@ -29,7 +28,7 @@ class MemuComponent extends React.PureComponent {
 
     render() {
         const { collapsed } = this.props;
-        console.log("map", map);
+
         return (
             <nav className="ro-nav">
                 <section>
@@ -44,7 +43,7 @@ class MemuComponent extends React.PureComponent {
                     mode="inline"
                 >
                     {
-                        map.map((item) => this.renderMenu(item))
+                        cacheMenu.map((item) => this.renderMenu(item))
                     }
                 </Menu>
             </nav>

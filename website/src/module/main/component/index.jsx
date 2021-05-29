@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { showLoading, Route } from "core";
 import { Switch } from "react-router-dom";
-import { cacheMenu } from "service/MenuLoader";
+import { cacheRoute } from "service/MenuLoader";
 import Menu from "./Menu";
 import Header from "./Header";
 import "./index.less";
@@ -19,7 +19,6 @@ class Main extends React.PureComponent {
     render() {
         const { bodyHeight } = this.state;
 
-        console.log("cacheMenu", cacheMenu);
         return (
             <article className="ro-main-wrap">
                 <Menu />
@@ -33,7 +32,7 @@ class Main extends React.PureComponent {
                         ))} */}
                         <Switch>
                             {/* <Route path="/" component={<div>HOME</div>} /> */}
-                            {cacheMenu.map(({ path, Component }) => (
+                            {cacheRoute.map(({ path, Component }) => (
                                 <Route key={path} path={path} component={Component} />
                             ))}
                             {/* <Route component={<div>404</div>} /> */}
