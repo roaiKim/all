@@ -1,6 +1,6 @@
 /* eslint-disable no-lonely-if */
 import {
-    AppleOutlined, AndroidOutlined, WindowsOutlined, ChromeOutlined, HomeOutlined,
+    AppleOutlined, AndroidOutlined, WindowsOutlined, HomeOutlined,
 } from "@icon";
 import React from "react";
 
@@ -39,18 +39,15 @@ const menuMap = {
         title: "游戏user资源",
         icon: <WindowsOutlined className="ro-menu-icon" />,
     },
-    game4: {
+    "game/game4": {
         order: 5,
         title: "GAME4",
-        icon: <ChromeOutlined className="ro-menu-icon" />,
     },
 };
 
 // 初步 检查菜单是否合法
 (function checkMenu() {
     const routeMap = {};
-
-    console.log("cacheModules", cacheModules);
     cacheModules.forEach(({ moduleId, module }) => {
         const { path, title, Component } = module;
 
@@ -85,7 +82,6 @@ const menuMap = {
             filePath: moduleId,
         };
     });
-    console.log("checkMenu routeMap", routeMap);
 }());
 
 // 提取路径并分级
@@ -95,6 +91,9 @@ const menuMap = {
         const { module: item } = module;
         const { path } = item;
         const paths = path.split("/").filter((_) => _);
+        if (paths.length > 3) {
+            throw new Error("菜单最多只支持3层!");
+        }
         if (paths.length === 0) {
             const info = menuMap.home;
             if (!info) {
@@ -133,15 +132,6 @@ const menuMap = {
                             ...item,
                         },
                     });
-                } else {
-
-                    /* current.children = [{
-                        id: paths[1],
-                        page: {
-                            ...item,
-                        },
-                    }]; */
-                    console.log("paths", paths);
                 }
             } else {
                 const info = menuMap[paths[0]];
@@ -174,19 +164,15 @@ const menuMap = {
                                 ...item,
                             },
                         });
-                    } else {
-                        console.log("paths", paths);
-                        currentChildren.children = [{
-                            id: paths[2],
-                            page: {
-                                ...item,
-                            },
-                        }];
                     }
                 } else {
+                    const info = menuMap[`${paths[0]}/${paths[1]}`];
+                    if (!info) {
+                        throw new Error(`请在 menuMap 中设置 ${paths[0]}/${paths[1]} 相关信息`);
+                    }
                     current.children.push({
                         id: paths[1],
-                        ...menuMap[paths[1]],
+                        ...info,
                         children: [
                             {
                                 id: paths[2],
@@ -198,13 +184,21 @@ const menuMap = {
                     });
                 }
             } else {
+                const info1 = menuMap[paths[0]];
+                if (!info1) {
+                    throw new Error(`请在 menuMap 中设置 ${paths[0]} 相关信息`);
+                }
+                const info2 = menuMap[`${paths[0]}/${paths[1]}`];
+                if (!info2) {
+                    throw new Error(`请在 menuMap 中设置 ${paths[0]}/${paths[1]} 相关信息`);
+                }
                 map.push({
                     id: paths[0],
-                    ...menuMap[paths[0]],
+                    ...info1,
                     children: [
                         {
                             id: paths[1],
-                            ...menuMap[paths[1]],
+                            ...info2,
                             children: [
                                 {
                                     id: paths[2],
@@ -217,8 +211,6 @@ const menuMap = {
                     ],
                 });
             }
-        } else {
-            throw new Error("菜单最多只支持3层!");
         }
     });
 

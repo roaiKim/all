@@ -19,8 +19,8 @@ class MemuComponent extends React.PureComponent {
                     </SubMenu>
                 )
                 : (
-                    <Menu.Item icon={(menu.icon || (menu.page && menu.page.icon)) || null} key={(menu.page && menu.page.path) || ""}>
-                        <Link to={(menu.page && menu.page.path) || "/"}>{(menu.page && menu.page.title) || "请指定名称"}</Link>
+                    <Menu.Item icon={menu.icon || null} key={(menu.page && menu.page.path) || ""}>
+                        <Link to={(menu.page && menu.page.path) || "/"}>{(menu.page && menu.page.title)}</Link>
                     </Menu.Item>
                 )
         );

@@ -5,6 +5,7 @@ import { Switch } from "react-router-dom";
 import { cacheRoute } from "service/MenuLoader";
 import Menu from "./Menu";
 import Header from "./Header";
+import Nofound from "./404Nofound";
 import "./index.less";
 
 class Main extends React.PureComponent {
@@ -25,17 +26,11 @@ class Main extends React.PureComponent {
                 <section className="ro-main" style={{ minHeight: bodyHeight }}>
                     <Header />
                     <main className="ro-body-container">
-                        {/* {[2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 23, 24].map((_) => (
-                            <div key={_} style={{ height: 120 }}>
-                                hahahahhhah hahahahha
-                            </div>
-                        ))} */}
                         <Switch>
-                            {/* <Route path="/" component={<div>HOME</div>} /> */}
                             {cacheRoute.map(({ path, Component }) => (
                                 <Route key={path} path={path} component={Component} />
                             ))}
-                            {/* <Route component={<div>404</div>} /> */}
+                            <Route component={Nofound} />
                         </Switch>
                     </main>
                     <footer>--</footer>
