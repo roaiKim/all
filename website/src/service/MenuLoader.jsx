@@ -1,6 +1,6 @@
 /* eslint-disable no-lonely-if */
 import {
-    AppleOutlined, AndroidOutlined, WindowsOutlined, HomeOutlined,
+    AppleOutlined, AndroidOutlined, WindowsOutlined, HomeOutlined, GithubOutlined,
 } from "@icon";
 import React from "react";
 
@@ -38,6 +38,11 @@ const menuMap = {
         order: 4,
         title: "游戏user资源",
         icon: <WindowsOutlined className="ro-menu-icon" />,
+    },
+    table: {
+        order: 5,
+        title: "Table",
+        icon: <GithubOutlined className="ro-menu-icon" />,
     },
     "game/game4": {
         order: 5,
