@@ -1,19 +1,23 @@
 import React from "react";
-import { connect } from "react-redux";
-import { Table } from "antd";
-import dayJs from "dayjs";
-import "./index.less";
+import {SortableContainer, SortableElement} from "react-sortable-hoc";
+import arrayMove from 'array-move';
 
-class Main extends React.PureComponent {
+const SortableItem = SortableElement(({value}) => <li className="rol-li" style={{padding: 15, border: "1px solid red", width: 260, cursor: "grab"}}>{value}</li>);
 
-    constructor(props) {
-        super(props);
-        this.state = {
+const SortableList = SortableContainer(({items}) => {
+  return (
+    <ul style={{width: 320, border: "1px solid blue"}}>
+      {items.map(({key, title}, index) => (
+        <SortableItem key={`item-${key}`} index={index} value={title} />
+      ))}
+    </ul>
+  );
+});
 
-        };
-    }
-
-    columns = [
+export default class SortableComponent extends React.Component {
+  state = {
+    items: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10', 'Item 11', 'Item 12'],
+    columns: [
         {
             className: "text-overflow-ellipsis",
             title: "Stock Take Task No.",
@@ -278,34 +282,21 @@ class Main extends React.PureComponent {
             render: (date) => date && dayJs(date).format("YYYY-MM-DD HH:mm:ss"),
         },
     ]
+  };
 
-    render() {
-        const { table } = this.props;
-
-        return (
-            <article className="ro-module-wrap ro-table-module">
-                <div className="ro-table-wrap">
-                    <Table
-                        rowKey="id"
-                        columns={this.columns.map((item) => ({
-                            ...item,
-
-                            // textWrap: "word-break",
-                            ellipsis: true,
-                        }))}
-                        dataSource={table ? table.list : null}
-                        bordered
-                        size="small"
-                    />
-                </div>
-            </article>
-        );
+  onSortEnd = ({oldIndex, newIndex}) => {
+    console.log("dasda ", oldIndex, newIndex);
+    if (oldIndex === newIndex) {
+        return false;
     }
+    this.setState(({columns}) => ({
+        columns: arrayMove(columns, oldIndex, newIndex),
+    }));
+  };
 
+  render() {
+    console.log("render");
+    return <SortableList items={this.state.columns} onSortEnd={this.onSortEnd} />;
+  }
 }
 
-const mapStateToProps = (state) => ({
-    table: state.app.table.table,
-});
-
-export default connect(mapStateToProps)(Main);

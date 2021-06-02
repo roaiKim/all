@@ -10,12 +10,10 @@ class TableModule extends Module {
 
     @Lifecycle()
     onRender() {
-        console.log("tabless module action");
         TableService.getTable().then((response) => {
-            console.log("response", response);
             this.setState({ table: response });
-        }).catch((bb) => {
-            console.log("bb", bb);
+        }).catch((error) => {
+            console.error("TableModule onRender", error);
         });
     }
 
