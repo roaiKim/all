@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Table } from "antd";
 import dayJs from "dayjs";
+import TableComponent from "./TableComponent";
 import "./index.less";
 
 class Main extends React.PureComponent {
@@ -201,7 +201,6 @@ class Main extends React.PureComponent {
             title: "Documents",
             dataIndex: "documents",
             key: "documents",
-            excelNotRender: true,
             width: 160,
         },
         {
@@ -209,7 +208,6 @@ class Main extends React.PureComponent {
             title: "CompletedBy",
             dataIndex: "checkBy",
             key: "checkBy",
-            isNoneRenderColumn: true,
             width: 170,
         },
         {
@@ -217,7 +215,6 @@ class Main extends React.PureComponent {
             title: "CompletedAt",
             dataIndex: "lastCheckDate",
             key: "lastCheckDate",
-            isNoneRenderColumn: true,
             width: 170,
         },
         {
@@ -225,7 +222,6 @@ class Main extends React.PureComponent {
             title: "AssignedTo",
             dataIndex: "assignedTo",
             key: "assignedTo",
-            isNoneRenderColumn: true,
             width: 170,
         },
         {
@@ -233,7 +229,6 @@ class Main extends React.PureComponent {
             title: "AssignedAt",
             dataIndex: "assignedAt",
             key: "assignedAt",
-            isNoneRenderColumn: true,
             width: 170,
         },
         {
@@ -241,7 +236,6 @@ class Main extends React.PureComponent {
             title: "AssignedBy",
             dataIndex: "assignedBy",
             key: "assignedBy",
-            isNoneRenderColumn: true,
             width: 170,
         },
         {
@@ -249,7 +243,6 @@ class Main extends React.PureComponent {
             title: "UpdatedBy",
             dataIndex: "updatedBy",
             key: "updatedBy",
-            isNoneRenderColumn: true,
             width: 120,
         },
         {
@@ -257,7 +250,6 @@ class Main extends React.PureComponent {
             title: "UpdatedAt",
             dataIndex: "updatedAt",
             key: "updatedAt",
-            isNoneRenderColumn: true,
             width: 170,
         },
         {
@@ -265,7 +257,6 @@ class Main extends React.PureComponent {
             title: "CreatedBy",
             dataIndex: "createdBy",
             key: "createdBy",
-            isNoneRenderColumn: true,
             width: 120,
         },
         {
@@ -273,7 +264,6 @@ class Main extends React.PureComponent {
             title: "CreatedAt",
             dataIndex: "createdAt",
             key: "createdAt",
-            isNoneRenderColumn: true,
             width: 140,
             render: (date) => date && dayJs(date).format("YYYY-MM-DD HH:mm:ss"),
         },
@@ -285,17 +275,11 @@ class Main extends React.PureComponent {
         return (
             <article className="ro-module-wrap ro-table-module">
                 <div className="ro-table-wrap">
-                    <Table
-                        rowKey="id"
-                        columns={this.columns.map((item) => ({
-                            ...item,
-
-                            // textWrap: "word-break",
-                            ellipsis: true,
-                        }))}
+                    <TableComponent
+                        showSelects
+                        showNumber
+                        columns={this.columns}
                         dataSource={table ? table.list : null}
-                        bordered
-                        size="small"
                     />
                 </div>
             </article>
