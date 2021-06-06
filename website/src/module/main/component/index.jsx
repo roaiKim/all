@@ -2,10 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { showLoading, Route } from "core";
 import { Switch } from "react-router-dom";
-import { cacheRoute } from "service/MenuLoader";
-import Menu from "./Menu";
-import Header from "./Header";
-import Nofound from "./404Nofound";
+import Login from "module/login/user";
+import MainLayout from "./MainLayout";
 import "./index.less";
 
 class Main extends React.PureComponent {
@@ -13,30 +11,21 @@ class Main extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            bodyHeight: document.body.clientHeight || 0,
+
+            // bodyHeight: document.body.clientHeight || 0,
         };
     }
 
     render() {
-        const { bodyHeight } = this.state;
-        const { website } = this.props;
+
+        // const { bodyHeight } = this.state;
+        // const { website } = this.props;
 
         return (
-            <article className="ro-main-wrap">
-                <Menu />
-                <section className="ro-main" style={{ height: website.height || bodyHeight }}>
-                    <Header />
-                    <main className="ro-body-container">
-                        <Switch>
-                            {cacheRoute.map(({ path, Component }) => (
-                                <Route key={path} path={path} component={Component} />
-                            ))}
-                            <Route component={Nofound} />
-                        </Switch>
-                    </main>
-                    <footer>--</footer>
-                </section>
-            </article>
+            <Switch>
+                <Route path="/login" component={Login.Component} />
+                <Route component={MainLayout} />
+            </Switch>
         );
     }
 

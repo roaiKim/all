@@ -1,5 +1,6 @@
 import axios, { CancelToken } from "axios";
 import { message } from "antd";
+import { completePath } from "./config";
 
 const httpRequestMap = new Map();
 if (process.env.NODE_ENV === "development") {
@@ -107,7 +108,7 @@ axios.interceptors.response.use((response) => {
  *
  */
 export function ajax(method, path, pathParams, request, axiosExtraConfig = {}, cancelPrev = false) {
-    const fullUrl = getURL(path, pathParams);
+    const fullUrl = completePath(getURL(path, pathParams));
 
     // bail 用来 判断 当发生错误时 是否自动处理(如弹窗等)
     const config = { ...axiosExtraConfig, method, url: fullUrl };
