@@ -3,9 +3,18 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { app } from "../app";
+import { websiteAction } from "../reducer";
 
 export function bootstrarp(option) {
     renderRoot(option.entryComponent, option.rootContainer || injectRootContainer());
+}
+function windowResize() {
+    const domHeight = document.body.offsetHeight;
+    const domWidth = document.body.offsetWidth;
+    app.store.dispatch(websiteAction({
+        width: domWidth,
+        height: domHeight,
+    }));
 }
 function renderRoot(EntryComponent, rootContainer) {
     ReactDOM.render(
@@ -15,6 +24,9 @@ function renderRoot(EntryComponent, rootContainer) {
             </ConnectedRouter>
         </Provider>,
         rootContainer,
+        () => {
+            window.addEventListener("resize", windowResize);
+        },
     );
 }
 function injectRootContainer() {

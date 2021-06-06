@@ -130,8 +130,9 @@ class TableComponent extends React.PureComponent {
         return null;
     }
 
-    getTableXWidth = () => {
-        const { columns = [] } = this.state;
+    getTableXWidth = (columns) => {
+
+        // const { columns = [] } = this.state;
         const width = columns.reduce((prev, next) => {
             if (typeof next.width === "number") {
                 return prev + (next.width || 140);
@@ -147,6 +148,7 @@ class TableComponent extends React.PureComponent {
             dataSource, sortColumnsContainer, sortColumnsTitle,
         } = this.props;
         const { columns } = this.state;
+        const tableColumns = this.getTableColumns();
 
         // console.log("TableComponent render", columns);
 
@@ -168,10 +170,10 @@ class TableComponent extends React.PureComponent {
                     </Popover>
                 </div>
                 <Table
-                    scroll={{ x: this.getTableXWidth() }}
+                    scroll={{ x: this.getTableXWidth(tableColumns) }}
                     rowSelection={this.getRowSelection()}
                     rowKey="id"
-                    columns={this.getTableColumns()}
+                    columns={tableColumns}
                     dataSource={dataSource}
                     bordered
                     size="small"

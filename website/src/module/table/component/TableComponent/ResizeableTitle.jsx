@@ -7,7 +7,7 @@ const ResizeableTitle = (props) => {
         onResize, width, ...restProps
     } = props;
     if (!width || (props.style && props.style.position === "sticky")) {
-        return <th style={{ minHeight: "51px" }} {...restProps} />;
+        return <th {...restProps} />;
     }
 
     return (

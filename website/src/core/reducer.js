@@ -35,10 +35,30 @@ function loadingReducer(state = {}, action) {
     }
     return state;
 }
+export const WEBSITE_ACTION = "@@framework/setWebsite";
+export function websiteAction(website) {
+    return {
+        type: WEBSITE_ACTION,
+        payload: {
+            website,
+        },
+    };
+}
+function websiteReducer(state = {}, action) {
+    if (action.type === WEBSITE_ACTION) {
+        const { payload } = action;
+        return {
+            ...state,
+            ...payload.website,
+        };
+    }
+    return state;
+}
 export function rootReducer(history) {
     return combineReducers({
         router: connectRouter(history),
         loading: loadingReducer,
+        website: websiteReducer,
         app: setStateReducer,
     });
 }

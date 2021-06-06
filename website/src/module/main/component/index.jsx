@@ -19,11 +19,12 @@ class Main extends React.PureComponent {
 
     render() {
         const { bodyHeight } = this.state;
+        const { website } = this.props;
 
         return (
             <article className="ro-main-wrap">
                 <Menu />
-                <section className="ro-main" style={{ minHeight: bodyHeight }}>
+                <section className="ro-main" style={{ height: website.height || bodyHeight }}>
                     <Header />
                     <main className="ro-body-container">
                         <Switch>
@@ -43,6 +44,7 @@ class Main extends React.PureComponent {
 
 const mapStateToProps = (state) => ({
     record: state.app.main.record,
+    website: state.website,
     isLoading: showLoading(state, "mask"),
 });
 
