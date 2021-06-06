@@ -3,6 +3,7 @@ import { Table, Popover, Button } from "antd";
 import { UnorderedListOutlined, DownloadOutlined } from "@icon";
 import arrayMove from "array-move";
 import SortColumnsContainer from "./SortColumns";
+import ResizeableTitle from "./ResizeableTitle";
 import "./index.less";
 
 // 支持 Antd Table 的大部分属性
@@ -12,6 +13,8 @@ import "./index.less";
  * @props ellipsis 单元格溢出隐藏
  * @props sortColumnsContainer 列表排序的 容器
  * @props sortColumnsTitle 列表排序的 标题
+ * @props resizeColumn 是否可以拖动列
+ * @props columnMinWidth 列最小值
  */
 class TableComponent extends React.PureComponent {
 
@@ -20,25 +23,43 @@ class TableComponent extends React.PureComponent {
         ellipsis: true,
         sortColumnsContainer: () => document.body,
         sortColumnsTitle: "Tick the display, drag and drop sort",
+        resizeColumn: true,
+        columnMinWidth: 100,
     }
 
     constructor(props) {
         super(props);
-        const { columns, ellipsis } = this.props;
 
         // 控制 长度截断
-        const newColumns = ellipsis ? columns.map((item) => ({
-            ...item,
-            ellipsis: true,
-        })) : columns;
+        const newColumns = this.initialColumns();
 
         this.state = {
             columns: newColumns,
         };
     }
 
+    initialColumns = () => {
+        const { resizeColumn, ellipsis, columns } = this.props;
+        let newColumns = columns;
+        if (resizeColumn) {
+            newColumns = newColumns.map((item) => ({
+                ...item,
+                onHeaderCell: (column) => ({
+                    width: column.width, // 100 没有设置宽度可以在此写死 例如100试下
+                    onResize: this.onColumnsResize(column),
+                }),
+            }));
+        }
+        if (ellipsis) {
+            newColumns = newColumns.map((item) => ({
+                ...item,
+                ellipsis: true,
+            }));
+        }
+        return newColumns;
+    }
+
     onSortColumns = ({ oldIndex, newIndex }) => {
-        console.log("dasda ", oldIndex, newIndex);
         if (oldIndex === newIndex) {
             return false;
         }
@@ -49,7 +70,6 @@ class TableComponent extends React.PureComponent {
     };
 
     onChangeColumns = (event, column) => {
-        console.log("a-b-c", event.target.checked, column);
         const { checked } = event.target;
         const { columns } = this.state;
         const newColumns = columns.map((item) => {
@@ -63,6 +83,21 @@ class TableComponent extends React.PureComponent {
         this.setState({ columns: newColumns });
     };
 
+    onColumnsResize = (column) => (event, { size }) => {
+        const { columnMinWidth } = this.props;
+        this.setState(({ columns }) => {
+            const nextColumns = [...columns];
+            const newColumn = nextColumns.find((item) => {
+                if (item.key) {
+                    return item.key === column.key;
+                }
+                return item.dataIndex === column.dataIndex;
+            });
+            newColumn.width = size.width < columnMinWidth ? columnMinWidth : size.width;
+            return { columns: nextColumns };
+        });
+    };
+
     getTableColumns = () => {
         const { columns = [] } = this.state;
         const { showNumber } = this.props;
@@ -74,6 +109,7 @@ class TableComponent extends React.PureComponent {
                 dataIndex: "no",
                 fixed: "left",
                 key: "no",
+                ignore: true,
                 width: 60,
                 render: (text, arrayColumns, index) => index + 1,
             },
@@ -103,7 +139,6 @@ class TableComponent extends React.PureComponent {
             console.error(`columns[].width属性 只支持 number 类型, 其他无效! ${next.title} 中 width 类型不为 number`);
             return prev + 140;
         }, 0);
-        console.log("width", width);
         return width + 100;
     }
 
@@ -112,7 +147,8 @@ class TableComponent extends React.PureComponent {
             dataSource, sortColumnsContainer, sortColumnsTitle,
         } = this.props;
         const { columns } = this.state;
-        console.log("TableComponent render", columns);
+
+        // console.log("TableComponent render", columns);
 
         return (
             <div className="ro-component-table">
