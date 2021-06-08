@@ -43,6 +43,7 @@ class MainModule extends Module {
             name: user.name,
             password: user.password,
         }).then((response) => {
+            localStorage.setItem("_token", response.token);
             this.setState({ record: response });
         });
     }

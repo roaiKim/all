@@ -110,9 +110,18 @@ axios.interceptors.response.use((response) => {
 export function ajax(method, path, pathParams, request, axiosExtraConfig = {}, cancelPrev = false) {
     const fullUrl = completePath(getURL(path, pathParams));
 
-    // bail 用来 判断 当发生错误时 是否自动处理(如弹窗等)
-    const config = { ...axiosExtraConfig, method, url: fullUrl };
-
+    // bail 用来 判断 当发生错误时 是否自动处理(如弹窗等) authorization
+    const authorization = localStorage.getItem("_token") || "";
+    const { headers, ...restConfig } = axiosExtraConfig;
+    const config = {
+        headers: {
+            Authorization: `Bearer ${authorization}`,
+            ...headers,
+        },
+        ...restConfig,
+        method,
+        url: fullUrl,
+    };
     if (method === "GET" || method === "DELETE") {
         config.params = request;
     } else if (method === "POST" || method === "PUT" || method === "PATCH") {
