@@ -38,15 +38,13 @@ class MainModule extends Module {
     }
 
     @Loading("mask")
-    async login() {
-        const response = await MainService.login({
-            name: "woaini",
-            password: "1234",
+    login(user) {
+        MainService.login({
+            name: user.name,
+            password: user.password,
+        }).then((response) => {
+            this.setState({ record: response });
         });
-        console.log("login");
-        if (response.code === 0) {
-            this.setState({ record: response.data });
-        }
     }
 
     toggleCollapseMenu() {

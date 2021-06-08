@@ -18,7 +18,7 @@ class Main extends React.PureComponent {
 
   submit = (value) => {
       const { dispatch } = this.props;
-      dispatch(actions.setCurrentUser(value));
+      dispatch(actions.login(value));
   };
 
   videoLoaded = () => {
