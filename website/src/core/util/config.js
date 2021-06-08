@@ -1,6 +1,7 @@
 
 const http = {
-    dev: "http://119.29.53.45:3200",
+
+    // dev: "http://119.29.53.45:3200",
     test: "",
     uat: "",
     pro: "",
@@ -14,5 +15,5 @@ export function completePath(path, type = "dev") {
     if (path && (path.startsWith("http://") || path.startsWith("https://"))) {
         return path;
     }
-    return http[type] + path;
+    return (http[type] || "") + path;
 }
