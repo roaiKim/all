@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import dayJs from "dayjs";
 import TableComponent from "./TableComponent";
 import "./index.less";
+import { actions } from "..";
 
 class Main extends React.PureComponent {
 
@@ -269,6 +270,11 @@ class Main extends React.PureComponent {
         },
     ]
 
+    toLogin = () => {
+        const { dispatch } = this.props;
+        dispatch(actions.toLogin());
+    }
+
     render() {
         const { table } = this.props;
 
@@ -278,6 +284,7 @@ class Main extends React.PureComponent {
                     <TableComponent
                         showSelects
                         showNumber
+                        onDownload={this.toLogin}
                         columns={this.columns}
                         dataSource={table ? table.list : null}
                     />

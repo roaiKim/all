@@ -2,11 +2,12 @@ import {
     Lifecycle, Loading, Module, register,
 } from "core";
 import { MainService } from "@api/MainService";
+import { message } from "antd";
 import Main from "./component";
 
 const initialState = {
-    user: "ro",
-    pathname: null,
+    user: null,
+    prevPathname: null,
     record: null,
     collapsed: localStorage.getItem("COLLAPSED_MENU") === "true",
 };
@@ -15,26 +16,40 @@ class MainModule extends Module {
 
     @Lifecycle()
     onRegister() {
-
-        // this.login();
-        this.fetchCurrentUser();
+        this.fetchLoginUser();
     }
 
     @Lifecycle()
-    onRender() {
+    onRender(currentRouteParam, currentLocaltion) {
 
-        // this.setState({ pathname: location.pathname || '' });
+        // this.setState({ pathname: currentLocaltion.pathname || "" });
     }
 
     @Loading("mask")
-    fetchCurrentUser() {
+    fetchLoginUser() {
         MainService.getUser().then((response) => {
-            console.log("fetchCurrentUser response", response);
+            this.setState({
+                user: response.data,
+                _token: localStorage.getItem("_token"),
+            });
             return response;
         }).catch((error) => {
-            console.log("fetchCurrentUser error", error);
+            if (error.status === 401) {
+                try {
+
+                    // prevPathname 是跳转登录页之前的路径 用于登录成功后跳到之前的页面
+                    const { pathname } = this.rootState.router.location;
+                    this.setState({ prevPathname: pathname === "/login" ? "/" : pathname });
+                    if (pathname !== "/login") {
+                        this.setHistory("/login");
+                    }
+                } catch {
+                    this.setHistory("/login");
+                }
+            } else {
+                message.error(error.message || error.error || "网络错误");
+            }
         });
-        console.log("fetchCurrentUser response1");
     }
 
     @Loading("mask")
@@ -44,7 +59,14 @@ class MainModule extends Module {
             password: user.password,
         }).then((response) => {
             localStorage.setItem("_token", response.token);
-            this.setState({ record: response });
+            this.setState({
+                user: response.user,
+                _token: response.token,
+            });
+
+            //
+            const { pathname } = this.rootState.router.location;
+            this.setHistory(pathname === "/login" ? "/" : pathname);
         });
     }
 

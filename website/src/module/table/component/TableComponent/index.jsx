@@ -146,6 +146,7 @@ class TableComponent extends React.PureComponent {
     render() {
         const {
             dataSource, sortColumnsContainer, sortColumnsTitle,
+            onDownload,
         } = this.props;
         const { columns } = this.state;
         const tableColumns = this.getTableColumns();
@@ -155,7 +156,7 @@ class TableComponent extends React.PureComponent {
         return (
             <div className="ro-component-table">
                 <div className="ro-table-header">
-                    <Button icon={<DownloadOutlined />}>
+                    <Button icon={<DownloadOutlined />} onClick={onDownload}>
                         Download
                     </Button>
                     <Popover

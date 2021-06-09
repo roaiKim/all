@@ -17,6 +17,10 @@ class TableModule extends Module {
         });
     }
 
+    toLogin() {
+        this.setHistory("/login");
+    }
+
 }
 
 const module = register(new TableModule("table", initialState));
