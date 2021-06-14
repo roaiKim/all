@@ -7,7 +7,7 @@ export class MainService {
     } */
 
     static getUser(request) {
-        return ajax("GET", "/api/user/check", {}, request, { bail: true }, true);
+        return ajax("GET", "/api/user/check", {}, request, undefined, true);
     }
 
     static login(request) {

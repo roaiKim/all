@@ -28,6 +28,11 @@ export class Module {
         return app.store.getState();
     }
 
+    dispatch(action) {
+        if (typeof action !== "function") throw new Error("this.dispatch 的参数必须为 Function");
+        app.store.dispatch(action());
+    }
+
     setState(newState) {
         app.store.dispatch(setStateAction(this.name, newState, `@@${this.name}/setState[${Object.keys(newState).join(",")}]`));
     }

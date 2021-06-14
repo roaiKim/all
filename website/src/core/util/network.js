@@ -40,14 +40,17 @@ axios.interceptors.response.use((response) => {
             httpRequestMap.delete(error.response.config.url);
         }
     }
+
+    if (axios.isCancel(error)) {
+
+        // console.log('Request canceled', error.message);
+        // reject(new Error(error.message));
+    }
+
     return new Promise((resolve, reject) => {
 
         // 这个是由于 取消重复的请求造成的错误
-        if (axios.isCancel(error)) {
 
-            // console.log('Request canceled', error.message);
-            reject(new Error(error.message));
-        }
         if (error.response) {
 
             // 这里是 http 错误
@@ -69,18 +72,23 @@ axios.interceptors.response.use((response) => {
                     errorMessage = "没有权限";
                     break;
                 case 502:
-                    errorMessage = "网络错误";
+                    errorMessage = "网络错误/502";
                     break;
                 case 504:
-                    errorMessage = "网络超时";
+                    errorMessage = "网络超时/504";
                     break;
                 default:
                     errorMessage = "服务器错误";
                     break;
                 }
-                message.error(errorMessage);
+                // eslint-disable-next-line prefer-promise-reject-errors
+                reject({
+                    status: error.response.status,
+                    message: errorMessage,
+                });
+
+                // message.error(errorMessage);
             }
-            reject(new Error("服务器返回错误"));
         } else {
 
             // TODO 这里是网络错误
@@ -112,7 +120,7 @@ export function ajax(method, path, pathParams, request, axiosExtraConfig = {}, c
 
     // bail 用来 判断 当发生错误时 是否自动处理(如弹窗等) authorization
     const authorization = localStorage.getItem("_token") || "";
-    const { headers, ...restConfig } = axiosExtraConfig;
+    const { headers = {}, ...restConfig } = axiosExtraConfig;
     const config = {
         headers: {
             Authorization: `Bearer ${authorization}`,

@@ -1,5 +1,5 @@
 import {
-    Lifecycle, Loading, Module, register,
+    Lifecycle, Loading, Module, register, loadingAction, showLoading,
 } from "core";
 import { MainService } from "@api/MainService";
 import { message } from "antd";
@@ -25,16 +25,23 @@ class MainModule extends Module {
         // this.setState({ pathname: currentLocaltion.pathname || "" });
     }
 
-    @Loading("mask")
+    @Loading("check")
     fetchLoginUser() {
         MainService.getUser().then((response) => {
             this.setState({
                 user: response.data,
                 _token: localStorage.getItem("_token"),
             });
-            return response;
+            console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
+            if (showLoading(this.rootState, "check")) {
+                this.dispatch(() => loadingAction(false, "check"));
+            }
         }).catch((error) => {
             if (error.status === 401) {
+                console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
+                if (showLoading(this.rootState, "check")) {
+                    this.dispatch(() => loadingAction(false, "check"));
+                }
                 try {
 
                     // prevPathname 是跳转登录页之前的路径 用于登录成功后跳到之前的页面
@@ -47,6 +54,7 @@ class MainModule extends Module {
                     this.setHistory("/login");
                 }
             } else {
+                this.dispatch(() => loadingAction(true, "check"));
                 message.error(error.message || error.error || "网络错误");
             }
         });
