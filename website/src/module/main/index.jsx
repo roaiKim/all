@@ -20,6 +20,7 @@ class MainModule extends Module {
     }
 
     @Lifecycle()
+    // eslint-disable-next-line no-unused-vars
     onRender(currentRouteParam, currentLocaltion) {
 
         // this.setState({ pathname: currentLocaltion.pathname || "" });

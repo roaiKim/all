@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Popover, Button } from "antd";
-import { UnorderedListOutlined, DownloadOutlined } from "@icon";
+import { UnorderedListOutlined, DownloadOutlined, PlusOutlined } from "@icon";
 import arrayMove from "array-move";
 import SortColumnsContainer from "./SortColumns";
 import ResizeableTitle from "./ResizeableTitle";
@@ -9,22 +9,31 @@ import "./index.less";
 // 支持 Antd Table 的大部分属性
 /**
  * @props showSelects 是否显示 select 框
+ * @props showSortColumns 是否显示 表格排序
  * @props showNumber  是否显示 表格行编号
  * @props ellipsis 单元格溢出隐藏
  * @props sortColumnsContainer 列表排序的 容器
  * @props sortColumnsTitle 列表排序的 标题
  * @props resizeColumn 是否可以拖动列
  * @props columnMinWidth 列最小值
+ * @props title 表格 title  字符串 和 React.Component 表现有点区别
+ * @props OperationAction 自定义操作按钮
+ * @props onDownload 下载 可以是 true 和 一个函数、 如果是 true 则显示下载按钮 并且 启用 默认的下载动作， 如果是一个函数 则启动函数、参数为 columns
+ * @props onAdd 一个函数 新增
  */
 class TableComponent extends React.PureComponent {
 
     static defaultProps = {
+        showNumber: false,
         showSelects: false,
+        showSortColumns: true,
         ellipsis: true,
         sortColumnsContainer: () => document.body,
         sortColumnsTitle: "Tick the display, drag and drop sort",
         resizeColumn: true,
         columnMinWidth: 100,
+        onDownload: false,
+        onAdd: false,
     }
 
     constructor(props) {
@@ -143,32 +152,74 @@ class TableComponent extends React.PureComponent {
         return width + 100;
     }
 
+    onDownload = () => {
+        const { onDownload } = this.props;
+        if (typeof onDownload === "boolean") {
+            this.onInitialDownloadAction();
+        } else if (typeof onDownload === "function") {
+            const { columns } = this.state;
+            const columnsKeyArray = columns.filter((item) => !item.hide).map((item) => item.dataIndex || item.key);
+            onDownload(columnsKeyArray);
+        } else {
+            throw new Error("table 的 onDownload 属性只支持 true/function");
+        }
+    }
+
+    onInitialDownloadAction = () => {
+        // 默认的下载动作
+    }
+
     render() {
         const {
-            dataSource, sortColumnsContainer, sortColumnsTitle,
-            onDownload,
+            dataSource, sortColumnsContainer, sortColumnsTitle, onAdd,
+            onDownload, title, OperationAction, showSortColumns,
         } = this.props;
         const { columns } = this.state;
         const tableColumns = this.getTableColumns();
 
         // console.log("TableComponent render", columns);
-
+        const titleIsString = React.isValidElement(title);
         return (
             <div className="ro-component-table">
                 <div className="ro-table-header">
-                    <Button icon={<DownloadOutlined />} onClick={onDownload}>
-                        Download
-                    </Button>
-                    <Popover
-                        arrowPointAtCenter
-                        getPopupContainer={sortColumnsContainer}
-                        placement="bottomRight"
-                        title={sortColumnsTitle}
-                        content={<SortColumnsContainer onChange={this.onChangeColumns} columns={columns} onSortColumns={this.onSortColumns} />}
-                        trigger="click"
-                    >
-                        <Button icon={<UnorderedListOutlined />} />
-                    </Popover>
+                    <div className="ro-header-title-container">
+                        {
+                            titleIsString ? title : <h3>{title}</h3>
+                        }
+                    </div>
+                    <div className="ro-header-operator-container">
+                        <div>
+                            {OperationAction || null}
+                        </div>
+                        {
+                            onAdd && (
+                                <Button icon={<PlusOutlined />} onClick={this.onAdd}>
+                                    Add
+                                </Button>
+                            )
+                        }
+                        {
+                            onDownload && (
+                                <Button icon={<DownloadOutlined />} onClick={this.onDownload}>
+                                    Download
+                                </Button>
+                            )
+                        }
+                        {
+                            showSortColumns && (
+                                <Popover
+                                    arrowPointAtCenter
+                                    getPopupContainer={sortColumnsContainer}
+                                    placement="bottomRight"
+                                    title={sortColumnsTitle}
+                                    content={<SortColumnsContainer onChange={this.onChangeColumns} columns={columns} onSortColumns={this.onSortColumns} />}
+                                    trigger="click"
+                                >
+                                    <Button icon={<UnorderedListOutlined />} />
+                                </Popover>
+                            )
+                        }
+                    </div>
                 </div>
                 <Table
                     scroll={{ x: this.getTableXWidth(tableColumns) }}

@@ -2,10 +2,26 @@
     .ro-table-header {
         margin-bottom: 12px;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
 
-        > * {
-            margin-left: 12px;
+        .ro-header-operator-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+           > * {
+                margin-left: 12px;
+           }
+        }
+
+        .ro-header-title-container {
+            display: flex;
+            align-items: center;
+
+            h3 {
+                font-size: 18px;
+                color: #000;
+                font-weight: 600;;
+            }
         }
     }
 }

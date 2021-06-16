@@ -282,9 +282,12 @@ class Main extends React.PureComponent {
             <article className="ro-module-wrap ro-table-module">
                 <div className="ro-table-wrap">
                     <TableComponent
+                        title="customer table"
+                        // OperationAction={<span>567</span>}
                         showSelects
                         showNumber
                         onDownload={this.toLogin}
+                        onAdd
                         columns={this.columns}
                         dataSource={table ? table.list : null}
                     />

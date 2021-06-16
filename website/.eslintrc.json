@@ -64,7 +64,7 @@
         "comma-spacing": "error",
         "space-unary-ops": "error",
         "eol-last": "error",
-        "lines-around-comment": ["error", {"beforeLineComment": true}],
+        "lines-around-comment": "off",
         "class-methods-use-this":"off",
         "import/no-cycle": "off",
         "global-require":"off",
