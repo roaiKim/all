@@ -27,8 +27,8 @@ class MainModule extends Module {
     }
 
     @Loading("check")
-    fetchLoginUser() {
-        MainService.getUser().then((response) => {
+    async fetchLoginUser() {
+        await MainService.getUser().then((response) => {
             this.setState({
                 user: response.data,
                 _token: localStorage.getItem("_token"),
