@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import dayJs from "dayjs";
+import { actions } from "module/table";
 import TableComponent from "./TableComponent";
 import "./index.less";
-import { actions } from "..";
 
 class Main extends React.PureComponent {
 
@@ -276,8 +276,9 @@ class Main extends React.PureComponent {
     }
 
     render() {
-        const { table } = this.props;
-
+        const { source, location } = this.props;
+        console.log("this.props", this.props);
+        console.log("history |---->", location);
         return (
             <article className="ro-module-wrap ro-table-module">
                 <div className="ro-table-wrap">
@@ -289,7 +290,7 @@ class Main extends React.PureComponent {
                         onDownload={this.toLogin}
                         onAdd
                         columns={this.columns}
-                        dataSource={table ? table.list : null}
+                        dataSource={source ? source.list : null}
                     />
                 </div>
             </article>
@@ -299,7 +300,7 @@ class Main extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-    table: state.app.table.table,
+    source: state.app.table.table,
 });
 
 export default connect(mapStateToProps)(Main);

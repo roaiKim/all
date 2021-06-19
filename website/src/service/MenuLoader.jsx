@@ -48,6 +48,10 @@ const menuMap = {
         order: 5,
         title: "GAME4",
     },
+    usesr1: {
+        order: 5,
+        title: "GAME4",
+    },
 };
 
 // 初步 检查菜单是否合法
