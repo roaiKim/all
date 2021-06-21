@@ -277,8 +277,7 @@ class Main extends React.PureComponent {
 
     render() {
         const { source, location } = this.props;
-        console.log("this.props", this.props);
-        console.log("history |---->", location);
+
         return (
             <article className="ro-module-wrap ro-table-module">
                 <div className="ro-table-wrap">
