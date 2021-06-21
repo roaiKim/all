@@ -1,6 +1,6 @@
 /* eslint-disable no-lonely-if */
 import {
-    AppleOutlined, AndroidOutlined, WindowsOutlined, HomeOutlined, GithubOutlined,
+    AppleOutlined, AndroidOutlined, WindowsOutlined, HomeOutlined, GithubOutlined, InstagramOutlined,
 } from "@icon";
 import React from "react";
 
@@ -51,6 +51,7 @@ const menuMap = {
     usesr1: {
         order: 5,
         title: "GAME4",
+        icon: <InstagramOutlined className="ro-menu-icon" />,
     },
 };
 
