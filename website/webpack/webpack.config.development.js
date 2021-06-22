@@ -14,7 +14,8 @@ module.exports = {
         compress: true,
         proxy: {
             "/api": {
-                target: "http://119.29.53.45:3200",
+                // target: "http://119.29.53.45:3200",
+                target: "http://localhost:3200",
                 secure: false,
                 changeOrigin: true,
             }
