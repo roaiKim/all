@@ -14,6 +14,12 @@ class Main extends React.PureComponent {
         return (
             <article className="ro-module-wrap ro-user-module">
                 User module
+                <div className="tips_click">
+                    <span>+</span>
+                    <b />
+                    <b />
+                    <b />
+                </div>
             </article>
         );
     }
