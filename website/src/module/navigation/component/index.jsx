@@ -10,16 +10,17 @@ class Main extends React.PureComponent {
         };
     }
 
+    onClick =() => {
+        console.log("error");
+        const { history } = this.props;
+        history.push("/table", { id: 888, name: "item" });
+    }
+
     render() {
         return (
             <article className="ro-module-wrap ro-user-module">
                 User module
-                <div className="tips_click">
-                    <span>+</span>
-                    <b />
-                    <b />
-                    <b />
-                </div>
+                <button onClick={this.onClick} type="button">click</button>
             </article>
         );
     }

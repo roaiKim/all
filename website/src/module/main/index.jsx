@@ -27,19 +27,24 @@ class MainModule extends Module {
     }
 
     @Loading("check")
-    fetchLoginUser() {
-        MainService.getUser().then((response) => {
+    async fetchLoginUser() {
+        await MainService.getUser().then((response) => {
             this.setState({
                 user: response.data,
                 _token: localStorage.getItem("_token"),
             });
-            console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
+            const { pathname } = this.rootState.router.location;
+            // console.log("pathname", pathname);
+            // console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
+            if (pathname === "/login") {
+                this.setHistory("/");
+            }
             if (showLoading(this.rootState, "check")) {
                 this.dispatch(() => loadingAction(false, "check"));
             }
         }).catch((error) => {
             if (error.status === 401) {
-                console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
+                // console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
                 if (showLoading(this.rootState, "check")) {
                     this.dispatch(() => loadingAction(false, "check"));
                 }

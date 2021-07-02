@@ -2,4 +2,97 @@
 
 .ro-user-module {
     color: #ccc;
+
+    .tips_click {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: .75rem;
+        height: .75rem;
+        cursor: pointer;
+
+        > span {
+            position: absolute;
+            top: .3rem;
+            left: .36rem;
+            color: #e69800;
+            font-weight: bold;
+            font-size: 0.16rem;
+            line-height: .22rem;
+            z-index: 1;
+        }
+
+        > b {
+            position: absolute;
+            top: .3rem;
+            left: .3rem;
+            display: block;
+            width: .25rem;
+            height: .25rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, .6);
+
+            &:nth-of-type(1) {
+                -webkit-animation: click1 1s linear infinite;
+                animation: click1 1s linear infinite;
+            }
+
+            &:nth-of-type(2) {
+                -webkit-animation: click2 1s linear infinite;
+                animation: click2 1s linear infinite;
+            }
+        }
+    }
+
+    @-webkit-keyframes click1 {
+        0% {
+            opacity: .8;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            -webkit-transform: scale(2);
+            transform: scale(2);
+        }
+    }
+    
+    @keyframes click1 {
+        0% {
+            opacity: .8;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            -webkit-transform: scale(2);
+            transform: scale(2);
+        }
+    }
+    
+    @-webkit-keyframes click2 {
+        0% {
+            opacity: .8;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            -webkit-transform: scale(3);
+            transform: scale(3);
+        }
+    }
+    
+    @keyframes click2 {
+        0% {
+            opacity: .8;
+            -webkit-transform: scale(1);
+            transform: scale(1);
+        }
+        100% {
+            opacity: 0;
+            -webkit-transform: scale(3);
+            transform: scale(3);
+        }
+    }
 }

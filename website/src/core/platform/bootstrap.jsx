@@ -25,7 +25,7 @@ function renderRoot(EntryComponent, rootContainer) {
         </Provider>,
         rootContainer,
         () => {
-            window.addEventListener("resize", windowResize);
+            // window.addEventListener("resize", windowResize);
         },
     );
 }

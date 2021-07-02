@@ -47,7 +47,7 @@ class Main extends React.PureComponent {
 
         // const { bodyHeight } = this.state;
         const { website, isCheckLoading } = this.props;
-
+        console.log("isCheckLoading", isCheckLoading);
         // isCheckLoading 为 true, 说明 check 接口失败
         if (isCheckLoading) {
             return (
