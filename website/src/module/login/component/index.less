@@ -1,76 +1,74 @@
 @import "asset/css/variable.less";
 
 .ro-login-wrap-bg {
-    height: 100%;
-    width: 100%;
-    background-size: cover;
-    background-attachment: fixed;
-    // background-color: #010d11;
-  
-    .ro-login-vider-bg {
-      width: 100%;
-      position: fixed;
-      right: 0;
-      left: 0;
-      top: 0;
-      bottom: 0;
-    }
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  // background-color: #010d11;
 
-    .dv-loading {
-        position: fixed;
-        z-index: 999;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        
-        .loading-tip {
-            font-size: 15px;
-        }
-    }
-}
-  .ro-form-wrap {
-    height: 100%;
-    width: 100%;
+  .ro-login-vider-bg {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
   }
 
-  .ro-login-wrap {
-    width: 460px;
-    padding: 30px;
-    transform: translate(-50%, -50%);
-    position: relative;
-    top: 45%;
-    left: 50%;
-    background: rgba(4, 20, 27, 0.2);
-    border-radius: 6px;
-    // box-shadow: 0 0 6px 1px rgba(16, 17, 20, 0.2);
-    box-shadow: 1px 1px 6px 1px rgb(103 195 236);
-  
-    .ant-form {
-      .ant-row.ant-form-item:last-child {
-        margin-bottom: 0;
-  
-        .ant-btn.ant-btn-primary {
-          width: 100%;
-          height: 40px;
-          border-radius: 8px;
-        }
-      }
-  
-      .ant-row.ant-form-item:nth-of-type(3) {
-        margin-bottom: 18px;
-      }
-  
-      .ant-input-affix-wrapper,
-      .ant-input {
+  .dv-loading {
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .loading-tip {
+      font-size: 15px;
+    }
+  }
+}
+.ro-form-wrap {
+  height: 100%;
+  width: 100%;
+}
+
+.ro-login-wrap {
+  width: 460px;
+  padding: 30px;
+  transform: translate(-50%, -50%);
+  position: relative;
+  top: 45%;
+  left: 50%;
+  background: rgba(4, 20, 27, 0.2);
+  border-radius: 6px;
+  // box-shadow: 0 0 6px 1px rgba(16, 17, 20, 0.2);
+  box-shadow: 1px 1px 6px 1px rgb(103 195 236);
+
+  .ant-form {
+    .ant-row.ant-form-item:last-child {
+      margin-bottom: 0;
+
+      .ant-btn.ant-btn-primary {
+        width: 100%;
+        height: 40px;
         border-radius: 8px;
       }
-  
-      .ant-checkbox-wrapper {
-        color: #fff;
-      }
     }
+
+    .ant-row.ant-form-item:nth-of-type(3) {
+      margin-bottom: 18px;
+    }
+
+    .ant-input-affix-wrapper,
+    .ant-input {
+      border-radius: 8px;
+    }
+
+    .ant-checkbox-wrapper {
+      color: #fff;
+    }
+  }
 }
-  
