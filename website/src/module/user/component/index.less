@@ -3,32 +3,27 @@
 .ro-user-module {
     color: #ccc;
 
-    .tips_click {
-        position: relative;
-        top: 0;
-        left: 0;
-        width: .75rem;
-        height: .75rem;
+    .ro-tips-wave-container {
+        width: 180px;
+        height: 180px;
         cursor: pointer;
+        position: relative;
+        display: flex;
+        background-color: #252525;
+        justify-content: center;
+        align-items: center;
 
         > span {
-            position: absolute;
-            top: .3rem;
-            left: .36rem;
             color: #e69800;
             font-weight: bold;
-            font-size: 0.16rem;
-            line-height: .22rem;
             z-index: 1;
         }
 
         > b {
             position: absolute;
-            top: .3rem;
-            left: .3rem;
             display: block;
-            width: .25rem;
-            height: .25rem;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, .6);
 

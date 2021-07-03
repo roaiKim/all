@@ -11,18 +11,23 @@ import "./index.less";
 
 class Main extends React.PureComponent {
 
+    refreshTime = 0
+
     constructor(props) {
         super(props);
         this.state = {
-
-            // bodyHeight: document.body.clientHeight || 0,
+            content: null,
         };
     }
 
-    refreshTime = 0
+    componentDidMount() {
+        // 3秒之后可以刷新
+        setTimeout(() => {
+            this.setState({ content: "刷新" });
+        }, 3000);
+    }
 
     refresh = () => {
-        console.log("this.refreshTime", this.refreshTime);
         if (this.refreshTime >= 5) {
             message.destroy();
             message.info("操作频繁，请30s后再试！");
@@ -45,14 +50,13 @@ class Main extends React.PureComponent {
 
     render() {
 
-        // const { bodyHeight } = this.state;
-        const { website, isCheckLoading } = this.props;
-        console.log("isCheckLoading", isCheckLoading);
-        // isCheckLoading 为 true, 说明 check 接口失败
+        const { content } = this.state;
+        const { isCheckLoading } = this.props;
+        // isCheckLoading 为 true, 说明 check 接口未返回或者失败
         if (isCheckLoading) {
             return (
                 <Loading>
-                    <Button type="link" onClick={this.refresh}>刷新</Button>
+                    <Button type="link" onClick={this.refresh}>{content}</Button>
                 </Loading>
             );
         }
