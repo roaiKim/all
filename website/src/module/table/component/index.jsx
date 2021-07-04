@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import dayJs from "dayjs";
 import { actions } from "module/table";
-import TableComponent from "./TableComponent";
+import { TableComponent } from "@component";
 import "./index.less";
 
 class Main extends React.PureComponent {

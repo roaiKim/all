@@ -1,6 +1,6 @@
 /* eslint-disable no-lonely-if */
 import {
-    AppleOutlined, AndroidOutlined, WindowsOutlined, HomeOutlined, GithubOutlined, InstagramOutlined,
+    AppleOutlined, AndroidOutlined, WindowsOutlined, HomeOutlined, GithubOutlined, InstagramOutlined, FileTextOutlined,
 } from "@icon";
 import React from "react";
 
@@ -49,9 +49,14 @@ const menuMap = {
         title: "GAME4",
     },
     usesr1: {
-        order: 5,
+        order: 6,
         title: "GAME4",
         icon: <InstagramOutlined className="ro-menu-icon" />,
+    },
+    filelist: {
+        order: 7,
+        title: "GAME4",
+        icon: <FileTextOutlined className="ro-menu-icon" />,
     },
 };
 
@@ -107,7 +112,7 @@ const menuMap = {
         if (paths.length === 0) {
             const info = menuMap.home;
             if (!info) {
-                throw new Error("请在 menuMap 中设置 home 的相关信息(order/title/icon)");
+                throw new Error("请在 src/service/MenuLoader.jsx 文件的 menuMap 中配置 home 的相关信息(order/title/icon)");
             }
             if (homePageCount >= 1) {
                 throw new Error("/(主路径)只能有一个, 请检查各 .*menu.js 中 path 的属性是否有多个 '/', 或者未设置 path ");
@@ -123,7 +128,7 @@ const menuMap = {
         } else if (paths.length === 1) {
             const info = menuMap[paths[0]];
             if (!info) {
-                throw new Error(`请在 menuMap 中设置 ${paths[0]} 相关信息`);
+                throw new Error(`请在 src/service/MenuLoader.jsx 文件的 menuMap 中配置 ${paths[0]} 相关信息`);
             }
             map.push({
                 id: paths[0],

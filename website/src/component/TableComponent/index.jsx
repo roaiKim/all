@@ -30,7 +30,7 @@ class TableComponent extends React.PureComponent {
         ellipsis: true,
         sortColumnsContainer: () => document.body,
         sortColumnsTitle: "Tick the display, drag and drop sort",
-        resizeColumn: true,
+        resizeColumn: false,
         columnMinWidth: 100,
         onDownload: false,
         onAdd: false,
@@ -243,4 +243,4 @@ class TableComponent extends React.PureComponent {
 
 }
 
-export default TableComponent;
+export { TableComponent };

@@ -5,7 +5,7 @@ import {
 import "./index.less";
 import { connect } from "react-redux";
 import { actions } from "module/main";
-import Loading from "aComponent/Loading";
+import { Loading } from "@component";
 
 class Main extends React.PureComponent {
 

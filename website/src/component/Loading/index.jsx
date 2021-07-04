@@ -58,4 +58,4 @@ const Loading = ({ children, className, style }) => (
     </div>
 );
 
-export default Loading;
+export { Loading };

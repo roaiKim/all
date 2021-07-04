@@ -14,8 +14,8 @@ module.exports = {
         compress: true,
         proxy: {
             "/api": {
-                target: "http://119.29.53.45:3200",
-                // target: "http://localhost:3200",
+                // target: "http://119.29.53.45:3200",
+                target: "http://localhost:3200",
                 secure: false,
                 changeOrigin: true,
             }
@@ -34,6 +34,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
         modules: [env.src, "node_modules"],
         alias: {
+            "@component": "component",
             "@icon": "@ant-design/icons",
             "@api": "service/api",
             "@tools": "tools"

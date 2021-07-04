@@ -5,7 +5,7 @@ import { Button, message } from "antd";
 import { Switch } from "react-router-dom";
 import Login from "module/login/user";
 import { actions } from "module/main";
-import Loading from "aComponent/Loading";
+import { Loading } from "@component";
 import MainLayout from "./MainLayout";
 import "./index.less";
 
