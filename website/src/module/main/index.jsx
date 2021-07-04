@@ -2,6 +2,7 @@ import {
     Lifecycle, Loading, Module, register, loadingAction, showLoading,
 } from "core";
 import { MainService } from "@api/MainService";
+import { WEB_TOKEN } from "@tools";
 import { message } from "antd";
 import Main from "./component";
 
@@ -31,11 +32,9 @@ class MainModule extends Module {
         await MainService.getUser().then((response) => {
             this.setState({
                 user: response.data,
-                _token: localStorage.getItem("_token"),
+                _token: localStorage.getItem(WEB_TOKEN),
             });
             const { pathname } = this.rootState.router.location;
-            // console.log("pathname", pathname);
-            // console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
             if (pathname === "/login") {
                 this.setHistory("/");
             }
@@ -44,12 +43,10 @@ class MainModule extends Module {
             }
         }).catch((error) => {
             if (error.status === 401) {
-                // console.log("showLoading(this.rootState ", showLoading(this.rootState, "check"));
                 if (showLoading(this.rootState, "check")) {
                     this.dispatch(() => loadingAction(false, "check"));
                 }
                 try {
-
                     // prevPathname 是跳转登录页之前的路径 用于登录成功后跳到之前的页面
                     const { pathname } = this.rootState.router.location;
                     this.setState({ prevPathname: pathname === "/login" ? "/" : pathname });
@@ -72,7 +69,7 @@ class MainModule extends Module {
             name: user.name,
             password: user.password,
         }).then((response) => {
-            localStorage.setItem("_token", response.token);
+            localStorage.setItem(WEB_TOKEN, response.token);
             this.setState({
                 user: response.user,
                 _token: response.token,
@@ -82,6 +79,11 @@ class MainModule extends Module {
             const { pathname } = this.rootState.router.location;
             this.setHistory(pathname === "/login" ? "/" : pathname);
         });
+    }
+
+    logOut() {
+        localStorage.removeItem(WEB_TOKEN);
+        this.setHistory("/login");
     }
 
     toggleCollapseMenu() {

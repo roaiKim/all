@@ -1,5 +1,6 @@
 import axios, { CancelToken } from "axios";
 import { message } from "antd";
+import { WEB_TOKEN } from "@tools";
 import { completePath } from "./config";
 
 const httpRequestMap = new Map();
@@ -119,7 +120,7 @@ export function ajax(method, path, pathParams, request, axiosExtraConfig = {}, c
     const fullUrl = completePath(getURL(path, pathParams));
 
     // bail 用来 判断 当发生错误时 是否自动处理(如弹窗等) authorization
-    const authorization = localStorage.getItem("_token") || "";
+    const authorization = localStorage.getItem(WEB_TOKEN) || "";
     const { headers = {}, ...restConfig } = axiosExtraConfig;
     const config = {
         headers: {

@@ -31,7 +31,8 @@ module.exports = {
         modules: [env.src, "node_modules"],
         alias: {
             "@icon": "@ant-design/icons",
-            "@api": "service/api"
+            "@api": "service/api",
+            "@tools": "tools"
         }
     },
     optimization: {
