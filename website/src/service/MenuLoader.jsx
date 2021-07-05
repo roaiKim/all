@@ -13,7 +13,7 @@ const modulesId = modules.keys().filter((item) => item.startsWith("module"));
 const cacheModules = modulesId.map((id) => ({
     moduleId: id,
     module: modules(id).default,
-}));
+})).filter((item) => !item.module.disabled);
 
 // console.log("cacheRoute", cacheModules);
 const map = [];

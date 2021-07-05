@@ -1,7 +1,6 @@
 
 const http = {
-
-    // dev: "http://119.29.53.45:3200",
+    dev: "http://119.29.53.45",
     test: "",
     uat: "",
     pro: "",
