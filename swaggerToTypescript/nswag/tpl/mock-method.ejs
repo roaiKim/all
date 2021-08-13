@@ -1,0 +1,16 @@
+/* eslint-disable */
+import Mock from 'mockjs'
+
+/**
+ * <%=controller.Description || '无' %>
+ */
+class <%=controller.Name%> {<% controller.Methods.forEach( m => {%>
+<%
+  let mockdata = m.MockData
+%>
+  public <%=m.Name %>(): Mock.MockjsMock {
+    return Mock.mock(<%- JSON.stringify(mockdata) %>)
+  }<% }) %>
+}
+
+export default new <%=controller.Name%>()
