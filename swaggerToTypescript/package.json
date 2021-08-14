@@ -23,6 +23,7 @@
     "js-beautify": "^1.14.0",
     "less": "^4.1.1",
     "less-loader": "^8.1.1",
+    "prettier": "^2.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-sortable-hoc": "^2.0.0",
@@ -39,6 +40,7 @@
     "start": "webpack serve --config ./config/webpack.config.develop.js",
     "build": "webpack --config ./config/webpack.config.product.js",
     "nswag-init": "nswag init",
+    "api": "node t/t.js",
     "nswag-run": "nswag run"
   },
   "devDependencies": {
