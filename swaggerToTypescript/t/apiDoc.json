@@ -1,0 +1,1371 @@
+{
+  "app": {
+    "/app/arriveSendLocal/{id}/{stowageOrderSegmentId}": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "到达提货地",
+        "operationId": "arriveSendLocalUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"},
+          {"name": "stowageOrderSegmentId", "in": "path", "description": "stowageOrderSegmentId", "required": true, "type": "integer", "format": "int32"}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/backLocal/{stowageOrderSegmentId}": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "要求退回",
+        "operationId": "backLocalUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "stowageOrderSegmentId", "in": "path", "description": "stowageOrderSegmentId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/leaveSendLocal/{id}/{stowageOrderSegmentId}": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "离开目的地",
+        "operationId": "leaveReceiptLocalUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"},
+          {"name": "stowageOrderSegmentId", "in": "path", "description": "stowageOrderSegmentId", "required": true, "type": "integer", "format": "int32"}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/order/deliveryScanCode": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "派送扫码获取数据",
+        "operationId": "deliveryScanCodeUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "code", "in": "query", "description": "code", "required": true, "type": "string"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«OrderRouterSegmentPageListVo»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/order/deliverySign": {
+      "post": {
+        "tags": ["移动端接口"],
+        "summary": "派送签收",
+        "operationId": "deliverySignUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "deliverySignDTO", "description": "deliverySignDTO", "required": true, "schema": {"$ref": "#/definitions/DeliverySignDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/order/scanCodePickUp": {
+      "post": {
+        "tags": ["移动端接口"],
+        "summary": "扫码取货",
+        "operationId": "scanCodePickUpUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "codeDTO", "description": "codeDTO", "required": true, "schema": {"$ref": "#/definitions/ScanCodeDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/order/signScanCode": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "签收扫码获取数据",
+        "operationId": "signScanCodeUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "code", "in": "query", "description": "code", "required": true, "type": "string"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«OrderRouterSegmentPageListVo»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/scanStowageNumber": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "扫描二维码进入运单详情",
+        "operationId": "scanStowageNumberUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "stowageNumber", "in": "query", "description": "stowageNumber", "required": true, "type": "string"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Stowage»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/sendCar/deleteVoucher/{attachmentId}": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "删除凭证",
+        "operationId": "deleteVoucherUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "attachmentId", "in": "path", "description": "attachmentId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/sendCar/getAttachmentList/{stowageOrderId}": {
+      "get": {
+        "tags": ["移动端接口"],
+        "summary": "获取凭证列表",
+        "operationId": "getAttachmentListUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "stowageOrderId", "in": "path", "description": "stowageOrderId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«Attachment»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/sendCar/uploadVoucher": {
+      "post": {
+        "tags": ["移动端接口"],
+        "summary": "上传凭证",
+        "operationId": "uploadVoucherUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "appUploadVoucherDTO", "description": "appUploadVoucherDTO", "required": true, "schema": {"$ref": "#/definitions/AppUploadVoucherDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/app/stowage/list": {
+      "post": {
+        "tags": ["移动端接口"],
+        "summary": "配载单列表",
+        "operationId": "stowageListUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageQueryCondition", "description": "stowageQueryCondition", "required": false, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«Stowage»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "attachment": {
+    "/attachment/order/receipt/{id}": {
+      "get": {
+        "tags": ["附件数据接口"],
+        "summary": "订单回单附件",
+        "operationId": "attachmentReceiptUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«Attachment»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/attachment/order/receiver/{id}": {
+      "get": {
+        "tags": ["附件数据接口"],
+        "summary": "订单收货方附件",
+        "operationId": "attachmentReceiverUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«Attachment»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/attachment/order/sender/{id}": {
+      "get": {
+        "tags": ["附件数据接口"],
+        "summary": "订单发货方附件",
+        "operationId": "attachmentSenderUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«Attachment»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/attachment/stowage/voucher/{id}": {
+      "get": {
+        "tags": ["附件数据接口"],
+        "summary": "运单凭证附件",
+        "operationId": "attachmentVoucherUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«Attachment»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "customs": {
+    "/customs/cargoCount/{orderId}": {
+      "get": {
+        "tags": ["报关接口"],
+        "summary": "订单已报关统计",
+        "operationId": "customsCargoCountUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "orderId", "in": "path", "description": "orderId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«OrderCargoCount»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/delete": {
+      "post": {
+        "tags": ["报关接口"],
+        "summary": "删除报关单",
+        "operationId": "deleteUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/download/{orderId}": {
+      "get": {
+        "tags": ["报关接口"],
+        "summary": "打包下载报关单关联的订单附件",
+        "operationId": "batchDownloadUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "orderId", "in": "path", "description": "orderId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/downloadCustomsZip/{id}": {
+      "get": {
+        "tags": ["报关接口"],
+        "summary": "打包下载报关单附件",
+        "operationId": "downloadCustomsZipUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/edit": {
+      "post": {
+        "tags": ["报关接口"],
+        "summary": "创建报关单",
+        "operationId": "editCustomsUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderCustoms", "description": "orderCustoms", "required": true, "schema": {"$ref": "#/definitions/CustomsDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«int»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/getDownloadLog/{id}": {
+      "get": {
+        "tags": ["报关接口"],
+        "summary": "根据报关单",
+        "operationId": "getDownloadLogUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«CustomsDownloadLog»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/getLog/{id}": {
+      "get": {
+        "tags": ["报关接口"],
+        "summary": "查看操作日志",
+        "operationId": "getLogUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«CustomsLog»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/list": {
+      "post": {
+        "tags": ["报关接口"],
+        "summary": "报关单列表",
+        "operationId": "listUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "queryCondition", "description": "queryCondition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«Customs»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/save": {
+      "post": {
+        "tags": ["报关接口"],
+        "summary": "创建报关单",
+        "operationId": "saveCustomsUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderCustoms", "description": "orderCustoms", "required": true, "schema": {"$ref": "#/definitions/CustomsDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«int»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/saveCustomsLog": {
+      "post": {
+        "tags": ["报关接口"],
+        "summary": "保存报关日志",
+        "operationId": "saveCustomsLogUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderCustoms", "description": "orderCustoms", "required": true, "schema": {"$ref": "#/definitions/CustomsLogDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/saveForecastLog": {
+      "post": {
+        "tags": ["报关接口"],
+        "summary": "保存预录报关日志",
+        "operationId": "saveForecastLogUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderCustoms", "description": "orderCustoms", "required": true, "schema": {"$ref": "#/definitions/CustomsLogDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/uploadAttachment": {
+      "post": {
+        "tags": ["报关接口"],
+        "summary": "报关附件上传",
+        "operationId": "uploadAttachmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "id", "in": "query", "description": "id", "required": true, "type": "integer", "format": "int32"},
+          {"in": "body", "name": "attachments", "description": "attachments", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/Attachment"}}}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/customs/{id}": {
+      "get": {
+        "tags": ["报关接口"],
+        "summary": "获取报关单详情",
+        "operationId": "getByIdUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Customs»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "export": {
+    "/export/businessContactForm/{orderId}": {
+      "post": {
+        "tags": ["导出数据接口"],
+        "summary": "导出订单业务联系单",
+        "operationId": "exportBusinessContactFormUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "orderId", "in": "path", "description": "orderId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/export/manifest/{orderId}": {
+      "post": {
+        "tags": ["导出数据接口"],
+        "summary": "导出载货清单",
+        "operationId": "exportManifestUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "orderId", "in": "path", "description": "orderId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/export/orderSegmentBookingNote": {
+      "post": {
+        "tags": ["导出数据接口"],
+        "summary": "导出选择的未生成运单的配载段托运单",
+        "operationId": "exportOrderSegmentBookingNoteUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK"}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/export/orderTicket/{orderId}": {
+      "post": {
+        "tags": ["导出数据接口"],
+        "summary": "导出委托单",
+        "operationId": "exportOrderTicketUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "orderId", "in": "path", "description": "orderId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/export/signatureForm/{orderId}": {
+      "post": {
+        "tags": ["导出数据接口"],
+        "summary": "导出签收单",
+        "operationId": "exportSignatureFormUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "orderId", "in": "path", "description": "orderId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/export/stowageBookingNote/{stowageId}": {
+      "post": {
+        "tags": ["导出数据接口"],
+        "summary": "导出运单托运单",
+        "operationId": "exportStowageBookingNoteUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "stowageId", "in": "path", "description": "stowageId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/export/stowageCarpoolingList/{stowageId}": {
+      "post": {
+        "tags": ["导出数据接口"],
+        "summary": "导出运单拼车表",
+        "operationId": "exportCarpoolingListUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "stowageId", "in": "path", "description": "stowageId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK"}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "order": {
+    "/order/confirm": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "确认订单",
+        "operationId": "confirmUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/confirm/cancel": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "取消确认",
+        "operationId": "confirmCancelUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/confirm/cancel/check": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "取消确认检查",
+        "operationId": "confirmCancelCheckUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/count": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "统计各个状态的订单数",
+        "operationId": "getCountUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "queryCondition", "description": "queryCondition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«OrderCountVO»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/delete": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "删除订单",
+        "operationId": "deleteUsingPOST_2",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/deleteAttachment/{id}": {
+      "get": {
+        "tags": ["订单数据接口"],
+        "summary": "删除附件信息",
+        "operationId": "deleteAttachmentUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/delivery/adjustment": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "派送调整",
+        "operationId": "deliveryAdjustmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "receivers", "description": "receivers", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/OrderReceiver"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«int»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/edit": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "编辑订单",
+        "operationId": "editUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderDTO", "description": "orderDTO", "required": true, "schema": {"$ref": "#/definitions/OrderDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«int»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/editAttachment": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "编辑附件信息",
+        "operationId": "editAttachmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "fileVo", "description": "fileVo", "required": true, "schema": {"$ref": "#/definitions/ReceiptFileVo"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/exportTemplate": {
+      "get": {"tags": ["订单数据接口"], "summary": "导出模板", "operationId": "exportTemplateUsingGET", "produces": ["*/*"], "responses": {"200": {"description": "OK"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}}
+    },
+    "/order/importOrder": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "导入订单",
+        "operationId": "importOrderUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderDTO", "description": "orderDTO", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/ImportOrderDTO"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/list": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "订单列表",
+        "operationId": "listUsingPOST_2",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "queryCondition", "description": "queryCondition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«Order»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/matchQuotation": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "报价匹配",
+        "operationId": "matchQuotationUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderQuotationMatchDTO", "description": "orderQuotationMatchDTO", "required": true, "schema": {"$ref": "#/definitions/OrderQuotationMatchDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«MatchQuotationVO»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/return/list": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "订单回单列表",
+        "operationId": "returnListUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "queryCondition", "description": "queryCondition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«Order»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/save": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "新增订单",
+        "operationId": "saveUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderDTO", "description": "orderDTO", "required": true, "schema": {"$ref": "#/definitions/OrderDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«int»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/sign": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "签收",
+        "operationId": "signUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/sign/cancel": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "取消签收",
+        "operationId": "cancelSignUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/sign/check": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "签收校验",
+        "operationId": "signCheckUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/sign/force": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "强制签收",
+        "operationId": "forceSignUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/stowage/again": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "再配载",
+        "operationId": "stowageAgainUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/stowage/finish": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "完成配载",
+        "operationId": "stowageFinishUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/upload": {
+      "post": {
+        "tags": ["订单数据接口"],
+        "summary": "回单上传",
+        "operationId": "uploadUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "attachments", "description": "attachments", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/Attachment"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/order/{id}": {
+      "get": {
+        "tags": ["订单数据接口"],
+        "summary": "根据ID获取单个订单信息",
+        "operationId": "getByIdUsingGET_1",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Order»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "orderAbnormal": {
+    "/orderAbnormal/add": {
+      "post": {
+        "tags": ["订单异常接口"],
+        "summary": "添加异常",
+        "operationId": "saveUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderAbnormalVO", "description": "orderAbnormalVO", "required": true, "schema": {"$ref": "#/definitions/OrderAbnormalVO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/orderAbnormal/delete": {
+      "post": {
+        "tags": ["订单异常接口"],
+        "summary": "删除异常",
+        "operationId": "deleteUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/orderAbnormal/edit/{id}": {
+      "post": {
+        "tags": ["订单异常接口"],
+        "summary": "处理异常",
+        "operationId": "updateUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"},
+          {"in": "body", "name": "orderAbnormalVO", "description": "orderAbnormalVO", "required": true, "schema": {"$ref": "#/definitions/OrderAbnormalVO"}}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/orderAbnormal/getOne/{id}": {
+      "get": {
+        "tags": ["订单异常接口"],
+        "summary": "获取单个订单异常",
+        "operationId": "getOneUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«OrderAbnormal»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/orderAbnormal/list": {
+      "post": {
+        "tags": ["订单异常接口"],
+        "summary": "列表",
+        "operationId": "listUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "condition", "description": "condition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«OrderAbnormal»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/orderAbnormal/{id}": {
+      "get": {
+        "tags": ["订单异常接口"],
+        "summary": "获取详情",
+        "operationId": "saveUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«OrderAbnormal»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "stowage-router": {
+    "/stowage-router/add": {
+      "post": {
+        "tags": ["配载路由管理API"],
+        "summary": "添加配载路由",
+        "operationId": "addStowageRouterUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageRouter", "description": "stowageRouter", "required": true, "schema": {"$ref": "#/definitions/StowageRouterDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«StowageRouterStationSegmentVo»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage-router/delete": {
+      "post": {
+        "tags": ["配载路由管理API"],
+        "summary": "批量删除配载路由",
+        "operationId": "deleteStowageRouterUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage-router/list": {
+      "post": {
+        "tags": ["配载路由管理API"],
+        "summary": "分页查询配载路由",
+        "operationId": "queryStowageRouterByPageUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageRouterQueryVo", "description": "stowageRouterQueryVo", "required": true, "schema": {"$ref": "#/definitions/StowageRouterQueryVo"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«StowageRouterPageListVo»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage-router/query": {
+      "post": {
+        "tags": ["配载路由管理API"],
+        "summary": "查询某个配载路由全部信息",
+        "operationId": "queryStowageRouterByIdUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "routerId", "in": "query", "description": "routerId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage-router/segment/update": {
+      "post": {
+        "tags": ["配载路由管理API"],
+        "summary": "更新配载路由段信息",
+        "operationId": "updateStowageRouterSegmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageRouterSegmentDTO", "description": "stowageRouterSegmentDTO", "required": true, "schema": {"$ref": "#/definitions/StowageRouterSegmentDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage-router/update": {
+      "post": {
+        "tags": ["配载路由管理API"],
+        "summary": "更新某个配载路由全部信息",
+        "operationId": "updateStowageRouterUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageRouter", "description": "stowageRouter", "required": true, "schema": {"$ref": "#/definitions/StowageRouterDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "stowage": {
+    "/stowage/assigner": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "指派运单调度人",
+        "operationId": "assignerUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageAssignerList", "description": "stowageAssignerList", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/StowageAssignerDTO"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/confirm": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "确认运单",
+        "operationId": "confirmUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/confirm/cancel": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "取消确认运单",
+        "operationId": "cancelConfirmUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/count": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "统计各个状态的运单数",
+        "operationId": "getCountUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "queryCondition", "description": "queryCondition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«StowageCountVO»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/delete": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "删除运单",
+        "operationId": "deleteUsingPOST_4",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/deleteAttachment/{id}": {
+      "get": {
+        "tags": ["运单数据接口"],
+        "summary": "删除附件信息",
+        "operationId": "deleteAttachmentUsingGET_1",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/edit": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "编辑运单",
+        "operationId": "editUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageDTOList", "description": "stowageDTOList", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/StowageDTO"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/freightVolumeAdjustment": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "运量调整",
+        "operationId": "freightVolumeAdjustmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "freightVolumeAdjustmentDTO", "description": "freightVolumeAdjustmentDTO", "required": true, "schema": {"$ref": "#/definitions/FreightVolumeAdjustmentDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/getAttachmentById/{id}": {
+      "get": {
+        "tags": ["运单数据接口"],
+        "summary": "根据派车单ID返回附件信息",
+        "operationId": "getAttachmentByIdUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«Attachment»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/getCreateUser": {
+      "get": {
+        "tags": ["运单数据接口"],
+        "summary": "获取配载单制单人信息",
+        "operationId": "getCreateUsersUsingGET",
+        "produces": ["*/*"],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«Map«string,string»»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/getStowageMapTrace/{id}": {
+      "get": {
+        "tags": ["运单数据接口"],
+        "summary": "运单地图追踪",
+        "operationId": "getStowageMapTraceUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Stowage»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/list": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "运单列表",
+        "operationId": "listUsingPOST_4",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "queryCondition", "description": "queryCondition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«Stowage»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/manifest/query/{stowageId}": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "查询载货清单",
+        "operationId": "queryManifestUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "stowageId", "in": "path", "description": "stowageId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«CarryCargoManifestDTO»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/manifest/save": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "添加载货清单",
+        "operationId": "addManifestUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "carryCargoManifestDTO", "description": "carryCargoManifestDTO", "required": true, "schema": {"$ref": "#/definitions/CarryCargoManifestDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/matchQuotation": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "报价匹配",
+        "operationId": "matchQuotationUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageQuotationMatchDTO", "description": "stowageQuotationMatchDTO", "required": true, "schema": {"$ref": "#/definitions/StowageQuotationMatchDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«MatchQuotationVO»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/modifiedDataOfWaybillList": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "运单列表修改数据",
+        "operationId": "modifiedDataOfWaybillListUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "updateStowageDTO", "description": "updateStowageDTO", "required": true, "schema": {"$ref": "#/definitions/UpdateStowageDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/save": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "新增运单",
+        "operationId": "saveUsingPOST_3",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageDTOList", "description": "stowageDTOList", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/StowageDTO"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«int»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/shipment": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "发运",
+        "operationId": "shipmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/shipment/cancel": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "取消发运",
+        "operationId": "cancelShipmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/sign": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "签收",
+        "operationId": "signUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/sign/cancel": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "取消签收",
+        "operationId": "cancelSignUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/sign/choose": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "选择性签收 signType: 0-正常签收 1-退回签收",
+        "operationId": "chooseSignUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "chooseSignDTOS", "description": "chooseSignDTOS", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/ChooseSignDTO"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/upload": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "回单上传",
+        "operationId": "uploadUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "attachments", "description": "attachments", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/Attachment"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«boolean»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/uploadVoucher": {
+      "post": {
+        "tags": ["运单数据接口"],
+        "summary": "上传凭证",
+        "operationId": "uploadVoucherUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "appUploadVoucherDTO", "description": "appUploadVoucherDTO", "required": true, "schema": {"$ref": "#/definitions/AppUploadVoucherDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowage/{id}": {
+      "get": {
+        "tags": ["运单数据接口"],
+        "summary": "获取运单详情",
+        "operationId": "getByIdUsingGET_2",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Stowage»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "stowageAbnormal": {
+    "/stowageAbnormal/add": {
+      "post": {
+        "tags": ["派车单异常接口"],
+        "summary": "添加异常",
+        "operationId": "saveUsingPOST_2",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageAbnormalVO", "description": "stowageAbnormalVO", "required": true, "schema": {"$ref": "#/definitions/StowageAbnormalVO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageAbnormal/delete": {
+      "post": {
+        "tags": ["派车单异常接口"],
+        "summary": "删除异常",
+        "operationId": "deleteUsingPOST_3",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageAbnormal/edit/{id}": {
+      "post": {
+        "tags": ["派车单异常接口"],
+        "summary": "处理异常",
+        "operationId": "updateUsingPOST_1",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"},
+          {"in": "body", "name": "stowageAbnormalVO", "description": "stowageAbnormalVO", "required": true, "schema": {"$ref": "#/definitions/StowageAbnormalVO"}}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageAbnormal/list": {
+      "post": {
+        "tags": ["派车单异常接口"],
+        "summary": "列表",
+        "operationId": "listUsingPOST_3",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "condition", "description": "condition", "required": true, "schema": {"$ref": "#/definitions/公共分页对象"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«StowageAbnormal»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageAbnormal/{id}": {
+      "get": {
+        "tags": ["派车单异常接口"],
+        "summary": "获取详情",
+        "operationId": "saveUsingGET_1",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«StowageAbnormal»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "stowageCenter": {
+    "/stowageCenter/assign": {
+      "post": {
+        "tags": ["订单路由配载段管理API"],
+        "summary": "任务转派",
+        "operationId": "assignOrderRouterSegmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "assignDTO", "description": "assignDTO", "required": true, "schema": {"$ref": "#/definitions/OrderRouterSegmentAssignDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageCenter/carrier/update": {
+      "post": {
+        "tags": ["订单路由配载段管理API"],
+        "summary": "任务转派",
+        "operationId": "updateOrderRouterSegmentCarrierUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "carrierDTO", "description": "carrierDTO", "required": true, "schema": {"$ref": "#/definitions/OrderRouterSegmentCarrierDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageCenter/customs/{id}": {
+      "get": {
+        "tags": ["订单路由配载段管理API"],
+        "summary": "获取报关该配载段相关配载段",
+        "operationId": "queryCustomsOrderRouterSegmentUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«OrderRouterSegmentPageListVo»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageCenter/list": {
+      "post": {
+        "tags": ["订单路由配载段管理API"],
+        "summary": "分页查询订单路由配载段",
+        "operationId": "queryOrderRouterSegmentByPageUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "orderRouterSegmentQueryVo", "description": "orderRouterSegmentQueryVo", "required": true, "schema": {"$ref": "#/definitions/OrderRouterSegmentQueryVo"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«Page«OrderRouterSegmentPageListVo»»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageCenter/segment/query/{id}": {
+      "post": {
+        "tags": ["订单路由配载段管理API"],
+        "summary": "订单配载拆分查询",
+        "operationId": "queryOrderRouterSegmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«OrderRouterSegmentSplitVo»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageCenter/split/{id}": {
+      "post": {
+        "tags": ["订单路由配载段管理API"],
+        "summary": "订单配载拆分",
+        "operationId": "splitOrderRouterSegmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"},
+          {"in": "body", "name": "splitSegmentDTOs", "description": "splitSegmentDTOs", "required": true, "schema": {"type": "array", "items": {"$ref": "#/definitions/OrderRouterSegmentSplitDTO"}}}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageCenter/transferSplit": {
+      "post": {
+        "tags": ["订单路由配载段管理API"],
+        "summary": "订单中转拆分",
+        "operationId": "transferSplitOrderRouterSegmentUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "transferSplitSegmentDTO", "description": "transferSplitSegmentDTO", "required": true, "schema": {"$ref": "#/definitions/OrderRouterSegmentTransferSplitDTO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "stowageRouteConfig": {
+    "/stowageRouteConfig/delete/{id}": {
+      "post": {
+        "tags": ["运单路由接口"],
+        "summary": "删除运单路由配置",
+        "operationId": "deleteUsingPOST_5",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageRouteConfig/findByStowageId/{stowageId}": {
+      "get": {
+        "tags": ["运单路由接口"],
+        "summary": "findByStowageId",
+        "operationId": "findByStowageIdUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "stowageId", "in": "path", "description": "stowageId", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«StowageRouteConfig»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageRouteConfig/get/{id}": {
+      "get": {
+        "tags": ["运单路由接口"],
+        "summary": "根据ID获取运单路由配置",
+        "operationId": "getUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«StowageRouteConfig»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageRouteConfig/list": {
+      "get": {
+        "tags": ["运单路由接口"],
+        "summary": "获取运单路由配置列表",
+        "operationId": "listUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "orderId", "in": "query", "description": "orderId", "required": false, "type": "integer", "format": "int32"},
+          {"name": "stowageId", "in": "query", "description": "stowageId", "required": false, "type": "integer", "format": "int32"}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«List«StowageRouteConfig»»"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageRouteConfig/save": {
+      "post": {
+        "tags": ["运单路由接口"],
+        "summary": "新增运单路由配置",
+        "operationId": "saveUsingPOST_4",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "stowageRouteConfig", "description": "stowageRouteConfig", "required": true, "schema": {"$ref": "#/definitions/StowageRouteConfig"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«int»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/stowageRouteConfig/update/{id}": {
+      "post": {
+        "tags": ["运单路由接口"],
+        "summary": "修改运单路由配置",
+        "operationId": "updateUsingPOST_2",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"},
+          {"in": "body", "name": "stowageRouteConfig", "description": "stowageRouteConfig", "required": true, "schema": {"$ref": "#/definitions/StowageRouteConfig"}}
+        ],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response«string»"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "waybill": {
+    "/waybill/delete": {
+      "post": {
+        "tags": ["电子运单接口"],
+        "summary": "删除",
+        "operationId": "deleteUsingPOST_6",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "ids", "description": "ids", "required": true, "schema": {"type": "array", "items": {"type": "integer", "format": "int32"}}}],
+        "responses": {"200": {"description": "OK", "schema": {"type": "object"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybill/list": {
+      "post": {
+        "tags": ["电子运单接口"],
+        "summary": "列表",
+        "operationId": "getListUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "queryCondition", "description": "queryCondition", "required": true, "schema": {"$ref": "#/definitions/WaybillQueryCondition"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybill/report/{id}": {
+      "get": {
+        "tags": ["电子运单接口"],
+        "summary": "上报",
+        "operationId": "reportUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybill/save": {
+      "post": {
+        "tags": ["电子运单接口"],
+        "summary": "保存",
+        "operationId": "saveUsingPOST_5",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "waybillVO", "description": "waybillVO", "required": true, "schema": {"$ref": "#/definitions/WaybillVO"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybill/{id}": {
+      "get": {
+        "tags": ["电子运单接口"],
+        "summary": "获取明细",
+        "operationId": "getOneUsingGET_1",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  },
+  "waybillInsurance": {
+    "/waybillInsurance/delete/{id}": {
+      "get": {
+        "tags": ["waybill-insurance-controller"],
+        "summary": "edit",
+        "operationId": "editUsingGET",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybillInsurance/generate/electronicPolicy/{id}": {
+      "post": {
+        "tags": ["waybill-insurance-controller"],
+        "summary": "electronicPolicy",
+        "operationId": "electronicPolicyUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybillInsurance/list": {
+      "post": {
+        "tags": ["waybill-insurance-controller"],
+        "summary": "list",
+        "operationId": "listUsingPOST_5",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "waybillInsuranceQueryCondition", "description": "waybillInsuranceQueryCondition", "required": true, "schema": {"$ref": "#/definitions/WaybillInsuranceQueryCondition"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybillInsurance/save": {
+      "post": {
+        "tags": ["waybill-insurance-controller"],
+        "summary": "save",
+        "operationId": "saveUsingPOST_6",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [{"in": "body", "name": "waybillInsurance", "description": "waybillInsurance", "required": true, "schema": {"$ref": "#/definitions/WaybillInsurance"}}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "201": {"description": "Created"}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    },
+    "/waybillInsurance/{id}": {
+      "get": {
+        "tags": ["waybill-insurance-controller"],
+        "summary": "get",
+        "operationId": "getUsingGET_1",
+        "produces": ["*/*"],
+        "parameters": [{"name": "id", "in": "path", "description": "id", "required": true, "type": "integer", "format": "int32"}],
+        "responses": {"200": {"description": "OK", "schema": {"$ref": "#/definitions/Response"}}, "401": {"description": "Unauthorized"}, "403": {"description": "Forbidden"}, "404": {"description": "Not Found"}}
+      }
+    }
+  }
+}
