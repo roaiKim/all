@@ -40,7 +40,7 @@ function toHump(name) {
 // 格式化函数
 function formatSources() {
     console.info(chalk`{white.bold format generated sources}`);
-    spawn("prettier", ["--config", "t/prettier.json", "--write", `${publicDir}/*.{ts,json}`]);
+    spawn("prettier", ["--config", "t/prettier.json", "--write", `${publicDir}/*.{ts,json,js}`]);
 }
 
 // 基础类型(含object)
