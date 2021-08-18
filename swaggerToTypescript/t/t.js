@@ -3,10 +3,17 @@ const path = require("path");
 const fs = require("fs-extra");
 const chalk = require("chalk");
 const childProcess = require("child_process");
+const axios = require("axios");
+const Agent = require("https").Agent;
+const yargs = require("yargs");
 
+const swggerUrl = [
+    "http://192.168.2.244:4788/order/v2/api-docs",
+    "http://192.168.2.244:4788/order/v2/api-docs"
+];
+
+const apiURL = yargs.argv.url || swggerUrl;
 const publicDir = path.resolve(__dirname, `autoApi`);
-const typePath = path.resolve(__dirname, `${publicDir}/type.ts`);
-const swaggerPath = path.resolve(__dirname, `${publicDir}/swagger-doc.ts`);
 
 // 执行 命令函数
 function spawn(command, arguments) {
@@ -17,7 +24,7 @@ function spawn(command, arguments) {
         process.exit(1);
     }
     if (result.status !== 0) {
-        console.error(`non-zero exit code returned, code=${result.status}, command=${command} ${arguments.join(" ")}`);
+        console.error(`返回非零退出码, code=${result.status}, command=${command} ${arguments.join(" ")}`);
         process.exit(1);
     }
 }
@@ -37,10 +44,53 @@ function toHump(name) {
     });
 }
 
+// 验证 swagger 文档 是否合法
+function validateSwagger(response) {
+    const contentType = response.headers["content-type"];
+    if (!contentType || !contentType.startsWith("application/json")) {
+        return "swagger response contentType 错误"
+    }
+    const api = response.data;
+    if (!api.paths || !api.definitions) {
+        // console.info(chalk`{white.red swagger 文档验证失败}, url={green ${apiURL}}, 地址返回值为=${JSON.stringify(api)}}`);
+        return "swagger response 验证失败"
+    }
+    return false
+}
+
+// 拉取 swagger 文档
+async function fetchSwagger(url) {
+    return new Promise((reolve, reject) => {
+        axios.get(url, {httpsAgent: new Agent({rejectUnauthorized: false})}).then((response) => {
+            console.info(chalk`{white.green swagger 文档拉取成功 }, url={green ${url}}`);
+            const errorValue = validateSwagger(response);
+            if (!errorValue) {
+                reolve({
+                    success: true,
+                    url: url,
+                    data: response.data
+                })
+            } else {
+                reolve({
+                    success: false,
+                    url: url,
+                    data: errorValue
+                })
+            }
+        }).catch((error) => {
+            reolve({
+                success: false,
+                url: url,
+                data: error
+            })
+        })
+    });
+}
+
 // 格式化函数
 function formatSources() {
-    console.info(chalk`{white.bold format generated sources}`);
-    spawn("prettier", ["--config", "t/prettier.json", "--write", `${publicDir}/*.{ts,json,js}`]);
+    console.info(chalk`{white.green 开始格式化...}`);
+    spawn("prettier", ["--config", "t/prettier.json", "--write", `${publicDir}/**/**.{ts,json,js}`]);
 }
 
 // 基础类型(含object)
@@ -50,8 +100,31 @@ function checkType(type) {
     return basicType.includes(type);
 }
 
+// 路径 api 转成对象, 相同路径开头的放入同一个Class中
+function transAPiPath(api) {
+    const map = {};
+    const keyarr = Object.keys(api)//.slice(0, 10);
+    for(let i = 0; i < keyarr.length ; i++) {
+        const key = keyarr[i];
+        const value = api[key];
+        const pathArray = key.split("/").filter(_ => !!_);
+        const serverName = pathArray[0];
+        if (map[serverName]) {
+            map[serverName] = {
+                ...map[serverName],
+                [key]: value
+            }
+        } else {
+            map[serverName] = {
+                [key]: value
+            }
+        }
+    }
+    return map;
+}
+
 // 类型转化映射函数
-function translateType(properties, key, key1) {
+function translateTypes(properties, key, key1) {
     switch (properties.type) {
         case "array":
             if (properties.items && properties.items.$ref) {
@@ -59,7 +132,7 @@ function translateType(properties, key, key1) {
                 return `${value[value.length - 1]}[]`;
             }
             if (properties.items && properties.items.type) {
-                return checkType(properties.items.type) ? properties.items.type : translateType(properties.items, key, key1);
+                return checkType(properties.items.type) ? properties.items.type : translateTypes(properties.items, key, key1);
             }
             console.info(chalk`{red.bold array错误 ${key} ${key1} ${properties.type}}`);
         case "number":
@@ -83,7 +156,7 @@ function translateType(properties, key, key1) {
 }
 
 // 生成 typeScript 文件
-function generateType(definitions) {
+function generateTypes(definitions, dir) {
     const lines = [];
     lines.push(`// 这个文件是 'yarn api' 自动生成的, 谨慎修改; \n`);
     lines.push(`\n`);
@@ -92,6 +165,7 @@ function generateType(definitions) {
         const key = keyarr[i];
         const value = definitions[key];
         if (key.includes("«")) {
+            console.log("含«的类型", key);
             continue;
         }
         lines.push(`export interface ${key} {`);
@@ -99,7 +173,7 @@ function generateType(definitions) {
         if (value.type === "object" && value.properties) {
             for(const [key1, value1] of Object.entries(value.properties)) {
                 // console.log([key1, value1]);
-                lines.push(`${key1}: ${translateType(value1, key, key1)};`);
+                lines.push(`${key1}: ${translateTypes(value1, key, key1)};`);
             }
             lines.push(`}`);
             lines.push(`;`);
@@ -107,46 +181,29 @@ function generateType(definitions) {
             console.log("key", key, value.type);
         }
     }
-    fs.writeFileSync(typePath, lines.join(""), "utf8");
-}
-
-// 路径 api 转成对象, 相同路径开头的放入同一个Class中
-function transPath(api) {
-    const map = {};
-    const keyarr = Object.keys(api)//.slice(0, 10);
-    for(let i = 0; i < keyarr.length ; i++) {
-        const key = keyarr[i];
-        const value = api[key];
-        const pathArray = key.split("/").filter(_ => !!_);
-        const serverName = pathArray[0];
-        if (map[serverName]) {
-            map[serverName] = {
-                ...map[serverName],
-                [key]: value
-            }
-        } else {
-            map[serverName] = {
-                [key]: value
-            }
-        }
-    }
-    generateApi(map)
+    fs.writeFileSync(dir, lines.join(""), "utf8");
 }
 
 // 生成 AJAXService 对象文件
-function generateApi(api) {
-    // 
-    const keyarr = Object.keys(api)//.slice(0, 2);
+function generateService(paths, dir) {
+
+    const api = transAPiPath(paths)
+
+    const keyarr = Object.keys(api) //.slice(0, 2);
+
     for(let i = 0; i < keyarr.length ; i++) {
         const lines = [];
-        lines.push(`import {ajax} from "../core"; \n`);
+        lines.push(`import {ajax} from "../../core"; \n`);
         lines.push(`// 这个文件是 'yarn api' 自动生成的, 谨慎修改; \n`);
         lines.push(`\n`);
+
         const key = keyarr[i]; // 获取的是 最外层的 name
         const value = api[key];
         const className = `${replaceFirstUper(toHump(key))}AJAXService`;
+
         lines.push(`export class ${className} {`);
         lines.push(``);
+
         const paths = Object.keys(value); // 获取的是 path
         paths.forEach((path) => {
             const pathValue = value[path]; // get: {}
@@ -167,21 +224,53 @@ function generateApi(api) {
             });
         });
         lines.push("}");
-        const fileName = `${publicDir}/${className}.ts`;
+        // 清空文件夹
+        const fileName = `${dir}/${className}.ts`;
         fs.writeFileSync(fileName, lines.join(""), "utf8");
     }
 }
 
-function generate() {
-    const { definitions, paths } = doc;
-    // 清空文件夹
-    fs.emptyDirSync(publicDir);
+function generateDoc(response) {
+    const { url, data } = response;
+    // 获取 swagger url 的前缀, 把相同前缀的放入相同文件夹 / 不同的 url 放入不同的文件夹 
+    const dirPrefix = url.match(/(?<=:\d+\/)(\w+)/)[1];
+    // url dir name
+    const urlDirName = replaceFirstUper(toHump(dirPrefix))
+    // 获取 当前 url 下的 目录。 如果没有则新建
+    const dirName = `${publicDir}/${urlDirName}`;
+    if (!fs.pathExistsSync(dirName)) {
+        fs.ensureDirSync(dirName)
+    }
+    // 清空 当前 url 的文件夹
+    fs.emptyDirSync(dirName);
+    // 生成 url 的返回值 的文档
+    fs.writeFileSync(`${publicDir}/${dirPrefix}-swagger.json`, JSON.stringify(data), "utf8");
     // 生成 Type 类型
-    generateType(definitions);
+    generateTypes(data.definitions, `${publicDir}/${dirPrefix}Type.ts`);
     // 生成 API 文档
-    transPath(paths);
-    // 格式化
-    formatSources();
+    generateService(data.paths, dirName);
+}
+
+function generate() {
+    // 如果没有根目录 则新建
+    if (!fs.pathExistsSync(publicDir)) {
+        fs.ensureDirSync(publicDir)
+    }
+    const urls = Array.isArray(apiURL) ? apiURL : [apiURL];
+    const swaggerApis = urls.map(item => fetchSwagger(item));
+
+    Promise.all(swaggerApis).then((responses) => {
+        responses.forEach((response) => {
+            if (response.success) {
+                generateDoc(response)
+            } else {
+                const { data, url } = response;
+                console.info(chalk`{red.bold 文档拉取失败, 错误信息为${data}, url=${url}}`);
+            }
+        })
+        // 格式化
+        formatSources();
+    });
 }
 
 generate();

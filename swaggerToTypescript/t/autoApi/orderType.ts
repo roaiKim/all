@@ -165,6 +165,7 @@ export interface DynamicSortField {
 export interface FreightVolumeAdjustmentDTO {
     id: number;
     totalBillingWeight: number;
+    totalBoardCount: number;
     totalGrossWeight: number;
     totalNetWeight: number;
     totalQuantity: number;
@@ -1170,6 +1171,7 @@ export interface StowageQuotationMatchDTO {
     projectId: number;
     quotationId: number;
     quotationLineId: number;
+    specificationModel: string;
 }
 export interface StowageRouteConfig {
     address: string;
