@@ -6286,6 +6286,9 @@
 				"totalBillingWeight": {
 					"type": "number"
 				},
+				"totalBoardCount": {
+					"type": "number"
+				},
 				"totalGrossWeight": {
 					"type": "number"
 				},
@@ -10830,6 +10833,9 @@
 				"quotationLineId": {
 					"type": "integer",
 					"format": "int32"
+				},
+				"specificationModel": {
+					"type": "string"
 				}
 			},
 			"title": "StowageQuotationMatchDTO"
