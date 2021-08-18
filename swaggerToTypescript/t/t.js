@@ -144,7 +144,7 @@ function translateTypes(properties, key, key1) {
         case "boolean":
             return "boolean";
         case "object":
-            console.info(chalk`{red.bold 本类型为object类型, 请检查确认 ${key} ${key1} ${properties.type}}`);
+            console.info(chalk`{red 本类型为object类型, 请检查确认 ${key} ${key1} ${properties.type}}`);
             return "object";
         default:
             if (!properties.type && properties.$ref) {
