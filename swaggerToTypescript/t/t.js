@@ -162,10 +162,18 @@ function generateTypes(definitions, dir) {
     lines.push(`\n`);
     const keyarr = Object.keys(definitions)// .slice(0, 10);
     for(let i = 0; i < keyarr.length ; i++) {
-        const key = keyarr[i];
+        let key = keyarr[i];
         const value = definitions[key];
         if (key.includes("«")) {
-            console.log("含«的类型", key);
+            if (!key.includes("Map")) {
+                console.log("含«的类型", key, typeof key);
+                console.log("Response«Page«StowageAbnormal»»", "Response«Page«StowageAbnormal»»".replace(/«/g, "<").replace(/»/g, ">"));
+                key = key.replace(/«/g, "<").replace(/»/g, ">");
+            } else {
+                console.log("含«的类型s", key);
+                continue;
+            }
+        } else {
             continue;
         }
         lines.push(`export interface ${key} {`);
