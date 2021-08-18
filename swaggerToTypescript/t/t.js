@@ -166,6 +166,7 @@ function generateTypes(definitions, dir) {
         const value = definitions[key];
         if (key.includes("«")) {
             if (!key.includes("Map")) {
+                // "Response<Page<StowageAbnormal>>".match(/\w+?(?=<.*>)/g)
                 console.log("含«的类型", key, typeof key);
                 console.log("Response«Page«StowageAbnormal»»", "Response«Page«StowageAbnormal»»".replace(/«/g, "<").replace(/»/g, ">"));
                 key = key.replace(/«/g, "<").replace(/»/g, ">");
