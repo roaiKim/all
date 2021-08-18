@@ -8,7 +8,6 @@ const Agent = require("https").Agent;
 const yargs = require("yargs");
 
 const swggerUrl = [
-    "http://192.168.2.244:4788/order/v2/api-docs",
     "http://192.168.2.244:4788/order/v2/api-docs"
 ];
 
