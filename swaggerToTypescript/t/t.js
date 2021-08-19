@@ -130,6 +130,7 @@ function translateTypes(properties, key, key1, typeMap) {
                 const value = properties.items.$ref.split("/");
                 let string = `${value[value.length - 1]}[]`;
                 if (typeMap) {
+                    // 这里针对泛型处理
                     for(const [a, b] of Object.entries(typeMap)) {
                         string = string.replace(a, b);
                     }
@@ -156,6 +157,7 @@ function translateTypes(properties, key, key1, typeMap) {
                 const value = properties.$ref.split("/");
                 let string = `${value[value.length - 1]}`;
                 if (typeMap) {
+                    // 这里针对泛型处理
                     for(const [a, b] of Object.entries(typeMap)) {
                         string = string.replace(a, b);
                     }
@@ -168,6 +170,8 @@ function translateTypes(properties, key, key1, typeMap) {
 
 const genericityType = ["T", "U", "K", "R", "S"]
 
+// 泛型转化 这里不会有泛型嵌套 如 Response<Page<StowageAbnormal>> 会被转化成 Response<T>, 需要在使用时 自动传入 Response<Page<StowageAbnormal>>
+// 因为 Page 本身也是泛型, 
 function translateGenericity(type) {
     // "Response<Page<StowageAbnormal>>".match(/(?<=<)\w+/g)
     let genericity = type.match(/«(.*)»/)[1]; // Page<StowageAbnormal> // replace(/«/g, "<").replace(/»/g, ">");
@@ -194,6 +198,7 @@ function generateTypes(definitions, dir) {
         const value = definitions[key];
         if (key.includes("«")) {
             console.log("含«的类型 --", key);
+            // 类型申明时 不对 Map 和 List 进行转化, 只是使用时转化。List<int> ==> int[]; Map<string, string> ==> {[key: string]: string}
             if (!key.includes("Map") && !key.includes("List")) {
                 const { obj, string } = translateGenericity(key)
                 key = string;
@@ -206,7 +211,9 @@ function generateTypes(definitions, dir) {
             } else {
                 continue;
             }
-        } else {
+        }
+        if (key === "Response") {
+            // 这个单独处理 因为和 Response<T> 冲突
             continue;
         }
         lines.push(`\n export interface ${key} {`);
