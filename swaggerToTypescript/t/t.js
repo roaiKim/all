@@ -123,12 +123,18 @@ function transAPiPath(api) {
 }
 
 // 类型转化映射函数
-function translateTypes(properties, key, key1) {
+function translateTypes(properties, key, key1, typeMap) {
     switch (properties.type) {
         case "array":
             if (properties.items && properties.items.$ref) {
                 const value = properties.items.$ref.split("/");
-                return `${value[value.length - 1]}[]`;
+                let string = `${value[value.length - 1]}[]`;
+                if (typeMap) {
+                    for(const [a, b] of Object.entries(typeMap)) {
+                        string = string.replace(a, b);
+                    }
+                }
+                return string;
             }
             if (properties.items && properties.items.type) {
                 return checkType(properties.items.type) ? properties.items.type : translateTypes(properties.items, key, key1);
@@ -148,10 +154,33 @@ function translateTypes(properties, key, key1) {
         default:
             if (!properties.type && properties.$ref) {
                 const value = properties.$ref.split("/");
-                return `${value[value.length - 1]}`;
+                let string = `${value[value.length - 1]}`;
+                if (typeMap) {
+                    for(const [a, b] of Object.entries(typeMap)) {
+                        string = string.replace(a, b);
+                    }
+                }
+                return string;
             }
             console.info(chalk`{red.bold 未预设的类型 ${key} ${key1} ${properties.type}}`);
     }
+}
+
+const genericityType = ["T", "U", "K", "R", "S"]
+
+function translateGenericity(type) {
+    // "Response<Page<StowageAbnormal>>".match(/(?<=<)\w+/g)
+    let string = type.replace(/«/g, "<").replace(/»/g, ">");
+    const stringArray = string.match(/(?<=<)\w+/g)
+    const obj = {};
+    stringArray.map((item, index) => {
+        obj[item] = genericityType[index];
+        string = string.replace(`${item}`, obj[item])
+    });
+    return {
+        obj,
+        string
+    };
 }
 
 // 生成 typeScript 文件
@@ -160,28 +189,34 @@ function generateTypes(definitions, dir) {
     lines.push(`// 这个文件是 'yarn api' 自动生成的, 谨慎修改; \n`);
     lines.push(`\n`);
     const keyarr = Object.keys(definitions)// .slice(0, 10);
+    const genericityType = {};
     for(let i = 0; i < keyarr.length ; i++) {
         let key = keyarr[i];
+        let typeMap = null;
         const value = definitions[key];
         if (key.includes("«")) {
-            if (!key.includes("Map")) {
-                // "Response<Page<StowageAbnormal>>".match(/\w+?(?=<.*>)/g)
-                console.log("含«的类型", key, typeof key);
-                console.log("Response«Page«StowageAbnormal»»", "Response«Page«StowageAbnormal»»".replace(/«/g, "<").replace(/»/g, ">"));
-                key = key.replace(/«/g, "<").replace(/»/g, ">");
+            console.log("含«的类型 --", key);
+            if (!key.includes("Map") && !key.includes("List")) {
+                const { obj, string } = translateGenericity(key)
+                key = string;
+                typeMap = obj;
+                if (genericityType[key]) {
+                    continue;
+                } else {
+                    genericityType[key] = key;
+                }
             } else {
-                console.log("含«的类型s", key);
                 continue;
             }
         } else {
             continue;
         }
-        lines.push(`export interface ${key} {`);
+        lines.push(`\n export interface ${key} {`);
         lines.push(``);
         if (value.type === "object" && value.properties) {
             for(const [key1, value1] of Object.entries(value.properties)) {
                 // console.log([key1, value1]);
-                lines.push(`${key1}: ${translateTypes(value1, key, key1)};`);
+                lines.push(`${key1}: ${translateTypes(value1, key, key1, typeMap)};`);
             }
             lines.push(`}`);
             lines.push(`;`);
