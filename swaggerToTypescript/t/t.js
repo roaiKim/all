@@ -144,6 +144,7 @@ function translateTypes(properties, key, key1, typeMap) {
         case "number":
         case "integer":
         case "int32":
+        case "int":
             return "number";
         case "string":
             return "string";
@@ -164,7 +165,7 @@ function translateTypes(properties, key, key1, typeMap) {
                 }
                 return string;
             }
-            console.info(chalk`{red.bold 未预设的类型 ${key} ${key1} ${properties.type}}`);
+            key1 && console.info(chalk`{red.bold 未预设的类型 ${key} ${key1} ${properties.type}}`);
     }
 }
 
@@ -232,11 +233,52 @@ function generateTypes(definitions, dir) {
     fs.writeFileSync(dir, lines.join(""), "utf8");
 }
 
+// 返回值 类型
+function generateResponseType(responseSwagger, path) {
+    if (!responseSwagger["200"]) {
+        console.info(chalk`{red.bold ${path} 未预设200的返回值, 请检查}`);
+        return "void";
+    }
+    const response = responseSwagger["200"];
+    if (!response.schema) {
+        return "void";
+    } else {
+        const ref = response.schema.$ref;
+        if (!ref) {
+            return response.schema.type ? translateTypes({ type: response.schema.type }, path) : "void"
+        }
+        const arr = ref.split("/");
+        const _type = `${arr[arr.length - 1]}`; // Response«List«int»»
+        if (_type.match(/«(.*)»/) && _type.match(/«(.*)»/)[1]) {
+            const basicType = _type.match(/«(.*)»/)[1].replace(/«/g, "<").replace(/»/g, ">");
+            // Response«List«Map«string,string»»»
+            if (basicType.includes("Map") && basicType.includes("List")) {
+                const mapString = basicType.match(/List<(.*)>/)[1]; // Map<string,string>
+                const keyValue = mapString.match(/Map<(.*)>/)[1];
+                const keyValueArray = keyValue.split(",");
+                const valueType = keyValueArray[1]
+                const type = `{[key: string]: ${valueType}}[]`
+                return type;
+            } else if (basicType.includes("Map")) {
+
+            } else if (basicType.includes("List")) {
+                const genericityList = basicType.match(/<(.*)>/);
+                if (genericityList && genericityList[1]) {
+                    const finallyType = checkType(genericityList[1]) ? genericityList[1] : (translateTypes({ type: genericityList[1] }, path) || genericityList[1]);// genericityList[1];
+                    return `${finallyType}[]`;
+                }
+                return basicType;
+            }
+            return checkType(basicType) ? basicType : (translateTypes({ type: basicType }, path) || basicType);
+        } else {
+            return _type === "Response" ? "object" : "void";
+        }
+    }
+}
+
 // 生成 AJAXService 对象文件
 function generateService(paths, dir) {
-
     const api = transAPiPath(paths)
-
     const keyarr = Object.keys(api) //.slice(0, 2);
 
     for(let i = 0; i < keyarr.length ; i++) {
@@ -262,8 +304,13 @@ function generateService(paths, dir) {
                 const parameterSignature = "";
                 const pathParams = "{}";
                 const requestBody = "{}";
-                const responseType = "any";
-                lines.push(`// ${pathObject.summary}; \n`);
+                const responseType = generateResponseType(pathObject.responses, path);
+                // lines.push(`// ${pathObject.summary}; \n`);
+                lines.push(`
+                /**
+                * @description ${pathObject.summary}
+                * @returns ${responseType}
+                */\n`);
                 lines.push(`public static ${staticName}(${parameterSignature}): Promise<${responseType}>{`);
                 lines.push(`return ajax("${method.toUpperCase()}", "${path}", ${pathParams}, ${requestBody});`);
                 lines.push("}");

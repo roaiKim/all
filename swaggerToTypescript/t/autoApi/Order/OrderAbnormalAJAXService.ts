@@ -2,33 +2,51 @@ import {ajax} from "../../core";
 // 这个文件是 'yarn api' 自动生成的, 谨慎修改;
 
 export class OrderAbnormalAJAXService {
-    // 添加异常;
-    public static saveUsingPOST(): Promise<any> {
+    /**
+     * @description 添加异常
+     * @returns string
+     */
+    public static saveUsingPOST(): Promise<string> {
         return ajax("POST", "/orderAbnormal/add", {}, {});
     }
 
-    // 删除异常;
-    public static deleteUsingPOST_1(): Promise<any> {
+    /**
+     * @description 删除异常
+     * @returns string
+     */
+    public static deleteUsingPOST_1(): Promise<string> {
         return ajax("POST", "/orderAbnormal/delete", {}, {});
     }
 
-    // 处理异常;
-    public static updateUsingPOST(): Promise<any> {
+    /**
+     * @description 处理异常
+     * @returns string
+     */
+    public static updateUsingPOST(): Promise<string> {
         return ajax("POST", "/orderAbnormal/edit/{id}", {}, {});
     }
 
-    // 获取单个订单异常;
-    public static getOneUsingGET(): Promise<any> {
+    /**
+     * @description 获取单个订单异常
+     * @returns OrderAbnormal
+     */
+    public static getOneUsingGET(): Promise<OrderAbnormal> {
         return ajax("GET", "/orderAbnormal/getOne/{id}", {}, {});
     }
 
-    // 列表;
-    public static listUsingPOST_1(): Promise<any> {
+    /**
+     * @description 列表
+     * @returns Page<OrderAbnormal>
+     */
+    public static listUsingPOST_1(): Promise<Page<OrderAbnormal>> {
         return ajax("POST", "/orderAbnormal/list", {}, {});
     }
 
-    // 获取详情;
-    public static saveUsingGET(): Promise<any> {
+    /**
+     * @description 获取详情
+     * @returns OrderAbnormal
+     */
+    public static saveUsingGET(): Promise<OrderAbnormal> {
         return ajax("GET", "/orderAbnormal/{id}", {}, {});
     }
 }

@@ -2,128 +2,203 @@ import {ajax} from "../../core";
 // 这个文件是 'yarn api' 自动生成的, 谨慎修改;
 
 export class StowageAJAXService {
-    // 指派运单调度人;
-    public static assignerUsingPOST(): Promise<any> {
+    /**
+     * @description 指派运单调度人
+     * @returns boolean
+     */
+    public static assignerUsingPOST(): Promise<boolean> {
         return ajax("POST", "/stowage/assigner", {}, {});
     }
 
-    // 确认运单;
-    public static confirmUsingPOST_1(): Promise<any> {
+    /**
+     * @description 确认运单
+     * @returns boolean
+     */
+    public static confirmUsingPOST_1(): Promise<boolean> {
         return ajax("POST", "/stowage/confirm", {}, {});
     }
 
-    // 取消确认运单;
-    public static cancelConfirmUsingPOST(): Promise<any> {
+    /**
+     * @description 取消确认运单
+     * @returns boolean
+     */
+    public static cancelConfirmUsingPOST(): Promise<boolean> {
         return ajax("POST", "/stowage/confirm/cancel", {}, {});
     }
 
-    // 统计各个状态的运单数;
-    public static getCountUsingPOST_1(): Promise<any> {
+    /**
+     * @description 统计各个状态的运单数
+     * @returns StowageCountVO
+     */
+    public static getCountUsingPOST_1(): Promise<StowageCountVO> {
         return ajax("POST", "/stowage/count", {}, {});
     }
 
-    // 删除运单;
-    public static deleteUsingPOST_4(): Promise<any> {
+    /**
+     * @description 删除运单
+     * @returns boolean
+     */
+    public static deleteUsingPOST_4(): Promise<boolean> {
         return ajax("POST", "/stowage/delete", {}, {});
     }
 
-    // 删除附件信息;
-    public static deleteAttachmentUsingGET_1(): Promise<any> {
+    /**
+     * @description 删除附件信息
+     * @returns string
+     */
+    public static deleteAttachmentUsingGET_1(): Promise<string> {
         return ajax("GET", "/stowage/deleteAttachment/{id}", {}, {});
     }
 
-    // 编辑运单;
-    public static editUsingPOST_1(): Promise<any> {
+    /**
+     * @description 编辑运单
+     * @returns boolean
+     */
+    public static editUsingPOST_1(): Promise<boolean> {
         return ajax("POST", "/stowage/edit", {}, {});
     }
 
-    // 运量调整;
-    public static freightVolumeAdjustmentUsingPOST(): Promise<any> {
+    /**
+     * @description 运量调整
+     * @returns boolean
+     */
+    public static freightVolumeAdjustmentUsingPOST(): Promise<boolean> {
         return ajax("POST", "/stowage/freightVolumeAdjustment", {}, {});
     }
 
-    // 根据派车单ID返回附件信息;
-    public static getAttachmentByIdUsingGET(): Promise<any> {
+    /**
+     * @description 根据派车单ID返回附件信息
+     * @returns Attachment[]
+     */
+    public static getAttachmentByIdUsingGET(): Promise<Attachment[]> {
         return ajax("GET", "/stowage/getAttachmentById/{id}", {}, {});
     }
 
-    // 获取配载单制单人信息;
-    public static getCreateUsersUsingGET(): Promise<any> {
+    /**
+     * @description 获取配载单制单人信息
+     * @returns {[key: string]: string}[]
+     */
+    public static getCreateUsersUsingGET(): Promise<{[key: string]: string}[]> {
         return ajax("GET", "/stowage/getCreateUser", {}, {});
     }
 
-    // 运单地图追踪;
-    public static getStowageMapTraceUsingGET(): Promise<any> {
+    /**
+     * @description 运单地图追踪
+     * @returns Stowage
+     */
+    public static getStowageMapTraceUsingGET(): Promise<Stowage> {
         return ajax("GET", "/stowage/getStowageMapTrace/{id}", {}, {});
     }
 
-    // 运单列表;
-    public static listUsingPOST_4(): Promise<any> {
+    /**
+     * @description 运单列表
+     * @returns Page<Stowage>
+     */
+    public static listUsingPOST_4(): Promise<Page<Stowage>> {
         return ajax("POST", "/stowage/list", {}, {});
     }
 
-    // 查询载货清单;
-    public static queryManifestUsingPOST(): Promise<any> {
+    /**
+     * @description 查询载货清单
+     * @returns CarryCargoManifestDTO
+     */
+    public static queryManifestUsingPOST(): Promise<CarryCargoManifestDTO> {
         return ajax("POST", "/stowage/manifest/query/{stowageId}", {}, {});
     }
 
-    // 添加载货清单;
-    public static addManifestUsingPOST(): Promise<any> {
+    /**
+     * @description 添加载货清单
+     * @returns object
+     */
+    public static addManifestUsingPOST(): Promise<object> {
         return ajax("POST", "/stowage/manifest/save", {}, {});
     }
 
-    // 报价匹配;
-    public static matchQuotationUsingPOST_1(): Promise<any> {
+    /**
+     * @description 报价匹配
+     * @returns MatchQuotationVO
+     */
+    public static matchQuotationUsingPOST_1(): Promise<MatchQuotationVO> {
         return ajax("POST", "/stowage/matchQuotation", {}, {});
     }
 
-    // 运单列表修改数据;
-    public static modifiedDataOfWaybillListUsingPOST(): Promise<any> {
+    /**
+     * @description 运单列表修改数据
+     * @returns string
+     */
+    public static modifiedDataOfWaybillListUsingPOST(): Promise<string> {
         return ajax("POST", "/stowage/modifiedDataOfWaybillList", {}, {});
     }
 
-    // 新增运单;
-    public static saveUsingPOST_3(): Promise<any> {
+    /**
+     * @description 新增运单
+     * @returns number[]
+     */
+    public static saveUsingPOST_3(): Promise<number[]> {
         return ajax("POST", "/stowage/save", {}, {});
     }
 
-    // 发运;
-    public static shipmentUsingPOST(): Promise<any> {
+    /**
+     * @description 发运
+     * @returns boolean
+     */
+    public static shipmentUsingPOST(): Promise<boolean> {
         return ajax("POST", "/stowage/shipment", {}, {});
     }
 
-    // 取消发运;
-    public static cancelShipmentUsingPOST(): Promise<any> {
+    /**
+     * @description 取消发运
+     * @returns boolean
+     */
+    public static cancelShipmentUsingPOST(): Promise<boolean> {
         return ajax("POST", "/stowage/shipment/cancel", {}, {});
     }
 
-    // 签收;
-    public static signUsingPOST_1(): Promise<any> {
+    /**
+     * @description 签收
+     * @returns boolean
+     */
+    public static signUsingPOST_1(): Promise<boolean> {
         return ajax("POST", "/stowage/sign", {}, {});
     }
 
-    // 取消签收;
-    public static cancelSignUsingPOST_1(): Promise<any> {
+    /**
+     * @description 取消签收
+     * @returns boolean
+     */
+    public static cancelSignUsingPOST_1(): Promise<boolean> {
         return ajax("POST", "/stowage/sign/cancel", {}, {});
     }
 
-    // 选择性签收 signType: 0-正常签收 1-退回签收;
-    public static chooseSignUsingPOST(): Promise<any> {
+    /**
+     * @description 选择性签收 signType: 0-正常签收 1-退回签收
+     * @returns boolean
+     */
+    public static chooseSignUsingPOST(): Promise<boolean> {
         return ajax("POST", "/stowage/sign/choose", {}, {});
     }
 
-    // 回单上传;
-    public static uploadUsingPOST_1(): Promise<any> {
+    /**
+     * @description 回单上传
+     * @returns boolean
+     */
+    public static uploadUsingPOST_1(): Promise<boolean> {
         return ajax("POST", "/stowage/upload", {}, {});
     }
 
-    // 上传凭证;
-    public static uploadVoucherUsingPOST_1(): Promise<any> {
+    /**
+     * @description 上传凭证
+     * @returns string
+     */
+    public static uploadVoucherUsingPOST_1(): Promise<string> {
         return ajax("POST", "/stowage/uploadVoucher", {}, {});
     }
 
-    // 获取运单详情;
-    public static getByIdUsingGET_2(): Promise<any> {
+    /**
+     * @description 获取运单详情
+     * @returns Stowage
+     */
+    public static getByIdUsingGET_2(): Promise<Stowage> {
         return ajax("GET", "/stowage/{id}", {}, {});
     }
 }

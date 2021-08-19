@@ -2,118 +2,187 @@ import {ajax} from "../../core";
 // 这个文件是 'yarn api' 自动生成的, 谨慎修改;
 
 export class OrderAJAXService {
-    // 确认订单;
-    public static confirmUsingPOST(): Promise<any> {
+    /**
+     * @description 确认订单
+     * @returns boolean
+     */
+    public static confirmUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/confirm", {}, {});
     }
 
-    // 取消确认;
-    public static confirmCancelUsingPOST(): Promise<any> {
+    /**
+     * @description 取消确认
+     * @returns boolean
+     */
+    public static confirmCancelUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/confirm/cancel", {}, {});
     }
 
-    // 取消确认检查;
-    public static confirmCancelCheckUsingPOST(): Promise<any> {
+    /**
+     * @description 取消确认检查
+     * @returns boolean
+     */
+    public static confirmCancelCheckUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/confirm/cancel/check", {}, {});
     }
 
-    // 统计各个状态的订单数;
-    public static getCountUsingPOST(): Promise<any> {
+    /**
+     * @description 统计各个状态的订单数
+     * @returns OrderCountVO
+     */
+    public static getCountUsingPOST(): Promise<OrderCountVO> {
         return ajax("POST", "/order/count", {}, {});
     }
 
-    // 删除订单;
-    public static deleteUsingPOST_2(): Promise<any> {
+    /**
+     * @description 删除订单
+     * @returns boolean
+     */
+    public static deleteUsingPOST_2(): Promise<boolean> {
         return ajax("POST", "/order/delete", {}, {});
     }
 
-    // 删除附件信息;
-    public static deleteAttachmentUsingGET(): Promise<any> {
+    /**
+     * @description 删除附件信息
+     * @returns string
+     */
+    public static deleteAttachmentUsingGET(): Promise<string> {
         return ajax("GET", "/order/deleteAttachment/{id}", {}, {});
     }
 
-    // 派送调整;
-    public static deliveryAdjustmentUsingPOST(): Promise<any> {
+    /**
+     * @description 派送调整
+     * @returns number
+     */
+    public static deliveryAdjustmentUsingPOST(): Promise<number> {
         return ajax("POST", "/order/delivery/adjustment", {}, {});
     }
 
-    // 编辑订单;
-    public static editUsingPOST(): Promise<any> {
+    /**
+     * @description 编辑订单
+     * @returns number
+     */
+    public static editUsingPOST(): Promise<number> {
         return ajax("POST", "/order/edit", {}, {});
     }
 
-    // 编辑附件信息;
-    public static editAttachmentUsingPOST(): Promise<any> {
+    /**
+     * @description 编辑附件信息
+     * @returns string
+     */
+    public static editAttachmentUsingPOST(): Promise<string> {
         return ajax("POST", "/order/editAttachment", {}, {});
     }
 
-    // 导出模板;
-    public static exportTemplateUsingGET(): Promise<any> {
+    /**
+     * @description 导出模板
+     * @returns void
+     */
+    public static exportTemplateUsingGET(): Promise<void> {
         return ajax("GET", "/order/exportTemplate", {}, {});
     }
 
-    // 导入订单;
-    public static importOrderUsingPOST(): Promise<any> {
+    /**
+     * @description 导入订单
+     * @returns string
+     */
+    public static importOrderUsingPOST(): Promise<string> {
         return ajax("POST", "/order/importOrder", {}, {});
     }
 
-    // 订单列表;
-    public static listUsingPOST_2(): Promise<any> {
+    /**
+     * @description 订单列表
+     * @returns Page<Order>
+     */
+    public static listUsingPOST_2(): Promise<Page<Order>> {
         return ajax("POST", "/order/list", {}, {});
     }
 
-    // 报价匹配;
-    public static matchQuotationUsingPOST(): Promise<any> {
+    /**
+     * @description 报价匹配
+     * @returns MatchQuotationVO
+     */
+    public static matchQuotationUsingPOST(): Promise<MatchQuotationVO> {
         return ajax("POST", "/order/matchQuotation", {}, {});
     }
 
-    // 订单回单列表;
-    public static returnListUsingPOST(): Promise<any> {
+    /**
+     * @description 订单回单列表
+     * @returns Page<Order>
+     */
+    public static returnListUsingPOST(): Promise<Page<Order>> {
         return ajax("POST", "/order/return/list", {}, {});
     }
 
-    // 新增订单;
-    public static saveUsingPOST_1(): Promise<any> {
+    /**
+     * @description 新增订单
+     * @returns number
+     */
+    public static saveUsingPOST_1(): Promise<number> {
         return ajax("POST", "/order/save", {}, {});
     }
 
-    // 签收;
-    public static signUsingPOST(): Promise<any> {
+    /**
+     * @description 签收
+     * @returns boolean
+     */
+    public static signUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/sign", {}, {});
     }
 
-    // 取消签收;
-    public static cancelSignUsingPOST(): Promise<any> {
+    /**
+     * @description 取消签收
+     * @returns boolean
+     */
+    public static cancelSignUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/sign/cancel", {}, {});
     }
 
-    // 签收校验;
-    public static signCheckUsingPOST(): Promise<any> {
+    /**
+     * @description 签收校验
+     * @returns boolean
+     */
+    public static signCheckUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/sign/check", {}, {});
     }
 
-    // 强制签收;
-    public static forceSignUsingPOST(): Promise<any> {
+    /**
+     * @description 强制签收
+     * @returns boolean
+     */
+    public static forceSignUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/sign/force", {}, {});
     }
 
-    // 再配载;
-    public static stowageAgainUsingPOST(): Promise<any> {
+    /**
+     * @description 再配载
+     * @returns boolean
+     */
+    public static stowageAgainUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/stowage/again", {}, {});
     }
 
-    // 完成配载;
-    public static stowageFinishUsingPOST(): Promise<any> {
+    /**
+     * @description 完成配载
+     * @returns boolean
+     */
+    public static stowageFinishUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/stowage/finish", {}, {});
     }
 
-    // 回单上传;
-    public static uploadUsingPOST(): Promise<any> {
+    /**
+     * @description 回单上传
+     * @returns boolean
+     */
+    public static uploadUsingPOST(): Promise<boolean> {
         return ajax("POST", "/order/upload", {}, {});
     }
 
-    // 根据ID获取单个订单信息;
-    public static getByIdUsingGET_1(): Promise<any> {
+    /**
+     * @description 根据ID获取单个订单信息
+     * @returns Order
+     */
+    public static getByIdUsingGET_1(): Promise<Order> {
         return ajax("GET", "/order/{id}", {}, {});
     }
 }
