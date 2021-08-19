@@ -170,13 +170,11 @@ const genericityType = ["T", "U", "K", "R", "S"]
 
 function translateGenericity(type) {
     // "Response<Page<StowageAbnormal>>".match(/(?<=<)\w+/g)
-    let string = type.replace(/«/g, "<").replace(/»/g, ">");
-    const stringArray = string.match(/(?<=<)\w+/g)
+    let genericity = type.match(/«(.*)»/)[1]; // Page<StowageAbnormal> // replace(/«/g, "<").replace(/»/g, ">");
+    // const genericity = string;
     const obj = {};
-    stringArray.map((item, index) => {
-        obj[item] = genericityType[index];
-        string = string.replace(`${item}`, obj[item])
-    });
+    obj[genericity] = genericityType[0];
+    const string = type.replace(genericity, obj[genericity]).replace(/«/g, "<").replace(/»/g, ">");
     return {
         obj,
         string
