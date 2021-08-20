@@ -1,3 +1,4 @@
+import {OrderRouterSegmentPageListVo, Stowage, Attachment, Page} from "../orderType";
 import {ajax} from "../../core";
 // 这个文件是 'yarn api' 自动生成的, 谨慎修改;
 

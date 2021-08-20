@@ -371,6 +371,7 @@ export interface Order {
     serviceItemId: number;
     serviceItemName: string;
     signTime: string;
+    singleNumber: string;
     sixUnionSingleNumber: string;
     source: number;
     specialInstruction: string;
@@ -1563,6 +1564,7 @@ export interface 公共分页对象 {
     pageSize: number;
     projectIds: number;
     resourceVehicleName: string;
+    segmentType: string;
     sixUnionSingleNumber: string;
     source: number;
     startOrderDate: string;

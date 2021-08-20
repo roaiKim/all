@@ -93,7 +93,7 @@ function formatSources() {
 }
 
 // 基础类型(含object)
-const basicType = ["number", "string", "boolean", "object"];
+const basicType = ["number", "string", "boolean", "object", "void"];
 
 function checkType(type) {
     return basicType.includes(type);
@@ -260,7 +260,7 @@ function generateResponseType(responseSwagger, path) {
                 const type = `{[key: string]: ${valueType}}[]`
                 return type;
             } else if (basicType.includes("Map")) {
-
+                console.info(chalk`{red.bold 返回值含有 Map 类型 ${basicType} ${ref}}`);
             } else if (basicType.includes("List")) {
                 const genericityList = basicType.match(/<(.*)>/);
                 if (genericityList && genericityList[1]) {
@@ -276,8 +276,33 @@ function generateResponseType(responseSwagger, path) {
     }
 }
 
+// 返回值 导入
+function requiredTypeTranslate(type) {
+    // 如果是基础类型 则不加入导入序列 // import { type } from "./types"
+    if (checkType(type)) {
+        return null;
+    }
+    //只有字母 /^[a-zA-Z]+?$/.test("Order")
+    if (/^[a-zA-Z]+?$/.test(type)) {
+        return type;
+    }
+    // /^\w+?\[\]$/.test("Order[]")
+    if (/^\w+?\[\]$/.test(type) && !/<.*?>$/.test(type)) {
+        const _type = type.replace("[]", "");
+        return checkType(_type) ? null : _type;
+    }
+    // /<.*?>$/.test("Order<Customer<UI>>")
+    if (/<.*?>$/.test(type)) {
+        const _type = type.match(/(?=<|\b)\w+/g);
+        if (_type) {
+            return _type.filter((item) => !checkType(item));
+        }
+    }
+    return null;
+}
+
 // 生成 AJAXService 对象文件
-function generateService(paths, dir) {
+function generateService(paths, ClassServerDir, typeDir) {
     const api = transAPiPath(paths)
     const keyarr = Object.keys(api) //.slice(0, 2);
 
@@ -295,6 +320,8 @@ function generateService(paths, dir) {
         lines.push(``);
 
         const paths = Object.keys(value); // 获取的是 path
+        const requiredTypes = []; // 需要导入的类型
+
         paths.forEach((path) => {
             const pathValue = value[path]; // get: {}
             const methods = Object.keys(pathValue);
@@ -316,11 +343,21 @@ function generateService(paths, dir) {
                 lines.push("}");
                 lines.push("\n");
                 lines.push("\n");
+                const requiredType = requiredTypeTranslate(responseType);
+                if (requiredType) {
+                    if (Array.isArray(requiredType)) {
+                        // requiredTypes.push(...requiredType)
+                        requiredType.forEach((item) => !requiredTypes.includes(item) && requiredTypes.push(item))
+                    } else {
+                        !requiredTypes.includes(requiredType) && requiredTypes.push(requiredType)
+                    }
+                }
             });
         });
         lines.push("}");
+        if (requiredTypes.length > 0) lines.unshift(`import {${requiredTypes.join(",")}} from "../${typeDir}";`);
         // 清空文件夹
-        const fileName = `${dir}/${className}.ts`;
+        const fileName = `${ClassServerDir}/${className}.ts`;
         fs.writeFileSync(fileName, lines.join(""), "utf8");
     }
 }
@@ -340,10 +377,12 @@ function generateDoc(response) {
     fs.emptyDirSync(dirName);
     // 生成 url 的返回值 的文档
     fs.writeFileSync(`${publicDir}/${dirPrefix}-swagger.json`, JSON.stringify(data), "utf8");
+
+    const typeDir = `${publicDir}/${dirPrefix}Type.ts`
     // 生成 Type 类型
-    generateTypes(data.definitions, `${publicDir}/${dirPrefix}Type.ts`);
+    generateTypes(data.definitions, typeDir);
     // 生成 API 文档
-    generateService(data.paths, dirName);
+    generateService(data.paths, dirName, `${dirPrefix}Type`);
 }
 
 function generate() {
