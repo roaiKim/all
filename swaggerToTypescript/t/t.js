@@ -123,7 +123,7 @@ function transAPiPath(api) {
 }
 
 // 类型转化映射函数
-function translateTypes(properties, key, key1, typeMap) {
+function translateTypes(properties, key, key1, typeMap) { // {"type": "array", "items": {"type": "integer", "format": "int32"}}
     switch (properties.type) {
         case "array":
             if (properties.items && properties.items.$ref) {
@@ -138,7 +138,8 @@ function translateTypes(properties, key, key1, typeMap) {
                 return string;
             }
             if (properties.items && properties.items.type) {
-                return checkType(properties.items.type) ? properties.items.type : translateTypes(properties.items, key, key1);
+                // console.error("properties", key, key1, properties.items);
+                return checkType(properties.items.type) ? `${properties.items.type}[]` : `${translateTypes(properties.items, key, key1)}[]`;
             }
             console.info(chalk`{red.bold array错误 ${key} ${key1} ${properties.type}}`);
         case "number":
@@ -198,7 +199,7 @@ function generateTypes(definitions, dir) {
         let typeMap = null;
         const value = definitions[key];
         if (key.includes("«")) {
-            console.log("含«的类型 --", key);
+            // console.log("含«的类型 --", key);
             // 类型申明时 不对 Map 和 List 进行转化, 只是使用时转化。List<int> ==> int[]; Map<string, string> ==> {[key: string]: string}
             if (!key.includes("Map") && !key.includes("List")) {
                 const { obj, string } = translateGenericity(key)
@@ -301,11 +302,45 @@ function requiredTypeTranslate(type) {
     return null;
 }
 
+function paramTranslate(parameters) {
+    if (!parameters) {
+        return {};
+    }
+    const pathRequest = {};
+    const bodyRequest = {};
+    const queryRequest = {};
+    parameters.forEach((param) => {
+        if (param.in === "path") {
+            pathRequest[param["name"]] = {
+                name: param["name"],
+                required: param["required"],
+                type: translateTypes({ type: param["type"] })
+            };
+        } else if (param.in === "query") {
+            queryRequest[param["name"]] = {
+                name: param["name"],
+                required: param["required"],
+                type: translateTypes({ type: param["type"] })
+            };
+        } else if (param.in === "body") {
+            bodyRequest["name"] = param["name"];
+            bodyRequest["required"] = param["required"];
+            bodyRequest["type"] = translateTypes(param.schema);
+        }
+    })
+    console.log("length", Object.keys(bodyRequest).length)
+    return {
+        pathRequest, bodyRequest, queryRequest
+    }
+}
+
 // 生成 AJAXService 对象文件
 function generateService(paths, ClassServerDir, typeDir) {
     const api = transAPiPath(paths)
     const keyarr = Object.keys(api) //.slice(0, 2);
+    const abc = {
 
+    }
     for(let i = 0; i < keyarr.length ; i++) {
         const lines = [];
         lines.push(`import {ajax} from "../../core"; \n`);
@@ -321,7 +356,9 @@ function generateService(paths, ClassServerDir, typeDir) {
 
         const paths = Object.keys(value); // 获取的是 path
         const requiredTypes = []; // 需要导入的类型
+        abc[className] = {
 
+        }
         paths.forEach((path) => {
             const pathValue = value[path]; // get: {}
             const methods = Object.keys(pathValue);
@@ -331,6 +368,10 @@ function generateService(paths, ClassServerDir, typeDir) {
                 const parameterSignature = "";
                 const pathParams = "{}";
                 const requestBody = "{}";
+                const { pathRequest, bodyRequest, queryRequest } = paramTranslate(pathObject.parameters);
+                abc[className][staticName] = {
+                    pathRequest, bodyRequest, queryRequest
+                }
                 const responseType = generateResponseType(pathObject.responses, path);
                 // lines.push(`// ${pathObject.summary}; \n`);
                 lines.push(`
@@ -360,6 +401,7 @@ function generateService(paths, ClassServerDir, typeDir) {
         const fileName = `${ClassServerDir}/${className}.ts`;
         fs.writeFileSync(fileName, lines.join(""), "utf8");
     }
+    fs.writeFileSync(`${publicDir}/request.json`, JSON.stringify(abc), "utf8");
 }
 
 function generateDoc(response) {

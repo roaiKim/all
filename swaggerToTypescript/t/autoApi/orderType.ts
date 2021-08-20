@@ -154,8 +154,8 @@ export interface DeliverySignDTO {
 }
 export interface DynamicConditionField {
     conditionSymbol: string;
-    fieldValues: object;
-    fields: string;
+    fieldValues: object[];
+    fields: string[];
     linkSymbol: string;
 }
 export interface DynamicSortField {
@@ -663,7 +663,7 @@ export interface OrderRouterSegment {
 }
 export interface OrderRouterSegmentAssignDTO {
     assigners: OrderRouterSegmentAssigner[];
-    ids: number;
+    ids: number[];
     organizations: OrderRouterSegmentOrganization[];
 }
 export interface OrderRouterSegmentAssigner {
@@ -680,7 +680,7 @@ export interface OrderRouterSegmentCarrierDTO {
     businessModelName: string;
     carrier: string;
     carrierId: number;
-    ids: number;
+    ids: number[];
     transportModeId: number;
     transportModeName: string;
 }
@@ -921,7 +921,7 @@ export interface Response<T> {
 export interface ScanCodeDTO {
     driverId: number;
     driverName: string;
-    orderRouterSegmentIds: number;
+    orderRouterSegmentIds: number[];
     resourceVehicleId: number;
     resourceVehicleName: string;
     specificationModel: string;
@@ -1139,7 +1139,7 @@ export interface StowageDTO {
     numberPlateName: string;
     operatorId: number;
     operatorName: string;
-    orderRouterSegmentIds: number;
+    orderRouterSegmentIds: number[];
     otherCarCode: string;
     packageRequirement: string;
     phone: string;
@@ -1175,7 +1175,7 @@ export interface StowageQuotationMatchDTO {
     businessModelName: string;
     carrierId: number;
     departureTime: string;
-    orderRouterSegmentIds: number;
+    orderRouterSegmentIds: number[];
     projectId: number;
     quotationId: number;
     quotationLineId: number;
@@ -1503,7 +1503,7 @@ export interface WaybillVO {
     clientId: number;
     clientName: string;
     consignmentDateTime: string;
-    deleteIds: number;
+    deleteIds: number[];
     driverName: string;
     drivingLicense: string;
     id: number;
@@ -1562,7 +1562,7 @@ export interface 公共分页对象 {
     operatorId: number;
     pageNo: number;
     pageSize: number;
-    projectIds: number;
+    projectIds: number[];
     resourceVehicleName: string;
     segmentType: string;
     sixUnionSingleNumber: string;
