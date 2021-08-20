@@ -370,7 +370,7 @@ function generateService(paths, ClassServerDir, typeDir) {
                 const requestBody = "{}";
                 const { pathRequest, bodyRequest, queryRequest } = paramTranslate(pathObject.parameters);
                 abc[className][staticName] = {
-                    pathRequest, bodyRequest, queryRequest
+                    pathRequest, queryRequest, bodyRequest
                 }
                 const responseType = generateResponseType(pathObject.responses, path);
                 // lines.push(`// ${pathObject.summary}; \n`);
