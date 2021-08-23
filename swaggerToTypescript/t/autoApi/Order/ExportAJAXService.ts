@@ -4,20 +4,20 @@ import {ajax} from "../../core";
 export class ExportAJAXService {
     /**
      * @description 导出订单业务联系单
-     * @param in path{number} orderId
+     * @param in path {number} orderId
      * @returns void
      */
     public static exportBusinessContactFormUsingPOST(orderId: number): Promise<void> {
-        return ajax("POST", "/export/businessContactForm/{orderId}", {}, {});
+        return ajax("POST", `/export/businessContactForm/{orderId}`, {orderId}, {});
     }
 
     /**
      * @description 导出载货清单
-     * @param in path{number} orderId
+     * @param in path {number} orderId
      * @returns void
      */
     public static exportManifestUsingPOST(orderId: number): Promise<void> {
-        return ajax("POST", "/export/manifest/{orderId}", {}, {});
+        return ajax("POST", `/export/manifest/{orderId}`, {orderId}, {});
     }
 
     /**
@@ -26,42 +26,42 @@ export class ExportAJAXService {
      * @returns void
      */
     public static exportOrderSegmentBookingNoteUsingPOST(ids: number[]): Promise<void> {
-        return ajax("POST", "/export/orderSegmentBookingNote", {}, {});
+        return ajax("POST", `/export/orderSegmentBookingNote`, {}, {ids});
     }
 
     /**
      * @description 导出委托单
-     * @param in path{number} orderId
+     * @param in path {number} orderId
      * @returns void
      */
     public static exportOrderTicketUsingPOST(orderId: number): Promise<void> {
-        return ajax("POST", "/export/orderTicket/{orderId}", {}, {});
+        return ajax("POST", `/export/orderTicket/{orderId}`, {orderId}, {});
     }
 
     /**
      * @description 导出签收单
-     * @param in path{number} orderId
+     * @param in path {number} orderId
      * @returns void
      */
     public static exportSignatureFormUsingPOST(orderId: number): Promise<void> {
-        return ajax("POST", "/export/signatureForm/{orderId}", {}, {});
+        return ajax("POST", `/export/signatureForm/{orderId}`, {orderId}, {});
     }
 
     /**
      * @description 导出运单托运单
-     * @param in path{number} stowageId
+     * @param in path {number} stowageId
      * @returns void
      */
     public static exportStowageBookingNoteUsingPOST(stowageId: number): Promise<void> {
-        return ajax("POST", "/export/stowageBookingNote/{stowageId}", {}, {});
+        return ajax("POST", `/export/stowageBookingNote/{stowageId}`, {stowageId}, {});
     }
 
     /**
      * @description 导出运单拼车表
-     * @param in path{number} stowageId
+     * @param in path {number} stowageId
      * @returns void
      */
     public static exportCarpoolingListUsingPOST(stowageId: number): Promise<void> {
-        return ajax("POST", "/export/stowageCarpoolingList/{stowageId}", {}, {});
+        return ajax("POST", `/export/stowageCarpoolingList/{stowageId}`, {stowageId}, {});
     }
 }

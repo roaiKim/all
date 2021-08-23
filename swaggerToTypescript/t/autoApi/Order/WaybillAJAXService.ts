@@ -9,7 +9,7 @@ export class WaybillAJAXService {
      * @returns object
      */
     public static deleteUsingPOST_6(ids: number[]): Promise<object> {
-        return ajax("POST", "/waybill/delete", {}, {});
+        return ajax("POST", `/waybill/delete`, {}, {ids});
     }
 
     /**
@@ -18,16 +18,16 @@ export class WaybillAJAXService {
      * @returns object
      */
     public static getListUsingPOST(queryCondition: WaybillQueryCondition): Promise<object> {
-        return ajax("POST", "/waybill/list", {}, {});
+        return ajax("POST", `/waybill/list`, {}, {queryCondition});
     }
 
     /**
      * @description 上报
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns object
      */
     public static reportUsingGET(id: number): Promise<object> {
-        return ajax("GET", "/waybill/report/{id}", {}, {});
+        return ajax("GET", `/waybill/report/{id}`, {id}, {});
     }
 
     /**
@@ -36,15 +36,15 @@ export class WaybillAJAXService {
      * @returns object
      */
     public static saveUsingPOST_5(waybillVO: WaybillVO): Promise<object> {
-        return ajax("POST", "/waybill/save", {}, {});
+        return ajax("POST", `/waybill/save`, {}, {waybillVO});
     }
 
     /**
      * @description 获取明细
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns object
      */
     public static getOneUsingGET_1(id: number): Promise<object> {
-        return ajax("GET", "/waybill/{id}", {}, {});
+        return ajax("GET", `/waybill/{id}`, {id}, {});
     }
 }

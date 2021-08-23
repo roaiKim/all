@@ -5,20 +5,20 @@ import {ajax} from "../../core";
 export class WaybillInsuranceAJAXService {
     /**
      * @description edit
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns object
      */
     public static editUsingGET(id: number): Promise<object> {
-        return ajax("GET", "/waybillInsurance/delete/{id}", {}, {});
+        return ajax("GET", `/waybillInsurance/delete/{id}`, {id}, {});
     }
 
     /**
      * @description electronicPolicy
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns object
      */
     public static electronicPolicyUsingPOST(id: number): Promise<object> {
-        return ajax("POST", "/waybillInsurance/generate/electronicPolicy/{id}", {}, {});
+        return ajax("POST", `/waybillInsurance/generate/electronicPolicy/{id}`, {id}, {});
     }
 
     /**
@@ -27,7 +27,7 @@ export class WaybillInsuranceAJAXService {
      * @returns object
      */
     public static listUsingPOST_5(waybillInsuranceQueryCondition: WaybillInsuranceQueryCondition): Promise<object> {
-        return ajax("POST", "/waybillInsurance/list", {}, {});
+        return ajax("POST", `/waybillInsurance/list`, {}, {waybillInsuranceQueryCondition});
     }
 
     /**
@@ -36,15 +36,15 @@ export class WaybillInsuranceAJAXService {
      * @returns object
      */
     public static saveUsingPOST_6(waybillInsurance: WaybillInsurance): Promise<object> {
-        return ajax("POST", "/waybillInsurance/save", {}, {});
+        return ajax("POST", `/waybillInsurance/save`, {}, {waybillInsurance});
     }
 
     /**
      * @description get
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns object
      */
     public static getUsingGET_1(id: number): Promise<object> {
-        return ajax("GET", "/waybillInsurance/{id}", {}, {});
+        return ajax("GET", `/waybillInsurance/{id}`, {id}, {});
     }
 }

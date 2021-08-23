@@ -325,7 +325,7 @@ function paramTranslate(parameters) {
             request.push(`${param["name"]}${param["required"] ? "" : "?"}: ${type}`);
         }
     })
-    console.log("pathRequest.length", Object.keys(pathRequest).length)
+    
     return {
         pathRequest, bodyRequest, queryRequest, request
     }
@@ -336,12 +336,9 @@ function paramTranslate(parameters) {
 function generateService(paths, ClassServerDir, typeDir) {
     const api = transAPiPath(paths)
     const keyarr = Object.keys(api) //.slice(0, 2);
-    const abc = {
-
-    }
     for(let i = 0; i < keyarr.length ; i++) {
         const lines = [];
-        lines.push(`import {ajax} from "../../core"; \n`);
+        lines.push(`import {ajax} from "../../core"; \n \n`);
         lines.push(`// 这个文件是 'yarn api' 自动生成的, 谨慎修改; \n`);
         lines.push(`\n`);
 
@@ -352,34 +349,34 @@ function generateService(paths, ClassServerDir, typeDir) {
         lines.push(`export class ${className} {`);
         lines.push(``);
 
-        const paths = Object.keys(value); // 获取的是 path
+        let paths = Object.keys(value); // 获取的是 path
         const requiredTypes = []; // 需要导入的类型
-        abc[className] = {
-
-        }
         paths.forEach((path) => {
             const pathValue = value[path]; // get: {}
             const methods = Object.keys(pathValue);
             methods.forEach((method) => {
                 const pathObject = pathValue[method];
                 const staticName = pathObject.operationId;
-                const pathParams = "{}";
-                const requestBody = "{}";
                 const { request, pathRequest, bodyRequest, queryRequest } = paramTranslate(pathObject.parameters);
-                abc[className][staticName] = { request, pathRequest, bodyRequest, queryRequest };
                 const responseType = generateResponseType(pathObject.responses, path);
-                // lines.push(`// ${pathObject.summary}; \n`);
+                if (queryRequest && Object.keys(queryRequest).length) {
+                    path = path + "?" + Object.keys(queryRequest).map(item => `${item}=\${${item}}`).join("&")
+                }
                 const param = [];
-                pathRequest && Object.keys(pathRequest).map(item => param.push(`\n* @param in path{${pathRequest[item]}} ${item}`));
+                pathRequest && Object.keys(pathRequest).map(item => param.push(`\n* @param in path {${pathRequest[item]}} ${item}`));
                 queryRequest && Object.keys(queryRequest).map(item => param.push(`\n* @param in query {${queryRequest[item]}} ${item}`));
                 bodyRequest && Object.keys(bodyRequest).map(item => param.push(`\n* @param in body {${bodyRequest[item]}} ${item}`));
+
+                const pathParams = pathRequest ? `{${Object.keys(pathRequest).join(",")}}` : "{}";
+                const requestBody = bodyRequest ? `{${Object.keys(bodyRequest).join(",")}}` : "{}";
+                
                 lines.push(`
                 /**
                 * @description ${pathObject.summary} ${param.join("")}
                 * @returns ${responseType}
                 */\n`);
                 lines.push(`public static ${staticName}(${request}): Promise<${responseType}>{`);
-                lines.push(`return ajax("${method.toUpperCase()}", "${path}", ${pathParams}, ${requestBody});`);
+                lines.push(`return ajax("${method.toUpperCase()}", \`${path}\`, ${pathParams}, ${requestBody});`);
                 lines.push("}");
                 lines.push("\n");
                 lines.push("\n");
@@ -411,7 +408,6 @@ function generateService(paths, ClassServerDir, typeDir) {
         const fileName = `${ClassServerDir}/${className}.ts`;
         fs.writeFileSync(fileName, lines.join(""), "utf8");
     }
-    fs.writeFileSync(`${publicDir}/request.json`, JSON.stringify(abc), "utf8");
 }
 
 function generateDoc(response) {

@@ -24,7 +24,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static assignerUsingPOST(stowageAssignerList: StowageAssignerDTO[]): Promise<boolean> {
-        return ajax("POST", "/stowage/assigner", {}, {});
+        return ajax("POST", `/stowage/assigner`, {}, {stowageAssignerList});
     }
 
     /**
@@ -33,7 +33,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static confirmUsingPOST_1(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/stowage/confirm", {}, {});
+        return ajax("POST", `/stowage/confirm`, {}, {ids});
     }
 
     /**
@@ -42,7 +42,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static cancelConfirmUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/stowage/confirm/cancel", {}, {});
+        return ajax("POST", `/stowage/confirm/cancel`, {}, {ids});
     }
 
     /**
@@ -51,7 +51,7 @@ export class StowageAJAXService {
      * @returns StowageCountVO
      */
     public static getCountUsingPOST_1(queryCondition: PublicPagination): Promise<StowageCountVO> {
-        return ajax("POST", "/stowage/count", {}, {});
+        return ajax("POST", `/stowage/count`, {}, {queryCondition});
     }
 
     /**
@@ -60,16 +60,16 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static deleteUsingPOST_4(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/stowage/delete", {}, {});
+        return ajax("POST", `/stowage/delete`, {}, {ids});
     }
 
     /**
      * @description 删除附件信息
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns string
      */
     public static deleteAttachmentUsingGET_1(id: number): Promise<string> {
-        return ajax("GET", "/stowage/deleteAttachment/{id}", {}, {});
+        return ajax("GET", `/stowage/deleteAttachment/{id}`, {id}, {});
     }
 
     /**
@@ -78,7 +78,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static editUsingPOST_1(stowageDTOList: StowageDTO[]): Promise<boolean> {
-        return ajax("POST", "/stowage/edit", {}, {});
+        return ajax("POST", `/stowage/edit`, {}, {stowageDTOList});
     }
 
     /**
@@ -87,16 +87,16 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static freightVolumeAdjustmentUsingPOST(freightVolumeAdjustmentDTO: FreightVolumeAdjustmentDTO): Promise<boolean> {
-        return ajax("POST", "/stowage/freightVolumeAdjustment", {}, {});
+        return ajax("POST", `/stowage/freightVolumeAdjustment`, {}, {freightVolumeAdjustmentDTO});
     }
 
     /**
      * @description 根据派车单ID返回附件信息
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns Attachment[]
      */
     public static getAttachmentByIdUsingGET(id: number): Promise<Attachment[]> {
-        return ajax("GET", "/stowage/getAttachmentById/{id}", {}, {});
+        return ajax("GET", `/stowage/getAttachmentById/{id}`, {id}, {});
     }
 
     /**
@@ -104,16 +104,16 @@ export class StowageAJAXService {
      * @returns {[key: string]: string}[]
      */
     public static getCreateUsersUsingGET(undefined): Promise<{[key: string]: string}[]> {
-        return ajax("GET", "/stowage/getCreateUser", {}, {});
+        return ajax("GET", `/stowage/getCreateUser`, {}, {});
     }
 
     /**
      * @description 运单地图追踪
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns Stowage
      */
     public static getStowageMapTraceUsingGET(id: number): Promise<Stowage> {
-        return ajax("GET", "/stowage/getStowageMapTrace/{id}", {}, {});
+        return ajax("GET", `/stowage/getStowageMapTrace/{id}`, {id}, {});
     }
 
     /**
@@ -122,16 +122,16 @@ export class StowageAJAXService {
      * @returns Page<Stowage>
      */
     public static listUsingPOST_4(queryCondition: PublicPagination): Promise<Page<Stowage>> {
-        return ajax("POST", "/stowage/list", {}, {});
+        return ajax("POST", `/stowage/list`, {}, {queryCondition});
     }
 
     /**
      * @description 查询载货清单
-     * @param in path{number} stowageId
+     * @param in path {number} stowageId
      * @returns CarryCargoManifestDTO
      */
     public static queryManifestUsingPOST(stowageId: number): Promise<CarryCargoManifestDTO> {
-        return ajax("POST", "/stowage/manifest/query/{stowageId}", {}, {});
+        return ajax("POST", `/stowage/manifest/query/{stowageId}`, {stowageId}, {});
     }
 
     /**
@@ -140,7 +140,7 @@ export class StowageAJAXService {
      * @returns object
      */
     public static addManifestUsingPOST(carryCargoManifestDTO: CarryCargoManifestDTO): Promise<object> {
-        return ajax("POST", "/stowage/manifest/save", {}, {});
+        return ajax("POST", `/stowage/manifest/save`, {}, {carryCargoManifestDTO});
     }
 
     /**
@@ -149,7 +149,7 @@ export class StowageAJAXService {
      * @returns MatchQuotationVO
      */
     public static matchQuotationUsingPOST_1(stowageQuotationMatchDTO: StowageQuotationMatchDTO): Promise<MatchQuotationVO> {
-        return ajax("POST", "/stowage/matchQuotation", {}, {});
+        return ajax("POST", `/stowage/matchQuotation`, {}, {stowageQuotationMatchDTO});
     }
 
     /**
@@ -158,7 +158,7 @@ export class StowageAJAXService {
      * @returns string
      */
     public static modifiedDataOfWaybillListUsingPOST(updateStowageDTO: UpdateStowageDTO): Promise<string> {
-        return ajax("POST", "/stowage/modifiedDataOfWaybillList", {}, {});
+        return ajax("POST", `/stowage/modifiedDataOfWaybillList`, {}, {updateStowageDTO});
     }
 
     /**
@@ -167,7 +167,7 @@ export class StowageAJAXService {
      * @returns number[]
      */
     public static saveUsingPOST_3(stowageDTOList: StowageDTO[]): Promise<number[]> {
-        return ajax("POST", "/stowage/save", {}, {});
+        return ajax("POST", `/stowage/save`, {}, {stowageDTOList});
     }
 
     /**
@@ -176,7 +176,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static shipmentUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/stowage/shipment", {}, {});
+        return ajax("POST", `/stowage/shipment`, {}, {ids});
     }
 
     /**
@@ -185,7 +185,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static cancelShipmentUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/stowage/shipment/cancel", {}, {});
+        return ajax("POST", `/stowage/shipment/cancel`, {}, {ids});
     }
 
     /**
@@ -194,7 +194,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static signUsingPOST_1(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/stowage/sign", {}, {});
+        return ajax("POST", `/stowage/sign`, {}, {ids});
     }
 
     /**
@@ -203,7 +203,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static cancelSignUsingPOST_1(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/stowage/sign/cancel", {}, {});
+        return ajax("POST", `/stowage/sign/cancel`, {}, {ids});
     }
 
     /**
@@ -212,7 +212,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static chooseSignUsingPOST(chooseSignDTOS: ChooseSignDTO[]): Promise<boolean> {
-        return ajax("POST", "/stowage/sign/choose", {}, {});
+        return ajax("POST", `/stowage/sign/choose`, {}, {chooseSignDTOS});
     }
 
     /**
@@ -221,7 +221,7 @@ export class StowageAJAXService {
      * @returns boolean
      */
     public static uploadUsingPOST_1(attachments: Attachment[]): Promise<boolean> {
-        return ajax("POST", "/stowage/upload", {}, {});
+        return ajax("POST", `/stowage/upload`, {}, {attachments});
     }
 
     /**
@@ -230,15 +230,15 @@ export class StowageAJAXService {
      * @returns string
      */
     public static uploadVoucherUsingPOST_1(appUploadVoucherDTO: AppUploadVoucherDTO): Promise<string> {
-        return ajax("POST", "/stowage/uploadVoucher", {}, {});
+        return ajax("POST", `/stowage/uploadVoucher`, {}, {appUploadVoucherDTO});
     }
 
     /**
      * @description 获取运单详情
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns Stowage
      */
     public static getByIdUsingGET_2(id: number): Promise<Stowage> {
-        return ajax("GET", "/stowage/{id}", {}, {});
+        return ajax("GET", `/stowage/{id}`, {id}, {});
     }
 }

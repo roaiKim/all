@@ -9,7 +9,7 @@ export class OrderAbnormalAJAXService {
      * @returns string
      */
     public static saveUsingPOST(orderAbnormalVO: OrderAbnormalVO): Promise<string> {
-        return ajax("POST", "/orderAbnormal/add", {}, {});
+        return ajax("POST", `/orderAbnormal/add`, {}, {orderAbnormalVO});
     }
 
     /**
@@ -18,26 +18,26 @@ export class OrderAbnormalAJAXService {
      * @returns string
      */
     public static deleteUsingPOST_1(ids: number[]): Promise<string> {
-        return ajax("POST", "/orderAbnormal/delete", {}, {});
+        return ajax("POST", `/orderAbnormal/delete`, {}, {ids});
     }
 
     /**
      * @description 处理异常
-     * @param in path{number} id
+     * @param in path {number} id
      * @param in body {OrderAbnormalVO} orderAbnormalVO
      * @returns string
      */
     public static updateUsingPOST(id: number, orderAbnormalVO: OrderAbnormalVO): Promise<string> {
-        return ajax("POST", "/orderAbnormal/edit/{id}", {}, {});
+        return ajax("POST", `/orderAbnormal/edit/{id}`, {id}, {orderAbnormalVO});
     }
 
     /**
      * @description 获取单个订单异常
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns OrderAbnormal
      */
     public static getOneUsingGET(id: number): Promise<OrderAbnormal> {
-        return ajax("GET", "/orderAbnormal/getOne/{id}", {}, {});
+        return ajax("GET", `/orderAbnormal/getOne/{id}`, {id}, {});
     }
 
     /**
@@ -46,15 +46,15 @@ export class OrderAbnormalAJAXService {
      * @returns Page<OrderAbnormal>
      */
     public static listUsingPOST_1(condition: PublicPagination): Promise<Page<OrderAbnormal>> {
-        return ajax("POST", "/orderAbnormal/list", {}, {});
+        return ajax("POST", `/orderAbnormal/list`, {}, {condition});
     }
 
     /**
      * @description 获取详情
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns OrderAbnormal
      */
     public static saveUsingGET(id: number): Promise<OrderAbnormal> {
-        return ajax("GET", "/orderAbnormal/{id}", {}, {});
+        return ajax("GET", `/orderAbnormal/{id}`, {id}, {});
     }
 }

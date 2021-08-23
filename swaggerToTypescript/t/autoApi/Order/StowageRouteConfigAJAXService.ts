@@ -5,29 +5,29 @@ import {ajax} from "../../core";
 export class StowageRouteConfigAJAXService {
     /**
      * @description 删除运单路由配置
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns string
      */
     public static deleteUsingPOST_5(id: number): Promise<string> {
-        return ajax("POST", "/stowageRouteConfig/delete/{id}", {}, {});
+        return ajax("POST", `/stowageRouteConfig/delete/{id}`, {id}, {});
     }
 
     /**
      * @description findByStowageId
-     * @param in path{number} stowageId
+     * @param in path {number} stowageId
      * @returns StowageRouteConfig[]
      */
     public static findByStowageIdUsingGET(stowageId: number): Promise<StowageRouteConfig[]> {
-        return ajax("GET", "/stowageRouteConfig/findByStowageId/{stowageId}", {}, {});
+        return ajax("GET", `/stowageRouteConfig/findByStowageId/{stowageId}`, {stowageId}, {});
     }
 
     /**
      * @description 根据ID获取运单路由配置
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns StowageRouteConfig
      */
     public static getUsingGET(id: number): Promise<StowageRouteConfig> {
-        return ajax("GET", "/stowageRouteConfig/get/{id}", {}, {});
+        return ajax("GET", `/stowageRouteConfig/get/{id}`, {id}, {});
     }
 
     /**
@@ -37,7 +37,7 @@ export class StowageRouteConfigAJAXService {
      * @returns StowageRouteConfig[]
      */
     public static listUsingGET(orderId?: number, stowageId?: number): Promise<StowageRouteConfig[]> {
-        return ajax("GET", "/stowageRouteConfig/list", {}, {});
+        return ajax("GET", `/stowageRouteConfig/list?orderId=${orderId}&stowageId=${stowageId}`, {}, {});
     }
 
     /**
@@ -46,16 +46,16 @@ export class StowageRouteConfigAJAXService {
      * @returns number
      */
     public static saveUsingPOST_4(stowageRouteConfig: StowageRouteConfig): Promise<number> {
-        return ajax("POST", "/stowageRouteConfig/save", {}, {});
+        return ajax("POST", `/stowageRouteConfig/save`, {}, {stowageRouteConfig});
     }
 
     /**
      * @description 修改运单路由配置
-     * @param in path{number} id
+     * @param in path {number} id
      * @param in body {StowageRouteConfig} stowageRouteConfig
      * @returns string
      */
     public static updateUsingPOST_2(id: number, stowageRouteConfig: StowageRouteConfig): Promise<string> {
-        return ajax("POST", "/stowageRouteConfig/update/{id}", {}, {});
+        return ajax("POST", `/stowageRouteConfig/update/{id}`, {id}, {stowageRouteConfig});
     }
 }

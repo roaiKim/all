@@ -17,7 +17,7 @@ export class StowageCenterAJAXService {
      * @returns object
      */
     public static assignOrderRouterSegmentUsingPOST(assignDTO: OrderRouterSegmentAssignDTO): Promise<object> {
-        return ajax("POST", "/stowageCenter/assign", {}, {});
+        return ajax("POST", `/stowageCenter/assign`, {}, {assignDTO});
     }
 
     /**
@@ -26,16 +26,16 @@ export class StowageCenterAJAXService {
      * @returns object
      */
     public static updateOrderRouterSegmentCarrierUsingPOST(carrierDTO: OrderRouterSegmentCarrierDTO): Promise<object> {
-        return ajax("POST", "/stowageCenter/carrier/update", {}, {});
+        return ajax("POST", `/stowageCenter/carrier/update`, {}, {carrierDTO});
     }
 
     /**
      * @description 获取报关该配载段相关配载段
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns OrderRouterSegmentPageListVo[]
      */
     public static queryCustomsOrderRouterSegmentUsingGET(id: number): Promise<OrderRouterSegmentPageListVo[]> {
-        return ajax("GET", "/stowageCenter/customs/{id}", {}, {});
+        return ajax("GET", `/stowageCenter/customs/{id}`, {id}, {});
     }
 
     /**
@@ -44,26 +44,26 @@ export class StowageCenterAJAXService {
      * @returns OrderRouterSegmentPageListVo[]
      */
     public static queryOrderRouterSegmentByPageUsingPOST(orderRouterSegmentQueryVo: OrderRouterSegmentQueryVo): Promise<OrderRouterSegmentPageListVo[]> {
-        return ajax("POST", "/stowageCenter/list", {}, {});
+        return ajax("POST", `/stowageCenter/list`, {}, {orderRouterSegmentQueryVo});
     }
 
     /**
      * @description 订单配载拆分查询
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns OrderRouterSegmentSplitVo
      */
     public static queryOrderRouterSegmentUsingPOST(id: number): Promise<OrderRouterSegmentSplitVo> {
-        return ajax("POST", "/stowageCenter/segment/query/{id}", {}, {});
+        return ajax("POST", `/stowageCenter/segment/query/{id}`, {id}, {});
     }
 
     /**
      * @description 订单配载拆分
-     * @param in path{number} id
+     * @param in path {number} id
      * @param in body {OrderRouterSegmentSplitDTO[]} splitSegmentDTOs
      * @returns object
      */
     public static splitOrderRouterSegmentUsingPOST(id: number, splitSegmentDTOs: OrderRouterSegmentSplitDTO[]): Promise<object> {
-        return ajax("POST", "/stowageCenter/split/{id}", {}, {});
+        return ajax("POST", `/stowageCenter/split/{id}`, {id}, {splitSegmentDTOs});
     }
 
     /**
@@ -72,6 +72,6 @@ export class StowageCenterAJAXService {
      * @returns object
      */
     public static transferSplitOrderRouterSegmentUsingPOST(transferSplitSegmentDTO: OrderRouterSegmentTransferSplitDTO): Promise<object> {
-        return ajax("POST", "/stowageCenter/transferSplit", {}, {});
+        return ajax("POST", `/stowageCenter/transferSplit`, {}, {transferSplitSegmentDTO});
     }
 }

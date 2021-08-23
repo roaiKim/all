@@ -9,7 +9,7 @@ export class StowageAbnormalAJAXService {
      * @returns string
      */
     public static saveUsingPOST_2(stowageAbnormalVO: StowageAbnormalVO): Promise<string> {
-        return ajax("POST", "/stowageAbnormal/add", {}, {});
+        return ajax("POST", `/stowageAbnormal/add`, {}, {stowageAbnormalVO});
     }
 
     /**
@@ -18,17 +18,17 @@ export class StowageAbnormalAJAXService {
      * @returns string
      */
     public static deleteUsingPOST_3(ids: number[]): Promise<string> {
-        return ajax("POST", "/stowageAbnormal/delete", {}, {});
+        return ajax("POST", `/stowageAbnormal/delete`, {}, {ids});
     }
 
     /**
      * @description 处理异常
-     * @param in path{number} id
+     * @param in path {number} id
      * @param in body {StowageAbnormalVO} stowageAbnormalVO
      * @returns string
      */
     public static updateUsingPOST_1(id: number, stowageAbnormalVO: StowageAbnormalVO): Promise<string> {
-        return ajax("POST", "/stowageAbnormal/edit/{id}", {}, {});
+        return ajax("POST", `/stowageAbnormal/edit/{id}`, {id}, {stowageAbnormalVO});
     }
 
     /**
@@ -37,15 +37,15 @@ export class StowageAbnormalAJAXService {
      * @returns Page<StowageAbnormal>
      */
     public static listUsingPOST_3(condition: PublicPagination): Promise<Page<StowageAbnormal>> {
-        return ajax("POST", "/stowageAbnormal/list", {}, {});
+        return ajax("POST", `/stowageAbnormal/list`, {}, {condition});
     }
 
     /**
      * @description 获取详情
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns StowageAbnormal
      */
     public static saveUsingGET_1(id: number): Promise<StowageAbnormal> {
-        return ajax("GET", "/stowageAbnormal/{id}", {}, {});
+        return ajax("GET", `/stowageAbnormal/{id}`, {id}, {});
     }
 }

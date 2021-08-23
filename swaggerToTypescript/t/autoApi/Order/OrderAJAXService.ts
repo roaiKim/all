@@ -21,7 +21,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static confirmUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/confirm", {}, {});
+        return ajax("POST", `/order/confirm`, {}, {ids});
     }
 
     /**
@@ -30,7 +30,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static confirmCancelUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/confirm/cancel", {}, {});
+        return ajax("POST", `/order/confirm/cancel`, {}, {ids});
     }
 
     /**
@@ -39,7 +39,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static confirmCancelCheckUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/confirm/cancel/check", {}, {});
+        return ajax("POST", `/order/confirm/cancel/check`, {}, {ids});
     }
 
     /**
@@ -48,7 +48,7 @@ export class OrderAJAXService {
      * @returns OrderCountVO
      */
     public static getCountUsingPOST(queryCondition: PublicPagination): Promise<OrderCountVO> {
-        return ajax("POST", "/order/count", {}, {});
+        return ajax("POST", `/order/count`, {}, {queryCondition});
     }
 
     /**
@@ -57,16 +57,16 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static deleteUsingPOST_2(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/delete", {}, {});
+        return ajax("POST", `/order/delete`, {}, {ids});
     }
 
     /**
      * @description 删除附件信息
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns string
      */
     public static deleteAttachmentUsingGET(id: number): Promise<string> {
-        return ajax("GET", "/order/deleteAttachment/{id}", {}, {});
+        return ajax("GET", `/order/deleteAttachment/{id}`, {id}, {});
     }
 
     /**
@@ -75,7 +75,7 @@ export class OrderAJAXService {
      * @returns number
      */
     public static deliveryAdjustmentUsingPOST(receivers: OrderReceiver[]): Promise<number> {
-        return ajax("POST", "/order/delivery/adjustment", {}, {});
+        return ajax("POST", `/order/delivery/adjustment`, {}, {receivers});
     }
 
     /**
@@ -84,7 +84,7 @@ export class OrderAJAXService {
      * @returns number
      */
     public static editUsingPOST(orderDTO: OrderDTO): Promise<number> {
-        return ajax("POST", "/order/edit", {}, {});
+        return ajax("POST", `/order/edit`, {}, {orderDTO});
     }
 
     /**
@@ -93,7 +93,7 @@ export class OrderAJAXService {
      * @returns string
      */
     public static editAttachmentUsingPOST(fileVo: ReceiptFileVo): Promise<string> {
-        return ajax("POST", "/order/editAttachment", {}, {});
+        return ajax("POST", `/order/editAttachment`, {}, {fileVo});
     }
 
     /**
@@ -101,7 +101,7 @@ export class OrderAJAXService {
      * @returns void
      */
     public static exportTemplateUsingGET(undefined): Promise<void> {
-        return ajax("GET", "/order/exportTemplate", {}, {});
+        return ajax("GET", `/order/exportTemplate`, {}, {});
     }
 
     /**
@@ -110,7 +110,7 @@ export class OrderAJAXService {
      * @returns string
      */
     public static importOrderUsingPOST(orderDTO: ImportOrderDTO[]): Promise<string> {
-        return ajax("POST", "/order/importOrder", {}, {});
+        return ajax("POST", `/order/importOrder`, {}, {orderDTO});
     }
 
     /**
@@ -119,7 +119,7 @@ export class OrderAJAXService {
      * @returns Page<Order>
      */
     public static listUsingPOST_2(queryCondition: PublicPagination): Promise<Page<Order>> {
-        return ajax("POST", "/order/list", {}, {});
+        return ajax("POST", `/order/list`, {}, {queryCondition});
     }
 
     /**
@@ -128,7 +128,7 @@ export class OrderAJAXService {
      * @returns MatchQuotationVO
      */
     public static matchQuotationUsingPOST(orderQuotationMatchDTO: OrderQuotationMatchDTO): Promise<MatchQuotationVO> {
-        return ajax("POST", "/order/matchQuotation", {}, {});
+        return ajax("POST", `/order/matchQuotation`, {}, {orderQuotationMatchDTO});
     }
 
     /**
@@ -137,7 +137,7 @@ export class OrderAJAXService {
      * @returns Page<Order>
      */
     public static returnListUsingPOST(queryCondition: PublicPagination): Promise<Page<Order>> {
-        return ajax("POST", "/order/return/list", {}, {});
+        return ajax("POST", `/order/return/list`, {}, {queryCondition});
     }
 
     /**
@@ -146,7 +146,7 @@ export class OrderAJAXService {
      * @returns number
      */
     public static saveUsingPOST_1(orderDTO: OrderDTO): Promise<number> {
-        return ajax("POST", "/order/save", {}, {});
+        return ajax("POST", `/order/save`, {}, {orderDTO});
     }
 
     /**
@@ -155,7 +155,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static signUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/sign", {}, {});
+        return ajax("POST", `/order/sign`, {}, {ids});
     }
 
     /**
@@ -164,7 +164,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static cancelSignUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/sign/cancel", {}, {});
+        return ajax("POST", `/order/sign/cancel`, {}, {ids});
     }
 
     /**
@@ -173,7 +173,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static signCheckUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/sign/check", {}, {});
+        return ajax("POST", `/order/sign/check`, {}, {ids});
     }
 
     /**
@@ -182,7 +182,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static forceSignUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/sign/force", {}, {});
+        return ajax("POST", `/order/sign/force`, {}, {ids});
     }
 
     /**
@@ -191,7 +191,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static stowageAgainUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/stowage/again", {}, {});
+        return ajax("POST", `/order/stowage/again`, {}, {ids});
     }
 
     /**
@@ -200,7 +200,7 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static stowageFinishUsingPOST(ids: number[]): Promise<boolean> {
-        return ajax("POST", "/order/stowage/finish", {}, {});
+        return ajax("POST", `/order/stowage/finish`, {}, {ids});
     }
 
     /**
@@ -209,15 +209,15 @@ export class OrderAJAXService {
      * @returns boolean
      */
     public static uploadUsingPOST(attachments: Attachment[]): Promise<boolean> {
-        return ajax("POST", "/order/upload", {}, {});
+        return ajax("POST", `/order/upload`, {}, {attachments});
     }
 
     /**
      * @description 根据ID获取单个订单信息
-     * @param in path{number} id
+     * @param in path {number} id
      * @returns Order
      */
     public static getByIdUsingGET_1(id: number): Promise<Order> {
-        return ajax("GET", "/order/{id}", {}, {});
+        return ajax("GET", `/order/{id}`, {id}, {});
     }
 }

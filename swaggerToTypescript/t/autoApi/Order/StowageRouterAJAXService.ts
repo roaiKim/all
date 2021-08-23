@@ -9,7 +9,7 @@ export class StowageRouterAJAXService {
      * @returns StowageRouterStationSegmentVo
      */
     public static addStowageRouterUsingPOST(stowageRouter: StowageRouterDTO): Promise<StowageRouterStationSegmentVo> {
-        return ajax("POST", "/stowage-router/add", {}, {});
+        return ajax("POST", `/stowage-router/add`, {}, {stowageRouter});
     }
 
     /**
@@ -18,7 +18,7 @@ export class StowageRouterAJAXService {
      * @returns object
      */
     public static deleteStowageRouterUsingPOST(ids: number[]): Promise<object> {
-        return ajax("POST", "/stowage-router/delete", {}, {});
+        return ajax("POST", `/stowage-router/delete`, {}, {ids});
     }
 
     /**
@@ -27,7 +27,7 @@ export class StowageRouterAJAXService {
      * @returns StowageRouterPageListVo[]
      */
     public static queryStowageRouterByPageUsingPOST(stowageRouterQueryVo: StowageRouterQueryVo): Promise<StowageRouterPageListVo[]> {
-        return ajax("POST", "/stowage-router/list", {}, {});
+        return ajax("POST", `/stowage-router/list`, {}, {stowageRouterQueryVo});
     }
 
     /**
@@ -36,7 +36,7 @@ export class StowageRouterAJAXService {
      * @returns object
      */
     public static queryStowageRouterByIdUsingPOST(routerId: number): Promise<object> {
-        return ajax("POST", "/stowage-router/query", {}, {});
+        return ajax("POST", `/stowage-router/query?routerId=${routerId}`, {}, {});
     }
 
     /**
@@ -45,7 +45,7 @@ export class StowageRouterAJAXService {
      * @returns object
      */
     public static updateStowageRouterSegmentUsingPOST(stowageRouterSegmentDTO: StowageRouterSegmentDTO): Promise<object> {
-        return ajax("POST", "/stowage-router/segment/update", {}, {});
+        return ajax("POST", `/stowage-router/segment/update`, {}, {stowageRouterSegmentDTO});
     }
 
     /**
@@ -54,6 +54,6 @@ export class StowageRouterAJAXService {
      * @returns object
      */
     public static updateStowageRouterUsingPOST(stowageRouter: StowageRouterDTO): Promise<object> {
-        return ajax("POST", "/stowage-router/update", {}, {});
+        return ajax("POST", `/stowage-router/update`, {}, {stowageRouter});
     }
 }
