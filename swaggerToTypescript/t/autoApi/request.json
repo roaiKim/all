@@ -1,653 +1,367 @@
 {
   "AppAJAXService": {
     "arriveSendLocalUsingGET": {
-      "pathRequest": {
-        "id": {"name": "id", "required": true, "type": "number"},
-        "stowageOrderSegmentId": {"name": "stowageOrderSegmentId", "required": true, "type": "number"}
-      },
-      "queryRequest": {},
-      "bodyRequest": {}
+      "request": ["id: number", "stowageOrderSegmentId: number"],
+      "pathRequest": {"id": "number", "stowageOrderSegmentId": "number"},
+      "bodyRequest": {},
+      "queryRequest": {}
     },
     "backLocalUsingGET": {
-      "pathRequest": {"stowageOrderSegmentId": {"name": "stowageOrderSegmentId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
+      "request": ["stowageOrderSegmentId: number"],
+      "pathRequest": {"stowageOrderSegmentId": "number"},
+      "bodyRequest": {},
+      "queryRequest": {}
     },
     "leaveReceiptLocalUsingGET": {
-      "pathRequest": {
-        "id": {"name": "id", "required": true, "type": "number"},
-        "stowageOrderSegmentId": {"name": "stowageOrderSegmentId", "required": true, "type": "number"}
-      },
-      "queryRequest": {},
-      "bodyRequest": {}
+      "request": ["id: number", "stowageOrderSegmentId: number"],
+      "pathRequest": {"id": "number", "stowageOrderSegmentId": "number"},
+      "bodyRequest": {},
+      "queryRequest": {}
     },
-    "deliveryScanCodeUsingGET": {
-      "pathRequest": {},
-      "queryRequest": {"code": {"name": "code", "required": true, "type": "string"}},
-      "bodyRequest": {}
-    },
+    "deliveryScanCodeUsingGET": {"request": ["code: string"], "pathRequest": {}, "bodyRequest": {}, "queryRequest": {"code": "string"}},
     "deliverySignUsingPOST": {
+      "request": ["deliverySignDTO: DeliverySignDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "deliverySignDTO", "required": true, "type": "DeliverySignDTO"}
+      "bodyRequest": {"deliverySignDTO": "DeliverySignDTO"},
+      "queryRequest": {}
     },
-    "scanCodePickUpUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "codeDTO", "required": true, "type": "ScanCodeDTO"}
-    },
-    "signScanCodeUsingGET": {
-      "pathRequest": {},
-      "queryRequest": {"code": {"name": "code", "required": true, "type": "string"}},
-      "bodyRequest": {}
-    },
-    "scanStowageNumberUsingGET": {
-      "pathRequest": {},
-      "queryRequest": {"stowageNumber": {"name": "stowageNumber", "required": true, "type": "string"}},
-      "bodyRequest": {}
-    },
-    "deleteVoucherUsingGET": {
-      "pathRequest": {"attachmentId": {"name": "attachmentId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "getAttachmentListUsingGET": {
-      "pathRequest": {"stowageOrderId": {"name": "stowageOrderId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "scanCodePickUpUsingPOST": {"request": ["codeDTO: ScanCodeDTO"], "pathRequest": {}, "bodyRequest": {"codeDTO": "ScanCodeDTO"}, "queryRequest": {}},
+    "signScanCodeUsingGET": {"request": ["code: string"], "pathRequest": {}, "bodyRequest": {}, "queryRequest": {"code": "string"}},
+    "scanStowageNumberUsingGET": {"request": ["stowageNumber: string"], "pathRequest": {}, "bodyRequest": {}, "queryRequest": {"stowageNumber": "string"}},
+    "deleteVoucherUsingGET": {"request": ["attachmentId: number"], "pathRequest": {"attachmentId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "getAttachmentListUsingGET": {"request": ["stowageOrderId: number"], "pathRequest": {"stowageOrderId": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "uploadVoucherUsingPOST": {
+      "request": ["appUploadVoucherDTO: AppUploadVoucherDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "appUploadVoucherDTO", "required": true, "type": "AppUploadVoucherDTO"}
+      "bodyRequest": {"appUploadVoucherDTO": "AppUploadVoucherDTO"},
+      "queryRequest": {}
     },
     "stowageListUsingPOST": {
+      "request": ["stowageQueryCondition?: PublicPagination"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageQueryCondition", "required": false, "type": "公共分页对象"}
+      "bodyRequest": {"stowageQueryCondition": "PublicPagination"},
+      "queryRequest": {}
     }
   },
   "AttachmentAJAXService": {
-    "attachmentReceiptUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "attachmentReceiverUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "attachmentSenderUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "attachmentVoucherUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "attachmentReceiptUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "attachmentReceiverUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "attachmentSenderUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "attachmentVoucherUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "CustomsAJAXService": {
-    "customsCargoCountUsingGET": {
-      "pathRequest": {"orderId": {"name": "orderId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "deleteUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "batchDownloadUsingGET": {
-      "pathRequest": {"orderId": {"name": "orderId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "downloadCustomsZipUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "editCustomsUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderCustoms", "required": true, "type": "CustomsDTO"}
-    },
-    "getDownloadLogUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "getLogUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "customsCargoCountUsingGET": {"request": ["orderId: number"], "pathRequest": {"orderId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "deleteUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "batchDownloadUsingGET": {"request": ["orderId: number"], "pathRequest": {"orderId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "downloadCustomsZipUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "editCustomsUsingPOST": {"request": ["orderCustoms: CustomsDTO"], "pathRequest": {}, "bodyRequest": {"orderCustoms": "CustomsDTO"}, "queryRequest": {}},
+    "getDownloadLogUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "getLogUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "listUsingPOST": {
+      "request": ["queryCondition: PublicPagination"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "queryCondition", "required": true, "type": "公共分页对象"}
+      "bodyRequest": {"queryCondition": "PublicPagination"},
+      "queryRequest": {}
     },
-    "saveCustomsUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderCustoms", "required": true, "type": "CustomsDTO"}
-    },
+    "saveCustomsUsingPOST": {"request": ["orderCustoms: CustomsDTO"], "pathRequest": {}, "bodyRequest": {"orderCustoms": "CustomsDTO"}, "queryRequest": {}},
     "saveCustomsLogUsingPOST": {
+      "request": ["orderCustoms: CustomsLogDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderCustoms", "required": true, "type": "CustomsLogDTO"}
+      "bodyRequest": {"orderCustoms": "CustomsLogDTO"},
+      "queryRequest": {}
     },
     "saveForecastLogUsingPOST": {
+      "request": ["orderCustoms: CustomsLogDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderCustoms", "required": true, "type": "CustomsLogDTO"}
+      "bodyRequest": {"orderCustoms": "CustomsLogDTO"},
+      "queryRequest": {}
     },
     "uploadAttachmentUsingPOST": {
+      "request": ["id: number", "attachments: Attachment[]"],
       "pathRequest": {},
-      "queryRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "bodyRequest": {"name": "attachments", "required": true, "type": "Attachment[]"}
+      "bodyRequest": {"attachments": "Attachment[]"},
+      "queryRequest": {"id": "number"}
     },
-    "getByIdUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "getByIdUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "ExportAJAXService": {
-    "exportBusinessContactFormUsingPOST": {
-      "pathRequest": {"orderId": {"name": "orderId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "exportManifestUsingPOST": {
-      "pathRequest": {"orderId": {"name": "orderId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "exportOrderSegmentBookingNoteUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "exportOrderTicketUsingPOST": {
-      "pathRequest": {"orderId": {"name": "orderId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "exportSignatureFormUsingPOST": {
-      "pathRequest": {"orderId": {"name": "orderId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "exportStowageBookingNoteUsingPOST": {
-      "pathRequest": {"stowageId": {"name": "stowageId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "exportCarpoolingListUsingPOST": {
-      "pathRequest": {"stowageId": {"name": "stowageId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "exportBusinessContactFormUsingPOST": {"request": ["orderId: number"], "pathRequest": {"orderId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "exportManifestUsingPOST": {"request": ["orderId: number"], "pathRequest": {"orderId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "exportOrderSegmentBookingNoteUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "exportOrderTicketUsingPOST": {"request": ["orderId: number"], "pathRequest": {"orderId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "exportSignatureFormUsingPOST": {"request": ["orderId: number"], "pathRequest": {"orderId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "exportStowageBookingNoteUsingPOST": {"request": ["stowageId: number"], "pathRequest": {"stowageId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "exportCarpoolingListUsingPOST": {"request": ["stowageId: number"], "pathRequest": {"stowageId": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "OrderAJAXService": {
-    "confirmUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "confirmCancelUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "confirmCancelCheckUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
+    "confirmUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "confirmCancelUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "confirmCancelCheckUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
     "getCountUsingPOST": {
+      "request": ["queryCondition: PublicPagination"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "queryCondition", "required": true, "type": "公共分页对象"}
+      "bodyRequest": {"queryCondition": "PublicPagination"},
+      "queryRequest": {}
     },
-    "deleteUsingPOST_2": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "deleteAttachmentUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "deleteUsingPOST_2": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "deleteAttachmentUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "deliveryAdjustmentUsingPOST": {
+      "request": ["receivers: OrderReceiver[]"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "receivers", "required": true, "type": "OrderReceiver[]"}
+      "bodyRequest": {"receivers": "OrderReceiver[]"},
+      "queryRequest": {}
     },
-    "editUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderDTO", "required": true, "type": "OrderDTO"}
-    },
-    "editAttachmentUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "fileVo", "required": true, "type": "ReceiptFileVo"}
-    },
+    "editUsingPOST": {"request": ["orderDTO: OrderDTO"], "pathRequest": {}, "bodyRequest": {"orderDTO": "OrderDTO"}, "queryRequest": {}},
+    "editAttachmentUsingPOST": {"request": ["fileVo: ReceiptFileVo"], "pathRequest": {}, "bodyRequest": {"fileVo": "ReceiptFileVo"}, "queryRequest": {}},
     "exportTemplateUsingGET": {},
-    "importOrderUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderDTO", "required": true, "type": "ImportOrderDTO[]"}
-    },
+    "importOrderUsingPOST": {"request": ["orderDTO: ImportOrderDTO[]"], "pathRequest": {}, "bodyRequest": {"orderDTO": "ImportOrderDTO[]"}, "queryRequest": {}},
     "listUsingPOST_2": {
+      "request": ["queryCondition: PublicPagination"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "queryCondition", "required": true, "type": "公共分页对象"}
+      "bodyRequest": {"queryCondition": "PublicPagination"},
+      "queryRequest": {}
     },
     "matchQuotationUsingPOST": {
+      "request": ["orderQuotationMatchDTO: OrderQuotationMatchDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderQuotationMatchDTO", "required": true, "type": "OrderQuotationMatchDTO"}
+      "bodyRequest": {"orderQuotationMatchDTO": "OrderQuotationMatchDTO"},
+      "queryRequest": {}
     },
     "returnListUsingPOST": {
+      "request": ["queryCondition: PublicPagination"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "queryCondition", "required": true, "type": "公共分页对象"}
+      "bodyRequest": {"queryCondition": "PublicPagination"},
+      "queryRequest": {}
     },
-    "saveUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderDTO", "required": true, "type": "OrderDTO"}
-    },
-    "signUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "cancelSignUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "signCheckUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "forceSignUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "stowageAgainUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "stowageFinishUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "uploadUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "attachments", "required": true, "type": "Attachment[]"}
-    },
-    "getByIdUsingGET_1": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "saveUsingPOST_1": {"request": ["orderDTO: OrderDTO"], "pathRequest": {}, "bodyRequest": {"orderDTO": "OrderDTO"}, "queryRequest": {}},
+    "signUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "cancelSignUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "signCheckUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "forceSignUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "stowageAgainUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "stowageFinishUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "uploadUsingPOST": {"request": ["attachments: Attachment[]"], "pathRequest": {}, "bodyRequest": {"attachments": "Attachment[]"}, "queryRequest": {}},
+    "getByIdUsingGET_1": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "OrderAbnormalAJAXService": {
     "saveUsingPOST": {
+      "request": ["orderAbnormalVO: OrderAbnormalVO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderAbnormalVO", "required": true, "type": "OrderAbnormalVO"}
+      "bodyRequest": {"orderAbnormalVO": "OrderAbnormalVO"},
+      "queryRequest": {}
     },
-    "deleteUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
+    "deleteUsingPOST_1": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
     "updateUsingPOST": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderAbnormalVO", "required": true, "type": "OrderAbnormalVO"}
+      "request": ["id: number", "orderAbnormalVO: OrderAbnormalVO"],
+      "pathRequest": {"id": "number"},
+      "bodyRequest": {"orderAbnormalVO": "OrderAbnormalVO"},
+      "queryRequest": {}
     },
-    "getOneUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "listUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "condition", "required": true, "type": "公共分页对象"}
-    },
-    "saveUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "getOneUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "listUsingPOST_1": {"request": ["condition: PublicPagination"], "pathRequest": {}, "bodyRequest": {"condition": "PublicPagination"}, "queryRequest": {}},
+    "saveUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "StowageRouterAJAXService": {
     "addStowageRouterUsingPOST": {
+      "request": ["stowageRouter: StowageRouterDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageRouter", "required": true, "type": "StowageRouterDTO"}
+      "bodyRequest": {"stowageRouter": "StowageRouterDTO"},
+      "queryRequest": {}
     },
-    "deleteStowageRouterUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
+    "deleteStowageRouterUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
     "queryStowageRouterByPageUsingPOST": {
+      "request": ["stowageRouterQueryVo: StowageRouterQueryVo"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageRouterQueryVo", "required": true, "type": "StowageRouterQueryVo"}
+      "bodyRequest": {"stowageRouterQueryVo": "StowageRouterQueryVo"},
+      "queryRequest": {}
     },
-    "queryStowageRouterByIdUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {"routerId": {"name": "routerId", "required": true, "type": "number"}},
-      "bodyRequest": {}
-    },
+    "queryStowageRouterByIdUsingPOST": {"request": ["routerId: number"], "pathRequest": {}, "bodyRequest": {}, "queryRequest": {"routerId": "number"}},
     "updateStowageRouterSegmentUsingPOST": {
+      "request": ["stowageRouterSegmentDTO: StowageRouterSegmentDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageRouterSegmentDTO", "required": true, "type": "StowageRouterSegmentDTO"}
+      "bodyRequest": {"stowageRouterSegmentDTO": "StowageRouterSegmentDTO"},
+      "queryRequest": {}
     },
     "updateStowageRouterUsingPOST": {
+      "request": ["stowageRouter: StowageRouterDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageRouter", "required": true, "type": "StowageRouterDTO"}
+      "bodyRequest": {"stowageRouter": "StowageRouterDTO"},
+      "queryRequest": {}
     }
   },
   "StowageAJAXService": {
     "assignerUsingPOST": {
+      "request": ["stowageAssignerList: StowageAssignerDTO[]"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageAssignerList", "required": true, "type": "StowageAssignerDTO[]"}
+      "bodyRequest": {"stowageAssignerList": "StowageAssignerDTO[]"},
+      "queryRequest": {}
     },
-    "confirmUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "cancelConfirmUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
+    "confirmUsingPOST_1": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "cancelConfirmUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
     "getCountUsingPOST_1": {
+      "request": ["queryCondition: PublicPagination"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "queryCondition", "required": true, "type": "公共分页对象"}
+      "bodyRequest": {"queryCondition": "PublicPagination"},
+      "queryRequest": {}
     },
-    "deleteUsingPOST_4": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "deleteAttachmentUsingGET_1": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "editUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageDTOList", "required": true, "type": "StowageDTO[]"}
-    },
+    "deleteUsingPOST_4": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "deleteAttachmentUsingGET_1": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "editUsingPOST_1": {"request": ["stowageDTOList: StowageDTO[]"], "pathRequest": {}, "bodyRequest": {"stowageDTOList": "StowageDTO[]"}, "queryRequest": {}},
     "freightVolumeAdjustmentUsingPOST": {
+      "request": ["freightVolumeAdjustmentDTO: FreightVolumeAdjustmentDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "freightVolumeAdjustmentDTO", "required": true, "type": "FreightVolumeAdjustmentDTO"}
+      "bodyRequest": {"freightVolumeAdjustmentDTO": "FreightVolumeAdjustmentDTO"},
+      "queryRequest": {}
     },
-    "getAttachmentByIdUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "getAttachmentByIdUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "getCreateUsersUsingGET": {},
-    "getStowageMapTraceUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "getStowageMapTraceUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "listUsingPOST_4": {
+      "request": ["queryCondition: PublicPagination"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "queryCondition", "required": true, "type": "公共分页对象"}
+      "bodyRequest": {"queryCondition": "PublicPagination"},
+      "queryRequest": {}
     },
-    "queryManifestUsingPOST": {
-      "pathRequest": {"stowageId": {"name": "stowageId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "queryManifestUsingPOST": {"request": ["stowageId: number"], "pathRequest": {"stowageId": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "addManifestUsingPOST": {
+      "request": ["carryCargoManifestDTO: CarryCargoManifestDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "carryCargoManifestDTO", "required": true, "type": "CarryCargoManifestDTO"}
+      "bodyRequest": {"carryCargoManifestDTO": "CarryCargoManifestDTO"},
+      "queryRequest": {}
     },
     "matchQuotationUsingPOST_1": {
+      "request": ["stowageQuotationMatchDTO: StowageQuotationMatchDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageQuotationMatchDTO", "required": true, "type": "StowageQuotationMatchDTO"}
+      "bodyRequest": {"stowageQuotationMatchDTO": "StowageQuotationMatchDTO"},
+      "queryRequest": {}
     },
     "modifiedDataOfWaybillListUsingPOST": {
+      "request": ["updateStowageDTO: UpdateStowageDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "updateStowageDTO", "required": true, "type": "UpdateStowageDTO"}
+      "bodyRequest": {"updateStowageDTO": "UpdateStowageDTO"},
+      "queryRequest": {}
     },
-    "saveUsingPOST_3": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageDTOList", "required": true, "type": "StowageDTO[]"}
-    },
-    "shipmentUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "cancelShipmentUsingPOST": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "signUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
-    "cancelSignUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
+    "saveUsingPOST_3": {"request": ["stowageDTOList: StowageDTO[]"], "pathRequest": {}, "bodyRequest": {"stowageDTOList": "StowageDTO[]"}, "queryRequest": {}},
+    "shipmentUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "cancelShipmentUsingPOST": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "signUsingPOST_1": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
+    "cancelSignUsingPOST_1": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
     "chooseSignUsingPOST": {
+      "request": ["chooseSignDTOS: ChooseSignDTO[]"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "chooseSignDTOS", "required": true, "type": "ChooseSignDTO[]"}
+      "bodyRequest": {"chooseSignDTOS": "ChooseSignDTO[]"},
+      "queryRequest": {}
     },
-    "uploadUsingPOST_1": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "attachments", "required": true, "type": "Attachment[]"}
-    },
+    "uploadUsingPOST_1": {"request": ["attachments: Attachment[]"], "pathRequest": {}, "bodyRequest": {"attachments": "Attachment[]"}, "queryRequest": {}},
     "uploadVoucherUsingPOST_1": {
+      "request": ["appUploadVoucherDTO: AppUploadVoucherDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "appUploadVoucherDTO", "required": true, "type": "AppUploadVoucherDTO"}
+      "bodyRequest": {"appUploadVoucherDTO": "AppUploadVoucherDTO"},
+      "queryRequest": {}
     },
-    "getByIdUsingGET_2": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "getByIdUsingGET_2": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "StowageAbnormalAJAXService": {
     "saveUsingPOST_2": {
+      "request": ["stowageAbnormalVO: StowageAbnormalVO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageAbnormalVO", "required": true, "type": "StowageAbnormalVO"}
+      "bodyRequest": {"stowageAbnormalVO": "StowageAbnormalVO"},
+      "queryRequest": {}
     },
-    "deleteUsingPOST_3": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
+    "deleteUsingPOST_3": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
     "updateUsingPOST_1": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageAbnormalVO", "required": true, "type": "StowageAbnormalVO"}
+      "request": ["id: number", "stowageAbnormalVO: StowageAbnormalVO"],
+      "pathRequest": {"id": "number"},
+      "bodyRequest": {"stowageAbnormalVO": "StowageAbnormalVO"},
+      "queryRequest": {}
     },
-    "listUsingPOST_3": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "condition", "required": true, "type": "公共分页对象"}
-    },
-    "saveUsingGET_1": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "listUsingPOST_3": {"request": ["condition: PublicPagination"], "pathRequest": {}, "bodyRequest": {"condition": "PublicPagination"}, "queryRequest": {}},
+    "saveUsingGET_1": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "StowageCenterAJAXService": {
     "assignOrderRouterSegmentUsingPOST": {
+      "request": ["assignDTO: OrderRouterSegmentAssignDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "assignDTO", "required": true, "type": "OrderRouterSegmentAssignDTO"}
+      "bodyRequest": {"assignDTO": "OrderRouterSegmentAssignDTO"},
+      "queryRequest": {}
     },
     "updateOrderRouterSegmentCarrierUsingPOST": {
+      "request": ["carrierDTO: OrderRouterSegmentCarrierDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "carrierDTO", "required": true, "type": "OrderRouterSegmentCarrierDTO"}
+      "bodyRequest": {"carrierDTO": "OrderRouterSegmentCarrierDTO"},
+      "queryRequest": {}
     },
-    "queryCustomsOrderRouterSegmentUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "queryCustomsOrderRouterSegmentUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "queryOrderRouterSegmentByPageUsingPOST": {
+      "request": ["orderRouterSegmentQueryVo: OrderRouterSegmentQueryVo"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "orderRouterSegmentQueryVo", "required": true, "type": "OrderRouterSegmentQueryVo"}
+      "bodyRequest": {"orderRouterSegmentQueryVo": "OrderRouterSegmentQueryVo"},
+      "queryRequest": {}
     },
-    "queryOrderRouterSegmentUsingPOST": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "queryOrderRouterSegmentUsingPOST": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "splitOrderRouterSegmentUsingPOST": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {"name": "splitSegmentDTOs", "required": true, "type": "OrderRouterSegmentSplitDTO[]"}
+      "request": ["id: number", "splitSegmentDTOs: OrderRouterSegmentSplitDTO[]"],
+      "pathRequest": {"id": "number"},
+      "bodyRequest": {"splitSegmentDTOs": "OrderRouterSegmentSplitDTO[]"},
+      "queryRequest": {}
     },
     "transferSplitOrderRouterSegmentUsingPOST": {
+      "request": ["transferSplitSegmentDTO: OrderRouterSegmentTransferSplitDTO"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "transferSplitSegmentDTO", "required": true, "type": "OrderRouterSegmentTransferSplitDTO"}
+      "bodyRequest": {"transferSplitSegmentDTO": "OrderRouterSegmentTransferSplitDTO"},
+      "queryRequest": {}
     }
   },
   "StowageRouteConfigAJAXService": {
-    "deleteUsingPOST_5": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "findByStowageIdUsingGET": {
-      "pathRequest": {"stowageId": {"name": "stowageId", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "getUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "deleteUsingPOST_5": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "findByStowageIdUsingGET": {"request": ["stowageId: number"], "pathRequest": {"stowageId": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "getUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "listUsingGET": {
+      "request": ["orderId?: number", "stowageId?: number"],
       "pathRequest": {},
-      "queryRequest": {
-        "orderId": {"name": "orderId", "required": false, "type": "number"},
-        "stowageId": {"name": "stowageId", "required": false, "type": "number"}
-      },
-      "bodyRequest": {}
+      "bodyRequest": {},
+      "queryRequest": {"orderId": "number", "stowageId": "number"}
     },
     "saveUsingPOST_4": {
+      "request": ["stowageRouteConfig: StowageRouteConfig"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageRouteConfig", "required": true, "type": "StowageRouteConfig"}
+      "bodyRequest": {"stowageRouteConfig": "StowageRouteConfig"},
+      "queryRequest": {}
     },
     "updateUsingPOST_2": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {"name": "stowageRouteConfig", "required": true, "type": "StowageRouteConfig"}
+      "request": ["id: number", "stowageRouteConfig: StowageRouteConfig"],
+      "pathRequest": {"id": "number"},
+      "bodyRequest": {"stowageRouteConfig": "StowageRouteConfig"},
+      "queryRequest": {}
     }
   },
   "WaybillAJAXService": {
-    "deleteUsingPOST_6": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "ids", "required": true, "type": "number[]"}
-    },
+    "deleteUsingPOST_6": {"request": ["ids: number[]"], "pathRequest": {}, "bodyRequest": {"ids": "number[]"}, "queryRequest": {}},
     "getListUsingPOST": {
+      "request": ["queryCondition: WaybillQueryCondition"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "queryCondition", "required": true, "type": "WaybillQueryCondition"}
+      "bodyRequest": {"queryCondition": "WaybillQueryCondition"},
+      "queryRequest": {}
     },
-    "reportUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "saveUsingPOST_5": {
-      "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "waybillVO", "required": true, "type": "WaybillVO"}
-    },
-    "getOneUsingGET_1": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "reportUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "saveUsingPOST_5": {"request": ["waybillVO: WaybillVO"], "pathRequest": {}, "bodyRequest": {"waybillVO": "WaybillVO"}, "queryRequest": {}},
+    "getOneUsingGET_1": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   },
   "WaybillInsuranceAJAXService": {
-    "editUsingGET": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
-    "electronicPolicyUsingPOST": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    },
+    "editUsingGET": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
+    "electronicPolicyUsingPOST": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}},
     "listUsingPOST_5": {
+      "request": ["waybillInsuranceQueryCondition: WaybillInsuranceQueryCondition"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {
-        "name": "waybillInsuranceQueryCondition",
-        "required": true,
-        "type": "WaybillInsuranceQueryCondition"
-      }
+      "bodyRequest": {"waybillInsuranceQueryCondition": "WaybillInsuranceQueryCondition"},
+      "queryRequest": {}
     },
     "saveUsingPOST_6": {
+      "request": ["waybillInsurance: WaybillInsurance"],
       "pathRequest": {},
-      "queryRequest": {},
-      "bodyRequest": {"name": "waybillInsurance", "required": true, "type": "WaybillInsurance"}
+      "bodyRequest": {"waybillInsurance": "WaybillInsurance"},
+      "queryRequest": {}
     },
-    "getUsingGET_1": {
-      "pathRequest": {"id": {"name": "id", "required": true, "type": "number"}},
-      "queryRequest": {},
-      "bodyRequest": {}
-    }
+    "getUsingGET_1": {"request": ["id: number"], "pathRequest": {"id": "number"}, "bodyRequest": {}, "queryRequest": {}}
   }
 }

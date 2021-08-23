@@ -309,29 +309,27 @@ function paramTranslate(parameters) {
     const pathRequest = {};
     const bodyRequest = {};
     const queryRequest = {};
+    const request = [];
     parameters.forEach((param) => {
         if (param.in === "path") {
-            pathRequest[param["name"]] = {
-                name: param["name"],
-                required: param["required"],
-                type: translateTypes({ type: param["type"] })
-            };
+            const type = translateTypes({ type: param["type"] });
+            pathRequest[param["name"]] = type;
+            request.push(`${param["name"]}${param["required"] ? "" : "?"}: ${type}`);
         } else if (param.in === "query") {
-            queryRequest[param["name"]] = {
-                name: param["name"],
-                required: param["required"],
-                type: translateTypes({ type: param["type"] })
-            };
+            const type = translateTypes({ type: param["type"] });
+            queryRequest[param["name"]] = type;
+            request.push(`${param["name"]}${param["required"] ? "" : "?"}: ${type}`);
         } else if (param.in === "body") {
-            bodyRequest["name"] = param["name"];
-            bodyRequest["required"] = param["required"];
-            bodyRequest["type"] = translateTypes(param.schema);
+            const type = translateTypes(param.schema);
+            bodyRequest[param["name"]] = type;
+            request.push(`${param["name"]}${param["required"] ? "" : "?"}: ${type}`);
         }
     })
-    console.log("length", Object.keys(bodyRequest).length)
+    console.log("pathRequest.length", Object.keys(pathRequest).length)
     return {
-        pathRequest, bodyRequest, queryRequest
+        pathRequest, bodyRequest, queryRequest, request
     }
+    // return request;
 }
 
 // 生成 AJAXService 对象文件
@@ -365,21 +363,22 @@ function generateService(paths, ClassServerDir, typeDir) {
             methods.forEach((method) => {
                 const pathObject = pathValue[method];
                 const staticName = pathObject.operationId;
-                const parameterSignature = "";
                 const pathParams = "{}";
                 const requestBody = "{}";
-                const { pathRequest, bodyRequest, queryRequest } = paramTranslate(pathObject.parameters);
-                abc[className][staticName] = {
-                    pathRequest, queryRequest, bodyRequest
-                }
+                const { request, pathRequest, bodyRequest, queryRequest } = paramTranslate(pathObject.parameters);
+                abc[className][staticName] = { request, pathRequest, bodyRequest, queryRequest };
                 const responseType = generateResponseType(pathObject.responses, path);
                 // lines.push(`// ${pathObject.summary}; \n`);
+                const param = [];
+                pathRequest && Object.keys(pathRequest).map(item => param.push(`\n* @param in path{${pathRequest[item]}} ${item}`));
+                queryRequest && Object.keys(queryRequest).map(item => param.push(`\n* @param in query {${queryRequest[item]}} ${item}`));
+                bodyRequest && Object.keys(bodyRequest).map(item => param.push(`\n* @param in body {${bodyRequest[item]}} ${item}`));
                 lines.push(`
                 /**
-                * @description ${pathObject.summary}
+                * @description ${pathObject.summary} ${param.join("")}
                 * @returns ${responseType}
                 */\n`);
-                lines.push(`public static ${staticName}(${parameterSignature}): Promise<${responseType}>{`);
+                lines.push(`public static ${staticName}(${request}): Promise<${responseType}>{`);
                 lines.push(`return ajax("${method.toUpperCase()}", "${path}", ${pathParams}, ${requestBody});`);
                 lines.push("}");
                 lines.push("\n");
@@ -387,12 +386,23 @@ function generateService(paths, ClassServerDir, typeDir) {
                 const requiredType = requiredTypeTranslate(responseType);
                 if (requiredType) {
                     if (Array.isArray(requiredType)) {
-                        // requiredTypes.push(...requiredType)
                         requiredType.forEach((item) => !requiredTypes.includes(item) && requiredTypes.push(item))
                     } else {
                         !requiredTypes.includes(requiredType) && requiredTypes.push(requiredType)
                     }
                 }
+                request && request.forEach(item => {
+                    const _item = item.split(/[?:]/);
+                    const type = _item[_item.length - 1];
+                    const imortType = requiredTypeTranslate(type.trim());
+                    if (imortType) {
+                        if (Array.isArray(imortType)) {
+                            imortType.forEach((item) => !requiredTypes.includes(item) && requiredTypes.push(item))
+                        } else {
+                            !requiredTypes.includes(imortType) && requiredTypes.push(imortType)
+                        }
+                    }
+                })
             });
         });
         lines.push("}");
@@ -415,16 +425,18 @@ function generateDoc(response) {
     if (!fs.pathExistsSync(dirName)) {
         fs.ensureDirSync(dirName)
     }
+    // 后台返回类型中有中文, 需要替换掉
+    const request = JSON.parse(JSON.stringify(data).replace(/公共分页对象/g, "PublicPagination"));
     // 清空 当前 url 的文件夹
     fs.emptyDirSync(dirName);
     // 生成 url 的返回值 的文档
-    fs.writeFileSync(`${publicDir}/${dirPrefix}-swagger.json`, JSON.stringify(data), "utf8");
+    fs.writeFileSync(`${publicDir}/${dirPrefix}-swagger.json`, JSON.stringify(request), "utf8");
 
     const typeDir = `${publicDir}/${dirPrefix}Type.ts`
     // 生成 Type 类型
-    generateTypes(data.definitions, typeDir);
+    generateTypes(request.definitions, typeDir);
     // 生成 API 文档
-    generateService(data.paths, dirName, `${dirPrefix}Type`);
+    generateService(request.paths, dirName, `${dirPrefix}Type`);
 }
 
 function generate() {

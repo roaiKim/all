@@ -1547,7 +1547,7 @@ export interface WaybillVO {
     vehiclePlateColorName: string;
     waybillGoodsInfoList: WaybillGoodsInfo[];
 }
-export interface 公共分页对象 {
+export interface PublicPagination {
     businessModelName: string;
     carrierId: number;
     driver: string;

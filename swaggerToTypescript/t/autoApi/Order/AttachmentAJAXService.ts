@@ -5,33 +5,37 @@ import {ajax} from "../../core";
 export class AttachmentAJAXService {
     /**
      * @description 订单回单附件
+     * @param in path{number} id
      * @returns Attachment[]
      */
-    public static attachmentReceiptUsingGET(): Promise<Attachment[]> {
+    public static attachmentReceiptUsingGET(id: number): Promise<Attachment[]> {
         return ajax("GET", "/attachment/order/receipt/{id}", {}, {});
     }
 
     /**
      * @description 订单收货方附件
+     * @param in path{number} id
      * @returns Attachment[]
      */
-    public static attachmentReceiverUsingGET(): Promise<Attachment[]> {
+    public static attachmentReceiverUsingGET(id: number): Promise<Attachment[]> {
         return ajax("GET", "/attachment/order/receiver/{id}", {}, {});
     }
 
     /**
      * @description 订单发货方附件
+     * @param in path{number} id
      * @returns Attachment[]
      */
-    public static attachmentSenderUsingGET(): Promise<Attachment[]> {
+    public static attachmentSenderUsingGET(id: number): Promise<Attachment[]> {
         return ajax("GET", "/attachment/order/sender/{id}", {}, {});
     }
 
     /**
      * @description 运单凭证附件
+     * @param in path{number} id
      * @returns Attachment[]
      */
-    public static attachmentVoucherUsingGET(): Promise<Attachment[]> {
+    public static attachmentVoucherUsingGET(id: number): Promise<Attachment[]> {
         return ajax("GET", "/attachment/stowage/voucher/{id}", {}, {});
     }
 }
