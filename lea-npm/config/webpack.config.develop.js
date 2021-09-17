@@ -1,9 +1,8 @@
-
-const env = require("./env")
-const webpack = require("webpack")
-const path = require("path")
-const HTMLPlugin = require("html-webpack-plugin")
-const {CleanWebpackPlugin} = require("clean-webpack-plugin")
+const env = require("./env");
+const webpack = require("webpack");
+const path = require("path");
+const HTMLPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
@@ -11,11 +10,11 @@ module.exports = {
         port: 5000,
         hot: true,
         historyApiFallback: true,
-        compress: true
+        compress: true,
     },
     mode: "development",
     entry: {
-        main: `${env.src}/index.jsx`
+        main: `${env.src}/index.jsx`,
     },
     output: {
         filename: "static/js/[name].js",
@@ -25,59 +24,53 @@ module.exports = {
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
         modules: [env.src, "node_modules"],
-        alias: {
-            
-        }
+        alias: {},
     },
     optimization: {
         splitChunks: {
             automaticNameDelimiter: "-",
-        }
+        },
     },
     module: {
         rules: [
             {
                 test: /\.(j|t)sx?$/,
                 loader: "babel-loader",
-                exclude:/node_modules/,
+                exclude: /node_modules/,
                 options: {
                     presets: [
                         "@babel/preset-react",
-                        ["@babel/preset-env", {
-                            useBuiltIns: "usage",
-                            corejs: 3
-                        }],
-                        "@babel/preset-typescript"
+                        [
+                            "@babel/preset-env",
+                            {
+                                useBuiltIns: "usage",
+                                corejs: 3,
+                            },
+                        ],
+                        "@babel/preset-typescript",
                     ],
-                    plugins: [
-                        ["@babel/plugin-transform-runtime"],
-                        ["@babel/plugin-proposal-class-properties", { "loose": true }]
-                    ]
-                }
+                    plugins: [["@babel/plugin-transform-runtime"], ["@babel/plugin-proposal-class-properties", { loose: false }]],
+                },
             },
             {
                 test: /\.(less|css)$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    "less-loader"
-                ]
+                use: ["style-loader", "css-loader", "less-loader"],
             },
             {
                 test: /\.(png|jpe?g|gif)$/,
                 loader: "url-loader",
                 options: {
-                    limit: 1024
-                }
-            }
-        ]
+                    limit: 1024,
+                },
+            },
+        ],
     },
     plugins: [
         new HTMLPlugin({
-            template: `${env.src}/index.html`
+            template: `${env.src}/index.html`,
         }),
         new CleanWebpackPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
         // new BundleAnalyzerPlugin()
-    ]
-}
+    ],
+};
