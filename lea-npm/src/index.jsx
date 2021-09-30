@@ -5,11 +5,13 @@ import Op from "./Op";
 
 import ReactSortableHoc from "package/react-sortable-hoc";
 import FormikRO from "npm/formik";
+import Flow from "npm/logicflow";
 
 ReactDOM.render(
     <div>
         {/* <ReactSortableHoc /> */}
-        <FormikRO />
+        {/* <FormikRO /> */}
+        <Flow />
     </div>,
     document.getElementById("react-app")
 );
