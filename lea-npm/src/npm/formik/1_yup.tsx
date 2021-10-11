@@ -26,10 +26,12 @@ export default function SignupForm() {
             email: "",
             lastName: "",
             firstName: "",
+            name: "",
         },
         validationSchema: Yup.object({
             firstName: Yup.string().max(15, "最多15个字符.").required("此项必填"),
             lastName: Yup.string().max(15, "最多15个字符.").required("此项必填"),
+            name: Yup.string().max(15, "最多15个字符.").required("此项必填"),
             email: Yup.string().email("无效的邮箱地址").required("此项必填"),
         }),
         onSubmit: (values) => {
@@ -46,6 +48,10 @@ export default function SignupForm() {
             <label htmlFor="lastName">Last Name</label>
             <input id="lastName" name="lastName" type="text" value={formik.values.lastName} onChange={formik.handleChange} onBlur={formik.handleBlur} />
             {formik.touched.lastName && formik.errors.lastName ? <span style={{ color: "red" }}>{formik.errors.lastName}</span> : null}
+
+            <label htmlFor="name">name</label>
+            <input id="name" type="text" {...formik.getFieldProps("name")} />
+            {formik.touched.name && formik.errors.name ? <span style={{ color: "red" }}>{formik.errors.lastName}</span> : null}
 
             <label htmlFor="email">Email Address</label>
             <input id="email" name="email" type="email" onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur} />
