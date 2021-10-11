@@ -10,8 +10,8 @@ import Flow from "npm/logicflow";
 ReactDOM.render(
     <div>
         {/* <ReactSortableHoc /> */}
-        {/* <FormikRO /> */}
-        <Flow />
+        <FormikRO />
+        {/* <Flow /> */}
     </div>,
     document.getElementById("react-app")
 );

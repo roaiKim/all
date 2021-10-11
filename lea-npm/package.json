@@ -30,7 +30,8 @@
     "url-loader": "^4.1.1",
     "webpack": "^5.28.0",
     "webpack-bundle-analyzer": "^4.4.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "webpack serve --config ./config/webpack.config.develop.js",
