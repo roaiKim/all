@@ -1,0 +1,151 @@
+.ro-header-tabs-container {
+  overflow: hidden;
+  position: relative;
+  // height: 54px;
+  margin-left: 15px;
+  flex: 1;
+  .ro-scroll-tabs-container {
+    user-select: none;
+    overflow: auto;
+    overflow-y: hidden;
+    // border-bottom: 2px solid #dee1e6;
+    padding: 8px 3px 2px 3px;
+    position: relative;
+    border-radius: 5px 5px 0 0;
+    background-color: #dee1e6;
+    &::-webkit-scrollbar {
+      height: 5px;
+      width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      background: #b0aaaa;
+    }
+    &::-webkit-scrollbar-track {
+      /*滚动条里面轨道*/
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      background: #e3e3e3;
+    }
+    .ro-tabs-container {
+      display: flex;
+      background-color: #dee1e6;
+      .ro-tab-item {
+        max-width: 258px;
+        min-width: 120px;
+        position: relative;
+        ~ .ro-tab-item {
+          margin-left: -19px;
+        }
+        &:first-child {
+          .ro-tab-item-dividers {
+            &::before {
+              opacity: 0;
+            }
+          }
+        }
+        & + .ro-tab-item {
+          .ro-tab-item-dividers {
+            &::before {
+              opacity: 0;
+              transition: opacity 0.2s ease;
+            }
+          }
+        }
+        .ro-tab-item-dividers {
+          position: absolute;
+          user-select: none;
+          position: absolute;
+          top: 7px;
+          bottom: 7px;
+          left: 9px;
+          right: 9px;
+          &::after,
+          &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #a9adb0;
+            opacity: 1;
+            transition: opacity 0.2s ease;
+          }
+          &::after {
+            right: 0px;
+          }
+        }
+        .ro-tab-item-background {
+          line-height: 0;
+          > svg {
+            width: 100%;
+            height: 36px;
+            opacity: 0;
+          }
+        }
+        &[active] {
+          z-index: 10;
+          .ro-tab-item-background > svg {
+            opacity: 1;
+            fill: #fff;
+          }
+          .ro-tab-item-dividers {
+            &::after,
+            &::before {
+              opacity: 0;
+            }
+          }
+        }
+        .ro-tab-item-content {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          top: 0;
+          width: 100%;
+          bottom: 0;
+        }
+        .ro-tab-item-favicon {
+          margin-left: 20px;
+        }
+        .ro-tab-item-title {
+          margin-left: 8px;
+          flex-grow: 1;
+          color: #000;
+        }
+
+        .ro-tab-item-close {
+          margin-right: 16px;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          border-radius: 50%;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(0, 0, 0, .65)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+          background-position: center center;
+          background-repeat: no-repeat;
+          background-size: 8px 8px;
+          cursor: pointer;
+          &:hover {
+            background-color: #e8eaed;
+          }
+        }
+
+        &:not([active]):hover {
+          .ro-tab-item-background {
+            > svg {
+              fill: #f4f5f6;
+              opacity: 1;
+            }
+          }
+          .ro-tab-item-dividers {
+            &::after,
+            &::before {
+              opacity: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+@import "asset/css/variable.less";
+
+.ro-home-module {
+  color: #ccc;
+
+  .ro-info-wrap {
+    display: flex;
+    .ro-info-box {
+      flex-grow: 1;
+      display: flex;
+      background-color: #ffffff;
+      padding: 17.5px;
+      border-radius: 5px;
+      box-shadow: 0 4px 20px 0 rgb(0 0 0 / 5%);
+      .ro-info-box-icon {
+        float: left;
+        align-items: center;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        svg {
+          width: 40px;
+          height: 40px;
+          margin-top: 15px;
+          color: #fff;
+        }
+      }
+
+      .ro-info-box-count {
+        margin-left: 20px;
+        p {
+          font-size: 17px;
+          color: #7792b1;
+          font-weight: 700;
+        }
+        :first-child {
+          color: #475f7b;
+          margin-top: 7px;
+        }
+      }
+
+      & + .ro-info-box {
+        margin-left: 30px;
+      }
+
+      &:first-child {
+        .ro-info-box-icon {
+          background-color: #8950fc;
+        }
+      }
+      &:nth-child(2) {
+        .ro-info-box-icon {
+          background-color: #6993ff;
+        }
+      }
+      &:nth-child(3) {
+        .ro-info-box-icon {
+          background-color: #f64e60;
+        }
+      }
+      &:nth-child(4) {
+        .ro-info-box-icon {
+          background-color: #ffa800;
+        }
+      }
+    }
+  }
+}
