@@ -6,4 +6,4 @@ export { Route } from "./util/Route";
 export { createActionHandlerDecorator, Loading, Lifecycle } from "./decorator";
 export { showLoading, loadingAction } from "./reducer";
 export { register } from "./module";
-export { State } from "./type";
+// export { State } from "./type";
