@@ -1,11 +1,13 @@
 import { ConnectedRouter } from "connected-react-router";
 import React, { ComponentType } from "react";
+import { Location } from "history";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { app } from "../app";
 import { isIEBrowser } from "../util/navigator-util";
 import { websiteAction } from "../reducer";
 import { LoggerConfig } from "../logger";
+import { ErrorListener } from "../module";
 
 interface BrowserConfig {
     onIE?: () => void;
@@ -15,6 +17,7 @@ interface BrowserConfig {
 
 interface BootstrapOption {
     entryComponent: ComponentType;
+    errorListener: ErrorListener;
     rootContainer?: HTMLElement;
     browserConfig?: BrowserConfig;
     loggerConfig?: LoggerConfig;
@@ -23,7 +26,9 @@ interface BootstrapOption {
 
 export function bootstrap(option: BootstrapOption) {
     detectIEBrowser(option.browserConfig?.onIE);
+    setupGlobalErrorHandler(option.errorListener);
     setupAppExitListener(option.loggerConfig?.serverURL);
+    setupLocationChangeListener(option.browserConfig?.onLocationChange);
     renderRoot(option.entryComponent, option.rootContainer || injectRootContainer(), option.hasResize || false);
 }
 
@@ -42,6 +47,62 @@ function detectIEBrowser(onIE?: () => void) {
             alert(ieAlertMessage);
         }
         // After that, the following code may still run
+    }
+}
+
+function setupGlobalErrorHandler(errorListener: ErrorListener) {
+    // app.errorHandler = errorListener.onError.bind(errorListener);
+    window.addEventListener(
+        "error",
+        (event) => {
+            try {
+                // const analyzeByTarget = (): string => {
+                //     if (event.target && event.target !== window) {
+                //         const element = event.target as HTMLElement;
+                //         return `DOM source error: ${element.outerHTML}`;
+                //     }
+                //     return `Unrecognized error, serialized as ${JSON.stringify(event)}`;
+                // };
+                // captureError(event.error || event.message || analyzeByTarget(), GLOBAL_ERROR_ACTION);
+            } catch (e) {
+                /**
+                 * This should not happen normally.
+                 * However, global error handler might catch external webpage errors, and fail to parse error due to cross-origin limitations.
+                 * A typical example is: Permission denied to access property `foo`
+                 */
+                // app.logger.warn({
+                //     action: GLOBAL_ERROR_ACTION,
+                //     errorCode: "ERROR_HANDLER_FAILURE",
+                //     errorMessage: errorToException(e).message,
+                //     elapsedTime: 0,
+                //     info: {},
+                // });
+            }
+        },
+        true
+    );
+    window.addEventListener(
+        "unhandledrejection",
+        (event) => {
+            try {
+                // captureError(event.reason, GLOBAL_PROMISE_REJECTION_ACTION);
+            } catch (e) {
+                // app.logger.warn({
+                //     action: GLOBAL_PROMISE_REJECTION_ACTION,
+                //     errorCode: "ERROR_HANDLER_FAILURE",
+                //     errorMessage: errorToException(e).message,
+                //     elapsedTime: 0,
+                //     info: {},
+                // });
+            }
+        },
+        true
+    );
+}
+
+function setupLocationChangeListener(listener?: (location: Location) => void) {
+    if (listener) {
+        app.browserHistory.listen(listener);
     }
 }
 

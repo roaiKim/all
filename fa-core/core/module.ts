@@ -2,10 +2,17 @@ import { app } from "./app";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { setStateAction, Action } from "./reducer";
+import { Exception } from "./exception";
 
 export interface LifecycleDecoratorFlag {
     isLifecycle?: boolean;
 }
+
+export interface ErrorListener {
+    onError: ErrorHandler;
+}
+
+export type ErrorHandler = (error: Exception) => unknown;
 
 export type ActionHandler = (...args: unknown[]) => unknown;
 type ActionCreator<H> = H extends (...args: infer P) => unknown ? (...args: P) => Action<P> : never;
