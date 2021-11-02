@@ -6,22 +6,19 @@ import { setStateAction } from "../reducer";
 import { Module, ModuleLifecycleListener } from "./Module";
 import { RouteComponentProps } from "react-router";
 
-interface AttachLifecycleOption {
-    retainStateOnLeave?: boolean;
-}
-
 export class ModuleProxy<M extends Module<{}>> {
     constructor(private module: M, private actions: ActionCreators<M>) {}
 
-    getActions(): ActionCreators<any> {
+    getActions(): ActionCreators<M> {
         return this.actions;
     }
 
-    attachLifecycle<P extends {}>(ComponentType: React.ComponentType<P>, config: AttachLifecycleOption = {}): React.ComponentType<P & RouteComponentProps> {
+    connect<P extends object>(ComponentType: React.ComponentType<P>): React.ComponentType<P & RouteComponentProps> {
         const moduleName = this.module.name;
         const { initialState } = this.module;
         const lifecycleListener = this.module as ModuleLifecycleListener;
         const actions = this.actions as any;
+
         return class extends React.PureComponent<P & RouteComponentProps> {
             static displayName = `ModuleBoundary(${moduleName})`;
 

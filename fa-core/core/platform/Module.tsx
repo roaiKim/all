@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import {push, replace} from "connected-react-router";
-import {app} from "../app";
-import {Location} from "history";
-import {LifecycleDecoratorFlag} from "../module";
-import {setStateAction, Action} from "../reducer";
-import {State} from "../type";
+import { push, replace } from "connected-react-router";
+import { app } from "../app";
+import { Location } from "history";
+import { LifecycleDecoratorFlag } from "../module";
+import { setStateAction, Action } from "../reducer";
+import { State } from "../type";
 
 export interface ModuleLifecycleListener<RouteParam extends {} = {}, HistoryState extends {} = {}> {
     onRegister: (() => void) & LifecycleDecoratorFlag;

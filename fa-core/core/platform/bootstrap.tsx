@@ -21,7 +21,7 @@ interface BootstrapOption {
     rootContainer?: HTMLElement;
     browserConfig?: BrowserConfig;
     loggerConfig?: LoggerConfig;
-    hasResize?: boolean;
+    resize?: boolean;
 }
 
 export function bootstrap(option: BootstrapOption) {
@@ -29,7 +29,8 @@ export function bootstrap(option: BootstrapOption) {
     setupGlobalErrorHandler(option.errorListener);
     setupAppExitListener(option.loggerConfig?.serverURL);
     setupLocationChangeListener(option.browserConfig?.onLocationChange);
-    renderRoot(option.entryComponent, option.rootContainer || injectRootContainer(), option.hasResize || false);
+    renderRoot(option.entryComponent, option.rootContainer || injectRootContainer());
+    resize(option.resize || false);
 }
 
 function detectIEBrowser(onIE?: () => void) {
@@ -107,28 +108,31 @@ function setupLocationChangeListener(listener?: (location: Location) => void) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function windowResize() {
-    const domHeight = document.body.offsetHeight;
-    const domWidth = document.body.offsetWidth;
-    app.store.dispatch(
-        websiteAction({
-            width: domWidth,
-            height: domHeight,
-        })
-    );
+function resize(resize: boolean) {
+    if (resize) {
+        const resizeAction = () => {
+            const domHeight = document.body.offsetHeight;
+            const domWidth = document.body.offsetWidth;
+            app.store.dispatch(
+                websiteAction({
+                    width: domWidth,
+                    height: domHeight,
+                })
+            );
+        };
+
+        window.addEventListener("resize", resizeAction);
+    }
 }
 
-function renderRoot(EntryComponent: ComponentType, rootContainer: HTMLElement, hasResize: boolean) {
+function renderRoot(EntryComponent: ComponentType, rootContainer: HTMLElement) {
     ReactDOM.render(
         <Provider store={app.store}>
             <ConnectedRouter history={app.browserHistory}>
                 <EntryComponent />
             </ConnectedRouter>
         </Provider>,
-        rootContainer,
-        () => {
-            if (hasResize) window.addEventListener("resize", windowResize);
-        }
+        rootContainer
     );
 }
 

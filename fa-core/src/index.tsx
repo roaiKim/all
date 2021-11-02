@@ -10,5 +10,4 @@ function Main() {
     return <div> fa-core sss</div>;
 }
 
-// eslint-disable-next-line no-undef
 ReactDOM.render(<Main />, document.getElementById("react-app"));
