@@ -12,4 +12,5 @@ export interface State {
     loading: LoadingState;
     router: RouterState;
     website: WebsiteState;
+    navigationPrevented?: boolean;
 }

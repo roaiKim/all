@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import axios, { Method, AxiosRequestConfig } from "axios";
-import { message } from "antd";
+// import { message } from "antd";
 import { completePath } from "./config";
 
 const CancelToken = axios.CancelToken;
@@ -33,7 +33,7 @@ axios.interceptors.response.use(
             //         reject(new Error(response.data.message));
             //     }
             // }
-            resolve(response.data.data);
+            resolve((response.data as any).data);
         });
     },
     (error) => {
@@ -116,14 +116,7 @@ axios.interceptors.response.use(
  * ajax("GET", "/api/user/check/:userId", {userId: 980}, request, {bail: true}, true)
  *
  */
-export function ajax<Request, Response>(
-    method: Method,
-    path: string,
-    pathParams: object,
-    request: Request,
-    axiosExtraConfig: AxiosRequestConfig = {},
-    cancelPrev = false
-): Promise<Response> {
+export function ajax<Request, Response>(method: Method, path: string, pathParams: object, request: Request, axiosExtraConfig: AxiosRequestConfig = {}, cancelPrev = false): Promise<Response> {
     const fullUrl = completePath(getURL(path, pathParams));
 
     // bail 用来 判断 当发生错误时 是否自动处理(如弹窗等) authorization

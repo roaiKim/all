@@ -4,8 +4,16 @@ import { applyMiddleware, createStore, compose, StoreEnhancer, Store } from "red
 import { ActionHandler } from "./module";
 import { rootReducer, executeMethodMiddleware, LOADING_ACTION } from "./reducer";
 import { State } from "./type";
+import { LoggerConfig } from "./logger";
 
 declare const window: any;
+
+interface App {
+    readonly browserHistory: History;
+    readonly store: Store<State>;
+    readonly actionHandlers: { [actionType: string]: ActionHandler };
+    loggerConfig: LoggerConfig | null;
+}
 
 function composeWithDevTools(enhancer: StoreEnhancer): StoreEnhancer {
     let composeEnhancers = compose;
@@ -21,12 +29,6 @@ function composeWithDevTools(enhancer: StoreEnhancer): StoreEnhancer {
     return composeEnhancers(enhancer);
 }
 
-interface App {
-    readonly browserHistory: History;
-    readonly store: Store<State>;
-    readonly actionHandlers: { [actionType: string]: ActionHandler };
-}
-
 function createApp(): App {
     const browserHistory = createBrowserHistory();
     const store = createStore(rootReducer(browserHistory), composeWithDevTools(applyMiddleware(routerMiddleware(browserHistory), executeMethodMiddleware)));
@@ -34,6 +36,7 @@ function createApp(): App {
         browserHistory,
         store,
         actionHandlers: {},
+        loggerConfig: null,
     };
 }
 

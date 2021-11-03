@@ -42,7 +42,7 @@ export function register<M extends Module<any, any>>(module: M): ModuleProxy<M> 
     return new ModuleProxy(module, actions);
 }
 
-export async function executeAction(handler: ActionHandler, ...payload: any[]) {
+export async function executeAction(actionName: string, handler: ActionHandler, ...payload: any[]) {
     try {
         await handler(...payload);
     } catch (error) {
@@ -52,7 +52,7 @@ export async function executeAction(handler: ActionHandler, ...payload: any[]) {
     }
 }
 
-function getKeys<M extends Module<any>>(module: M) {
+function getKeys<M extends Module<any, any>>(module: M) {
     const keys = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const propertyName of Object.getOwnPropertyNames(Object.getPrototypeOf(module))) {

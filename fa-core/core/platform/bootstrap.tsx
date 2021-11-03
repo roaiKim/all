@@ -17,8 +17,8 @@ interface BrowserConfig {
 
 interface BootstrapOption {
     entryComponent: ComponentType;
-    errorListener: ErrorListener;
-    rootContainer?: HTMLElement;
+    errorListener?: ErrorListener;
+    rootContainer?: HTMLElement | null;
     browserConfig?: BrowserConfig;
     loggerConfig?: LoggerConfig;
     resize?: boolean;
@@ -51,7 +51,7 @@ function detectIEBrowser(onIE?: () => void) {
     }
 }
 
-function setupGlobalErrorHandler(errorListener: ErrorListener) {
+function setupGlobalErrorHandler(errorListener?: ErrorListener) {
     // app.errorHandler = errorListener.onError.bind(errorListener);
     window.addEventListener(
         "error",

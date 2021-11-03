@@ -75,6 +75,27 @@ function websiteReducer(state: WebsiteState = {}, action: Action<WebsiteState>) 
     return state;
 }
 
+interface NavigationPreventionActionPayload {
+    isPrevented: boolean;
+}
+
+const NAVIGATION_PREVENTION_ACTION = "@@framework/navigation-prevention";
+
+export function navigationPreventionAction(isPrevented: boolean): Action<NavigationPreventionActionPayload> {
+    return {
+        type: NAVIGATION_PREVENTION_ACTION,
+        payload: { isPrevented },
+    };
+}
+
+function navigationPreventionReducer(state: boolean = false, action: Action<NavigationPreventionActionPayload>): boolean {
+    if (action.type === NAVIGATION_PREVENTION_ACTION) {
+        const payload = action.payload as NavigationPreventionActionPayload;
+        return payload.isPrevented;
+    }
+    return state;
+}
+
 export function rootReducer(history: History) {
     return combineReducers({
         router: connectRouter(history),
