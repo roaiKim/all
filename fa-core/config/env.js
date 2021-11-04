@@ -18,6 +18,7 @@ function buildPath() {
 
 module.exports = {
     src: resolve("src"),
+    core: resolve("core"),
     build: buildPath(),
     tsConfig: resolve("tsconfig.json"),
 };

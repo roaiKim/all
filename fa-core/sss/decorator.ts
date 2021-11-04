@@ -6,11 +6,7 @@ import { State } from "./type";
 import { ModuleLifecycleListener } from "./platform/Module";
 
 type HandlerDecorator = (target: object, propertyKey: string, descriptor: TypedPropertyDescriptor<ActionHandler>) => TypedPropertyDescriptor<ActionHandler>;
-type LifecycleHandlerDecorator = (
-    target: object,
-    propertyKey: keyof ModuleLifecycleListener,
-    descriptor: TypedPropertyDescriptor<ActionHandler & LifecycleDecoratorFlag>
-) => TypedPropertyDescriptor<ActionHandler>;
+type LifecycleHandlerDecorator = (target: object, propertyKey: keyof ModuleLifecycleListener, descriptor: TypedPropertyDescriptor<ActionHandler & LifecycleDecoratorFlag>) => TypedPropertyDescriptor<ActionHandler>;
 type HandlerInterceptor<S> = (handler: ActionHandler, rootState: Readonly<S>) => any;
 
 export function createActionHandlerDecorator<S extends State = State>(interceptor: HandlerInterceptor<S>): HandlerDecorator {

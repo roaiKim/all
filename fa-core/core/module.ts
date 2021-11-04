@@ -1,60 +1,62 @@
 import { app } from "./app";
-import { ModuleProxy } from "./platform/ModuleProxy";
+import { Exception } from "./Exception";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
-import { setStateAction, Action } from "./reducer";
-import { Exception } from "./exception";
+import { ModuleProxy } from "./platform/ModuleProxy";
+import { Action, setStateAction } from "./reducer";
+import { SagaGenerator } from "./typed-saga";
+import { captureError } from "./util/error-util";
+import { stringifyWithMask } from "./util/json-util";
 
-export interface LifecycleDecoratorFlag {
-    isLifecycle?: boolean;
+export interface TickIntervalDecoratorFlag {
+    tickInterval?: number;
 }
+
+export type ActionHandler = (...args: any[]) => SagaGenerator;
+
+export type ErrorHandler = (error: Exception) => SagaGenerator;
 
 export interface ErrorListener {
     onError: ErrorHandler;
 }
 
-export type ErrorHandler = (error: Exception) => unknown;
-export type ActionHandler = (...args: unknown[]) => unknown;
-type ActionCreator<H> = H extends (...args: infer P) => unknown ? (...args: P) => Action<P> : never;
-type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: unknown[]) => unknown ? K : never }[Exclude<keyof H, keyof ModuleLifecycleListener>];
+type ActionCreator<H> = H extends (...args: infer P) => SagaGenerator ? (...args: P) => Action<P> : never;
+type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: any[]) => SagaGenerator ? K : never }[Exclude<keyof H, keyof ModuleLifecycleListener | keyof ErrorListener>];
 export type ActionCreators<H> = { readonly [K in HandlerKeys<H>]: ActionCreator<H[K]> };
 
 export function register<M extends Module<any, any>>(module: M): ModuleProxy<M> {
-    const moduleName = module.name;
+    const moduleName: string = module.name;
     if (!app.store.getState().app[moduleName]) {
-        const { initialState } = module;
-        app.store.dispatch(setStateAction(moduleName, initialState, `@@${moduleName}/@@init`));
+        // To get private property
+        app.store.dispatch(setStateAction(moduleName, module.initialState, `@@${moduleName}/@@init`));
     }
 
+    // Transform every method into ActionCreator
     const actions: any = {};
     getKeys(module).forEach((actionType) => {
+        // Attach action name, for @Log / error handler reflection
         const method = module[actionType];
         const qualifiedActionType = `${moduleName}/${actionType}`;
         method.actionName = qualifiedActionType;
-        actions[actionType] = (...payload: unknown[]): Action<unknown[]> => ({ type: qualifiedActionType, payload });
+        actions[actionType] = (...payload: any[]): Action<any[]> => ({ type: qualifiedActionType, payload });
 
         app.actionHandlers[qualifiedActionType] = method.bind(module);
     });
 
-    // const lifecycleListener = module as ModuleLifecycleListener;
-    // if (lifecycleListener.onRegister.isLifecycle) {
-    //     app.store.dispatch(actions.onRegister());
-    // }
     return new ModuleProxy(module, actions);
 }
 
-export async function executeAction(actionName: string, handler: ActionHandler, ...payload: any[]) {
+export function* executeAction(actionName: string, handler: ActionHandler, ...payload: any[]): SagaGenerator {
     try {
-        await handler(...payload);
+        yield* handler(...payload);
     } catch (error) {
-        // TODO 这里需要错误处理
-        // const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
-        // captureError(error, actionName, {actionPayload});
+        const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
+        captureError(error, actionName, { actionPayload });
     }
 }
 
 function getKeys<M extends Module<any, any>>(module: M) {
-    const keys = [];
-    // eslint-disable-next-line no-restricted-syntax
+    // Do not use Object.keys(Object.getPrototypeOf(module)), because class methods are not enumerable
+    const keys: string[] = [];
     for (const propertyName of Object.getOwnPropertyNames(Object.getPrototypeOf(module))) {
         if (module[propertyName] instanceof Function && propertyName !== "constructor") {
             keys.push(propertyName);

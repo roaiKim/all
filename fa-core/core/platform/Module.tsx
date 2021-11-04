@@ -1,22 +1,23 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { push, replace } from "connected-react-router";
-import { app } from "../app";
+import { push } from "connected-react-router";
 import { Location } from "history";
-import { LifecycleDecoratorFlag } from "../module";
-import { setStateAction, Action, navigationPreventionAction } from "../reducer";
-import { State } from "../type";
-import { produce } from "immer";
+import { SagaGenerator } from "../typed-saga";
+import { put } from "redux-saga/effects";
+import { produce, enablePatches, enableES5 } from "immer";
+import { app } from "../app";
+import { Logger } from "../Logger";
+import { TickIntervalDecoratorFlag } from "../module";
+import { navigationPreventionAction, setStateAction, State } from "../reducer";
 
-interface TickIntervalDecoratorFlag {
-    tickInterval?: number;
+enableES5();
+if (process.env.NODE_ENV === "development") {
+    enablePatches();
 }
 
 export interface ModuleLifecycleListener<RouteParam extends object = object, HistoryState extends object = object> {
-    onEnter: (entryComponentProps?: any) => unknown;
-    onDestroy: () => unknown;
-    onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState | undefined>>) => unknown;
-    onTick: (() => unknown) & TickIntervalDecoratorFlag;
+    onEnter: (entryComponentProps?: any) => SagaGenerator;
+    onDestroy: () => SagaGenerator;
+    onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState> | undefined>) => SagaGenerator;
+    onTick: (() => SagaGenerator) & TickIntervalDecoratorFlag;
 }
 
 export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string, RouteParam extends object = object, HistoryState extends object = object>
@@ -24,83 +25,111 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
 {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    /**
-     * 初始化时执行 componentDidMount
-     */
-    onEnter(entryComponentProps: any) {}
+    *onEnter(entryComponentProps: any): SagaGenerator {
+        /**
+         * Called when the attached component is initially mounted.
+         */
+    }
 
-    /**
-     * 当location变化时匹配(依然能够匹配)
-     * 如: 路由为 /user/:id;
-     * 当前为 /user/1 变化到 /user/2时, 此时 这个路由依然能够匹配, 这个方法会执行
-     */
-    onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>) {}
+    *onDestroy(): SagaGenerator {
+        /**
+         * Called when the attached component is going to unmount
+         */
+    }
 
-    /**
-     * 卸载时触发
-     */
-    onDestroy() {}
+    *onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>): SagaGenerator {
+        /**
+         * Called when the attached component is a React-Route component and its Route location matches
+         * It is called each time the location changes, as long as it still matches
+         */
+    }
 
-    /**
-     * 循环触发，一般搭配 @Interval 装饰器使用
-     * 注意: 只有 前一个 循环结束, 下一个循环才会触发
-     */
-    onTick() {}
+    *onTick(): SagaGenerator {
+        /**
+         * Called periodically during the lifecycle of attached component
+         * Usually used together with @Interval decorator, to specify the period (in second)
+         * Attention: The next tick will not be triggered, until the current tick has finished
+         */
+    }
+
+    get state(): Readonly<RootState["app"][ModuleName]> {
+        return this.rootState.app[this.name];
+    }
+
+    get rootState(): Readonly<RootState> {
+        return app.store.getState() as Readonly<RootState>;
+    }
+
+    get logger(): Logger {
+        return app.logger;
+    }
 
     setNavigationPrevented(isPrevented: boolean) {
         app.store.dispatch(navigationPreventionAction(isPrevented));
     }
 
-    protected get state(): Readonly<RootState["app"][ModuleName]> {
-        return this.rootState.app[this.name];
-    }
-
-    protected get rootState(): Readonly<RootState> {
-        return app.store.getState() as Readonly<RootState>;
-    }
-
-    protected dispatch(action: () => Action<{}>) {
-        if (typeof action !== "function") throw new Error("this.dispatch 的参数必须为 Function");
-        app.store.dispatch(action());
-    }
-
-    // get logger(): Logger {
-    //     return app.logger;
-    // }
-
-    protected setState<K extends keyof RootState["app"][ModuleName]>(state: (state: RootState["app"][ModuleName]) => void | Pick<RootState["app"][ModuleName], K> | RootState["app"][ModuleName]): void {
-        if (typeof state === "function") {
+    setState<K extends keyof RootState["app"][ModuleName]>(stateOrUpdater: ((state: RootState["app"][ModuleName]) => void) | Pick<RootState["app"][ModuleName], K> | RootState["app"][ModuleName]): void {
+        if (typeof stateOrUpdater === "function") {
             const originalState = this.state;
-            const updater = state as (state: RootState["app"][ModuleName]) => void;
+            const updater = stateOrUpdater as (state: RootState["app"][ModuleName]) => void;
             let patchDescriptions: string[] | undefined;
             const newState = produce<Readonly<RootState["app"][ModuleName]>, RootState["app"][ModuleName]>(
                 originalState,
                 (draftState) => {
+                    // Wrap into a void function, in case updater() might return anything
                     updater(draftState);
                 },
                 process.env.NODE_ENV === "development"
                     ? (patches) => {
+                          // No need to read "op", in will only be "replace"
                           patchDescriptions = patches.map((_) => _.path.join("."));
                       }
                     : undefined
             );
             if (newState !== originalState) {
-                const description = `@@${this.name}/setState${patchDescriptions ? patchDescriptions.join("/") : ""}`;
+                const description = `@@${this.name}/setState${patchDescriptions ? `[${patchDescriptions.join("/")}]` : ``}`;
                 app.store.dispatch(setStateAction(this.name, newState, description));
             }
         } else {
-            const partialState = state;
+            const partialState = stateOrUpdater as object;
             this.setState((state) => Object.assign(state, partialState));
         }
     }
 
-    protected setHistory(urlOrState: HistoryState | string, usePush = true) {
+    /**
+     * CAVEAT:
+     * (1)
+     * Calling this.pushHistory to other module should cancel the following logic.
+     * Using store.dispatch here will lead to error while cancelling in lifecycle.
+     *
+     * Because the whole process is in sync mode:
+     * dispatch push action -> location change -> router component will un-mount -> lifecycle saga cancel
+     *
+     * Cancelling the current sync-running saga will throw "TypeError: Generator is already executing".
+     *
+     * (2)
+     * Adding yield cancel() in pushHistory is also incorrect.
+     * If this.pushHistory is only to change state rather than URL, it will lead to the whole lifecycle saga cancelled.
+     *
+     * https://github.com/react-boilerplate/react-boilerplate/issues/1281
+     */
+    pushHistory(url: string): SagaGenerator;
+    pushHistory(url: string, stateMode: "keep-state"): SagaGenerator;
+    pushHistory<T extends object>(url: string, state: T): SagaGenerator; // Recommended explicitly pass the generic type
+    pushHistory(state: HistoryState): SagaGenerator;
+
+    *pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state"): SagaGenerator {
         if (typeof urlOrState === "string") {
-            app.store.dispatch(usePush ? push(urlOrState) : replace(urlOrState));
+            const url: string = urlOrState;
+            if (state) {
+                yield put(push(url, state === "keep-state" ? app.browserHistory.location.state : state));
+            } else {
+                yield put(push(url));
+            }
         } else {
-            // eslint-disable-next-line no-restricted-globals
             const currentURL = location.pathname + location.search;
-            app.store.dispatch(usePush ? push(currentURL, urlOrState) : replace(currentURL, urlOrState));
+            const state: HistoryState = urlOrState;
+            yield put(push(currentURL, state));
         }
     }
 }

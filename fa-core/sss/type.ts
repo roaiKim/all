@@ -7,10 +7,18 @@ export interface WebsiteState {
     width?: number;
     height?: number;
 }
+// export interface State {
+//     app: {};
+//     loading: LoadingState;
+//     router: RouterState;
+//     website: WebsiteState;
+//     navigationPrevented: boolean;
+// }
+
 export interface State {
-    app: {};
     loading: LoadingState;
     router: RouterState;
     website: WebsiteState;
-    navigationPrevented?: boolean;
+    navigationPrevented: boolean;
+    app: object;
 }

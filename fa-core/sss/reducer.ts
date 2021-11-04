@@ -1,34 +1,20 @@
-import { connectRouter, RouterState } from "connected-react-router";
+import { connectRouter } from "connected-react-router";
+import { Action as ReduxAction, combineReducers } from "redux";
+import { app } from "./app";
 import { History } from "history";
-import { Action as ReduxAction, combineReducers, Reducer } from "redux";
-
-// Redux State
-interface LoadingState {
-    [loading: string]: number;
-}
-
-export interface State {
-    loading: LoadingState;
-    router: RouterState;
-    navigationPrevented: boolean;
-    app: object;
-}
-
-// Redux Action
-const SET_STATE_ACTION = "@@framework/setState";
+import { State, WebsiteState, LoadingState } from "./type";
 
 export interface Action<P> extends ReduxAction<string> {
+    name?: string;
     payload: P;
-    name?: typeof SET_STATE_ACTION;
 }
 
-// Redux Action: SetState (to update state.app)
+// app
 interface SetStateActionPayload {
     module: string;
     state: any;
 }
-
-// state must be complete module state, not partial
+const SET_STATE_ACTION = "@@framework/setState";
 export function setStateAction(module: string, state: object, type: string): Action<SetStateActionPayload> {
     return {
         type,
@@ -36,34 +22,29 @@ export function setStateAction(module: string, state: object, type: string): Act
         payload: { module, state },
     };
 }
-
-function setStateReducer(state: State["app"] = {}, action: Action<any>): State["app"] {
-    // Use action.name for set state action, make type specifiable to make tracking/tooling easier
+function setStateReducer(state: State["app"] = {}, action: Action<SetStateActionPayload>): State["app"] {
     if (action.name === SET_STATE_ACTION) {
-        const { module, state: moduleState } = action.payload as SetStateActionPayload;
-        return { ...state, [module]: moduleState };
+        const { module, state: moduleState } = action.payload;
+        return { ...state, [module]: { ...state[module], ...moduleState } };
     }
     return state;
 }
 
-// Redux Action: Loading (to update state.loading)
+// loading
 interface LoadingActionPayload {
     identifier: string;
     show: boolean;
 }
-
 export const LOADING_ACTION = "@@framework/loading";
-
-export function loadingAction(show: boolean, identifier: string = "global"): Action<LoadingActionPayload> {
+export function loadingAction(show: boolean, identifier = "global"): Action<LoadingActionPayload> {
     return {
         type: LOADING_ACTION,
         payload: { identifier, show },
     };
 }
-
-function loadingReducer(state: LoadingState = {}, action: Action<LoadingActionPayload>): LoadingState {
+function loadingReducer(state: LoadingState = {}, action: Action<LoadingState>): LoadingState {
     if (action.type === LOADING_ACTION) {
-        const payload = action.payload as LoadingActionPayload;
+        const { payload } = action;
         const count = state[payload.identifier] || 0;
         return {
             ...state,
@@ -73,7 +54,27 @@ function loadingReducer(state: LoadingState = {}, action: Action<LoadingActionPa
     return state;
 }
 
-// Redux Action: Navigation Prevent (to update state.navigationPrevented)
+// website
+export const WEBSITE_ACTION = "@@framework/setWebsite";
+export function websiteAction(website: WebsiteState): Action<WebsiteState> {
+    return {
+        type: WEBSITE_ACTION,
+        payload: {
+            ...website,
+        },
+    };
+}
+function websiteReducer(state: WebsiteState = {}, action: Action<WebsiteState>) {
+    if (action.type === WEBSITE_ACTION) {
+        const { payload } = action;
+        return {
+            ...state,
+            ...payload,
+        };
+    }
+    return state;
+}
+
 interface NavigationPreventionActionPayload {
     isPrevented: boolean;
 }
@@ -95,17 +96,25 @@ function navigationPreventionReducer(state: boolean = false, action: Action<Navi
     return state;
 }
 
-// Root Reducer
-export function rootReducer(history: History): Reducer<State> {
-    return combineReducers<State>({
+export function rootReducer(history: History) {
+    return combineReducers({
         router: connectRouter(history),
         loading: loadingReducer,
+        website: websiteReducer,
         app: setStateReducer,
         navigationPrevented: navigationPreventionReducer,
     });
 }
 
-// Helper function, to determine if show loading
-export function showLoading(state: State, identifier: string = "global") {
+export function showLoading(state: State, identifier = "global") {
     return state.loading[identifier] > 0;
 }
+
+export const executeMethodMiddleware = () => (next: any) => (action: Action<any>) => {
+    const result = next(action);
+    const handler = app.actionHandlers[action.type];
+    if (handler) {
+        handler(...action.payload);
+    }
+    return result;
+};

@@ -52,7 +52,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                include: env.src,
+                include: [env.src, env.core],
                 loader: "ts-loader",
                 options: {
                     configFile: env.tsConfig,

@@ -4,7 +4,10 @@ import { bootstrap } from "../core";
 // import "asset/css/index.less";
 
 function Main() {
-    return <div> fa-core sss</div>;
+    const as = () => {
+        throw new Error("出错");
+    };
+    return <div onClick={as}> fa-core sss</div>;
 }
 
 bootstrap({ entryComponent: Main, rootContainer: document.getElementById("react-app") });
