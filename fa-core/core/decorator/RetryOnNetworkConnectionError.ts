@@ -1,6 +1,5 @@
 import { app } from "../app";
 import { NetworkConnectionException } from "../Exception";
-import { delay } from "redux-saga/effects";
 import { createActionHandlerDecorator } from "./index";
 
 /**
@@ -8,11 +7,12 @@ import { createActionHandlerDecorator } from "./index";
  * A warning log will be also created, for each retry.
  */
 export function RetryOnNetworkConnectionError(retryIntervalSecond: number = 3) {
-    return createActionHandlerDecorator(function* (handler) {
+    return createActionHandlerDecorator(async function (handler) {
         let retryTime = 0;
+        let timer;
         while (true) {
             try {
-                yield* handler();
+                await handler();
                 break;
             } catch (e) {
                 if (e instanceof NetworkConnectionException) {
@@ -25,7 +25,9 @@ export function RetryOnNetworkConnectionError(retryIntervalSecond: number = 3) {
                         },
                         handler.actionName
                     );
-                    yield delay(retryIntervalSecond * 1000);
+                    await new Promise((resolve, reject) => {
+                        timer = setTimeout(resolve, retryIntervalSecond * 1000);
+                    });
                 } else {
                     throw e;
                 }

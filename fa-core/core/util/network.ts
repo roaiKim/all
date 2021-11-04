@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { APIException, NetworkConnectionException } from "../Exception";
-import { parseWithDate } from "./json-util";
 
 export type PathParams<T extends string> = string extends T
     ? { [key: string]: string | number }
@@ -19,7 +18,7 @@ export interface APIErrorResponse {
 axios.defaults.transformResponse = (data, headers) => {
     const contentType = headers?.["content-type"];
     if (contentType?.startsWith("application/json")) {
-        return parseWithDate(data);
+        return data;
     }
     return data;
 };

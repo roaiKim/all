@@ -3,24 +3,21 @@ import { Exception } from "./Exception";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";
-import { SagaGenerator } from "./typed-saga";
 import { captureError } from "./util/error-util";
-import { stringifyWithMask } from "./util/json-util";
-
 export interface TickIntervalDecoratorFlag {
     tickInterval?: number;
 }
-
-export type ActionHandler = (...args: any[]) => SagaGenerator;
-
-export type ErrorHandler = (error: Exception) => SagaGenerator;
 
 export interface ErrorListener {
     onError: ErrorHandler;
 }
 
-type ActionCreator<H> = H extends (...args: infer P) => SagaGenerator ? (...args: P) => Action<P> : never;
-type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: any[]) => SagaGenerator ? K : never }[Exclude<keyof H, keyof ModuleLifecycleListener | keyof ErrorListener>];
+export type ActionHandler = (...args: any[]) => unknown;
+
+export type ErrorHandler = (error: Exception) => unknown;
+
+type ActionCreator<H> = H extends (...args: infer P) => unknown ? (...args: P) => Action<P> : never;
+type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: any[]) => unknown ? K : never }[Exclude<keyof H, keyof ModuleLifecycleListener | keyof ErrorListener>];
 export type ActionCreators<H> = { readonly [K in HandlerKeys<H>]: ActionCreator<H[K]> };
 
 export function register<M extends Module<any, any>>(module: M): ModuleProxy<M> {
@@ -45,12 +42,12 @@ export function register<M extends Module<any, any>>(module: M): ModuleProxy<M> 
     return new ModuleProxy(module, actions);
 }
 
-export function* executeAction(actionName: string, handler: ActionHandler, ...payload: any[]): SagaGenerator {
+export async function executeAction(actionName: string, handler: ActionHandler, ...payload: any[]) {
     try {
-        yield* handler(...payload);
+        await handler(...payload);
     } catch (error) {
-        const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
-        captureError(error, actionName, { actionPayload });
+        // const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
+        // captureError(error, actionName, { actionPayload });
     }
 }
 

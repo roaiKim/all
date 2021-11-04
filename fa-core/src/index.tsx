@@ -10,7 +10,7 @@ function Main() {
     return <div onClick={as}> fa-core sss</div>;
 }
 
-bootstrap({ entryComponent: Main, rootContainer: document.getElementById("react-app") });
+bootstrap({ componentType: Main, rootContainer: document.getElementById("react-app") });
 // import React from "react";
 // import ReactDOM from "react-dom";
 

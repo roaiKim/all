@@ -12,7 +12,6 @@ import { ajax } from "../util/network";
 import { APIException } from "../Exception";
 import { isIEBrowser } from "../util/navigator-util";
 import { captureError, errorToException } from "../util/error-util";
-import { SagaGenerator, call, delay } from "../typed-saga";
 
 /**
  * Configuration for frontend version check.
@@ -23,7 +22,7 @@ import { SagaGenerator, call, delay } from "../typed-saga";
  * - versionCheckURL: Respond a JSON based on computed bundled index.html content, whose contained JS/CSS file name changes when version changes.
  */
 interface VersionConfig {
-    onRemind: () => SagaGenerator;
+    // onRemind: () => SagaGenerator;
     versionCheckURL: string; // Must be GET Method, returning whatever JSON
     thresholdHours?: number; // Default: 24
 }
@@ -42,8 +41,8 @@ interface BrowserConfig {
 
 interface BootstrapOption {
     componentType: React.ComponentType;
-    errorListener: ErrorListener;
-    rootContainer?: HTMLElement;
+    errorListener?: ErrorListener;
+    rootContainer?: HTMLElement | null;
     browserConfig?: BrowserConfig;
     loggerConfig?: LoggerConfig;
     versionConfig?: VersionConfig;
@@ -59,7 +58,7 @@ export function bootstrap(option: BootstrapOption): void {
     setupGlobalErrorHandler(option.errorListener);
     setupAppExitListener(option.loggerConfig?.serverURL);
     setupLocationChangeListener(option.browserConfig?.onLocationChange);
-    runBackgroundLoop(option.loggerConfig, option.versionConfig);
+    // runBackgroundLoop(option.loggerConfig, option.versionConfig);
     renderRoot(option.componentType, option.rootContainer || injectRootContainer(), option.browserConfig?.navigationPreventionMessage || "Are you sure to leave current page?");
 }
 
@@ -81,8 +80,8 @@ function detectIEBrowser(onIE?: () => void) {
     }
 }
 
-function setupGlobalErrorHandler(errorListener: ErrorListener) {
-    app.errorHandler = errorListener.onError.bind(errorListener);
+function setupGlobalErrorHandler(errorListener?: ErrorListener) {
+    // app.errorHandler = errorListener.onError.bind(errorListener);
     window.addEventListener(
         "error",
         (event) => {
@@ -183,44 +182,44 @@ function setupLocationChangeListener(listener?: (location: Location) => void) {
     }
 }
 
-function runBackgroundLoop(loggerConfig?: LoggerConfig, updateReminderConfig?: VersionConfig) {
-    app.logger.info({ action: "@@ENTER" });
-    app.loggerConfig = loggerConfig || null;
+// function runBackgroundLoop(loggerConfig?: LoggerConfig, updateReminderConfig?: VersionConfig) {
+//     app.logger.info({ action: "@@ENTER" });
+//     app.loggerConfig = loggerConfig || null;
 
-    app.sagaMiddleware.run(function* () {
-        let lastChecksumTimestamp = 0;
-        let lastChecksum: string | null = null;
-        while (true) {
-            // Loop on every 15 second
-            yield delay(15000);
+//     app.sagaMiddleware.run(function* () {
+//         let lastChecksumTimestamp = 0;
+//         let lastChecksum: string | null = null;
+//         while (true) {
+//             // Loop on every 15 second
+//             yield delay(15000);
 
-            // Send collected log to event server
-            yield* call(sendEventLogs);
+//             // Send collected log to event server
+//             yield* call(sendEventLogs);
 
-            // Check if staying too long, then check if need refresh by comparing server-side checksum
-            if (updateReminderConfig) {
-                const stayingHours = (Date.now() - lastChecksumTimestamp) / 3600 / 1000;
-                if (stayingHours > (updateReminderConfig.thresholdHours || 24)) {
-                    const newChecksum = yield* call(fetchVersionChecksum, updateReminderConfig.versionCheckURL);
-                    if (newChecksum) {
-                        if (lastChecksum !== null && newChecksum !== lastChecksum) {
-                            app.logger.warn({
-                                action: VERSION_CHECK_ACTION,
-                                errorMessage: `Frontend version changed, page no refresh for ${stayingHours.toFixed(2)} hrs`,
-                                errorCode: "VERSION_CHANGED",
-                                elapsedTime: 0,
-                                info: { newChecksum, lastChecksum },
-                            });
-                            yield* executeAction(VERSION_CHECK_ACTION, updateReminderConfig.onRemind);
-                        }
-                        lastChecksum = newChecksum;
-                        lastChecksumTimestamp = Date.now();
-                    }
-                }
-            }
-        }
-    });
-}
+//             // Check if staying too long, then check if need refresh by comparing server-side checksum
+//             if (updateReminderConfig) {
+//                 const stayingHours = (Date.now() - lastChecksumTimestamp) / 3600 / 1000;
+//                 if (stayingHours > (updateReminderConfig.thresholdHours || 24)) {
+//                     const newChecksum = yield* call(fetchVersionChecksum, updateReminderConfig.versionCheckURL);
+//                     if (newChecksum) {
+//                         if (lastChecksum !== null && newChecksum !== lastChecksum) {
+//                             app.logger.warn({
+//                                 action: VERSION_CHECK_ACTION,
+//                                 errorMessage: `Frontend version changed, page no refresh for ${stayingHours.toFixed(2)} hrs`,
+//                                 errorCode: "VERSION_CHANGED",
+//                                 elapsedTime: 0,
+//                                 info: { newChecksum, lastChecksum },
+//                             });
+//                             yield* executeAction(VERSION_CHECK_ACTION, updateReminderConfig.onRemind);
+//                         }
+//                         lastChecksum = newChecksum;
+//                         lastChecksumTimestamp = Date.now();
+//                     }
+//                 }
+//             }
+//         }
+//     });
+// }
 
 export async function sendEventLogs(): Promise<void> {
     if (app.loggerConfig) {
@@ -253,22 +252,22 @@ export async function sendEventLogs(): Promise<void> {
  * Only call this function if necessary, i.e: initial checksum, or after long-staying check
  * Return latest checksum, or null for failure.
  */
-async function fetchVersionChecksum(url: string): Promise<string | null> {
-    try {
-        const startTime = Date.now();
-        const response = await ajax("GET", url, {}, null);
-        const checksum = JSON.stringify(response);
-        app.logger.info({
-            action: VERSION_CHECK_ACTION,
-            elapsedTime: Date.now() - startTime,
-            info: { checksum },
-        });
-        return checksum;
-    } catch (e) {
-        if (e instanceof APIException) {
-            // Do not log network exceptions
-            app.logger.exception(e, {}, VERSION_CHECK_ACTION);
-        }
-        return null;
-    }
-}
+// async function fetchVersionChecksum(url: string): Promise<string | null> {
+//     try {
+//         const startTime = Date.now();
+//         const response = await ajax("GET", url, {}, null);
+//         const checksum = JSON.stringify(response);
+//         app.logger.info({
+//             action: VERSION_CHECK_ACTION,
+//             elapsedTime: Date.now() - startTime,
+//             info: { checksum },
+//         });
+//         return checksum;
+//     } catch (e) {
+//         if (e instanceof APIException) {
+//             // Do not log network exceptions
+//             app.logger.exception(e, {}, VERSION_CHECK_ACTION);
+//         }
+//         return null;
+//     }
+// }

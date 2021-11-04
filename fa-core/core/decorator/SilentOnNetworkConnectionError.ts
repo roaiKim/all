@@ -7,9 +7,9 @@ import { app } from "../app";
  * Mainly used for background tasks.
  */
 export function SilentOnNetworkConnectionError() {
-    return createActionHandlerDecorator(function* (handler) {
+    return createActionHandlerDecorator(async function (handler) {
         try {
-            yield* handler();
+            await handler();
         } catch (e) {
             if (e instanceof NetworkConnectionException) {
                 app.logger.exception(

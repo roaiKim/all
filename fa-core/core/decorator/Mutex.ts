@@ -6,7 +6,7 @@ import { createActionHandlerDecorator } from "./index";
  */
 export function Mutex() {
     let lockTime: number | null = null;
-    return createActionHandlerDecorator(function* (handler, thisModule) {
+    return createActionHandlerDecorator(async function (handler, thisModule) {
         if (lockTime) {
             thisModule.logger.info({
                 action: handler.actionName,
@@ -18,7 +18,7 @@ export function Mutex() {
         } else {
             try {
                 lockTime = Date.now();
-                yield* handler();
+                await handler();
             } finally {
                 lockTime = null;
             }

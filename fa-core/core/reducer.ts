@@ -1,6 +1,7 @@
 import { connectRouter, RouterState } from "connected-react-router";
 import { History } from "history";
 import { Action as ReduxAction, combineReducers, Reducer } from "redux";
+import { app } from "./app";
 
 // Redux State
 interface LoadingState {
@@ -109,3 +110,12 @@ export function rootReducer(history: History): Reducer<State> {
 export function showLoading(state: State, identifier: string = "global") {
     return state.loading[identifier] > 0;
 }
+
+export const executeMethodMiddleware = () => (next: any) => (action: Action<any>) => {
+    const result = next(action);
+    const handler = app.actionHandlers[action.type];
+    if (handler) {
+        handler(...action.payload);
+    }
+    return result;
+};

@@ -1,23 +1,21 @@
-import { push } from "connected-react-router";
+import { push, replace } from "connected-react-router";
 import { Location } from "history";
-import { SagaGenerator } from "../typed-saga";
-import { put } from "redux-saga/effects";
 import { produce, enablePatches, enableES5 } from "immer";
 import { app } from "../app";
 import { Logger } from "../Logger";
 import { TickIntervalDecoratorFlag } from "../module";
 import { navigationPreventionAction, setStateAction, State } from "../reducer";
 
-enableES5();
-if (process.env.NODE_ENV === "development") {
-    enablePatches();
-}
+// enableES5();
+// if (process.env.NODE_ENV === "development") {
+//     enablePatches();
+// }
 
 export interface ModuleLifecycleListener<RouteParam extends object = object, HistoryState extends object = object> {
-    onEnter: (entryComponentProps?: any) => SagaGenerator;
-    onDestroy: () => SagaGenerator;
-    onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState> | undefined>) => SagaGenerator;
-    onTick: (() => SagaGenerator) & TickIntervalDecoratorFlag;
+    onEnter: (entryComponentProps?: any) => unknown;
+    onDestroy: () => unknown;
+    onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState> | undefined>) => unknown;
+    onTick: (() => unknown) & TickIntervalDecoratorFlag;
 }
 
 export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string, RouteParam extends object = object, HistoryState extends object = object>
@@ -25,26 +23,26 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
 {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    *onEnter(entryComponentProps: any): SagaGenerator {
+    onEnter(entryComponentProps: any) {
         /**
          * Called when the attached component is initially mounted.
          */
     }
 
-    *onDestroy(): SagaGenerator {
+    onDestroy() {
         /**
          * Called when the attached component is going to unmount
          */
     }
 
-    *onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>): SagaGenerator {
+    onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>) {
         /**
          * Called when the attached component is a React-Route component and its Route location matches
          * It is called each time the location changes, as long as it still matches
          */
     }
 
-    *onTick(): SagaGenerator {
+    onTick() {
         /**
          * Called periodically during the lifecycle of attached component
          * Usually used together with @Interval decorator, to specify the period (in second)
@@ -113,23 +111,32 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
      *
      * https://github.com/react-boilerplate/react-boilerplate/issues/1281
      */
-    pushHistory(url: string): SagaGenerator;
-    pushHistory(url: string, stateMode: "keep-state"): SagaGenerator;
-    pushHistory<T extends object>(url: string, state: T): SagaGenerator; // Recommended explicitly pass the generic type
-    pushHistory(state: HistoryState): SagaGenerator;
+    // pushHistory(url: string): SagaGenerator;
+    // pushHistory(url: string, stateMode: "keep-state"): SagaGenerator;
+    // pushHistory<T extends object>(url: string, state: T): SagaGenerator; // Recommended explicitly pass the generic type
+    // pushHistory(state: HistoryState): SagaGenerator;
 
-    *pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state"): SagaGenerator {
+    // *pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state"): SagaGenerator {
+    //     if (typeof urlOrState === "string") {
+    //         const url: string = urlOrState;
+    //         if (state) {
+    //             yield put(push(url, state === "keep-state" ? app.browserHistory.location.state : state));
+    //         } else {
+    //             yield put(push(url));
+    //         }
+    //     } else {
+    //         const currentURL = location.pathname + location.search;
+    //         const state: HistoryState = urlOrState;
+    //         yield put(push(currentURL, state));
+    //     }
+    // }
+    protected setHistory(urlOrState: HistoryState | string, usePush = true) {
         if (typeof urlOrState === "string") {
-            const url: string = urlOrState;
-            if (state) {
-                yield put(push(url, state === "keep-state" ? app.browserHistory.location.state : state));
-            } else {
-                yield put(push(url));
-            }
+            app.store.dispatch(usePush ? push(urlOrState) : replace(urlOrState));
         } else {
+            // eslint-disable-next-line no-restricted-globals
             const currentURL = location.pathname + location.search;
-            const state: HistoryState = urlOrState;
-            yield put(push(currentURL, state));
+            app.store.dispatch(usePush ? push(currentURL, urlOrState) : replace(currentURL, urlOrState));
         }
     }
 }
