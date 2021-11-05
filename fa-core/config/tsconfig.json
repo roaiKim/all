@@ -20,7 +20,13 @@
         "suppressImplicitAnyIndexErrors": true,
         "skipLibCheck": true,
         "noImplicitOverride": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "paths": {
+            "@component": ["component"],
+            "@icon": ["../node_modules/@ant-design/icons"],
+            "@api": ["service/api"],
+            "@tools": ["tools"],
+        }
     },
     "include": ["../src", "../core"]
 }
