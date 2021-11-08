@@ -22,10 +22,11 @@
         "noImplicitOverride": true,
         "downlevelIteration": true,
         "paths": {
+            "core": ["../core"],
             "@component": ["component"],
             "@icon": ["../node_modules/@ant-design/icons"],
             "@api": ["service/api"],
-            "@tools": ["tools"],
+            "@tools": ["tools"]
         }
     },
     "include": ["../src", "../core"]

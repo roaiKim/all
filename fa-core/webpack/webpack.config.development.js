@@ -33,9 +33,8 @@ module.exports = {
     devtool: "cheap-module-source-map",
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
-        modules: [env.src, "node_modules"],
+        modules: [env.src, env.core, "node_modules"],
         alias: {
-            "@component": "component",
             "@icon": "@ant-design/icons",
             "@api": "service/api",
             "@tools": "tools",
@@ -56,6 +55,7 @@ module.exports = {
                 loader: "ts-loader",
                 options: {
                     configFile: env.tsConfig,
+                    silent: true,
                     transpileOnly: true,
                     getCustomTransformers: () => ({
                         before: [TSImportPlugin({ libraryName: "antd", libraryDirectory: "es", style: true })],

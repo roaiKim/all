@@ -118,7 +118,7 @@ export class ModuleProxy<M extends Module<any, any>> {
 
                 const enterActionName = `${moduleName}/@@ENTER`;
                 const startTime = Date.now();
-                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props.match.params, props.location);
+                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props?.match?.params, props.location);
 
                 // app.logger.info({
                 //     action: enterActionName,

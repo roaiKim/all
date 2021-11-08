@@ -1,18 +1,23 @@
 import React from "react";
 import { UserOutlined, ShoppingCartOutlined, CameraOutlined, CarOutlined } from "@icon";
 import "./index.less";
+import { RootState } from "type/state";
+import { connect, DispatchProp } from "react-redux";
 
-interface MainState {}
+interface HomeState {}
 
-interface MainProps {}
+interface HomeProps extends DispatchProp {
+    name: string | null;
+}
 
-class Main extends React.PureComponent<MainProps, MainState> {
-    constructor(props: MainProps) {
+class Home extends React.PureComponent<HomeProps, HomeState> {
+    constructor(props: HomeProps) {
         super(props);
         this.state = {};
     }
 
     override render() {
+        const { name } = this.props;
         return (
             <article className="ro-module-wrap ro-home-module">
                 <div className="ro-info-wrap">
@@ -27,6 +32,13 @@ class Main extends React.PureComponent<MainProps, MainState> {
                         <ShoppingCartOutlined className="ro-info-box-icon" />
                         <div className="ro-info-box-count">
                             <p>New Orders</p>
+                            <p>16,748</p>
+                        </div>
+                    </div>
+                    <div className="ro-info-box">
+                        <ShoppingCartOutlined className="ro-info-box-icon" />
+                        <div className="ro-info-box-count">
+                            <p>{name}</p>
                             <p>16,748</p>
                         </div>
                     </div>
@@ -50,4 +62,8 @@ class Main extends React.PureComponent<MainProps, MainState> {
     }
 }
 
-export default Main;
+const mapStateToProps = (state: RootState) => ({
+    name: state.app.home.name,
+});
+
+export default connect(mapStateToProps)(Home);

@@ -17,3 +17,7 @@ export { showLoading, loadingAction, navigationPreventionAction } from "./reduce
 export { register } from "./module";
 export { useLoadingStatus, useAction, useObjectKeyAction, useUnaryAction, useBinaryAction } from "./hooks";
 export { logger } from "./app";
+
+export type { ErrorListener } from "./module";
+export type { State } from "./reducer";
+export type { AsyncOptions, AsyncErrorComponentProps } from "./util/async";

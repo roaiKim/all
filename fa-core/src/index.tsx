@@ -1,6 +1,6 @@
-// import { MainComponent } from "module/main";
+import { MainComponent } from "module/home";
 import React from "react";
-import { bootstrap } from "../core";
+import { bootstrap } from "core";
 // import "asset/css/index.less";
 
 function Main() {
@@ -10,7 +10,7 @@ function Main() {
     return <div onClick={as}> fa-core sss</div>;
 }
 
-bootstrap({ componentType: Main, rootContainer: document.getElementById("react-app") });
+bootstrap({ componentType: MainComponent, rootContainer: document.getElementById("react-app") });
 // import React from "react";
 // import ReactDOM from "react-dom";
 

@@ -7,9 +7,9 @@ import { TickIntervalDecoratorFlag } from "../module";
 import { navigationPreventionAction, setStateAction, State } from "../reducer";
 
 // enableES5();
-// if (process.env.NODE_ENV === "development") {
-//     enablePatches();
-// }
+if (process.env.NODE_ENV === "development") {
+    enablePatches();
+}
 
 export interface ModuleLifecycleListener<RouteParam extends object = object, HistoryState extends object = object> {
     onEnter: (entryComponentProps?: any) => unknown;
