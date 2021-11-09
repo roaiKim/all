@@ -26,7 +26,7 @@ module.exports = {
     devtool: "nosources-source-map",
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
-        modules: [env.src, "node_modules"],
+        modules: [env.src, env.core, "node_modules"],
         alias: {
             "@component": "component",
             "@icon": "@ant-design/icons",
@@ -77,7 +77,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                include: env.src,
+                include: [env.src, env.core],
                 loader: "ts-loader",
                 options: {
                     configFile: env.tsConfig,
@@ -102,14 +102,17 @@ module.exports = {
                         loader: "postcss-loader",
                         options: {
                             sourceMap: true,
-                            plugins: () => [autoprefixer],
+                            postcssOptions: {
+                                plugins: [autoprefixer],
+                            },
                         },
                     },
                     {
                         loader: "less-loader",
                         options: {
-                            javascriptEnabled: true,
-                            sourceMap: true,
+                            lessOptions: {
+                                javascriptEnabled: true,
+                            },
                         },
                     },
                 ],
