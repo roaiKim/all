@@ -28,7 +28,7 @@ module.exports = {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
         modules: [env.src, env.core, "node_modules"],
         alias: {
-            "@component": "component",
+            "@core": env.core,
             "@icon": "@ant-design/icons",
             "@api": "service/api",
             "@tools": "tools",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Module, register } from "core";
+import { Module, register } from "@core";
 import Home from "./component";
 import { RootState } from "type/state";
 

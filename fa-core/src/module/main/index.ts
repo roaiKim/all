@@ -1,4 +1,4 @@
-import { Loading, Module, register, loadingAction, showLoading } from "core";
+import { Loading, Module, register, loadingAction, showLoading } from "@core";
 // import { MainService } from "@api/MainService";
 // import { WEB_TOKEN } from "@tools/enumType";
 import { message } from "antd";

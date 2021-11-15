@@ -1,6 +1,6 @@
-import { MainComponent } from "module/home";
+import { MainComponent } from "module/main";
 import React from "react";
-import { bootstrap } from "core";
+import { bootstrap } from "@core";
 // import "asset/css/index.less";
 
 function Main() {

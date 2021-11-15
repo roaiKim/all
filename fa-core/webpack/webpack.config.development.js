@@ -33,8 +33,9 @@ module.exports = {
     devtool: "cheap-module-source-map",
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", ".less"],
-        modules: [env.src, env.core, "node_modules"],
+        modules: [env.src, "node_modules"],
         alias: {
+            "@core": env.core,
             "@icon": "@ant-design/icons",
             "@api": "service/api",
             "@tools": "tools",
