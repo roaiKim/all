@@ -7,11 +7,12 @@ import ReactSortableHoc from "package/react-sortable-hoc";
 import FormikRO from "npm/formik";
 import Flow from "npm/logicflow";
 import BeautifulDnd from "npm/beautiful_dnd";
+import FormRo from "npm/formik";
 
 ReactDOM.render(
     <div>
         {/* <ReactSortableHoc /> */}
-        <BeautifulDnd />
+        <FormRo />
         {/* <Flow /> */}
     </div>,
     document.getElementById("react-app")
