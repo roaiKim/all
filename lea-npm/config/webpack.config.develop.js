@@ -7,10 +7,10 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 
 module.exports = {
     devServer: {
-        port: 5000,
-        hot: true,
+        port: 10010,
         historyApiFallback: true,
         compress: true,
+        open: "Chrome",
     },
     mode: "development",
     entry: {

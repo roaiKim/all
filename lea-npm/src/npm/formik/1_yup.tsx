@@ -51,7 +51,7 @@ export default function SignupForm() {
 
             <label htmlFor="name">name</label>
             <input id="name" type="text" {...formik.getFieldProps("name")} />
-            {formik.touched.name && formik.errors.name ? <span style={{ color: "red" }}>{formik.errors.lastName}</span> : null}
+            {formik.touched.name && formik.errors.name ? <span style={{ color: "red" }}>{formik.errors.name}</span> : null}
 
             <label htmlFor="email">Email Address</label>
             <input id="email" name="email" type="email" onChange={formik.handleChange} value={formik.values.email} onBlur={formik.handleBlur} />

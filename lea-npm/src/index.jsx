@@ -11,7 +11,7 @@ import BeautifulDnd from "npm/beautiful_dnd";
 ReactDOM.render(
     <div>
         {/* <ReactSortableHoc /> */}
-        <BeautifulDnd />
+        <FormikRO />
         {/* <Flow /> */}
     </div>,
     document.getElementById("react-app")
