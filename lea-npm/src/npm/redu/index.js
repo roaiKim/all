@@ -1,16 +1,18 @@
 import Address from "./address.json";
 const getAddressGrade = (list, grade) => {
     const fun = (children, index) => {
+        // index.value = index.value + 1;
+        let config = true;
+        if (index + 1 >= grade) {
+            return null;
+        }
         if (!children?.length) {
             return null;
         }
         return children.map((item) => {
             let chs = null;
-            if (index.value < grade) {
-                item.children?.length && (chs = fun(item.children, index));
-                index.value = index.value + 1;
-            } else {
-                // index.value = 0;
+            if (config && item.children?.length) {
+                chs = fun(item.children, index + 1)
             }
             return {
                 label: item.label,
@@ -20,15 +22,12 @@ const getAddressGrade = (list, grade) => {
         });
     };
     return list.map((item) => {
-        const index = {
-            value: 0,
-        };
+        const index = 0;
         return {
             label: item.label,
             value: item.value,
             children: fun(item.children, index),
         };
     });
-    // return fun(list);
 };
 console.log(getAddressGrade(Address.data, 3));
