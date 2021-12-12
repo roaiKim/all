@@ -12,7 +12,7 @@ export default function () {
     useEffect(() => {
         // 3秒之后可以刷新
         setTimeout(() => {
-            setContent("刷新");
+            setContent("努力加载中...");
         }, 3000);
     }, []);
 
@@ -40,6 +40,7 @@ export default function () {
         <Loading>
             <Button type="link" onClick={refresh}>
                 {content}
+                <div>ss</div>
             </Button>
         </Loading>
     );

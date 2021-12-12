@@ -8,7 +8,7 @@ const yargs = require("yargs");
 
 function spawn(command, args, errorMessage) {
     const isWindows = process.platform === "win32"; // spawn with {shell: true} can solve .cmd resolving, but prettier doesn't run correctly on mac/linux
-    const result = childProcess.spawnSync(isWindows ? command + ".cmd" : command, args, {stdio: "inherit"});
+    const result = childProcess.spawnSync(isWindows ? command + ".cmd" : command, args, { stdio: "inherit" });
     if (result.error) {
         console.error(result.error);
         process.exit(1);
@@ -48,10 +48,10 @@ function compile() {
 function distribute() {
     console.info(chalk`{green.bold [task]} {white.bold distribute}`);
     fs.mkdirsSync("build/dist/lib");
-    fs.copySync("build/out/src", "build/dist/lib/", {dereference: true});
-    fs.copySync("package.json", "build/dist/package.json", {dereference: true});
-    fs.copySync("README.md", "build/dist/README.md", {dereference: true});
-    fs.copySync("src", "build/dist/src", {dereference: true});
+    fs.copySync("build/out/src", "build/dist/lib/", { dereference: true });
+    fs.copySync("package.json", "build/dist/package.json", { dereference: true });
+    fs.copySync("README.md", "build/dist/README.md", { dereference: true });
+    fs.copySync("src", "build/dist/src", { dereference: true });
     fs.removeSync("build/out");
 }
 
