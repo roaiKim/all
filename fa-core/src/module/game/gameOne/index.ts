@@ -6,20 +6,15 @@ import { WEB_TOKEN, COLLAPSED_MENU } from "type/global";
 import { State } from "./type";
 
 const initialState = {
-    user: null,
-    prevPathname: null,
-    collapsed: localStorage.getItem(COLLAPSED_MENU) === "true",
+    name: null,
 };
 
 class GameOneModule extends Module<RootState, "gameOne"> {
     override onEnter(props: any) {
         console.log("");
-
-
+        this.setState({ name: "gameOne" });
     }
 }
-
-
 
 const module = register(new GameOneModule("gameOne", initialState));
 export const actions = module.getActions();

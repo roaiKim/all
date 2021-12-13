@@ -40,7 +40,6 @@ export default function () {
         <Loading>
             <Button type="link" onClick={refresh}>
                 {content}
-                <div>ss</div>
             </Button>
         </Loading>
     );
