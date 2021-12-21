@@ -8,6 +8,6 @@ export default {
     path: "/",
     title: "Table",
     icon: "",
-    Component: async(() => import(/* webpackChunkName: "gameOne" */ "./index"), "MainComponent"),
+    Component: async(() => import(/* webpackChunkName: "gameTwo" */ "./index"), "MainComponent"),
     permissions: [],
 };

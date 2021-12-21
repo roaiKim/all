@@ -20,4 +20,4 @@ export { logger } from "./app";
 
 export type { ErrorListener } from "./module";
 export type { State } from "./reducer";
-export type { AsyncOptions, AsyncErrorComponentProps } from "./util/async";
+export type { AsyncOptions, AsyncErrorComponentProps, ReactComponentKeyOf } from "./util/async";
