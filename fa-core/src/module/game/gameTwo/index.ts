@@ -11,7 +11,7 @@ const initialState = {
 
 class GameTwoModule extends Module<RootState, "gameTwo"> {
     override onEnter(props: any) {
-        console.log("");
+        // console.log("");
         this.setState({ name: "gameTwo" });
     }
 }

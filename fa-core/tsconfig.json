@@ -25,7 +25,7 @@
             "@core": ["../core"],
             "@icon": ["../node_modules/@ant-design/icons"],
             "@api": ["service/api"],
-            "@tools": ["tools"]
+            "@utils": ["../src/utils"]
         }
     },
     "include": ["./src", "./core"]
