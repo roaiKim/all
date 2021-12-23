@@ -9,11 +9,11 @@ function resolve(relativePath) {
 }
 
 function buildPath() {
-    // 开发环境或者windows环境
-    if (process.env.NODE_ENV === "development" || os.type() === "Windows_NT") {
-        return resolve("build");
-    }
-    return "/swtg/web/swtg-front";
+    // // 开发环境或者windows环境
+    // if (process.env.NODE_ENV === "development" || os.type() === "Windows_NT") {
+    //     return resolve("build");
+    // }
+    return resolve("build");
 }
 
 module.exports = {
