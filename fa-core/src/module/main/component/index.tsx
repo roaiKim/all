@@ -5,6 +5,7 @@ import { Switch } from "react-router-dom";
 import { Button, message } from "antd";
 import { cacheModules } from "utils/function/loadComponent";
 import Header from "module/common/header";
+import { RootState } from "type/state";
 
 export default function () {
     return (
