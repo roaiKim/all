@@ -13,6 +13,12 @@ module.exports = {
         historyApiFallback: true,
         compress: true,
         open: "Chrome",
+        client: {
+            overlay: {
+                errors: true,
+                warnings: false,
+            },
+        },
         // proxy: {
         //     "/api": {
         //         target: "http://119.29.53.45",
@@ -38,7 +44,6 @@ module.exports = {
             "@core": env.core,
             "@icon": "@ant-design/icons",
             "@api": "service/api",
-            "@utils": "utils",
         },
     },
     optimization: {

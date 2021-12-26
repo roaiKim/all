@@ -31,7 +31,6 @@ module.exports = {
             "@core": env.core,
             "@icon": "@ant-design/icons",
             "@api": "service/api",
-            "@utils": "utils",
         },
     },
     optimization: {

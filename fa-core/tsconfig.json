@@ -7,7 +7,6 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "inlineSources": true,
-        "declaration": true,
         "strict": true,
         "exactOptionalPropertyTypes": true,
         "allowSyntheticDefaultImports": true,
@@ -23,8 +22,7 @@
         "paths": {
             "@core": ["../core"],
             "@icon": ["../node_modules/@ant-design/icons"],
-            "@api": ["service/api"],
-            "@utils": ["../src/utils"]
+            "@api": ["service/api"]
         }
     },
     "include": ["./src", "./core"]

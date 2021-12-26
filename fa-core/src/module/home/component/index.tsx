@@ -20,6 +20,7 @@ class Home extends React.PureComponent<HomeProps, HomeState> {
 
     override render() {
         const { name } = this.props;
+
         return (
             <article className="ro-module-wrap ro-home-module">
                 <div className="ro-info-wrap">
