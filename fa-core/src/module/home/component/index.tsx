@@ -4,7 +4,9 @@ import "./index.less";
 import { RootState } from "type/state";
 import { connect, DispatchProp } from "react-redux";
 
-interface HomeState {}
+interface HomeState {
+    name?: string;
+}
 
 interface HomeProps extends DispatchProp {
     name: string | null;

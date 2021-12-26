@@ -19,7 +19,6 @@
         "forceConsistentCasingInFileNames": true,
         "suppressImplicitAnyIndexErrors": true,
         "skipLibCheck": true,
-        "noImplicitOverride": true,
         "downlevelIteration": true,
         "paths": {
             "@core": ["../core"],
