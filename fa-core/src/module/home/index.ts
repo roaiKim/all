@@ -21,4 +21,4 @@ class HomeModule extends Module<RootState, "home"> {
 
 const module = register(new HomeModule("home", initialState));
 export const actions = module.getActions();
-export const MainComponent: React.ComponentType = module.connect(Home);
+export const MainComponent = module.connect(Home);

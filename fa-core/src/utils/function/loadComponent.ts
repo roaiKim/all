@@ -20,6 +20,3 @@ export const cacheModules = modulesId
     }))
     .filter((item) => !!item.module)
     .filter((item) => !item.module.disabled);
-
-// console.log("cacheRoute", cacheModules);
-const map = [];

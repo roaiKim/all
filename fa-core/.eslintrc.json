@@ -62,6 +62,7 @@
         "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/no-use-before-define": ["error", "nofunc"],
         "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-empty-function": "off",
         // "no-console": ["error", {"allow": ["info", "warn", "error"]}],
         "no-duplicate-imports": ["error"],
         "no-useless-computed-key": ["error"],
