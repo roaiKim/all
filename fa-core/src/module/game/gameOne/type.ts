@@ -8,5 +8,5 @@ export interface State {
 export const statement: ModuleStatement = {
     path: "/game-one",
     title: "game-one",
-    Component: async(() => import(/* webpackChunkName: "gameTwo" */ "./index"), "MainComponent"),
+    component: async(() => import(/* webpackChunkName: "gameOne" */ "./index"), "MainComponent"),
 };

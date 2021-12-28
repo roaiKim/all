@@ -10,7 +10,7 @@ export interface ModuleStatement {
     title: string;
     icon?: string;
     disabled?: boolean;
-    Component: ComponentType<object>;
+    component: ComponentType<object>;
 }
 
 export const cacheModules = modulesId

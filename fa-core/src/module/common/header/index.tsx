@@ -27,24 +27,24 @@ export default function () {
     );
 
     return (
-        <header className="ro-header-container ro-icon">
-            <MenuFoldOutlined />
+        <header className="ro-header-container">
+            <MenuFoldOutlined className="ro-neu" />
 
-            <ExpandOutlined />
+            <ExpandOutlined className="ro-neu" />
 
             <div className="ro-nav-tabs-container"></div>
 
-            <Badge size="small" count={5} overflowCount={99} offset={[-10, 10]}>
-                <BellOutlined />
-            </Badge>
-
-            <a href="#" className="ro-profile">
+            <a href="#" className="ro-profile ro-neu">
                 <span>rosen</span>
                 <img alt="avatar" width={40} src={headerImg} />
             </a>
 
+            <Badge size="small" count={5} overflowCount={99} offset={[-10, 10]}>
+                <BellOutlined className="ro-neu" />
+            </Badge>
+
             <Dropdown overlay={dropdown} trigger={["click"]}>
-                <SettingOutlined />
+                <SettingOutlined className="ro-neu" />
             </Dropdown>
         </header>
     );

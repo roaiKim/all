@@ -7,6 +7,7 @@ import { cacheModules } from "utils/function/loadComponent";
 import Header from "module/common/header";
 import { Menus } from "components/menus";
 import { RootState } from "type/state";
+import { MainComponent as Home } from "module/home";
 import "./index.less";
 
 export default function () {
@@ -19,10 +20,14 @@ export default function () {
                     <Menus />
                 </menu>
                 <main className="ro-main-body">
-                    {cacheModules.map((item) => {
-                        const Component = item.module.Component;
-                        return <Component key={item.moduleId} />;
-                    })}
+                    <Switch>
+                        {/* <Route path="/" component={Home} /> */}
+                        {cacheModules.map(({ module }) => {
+                            const { path, component } = module;
+                            return <Route key={path} path={path} component={component} />;
+                        })}
+                        {/* <Route component={Nofound} /> */}
+                    </Switch>
                 </main>
             </main>
             <footer></footer>

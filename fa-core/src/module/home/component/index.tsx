@@ -52,13 +52,6 @@ class Home extends React.PureComponent<HomeProps, HomeState> {
                             <p>$45,251</p>
                         </div>
                     </div>
-                    <div className="ro-info-box">
-                        <CarOutlined className="ro-info-box-icon" />
-                        <div className="ro-info-box-count">
-                            <p>Products Delivered</p>
-                            <p>5,124</p>
-                        </div>
-                    </div>
                 </div>
             </article>
         );
