@@ -7,8 +7,8 @@ export interface State {
 }
 
 export const statement: ModuleStatement = {
-    path: "/",
-    title: "Home",
-    order: 1,
-    component: async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent"),
+    path: "/example",
+    title: "Example",
+    order: 99,
+    component: async(() => import(/* webpackChunkName: "example" */ "./index"), "MainComponent"),
 };

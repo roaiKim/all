@@ -5,11 +5,12 @@ const modules = require.context("module/", true, /type\.ts$/);
 // 这个是由于 webpack 本身的 bug 导致的, webpack.config.js 文件中， 如果 resolve.modules 定义了 则 require.context 会有多(双)倍的
 const modulesId: string[] = modules.keys().filter((item: string) => item.startsWith("module"));
 
-export interface ModuleStatement {
+export declare interface ModuleStatement {
     path: string;
     title: string;
     icon?: string;
     disabled?: boolean;
+    order?: number;
     component: ComponentType<object>;
 }
 
@@ -19,4 +20,5 @@ export const cacheModules = modulesId
         module: modules(id).statement as ModuleStatement,
     }))
     .filter((item) => !!item.module)
-    .filter((item) => !item.module.disabled);
+    .filter((item) => !item.module.disabled)
+    .sort((prev, next) => (prev.module.order || 9) - (next.module.order || 10));

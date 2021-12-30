@@ -24,28 +24,28 @@ class Home extends React.PureComponent<HomeProps, HomeState> {
         return (
             <article className="ro-module-wrap ro-home-module">
                 <div className="ro-info-wrap">
-                    <div className="ro-info-box">
+                    <div className="ro-info-box ro-neu-card">
                         <UserOutlined className="ro-info-box-icon" />
                         <div className="ro-info-box-count">
                             <p>Total User</p>
                             <p>12,c548</p>
                         </div>
                     </div>
-                    <div className="ro-info-box">
+                    <div className="ro-info-box ro-neu-card">
                         <ShoppingCartOutlined className="ro-info-box-icon" />
                         <div className="ro-info-box-count">
                             <p>New Orders</p>
                             <p>16,748</p>
                         </div>
                     </div>
-                    <div className="ro-info-box">
+                    <div className="ro-info-box ro-neu-card">
                         <ShoppingCartOutlined className="ro-info-box-icon" />
                         <div className="ro-info-box-count">
                             <p>{name}</p>
                             <p>16,748</p>
                         </div>
                     </div>
-                    <div className="ro-info-box">
+                    <div className="ro-info-box ro-neu-card">
                         <CameraOutlined className="ro-info-box-icon" />
                         <div className="ro-info-box-count">
                             <p>Last Week Earnings</p>

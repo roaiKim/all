@@ -1,3 +1,5 @@
+@import "~asset/less/variable";
+
 .ro-websit-container {
   .ro-main-container {
     display: flex;
@@ -8,13 +10,16 @@
 
       > ul {
         height: 100%;
+        background-color: @main-body-background-color;
       }
     }
 
     .ro-main-body {
       flex-grow: 1;
       padding: 10px;
-      background-color: #e6e7ee;
+      border: 1px solid #eeeef0;
+      background-color: @main-body-background-color;
+    //   background: linear-gradient(145deg, #f3f4f7, #dfe0e5);
     }
   }
 }

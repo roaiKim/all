@@ -1,6 +1,6 @@
 import { MainComponent } from "module/main";
 import { bootstrap } from "@core";
-import "asset/less/normalize.less";
+import "asset/less/index.less";
 
 bootstrap({
     componentType: MainComponent,

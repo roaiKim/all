@@ -16,7 +16,7 @@
     "rules": {
         "prettier/prettier": ["error", {
             "tabWidth": 4,
-            "printWidth": 220,
+            "printWidth": 120,
             "trailingComma": "es5",
             "bracketSpacing": true,
             "endOfLine": "auto"
