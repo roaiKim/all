@@ -17,6 +17,9 @@ export class DictionaryEntity {
     @Column("varchar")
     description: string;
 
+    @Column("int")
+    isJson: number;
+
     @CreateDateColumn({ type: "datetime", name: "create_time", select: false })
     createtime: Date;
 
