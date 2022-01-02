@@ -1,7 +1,7 @@
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "module/user/user.service";
 import { HttpException, HttpStatus, Injectable, forwardRef, Inject } from "@nestjs/common";
-import { RoResponse } from "module/user/type";
+import { RoResponse } from "module/type";
 import { UserEntity } from "module/user/user.entity";
 
 @Injectable()

@@ -1,6 +1,7 @@
 import { resolve } from "path";
 import { Module } from "@nestjs/common";
 import { UserModule } from "./module/user/user.module";
+import { DictionaryModule } from "module/dictionary/index.module";
 import { ConfigModule, ConfigService } from "nestjs-config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 // import { FileUploadModule } from 'module/fileUpload/file.module';
@@ -19,10 +20,11 @@ import { TypeOrmModule } from "@nestjs/typeorm";
             inject: [ConfigService],
         }),
         /* ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../', 'client'),
-      exclude: ['/api*']
-    }), */
+            rootPath: join(__dirname, '../', 'client'),
+            exclude: ['/api*']
+        }), */
         UserModule,
+        DictionaryModule,
         // FileUploadModule,
         // HttpRoModule,
         // ChatEventsModule,

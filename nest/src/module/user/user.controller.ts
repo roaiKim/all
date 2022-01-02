@@ -21,7 +21,7 @@ import {
     Render,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { RoResponse, UserGetUserResponse, UserGetUserRequest, UserUpdateUserRequest, PageLimitResponse } from "./type";
+import { RoResponse, UserGetUserResponse, UserGetUserRequest, UserUpdateUserRequest, PageLimitResponse } from "module/type";
 import { UserRole } from "guards/user.roles.guard";
 import { JwtAuthGuard, redirctAuthGuard } from "guards/auth.ext.guard";
 import { UserEntity } from "./user.entity";
@@ -53,10 +53,10 @@ export class UserController {
             },
         };
         /* response.cookie('token', token, { maxAge: 432000000, httpOnly: true, domain: "http://127.0.0.1:8000", sameSite: "none",secure: true})
-    return response.json({code: 0, message: "OK",data: {
-      user: user,
-      token: token
-    }}) */
+            return response.json({code: 0, message: "OK",data: {
+            user: user,
+            token: token
+            }}) */
     }
 
     // @UseGuards(UserRole)
@@ -80,6 +80,7 @@ export class UserController {
     @SetMetadata("roles", ["admin", "ddd"])
     @Post("create")
     async createUser(@Body() request: UserGetUserRequest[]): Promise<RoResponse<string>> {
+        console.log("create", request);
         const result = await this.userService.createUser(request);
         return { code: 0, message: "OK", data: result };
     }
@@ -122,7 +123,7 @@ export class UserController {
     async getUserByCookie(@Req() request: Request & { user: JwtUserToken }): Promise<RoResponse<UserEntity>> {
         const { user } = request;
         const { userId = "" } = user;
-        console.log("check: 3200");
+        console.log("check: 3200", user);
         const userInfo = await this.userService.getUserByCookie(userId);
         return { code: 0, message: "OK", data: userInfo };
     }
