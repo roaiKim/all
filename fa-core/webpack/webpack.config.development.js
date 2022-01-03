@@ -19,14 +19,14 @@ module.exports = {
                 warnings: false,
             },
         },
-        // proxy: {
-        //     "/api": {
-        //         target: "http://119.29.53.45",
-        //         // target: "http://localhost:3200",
-        //         secure: false,
-        //         changeOrigin: true,
-        //     },
-        // },
+        proxy: {
+            "/api": {
+                // target: "http://119.29.53.45",
+                target: "http://localhost:3200",
+                secure: false,
+                changeOrigin: true,
+            },
+        },
     },
     mode: "development",
     entry: {

@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
+import { TOKEN } from "type/global";
 import { APIException, NetworkConnectionException } from "../Exception";
 
 export type PathParams<T extends string> = string extends T
@@ -24,7 +25,27 @@ axios.defaults.transformResponse = (data, headers) => {
 };
 
 axios.interceptors.response.use(
-    (response) => response,
+    (response: any) => {
+        console.log("response", response);
+        return response;
+
+        if (response?.code === 0) {
+            return response.data;
+        }
+        return new Promise((resolve, reject) => {
+            if (response.data.code !== 0) {
+                if (response.config.bail) {
+                    reject(response.data);
+                } else {
+                    if (response.data && response.data.message) {
+                        // message.error(response.data.message);
+                    }
+                    reject(new Error(response.data.message));
+                }
+            }
+            resolve(response.data.data);
+        });
+    },
     (e) => {
         if (axios.isAxiosError(e)) {
             const error = e as AxiosError<APIErrorResponse | undefined>;
@@ -38,10 +59,22 @@ axios.interceptors.response.use(
                 if (!errorId && (error.response.status === 502 || error.response.status === 504)) {
                     // Treat "cloud" error as Network Exception, e.g: gateway issue, load balancer unconnected to application server
                     // Note: Status 503 is maintenance
-                    throw new NetworkConnectionException(`Gateway error (${error.response.status})`, requestURL, error.message);
+                    throw new NetworkConnectionException(
+                        `Gateway error (${error.response.status})`,
+                        requestURL,
+                        error.message
+                    );
                 } else {
-                    const errorMessage: string = responseData && responseData.message ? responseData.message : `[No Response]`;
-                    throw new APIException(errorMessage, error.response.status, requestURL, responseData, errorId, errorCode);
+                    const errorMessage: string =
+                        responseData && responseData.message ? responseData.message : `[No Response]`;
+                    throw new APIException(
+                        errorMessage,
+                        error.response.status,
+                        requestURL,
+                        responseData,
+                        errorId,
+                        errorCode
+                    );
                 }
             } else {
                 /**
@@ -56,7 +89,13 @@ axios.interceptors.response.use(
     }
 );
 
-export async function ajax<Request, Response, Path extends string>(method: Method, path: Path, pathParams: PathParams<Path>, request: Request, extraConfig: Partial<AxiosRequestConfig> = {}): Promise<Response> {
+export async function ajax<Request, Response, Path extends string>(
+    method: Method,
+    path: Path,
+    pathParams?: PathParams<Path>,
+    request?: Request,
+    extraConfig: Partial<AxiosRequestConfig> = {}
+): Promise<Response> {
     const fullURL = urlParams(path, pathParams);
     const config: AxiosRequestConfig = { ...extraConfig, method, url: fullURL };
 
@@ -69,9 +108,12 @@ export async function ajax<Request, Response, Path extends string>(method: Metho
     config.headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
+        // "Bearer Token": TOKEN,
+        Authorization: `Bearer ${TOKEN}`,
     };
 
     const response = await axios.request<Response>(config);
+    console.log("response11", response);
     return response.data;
 }
 
@@ -80,7 +122,7 @@ export function uri<Request>(path: string, request: Request): string {
     return axios.getUri(config);
 }
 
-export function urlParams(pattern: string, params: object): string {
+export function urlParams(pattern: string, params?: object): string {
     if (!params) {
         return pattern;
     }

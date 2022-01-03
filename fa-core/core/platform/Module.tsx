@@ -2,7 +2,7 @@ import { push, replace } from "connected-react-router";
 import { Location } from "history";
 import { produce, enablePatches, enableES5 } from "immer";
 import { app } from "../app";
-import { Logger } from "../Logger";
+import { Logger } from "../logger";
 import { TickIntervalDecoratorFlag } from "../module";
 import { navigationPreventionAction, setStateAction, State } from "../reducer";
 
@@ -18,8 +18,12 @@ export interface ModuleLifecycleListener<RouteParam extends object = object, His
     onTick: (() => unknown) & TickIntervalDecoratorFlag;
 }
 
-export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string, RouteParam extends object = object, HistoryState extends object = object>
-    implements ModuleLifecycleListener<RouteParam, HistoryState>
+export class Module<
+    RootState extends State,
+    ModuleName extends keyof RootState["app"] & string,
+    RouteParam extends object = object,
+    HistoryState extends object = object
+> implements ModuleLifecycleListener<RouteParam, HistoryState>
 {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
@@ -66,7 +70,12 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
         app.store.dispatch(navigationPreventionAction(isPrevented));
     }
 
-    setState<K extends keyof RootState["app"][ModuleName]>(stateOrUpdater: ((state: RootState["app"][ModuleName]) => void) | Pick<RootState["app"][ModuleName], K> | RootState["app"][ModuleName]): void {
+    setState<K extends keyof RootState["app"][ModuleName]>(
+        stateOrUpdater:
+            | ((state: RootState["app"][ModuleName]) => void)
+            | Pick<RootState["app"][ModuleName], K>
+            | RootState["app"][ModuleName]
+    ): void {
         if (typeof stateOrUpdater === "function") {
             const originalState = this.state;
             const updater = stateOrUpdater as (state: RootState["app"][ModuleName]) => void;
@@ -85,7 +94,9 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
                     : undefined
             );
             if (newState !== originalState) {
-                const description = `@@${this.name}/setState${patchDescriptions ? `[${patchDescriptions.join("/")}]` : ``}`;
+                const description = `@@${this.name}/setState${
+                    patchDescriptions ? `[${patchDescriptions.join("/")}]` : ``
+                }`;
                 app.store.dispatch(setStateAction(this.name, newState, description));
             }
         } else {

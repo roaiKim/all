@@ -20,6 +20,9 @@ export class DictionaryEntity {
     @Column("int")
     isJson: number;
 
+    @Column("int")
+    type: number;
+
     @CreateDateColumn({ type: "datetime", name: "create_time", select: false })
     createtime: Date;
 
