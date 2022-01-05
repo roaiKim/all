@@ -11,7 +11,8 @@ import { MainComponent as Home } from "module/home";
 import "./index.less";
 
 export default function () {
-    console.log("-cacheModules-", cacheModules);
+    // console.log("-cacheModules-", cacheModules);
+
     return (
         <div className="ro-websit-container">
             <Header />

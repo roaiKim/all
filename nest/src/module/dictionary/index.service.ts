@@ -13,12 +13,9 @@ export class DictionaryService {
         private readonly dictionaryRepository: Repository<DictionaryEntity>
     ) {}
 
-    async getUserList(): Promise<[DictionaryEntity[], number]> {
-        const user = await this.dictionaryRepository.findAndCount({
-            take: 10,
-            skip: 0,
-        });
-        return user;
+    async getList(): Promise<DictionaryEntity[]> {
+        const dictionary = await this.dictionaryRepository.find({ where: { code: "DICTIONARY_TREE_LIST" } });
+        return dictionary;
     }
 
     async createUser(dic: DictionaryEntry[]): Promise<string> {

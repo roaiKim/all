@@ -1,25 +1,4 @@
-import {
-    Controller,
-    Get,
-    Query,
-    Post,
-    Body,
-    Param,
-    ParseIntPipe,
-    Redirect,
-    Req,
-    UseGuards,
-    Delete,
-    Res,
-    SetMetadata,
-    forwardRef,
-    Inject,
-    Next,
-    Ip,
-    Session,
-    UseInterceptors,
-    Render,
-} from "@nestjs/common";
+import { Controller, Get, Query, Post, Body, UseGuards } from "@nestjs/common";
 import { DictionaryService } from "./index.service";
 import { RoResponse, UserGetUserResponse, UserGetUserRequest, UserUpdateUserRequest, PageLimitResponse } from "module/type";
 import { UserRole } from "guards/user.roles.guard";
@@ -40,9 +19,9 @@ export class DictionaryController {
     constructor(private readonly dictionaryService: DictionaryService, private readonly authService: AuthService) {}
 
     @Get("list")
-    async getUserList(): Promise<RoResponse<PageLimitResponse<DictionaryEntity>>> {
-        const [list, totalRecord] = await this.dictionaryService.getUserList();
-        return { code: 0, message: "OK", data: { list, totalRecord } };
+    async getUserList(): Promise<RoResponse<DictionaryEntity[]>> {
+        const dictionarys = await this.dictionaryService.getList();
+        return { code: 0, message: "OK", data: dictionarys || [] };
     }
 
     @Post("create")

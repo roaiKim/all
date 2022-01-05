@@ -11,7 +11,6 @@ const initialState = {
 class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
     async onEnter() {
         const records = await Service.get();
-        console.log("ExampleModule module action", records);
         this.setState({ records });
     }
 }

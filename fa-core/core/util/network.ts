@@ -19,32 +19,18 @@ export interface APIErrorResponse {
 axios.defaults.transformResponse = (data, headers) => {
     const contentType = headers?.["content-type"];
     if (contentType?.startsWith("application/json")) {
-        return data;
+        return JSON.parse(data);
     }
     return data;
 };
 
 axios.interceptors.response.use(
     (response: any) => {
-        console.log("response", response);
-        return response;
-
-        if (response?.code === 0) {
-            return response.data;
+        const serviceData = response.data || {};
+        if (serviceData && serviceData.code === 0) {
+            return serviceData.data;
         }
-        return new Promise((resolve, reject) => {
-            if (response.data.code !== 0) {
-                if (response.config.bail) {
-                    reject(response.data);
-                } else {
-                    if (response.data && response.data.message) {
-                        // message.error(response.data.message);
-                    }
-                    reject(new Error(response.data.message));
-                }
-            }
-            resolve(response.data.data);
-        });
+        return serviceData;
     },
     (e) => {
         if (axios.isAxiosError(e)) {
@@ -112,9 +98,7 @@ export async function ajax<Request, Response, Path extends string>(
         Authorization: `Bearer ${TOKEN}`,
     };
 
-    const response = await axios.request<Response>(config);
-    console.log("response11", response);
-    return response.data;
+    return axios.request(config);
 }
 
 export function uri<Request>(path: string, request: Request): string {
