@@ -34,7 +34,7 @@ const columns = [
 
 function DataDictionary(props: DataDictionaryProps) {
     const { records } = props;
-    const [addiong, setAdding] = useState(false);
+    const [adding, setAdding] = useState(false);
     const [inputValue, setInputValue] = useState("");
 
     const text = `A dog is a type of domesticated animal.`;
@@ -58,7 +58,7 @@ function DataDictionary(props: DataDictionaryProps) {
                         <p>{text}</p>
                     </Panel>
                     <div className="ro-tree-add-btn">
-                        {addiong ? (
+                        {adding ? (
                             <div>
                                 <Input
                                     onChange={(event) => setInputValue(event.target.value)}
