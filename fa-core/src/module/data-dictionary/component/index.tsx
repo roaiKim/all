@@ -32,6 +32,11 @@ const columns = [
     },
 ];
 
+async function transformChineseToPinYin(chinese: string) {
+    const { pinyin } = await import(/* webpackChunkName: "pinyin-pro-s" */ "pinyin-pro");
+    return pinyin(chinese, { toneType: "none", type: "array" });
+}
+
 function DataDictionary(props: DataDictionaryProps) {
     const { records } = props;
     const [adding, setAdding] = useState(false);
@@ -41,9 +46,10 @@ function DataDictionary(props: DataDictionaryProps) {
 
     const onAddTreeOuter = (config: boolean) => setAdding(config);
 
-    const onInputBlur = () => {
+    const onInputBlur = async () => {
         if (inputValue) {
-            alert("inputValue -- " + inputValue);
+            const py = await transformChineseToPinYin(inputValue);
+            alert("inputValue -- " + py.join("_").toUpperCase());
         }
     };
 
