@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Post, Body, UseGuards } from "@nestjs/common";
+import { Controller, Get, Query, Post, Body, UseGuards, SetMetadata } from "@nestjs/common";
 import { DictionaryService } from "./index.service";
 import { RoResponse, UserGetUserResponse, UserGetUserRequest, UserUpdateUserRequest, PageLimitResponse } from "module/type";
 import { UserRole } from "guards/user.roles.guard";
@@ -18,16 +18,16 @@ import { DictionaryEntry } from "./type";
 export class DictionaryController {
     constructor(private readonly dictionaryService: DictionaryService, private readonly authService: AuthService) {}
 
-    @Get("list")
-    async getUserList(): Promise<RoResponse<DictionaryEntity[]>> {
+    @Get("get/tree")
+    async getUserList(): Promise<RoResponse<DictionaryEntity>> {
         const dictionarys = await this.dictionaryService.getList();
-        return { code: 0, message: "OK", data: dictionarys || [] };
+        return { code: 0, message: "OK", data: dictionarys || null };
     }
 
-    @Post("create")
-    async createUser(@Body() requests: DictionaryEntry[]): Promise<RoResponse<string>> {
-        console.log("requests", requests);
-        const result = await this.dictionaryService.createUser(requests);
+    @Post("create/tree")
+    async createUser(@Body() request: DictionaryEntry[]): Promise<RoResponse<string>> {
+        console.log("request", request);
+        const result = await this.dictionaryService.createUser(request);
         return { code: 0, message: "OK", data: result };
     }
 }

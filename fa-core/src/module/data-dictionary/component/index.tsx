@@ -6,11 +6,12 @@ import { connect, DispatchProp } from "react-redux";
 import { Collapse, Input, Table } from "antd";
 import { DataDictionaryRecords } from "../type";
 import { PageLimitResponse } from "type";
+import { actions } from "module/data-dictionary";
 
 const { Panel } = Collapse;
 
 interface DataDictionaryProps extends DispatchProp {
-    records: PageLimitResponse<DataDictionaryRecords[]> | null;
+    records: PageLimitResponse<DataDictionaryRecords> | null;
 }
 
 const columns = [
@@ -49,7 +50,25 @@ function DataDictionary(props: DataDictionaryProps) {
     const onInputBlur = async () => {
         if (inputValue) {
             const py = await transformChineseToPinYin(inputValue);
-            alert("inputValue -- " + py.join("_").toUpperCase());
+            const code = py.join("_").toUpperCase();
+            const { dispatch } = props;
+            if (!records) {
+                // 新增
+                const pramas = {
+                    isJson: 1,
+                    type: 1,
+                    code: "DICTIONARY_TREE_LIST",
+                    content: JSON.stringify([
+                        {
+                            code,
+                            text: inputValue,
+                        },
+                    ]),
+                };
+                dispatch(actions.createTree(pramas));
+            } else {
+                //
+            }
         }
     };
 

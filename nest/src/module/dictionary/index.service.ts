@@ -13,8 +13,8 @@ export class DictionaryService {
         private readonly dictionaryRepository: Repository<DictionaryEntity>
     ) {}
 
-    async getList(): Promise<DictionaryEntity[]> {
-        const dictionary = await this.dictionaryRepository.find({ where: { code: "DICTIONARY_TREE_LIST" } });
+    async getList(): Promise<DictionaryEntity> {
+        const dictionary = await this.dictionaryRepository.findOne({ where: { code: "DICTIONARY_TREE_LIST" } });
         return dictionary;
     }
 
@@ -23,10 +23,9 @@ export class DictionaryService {
             await this.dictionaryRepository.insert(dic);
             return "ok";
         } catch (exception) {
-            console.log("exception", exception);
             throw new HttpException(
                 {
-                    message: `${((exception.sqlMessage || "").match(/(?<='|").*?(?='|")/) || [])[0]} 已存在`,
+                    message: exception.sqlMessage,
                     error: exception.toString(),
                     code: 15530,
                 },

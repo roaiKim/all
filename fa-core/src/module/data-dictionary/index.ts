@@ -13,6 +13,11 @@ class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
         const records = await Service.get();
         this.setState({ records });
     }
+
+    async createTree(request) {
+        const records = await Service.createTree(request);
+        this.setState({ records });
+    }
 }
 
 const module = register(new DataDictionaryModule("dataDictionary", initialState));

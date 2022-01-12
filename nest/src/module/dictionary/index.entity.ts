@@ -5,22 +5,22 @@ export class DictionaryEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column({ type: "varchar" })
+    @Column({ type: "varchar", unique: true })
     code: string;
 
-    @Column("varchar")
+    @Column({ type: "varchar", nullable: true })
     text: string;
 
     @Column("longtext")
     content: string;
 
-    @Column("varchar")
+    @Column({ type: "varchar", nullable: true })
     description: string;
 
-    @Column("int")
+    @Column({ type: "int", default: 2 })
     isJson: number;
 
-    @Column("int")
+    @Column({ type: "int", default: 2 })
     type: number;
 
     @CreateDateColumn({ type: "datetime", name: "create_time", select: false })
