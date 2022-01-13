@@ -19,15 +19,21 @@ export class DictionaryController {
     constructor(private readonly dictionaryService: DictionaryService, private readonly authService: AuthService) {}
 
     @Get("get/tree")
-    async getUserList(): Promise<RoResponse<DictionaryEntity>> {
+    async getTree(): Promise<RoResponse<DictionaryEntity>> {
         const dictionarys = await this.dictionaryService.getList();
         return { code: 0, message: "OK", data: dictionarys || null };
     }
 
     @Post("create/tree")
-    async createUser(@Body() request: DictionaryEntry[]): Promise<RoResponse<string>> {
-        console.log("request", request);
-        const result = await this.dictionaryService.createUser(request);
+    async createTree(@Body() request: DictionaryEntry): Promise<RoResponse<string>> {
+        const result = await this.dictionaryService.createTree(request);
+        return { code: 0, message: "OK", data: result };
+    }
+
+    @Post("update/tree")
+    async updateTree(@Body() request: DictionaryEntry): Promise<RoResponse<string>> {
+        const { content } = request;
+        const result = await this.dictionaryService.updateTree(content);
         return { code: 0, message: "OK", data: result };
     }
 }

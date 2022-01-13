@@ -11,7 +11,7 @@ import { actions } from "module/data-dictionary";
 const { Panel } = Collapse;
 
 interface DataDictionaryProps extends DispatchProp {
-    records: PageLimitResponse<DataDictionaryRecords> | null;
+    records: DataDictionaryRecords | null;
 }
 
 const columns = [
@@ -33,6 +33,11 @@ const columns = [
     },
 ];
 
+interface TreeContent {
+    code: string;
+    text: string;
+}
+
 async function transformChineseToPinYin(chinese: string) {
     const { pinyin } = await import(/* webpackChunkName: "pinyin-pro-s" */ "pinyin-pro");
     return pinyin(chinese, { toneType: "none", type: "array" });
@@ -47,7 +52,7 @@ function DataDictionary(props: DataDictionaryProps) {
 
     const onAddTreeOuter = (config: boolean) => setAdding(config);
 
-    const onInputBlur = async () => {
+    const onTreeCreateOrUpdate = async () => {
         if (inputValue) {
             const py = await transformChineseToPinYin(inputValue);
             const code = py.join("_").toUpperCase();
@@ -55,9 +60,6 @@ function DataDictionary(props: DataDictionaryProps) {
             if (!records) {
                 // 新增
                 const pramas = {
-                    isJson: 1,
-                    type: 1,
-                    code: "DICTIONARY_TREE_LIST",
                     content: JSON.stringify([
                         {
                             code,
@@ -67,27 +69,39 @@ function DataDictionary(props: DataDictionaryProps) {
                 };
                 dispatch(actions.createTree(pramas));
             } else {
-                //
+                const { content: stringContent } = records;
+                const content = JSON.parse(stringContent);
+                const pramas = {
+                    content: JSON.stringify([
+                        ...content,
+                        {
+                            code,
+                            text: inputValue,
+                        },
+                    ]),
+                };
+                dispatch(actions.updateTree(pramas));
             }
         }
     };
+
+    const tree = JSON.parse(records?.content || "[]");
 
     return (
         <div className="ro-data-dictionary-module-container">
             <div className="ro-tree-container">
                 <Collapse accordion ghost>
-                    <Panel header="This is panel header 1" key="1">
-                        <p>{text}</p>
-                    </Panel>
-                    <Panel header="This is panel header 2" key="2">
-                        <p>{text}</p>
-                    </Panel>
+                    {tree.map((item: TreeContent) => (
+                        <Panel header={item.text} key={item.code}>
+                            <p>{text}</p>
+                        </Panel>
+                    ))}
                     <div className="ro-tree-add-btn">
                         {adding ? (
                             <div>
                                 <Input
                                     onChange={(event) => setInputValue(event.target.value)}
-                                    onBlur={onInputBlur}
+                                    onBlur={onTreeCreateOrUpdate}
                                     placeholder="请输入类型"
                                     bordered={false}
                                 />
@@ -102,7 +116,7 @@ function DataDictionary(props: DataDictionaryProps) {
                 </Collapse>
             </div>
             <div className="ro-table-container">
-                <Table rowKey="id" columns={columns} dataSource={records?.list || []} />
+                {/* <Table rowKey="id" columns={columns} dataSource={records || []} /> */}
             </div>
         </div>
     );

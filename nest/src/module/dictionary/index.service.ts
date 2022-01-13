@@ -18,9 +18,31 @@ export class DictionaryService {
         return dictionary;
     }
 
-    async createUser(dic: DictionaryEntry[]): Promise<string> {
+    async createTree(dic: DictionaryEntry): Promise<string> {
         try {
-            await this.dictionaryRepository.insert(dic);
+            const tree = {
+                isJson: 1,
+                type: 1,
+                code: "DICTIONARY_TREE_LIST",
+                ...dic,
+            };
+            await this.dictionaryRepository.insert(tree);
+            return "ok";
+        } catch (exception) {
+            throw new HttpException(
+                {
+                    message: exception.sqlMessage,
+                    error: exception.toString(),
+                    code: 15530,
+                },
+                HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    async updateTree(content: string): Promise<string> {
+        try {
+            await this.dictionaryRepository.update({ code: "DICTIONARY_TREE_LIST" }, { content });
             return "ok";
         } catch (exception) {
             throw new HttpException(

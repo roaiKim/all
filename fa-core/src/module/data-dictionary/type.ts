@@ -12,7 +12,7 @@ export interface DataDictionaryRecords {
 }
 
 export interface State {
-    records: PageLimitResponse<DataDictionaryRecords> | null;
+    records: DataDictionaryRecords | null;
 }
 
 export const statement: ModuleStatement = {

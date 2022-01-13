@@ -10,6 +10,10 @@ const initialState = {
 
 class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
     async onEnter() {
+        this.getTree();
+    }
+
+    async getTree() {
         const records = await Service.get();
         this.setState({ records });
     }
@@ -17,6 +21,11 @@ class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
     async createTree(request) {
         const records = await Service.createTree(request);
         this.setState({ records });
+    }
+
+    async updateTree(request) {
+        await Service.updateTree(request);
+        this.getTree();
     }
 }
 

@@ -3,4 +3,6 @@ export interface DictionaryEntry {
     text: string;
     content: string;
     description: string;
+    isJson: number;
+    type: number;
 }
