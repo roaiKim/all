@@ -1,5 +1,5 @@
 import React from "react";
-import { Exception } from "../Exception";
+import { Exception } from "../allException";
 import { captureError } from "./error-util";
 
 interface Props {
@@ -20,7 +20,9 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
     }
 
     override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-        const exception = captureError(error, "@@framework/error-boundary", { extraStacktrace: errorInfo.componentStack });
+        const exception = captureError(error, "@@framework/error-boundary", {
+            extraStacktrace: errorInfo.componentStack,
+        });
         this.setState({ exception });
     }
 

@@ -9,7 +9,7 @@ import { LoggerConfig } from "../logger";
 import { ErrorListener, executeAction } from "../module";
 import { ErrorBoundary } from "../util/ErrorBoundary";
 import { ajax } from "../util/network";
-import { APIException } from "../Exception";
+import { APIException } from "../allException";
 import { isIEBrowser } from "../util/navigator-util";
 import { captureError, errorToException } from "../util/error-util";
 
@@ -59,7 +59,11 @@ export function bootstrap(option: BootstrapOption): void {
     setupAppExitListener(option.loggerConfig?.serverURL);
     setupLocationChangeListener(option.browserConfig?.onLocationChange);
     // runBackgroundLoop(option.loggerConfig, option.versionConfig);
-    renderRoot(option.componentType, option.rootContainer || injectRootContainer(), option.browserConfig?.navigationPreventionMessage || "Are you sure to leave current page?");
+    renderRoot(
+        option.componentType,
+        option.rootContainer || injectRootContainer(),
+        option.browserConfig?.navigationPreventionMessage || "Are you sure to leave current page?"
+    );
 }
 
 function detectIEBrowser(onIE?: () => void) {
@@ -72,7 +76,8 @@ function detectIEBrowser(onIE?: () => void) {
             if (navigatorLanguage.startsWith("zh")) {
                 ieAlertMessage = "对不起，本网站不支持 IE 浏览器\n请使用 Chrome/Firefox/360 浏览器再访问";
             } else {
-                ieAlertMessage = "This website does not support IE browser.\nPlease use Chrome/Safari/Firefox to visit.\nSorry for the inconvenience.";
+                ieAlertMessage =
+                    "This website does not support IE browser.\nPlease use Chrome/Safari/Firefox to visit.\nSorry for the inconvenience.";
             }
             alert(ieAlertMessage);
         }
@@ -130,7 +135,11 @@ function setupGlobalErrorHandler(errorListener?: ErrorListener) {
     );
 }
 
-function renderRoot(EntryComponent: React.ComponentType, rootContainer: HTMLElement, navigationPreventionMessage: string) {
+function renderRoot(
+    EntryComponent: React.ComponentType,
+    rootContainer: HTMLElement,
+    navigationPreventionMessage: string
+) {
     ReactDOM.render(
         <Provider store={app.store}>
             <ConnectedRouter history={app.browserHistory}>

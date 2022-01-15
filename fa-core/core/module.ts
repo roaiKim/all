@@ -1,5 +1,5 @@
 import { app } from "./app";
-import { Exception } from "./Exception";
+import { Exception } from "./allException";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";
@@ -17,7 +17,10 @@ export type ActionHandler = (...args: any[]) => any;
 export type ErrorHandler = (error: Exception) => unknown;
 
 type ActionCreator<H> = H extends (...args: infer P) => unknown ? (...args: P) => Action<P> : never;
-type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: any[]) => unknown ? K : never }[Exclude<keyof H, keyof ModuleLifecycleListener | keyof ErrorListener>];
+type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: any[]) => unknown ? K : never }[Exclude<
+    keyof H,
+    keyof ModuleLifecycleListener | keyof ErrorListener
+>];
 export type ActionCreators<H> = { readonly [K in HandlerKeys<H>]: ActionCreator<H[K]> };
 
 export function register<M extends Module<any, any>>(module: M): ModuleProxy<M> {

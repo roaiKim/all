@@ -10,7 +10,13 @@ import { Location } from "history";
 let startupModuleName: string | null = null;
 
 function locationsAreEqual(a: Location, b: Location) {
-    return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash && a.key === b.key && a.state === b.state;
+    return (
+        a.pathname === b.pathname &&
+        a.search === b.search &&
+        a.hash === b.hash &&
+        a.key === b.key &&
+        a.state === b.state
+    );
 }
 
 export class ModuleProxy<M extends Module<any, any>> {
@@ -56,10 +62,20 @@ export class ModuleProxy<M extends Module<any, any>> {
                 const currentLocation = props.location;
                 const currentRouteParams = props.match ? props.match.params : null;
 
-                if (currentLocation && currentRouteParams && !locationsAreEqual(currentLocation, prevLocation) && this.hasOwnLifecycle("onLocationMatched")) {
+                if (
+                    currentLocation &&
+                    currentRouteParams &&
+                    !locationsAreEqual(currentLocation, prevLocation) &&
+                    this.hasOwnLifecycle("onLocationMatched")
+                ) {
                     const actionName = `${moduleName}/@@LOCATION_MATCHED`;
                     const startTime = Date.now();
-                    await executeAction(actionName, lifecycleListener.onLocationMatched.bind(lifecycleListener) as ActionHandler, currentRouteParams, currentLocation);
+                    await executeAction(
+                        actionName,
+                        lifecycleListener.onLocationMatched.bind(lifecycleListener) as ActionHandler,
+                        currentRouteParams,
+                        currentLocation
+                    );
                     // app.logger.info({
                     //     action,
                     //     elapsedTime: Date.now() - startTime,
@@ -118,7 +134,12 @@ export class ModuleProxy<M extends Module<any, any>> {
 
                 const enterActionName = `${moduleName}/@@ENTER`;
                 const startTime = Date.now();
-                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props?.match?.params, props.location);
+                await executeAction(
+                    enterActionName,
+                    lifecycleListener.onEnter.bind(lifecycleListener),
+                    props?.match?.params,
+                    props.location
+                );
 
                 // app.logger.info({
                 //     action: enterActionName,
@@ -132,7 +153,12 @@ export class ModuleProxy<M extends Module<any, any>> {
                     if ("match" in props && "location" in props) {
                         const initialRenderActionName = `${moduleName}/@@LOCATION_MATCHED`;
                         const startTime = Date.now();
-                        await executeAction(initialRenderActionName, lifecycleListener.onLocationMatched.bind(lifecycleListener) as ActionHandler, props.match.params, props.location);
+                        await executeAction(
+                            initialRenderActionName,
+                            lifecycleListener.onLocationMatched.bind(lifecycleListener) as ActionHandler,
+                            props.match.params,
+                            props.location
+                        );
                         // app.logger.info({
                         //     action: initialRenderActionName,
                         //     elapsedTime: Date.now() - startTime,
@@ -142,7 +168,9 @@ export class ModuleProxy<M extends Module<any, any>> {
                         //     },
                         // });
                     } else {
-                        console.error(`[framework] Module component [${moduleName}] is non-route, use onEnter() instead of onLocationMatched()`);
+                        console.error(
+                            `[framework] Module component [${moduleName}] is non-route, use onEnter() instead of onLocationMatched()`
+                        );
                     }
                 }
 

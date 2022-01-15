@@ -88,7 +88,10 @@ export function navigationPreventionAction(isPrevented: boolean): Action<Navigat
     };
 }
 
-function navigationPreventionReducer(state: boolean = false, action: Action<NavigationPreventionActionPayload>): boolean {
+function navigationPreventionReducer(
+    state: boolean = false,
+    action: Action<NavigationPreventionActionPayload>
+): boolean {
     if (action.type === NAVIGATION_PREVENTION_ACTION) {
         const payload = action.payload as NavigationPreventionActionPayload;
         return payload.isPrevented;

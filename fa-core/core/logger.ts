@@ -1,7 +1,7 @@
 import { loggerContext } from "./platform/logger-context";
 import { errorToException } from "./util/error-util";
 import { app } from "./app";
-import { APIException, Exception, JavaScriptException, NetworkConnectionException } from "./Exception";
+import { APIException, Exception, JavaScriptException, NetworkConnectionException } from "./allException";
 
 interface Log {
     date: Date;
@@ -122,7 +122,13 @@ export class LoggerImpl implements Logger {
             errorCode = "JAVASCRIPT_ERROR";
         }
 
-        this.createLog(isWarning ? "WARN" : "ERROR", { action, errorCode, errorMessage: exception.message, info, elapsedTime: 0 });
+        this.createLog(isWarning ? "WARN" : "ERROR", {
+            action,
+            errorCode,
+            errorMessage: exception.message,
+            info,
+            elapsedTime: 0,
+        });
     }
 
     collect(maxSize: number = 0): ReadonlyArray<Log> {

@@ -1,4 +1,4 @@
-import { NetworkConnectionException } from "../Exception";
+import { NetworkConnectionException } from "../allException";
 import { createActionHandlerDecorator } from "./index";
 import { app } from "../app";
 

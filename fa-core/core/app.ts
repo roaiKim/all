@@ -42,7 +42,10 @@ function createApp(): App {
     //     onError: (error, info) => captureError(error, "@@framework/detached-saga", { extraStacktrace: info.sagaStack }),
     // });
     // const store: Store<State> = createStore(rootReducer(browserHistory), composeWithDevTools(applyMiddleware(routerMiddleware(browserHistory))));
-    const store: Store<State> = createStore(rootReducer(browserHistory), composeWithDevTools(applyMiddleware(routerMiddleware(browserHistory), executeMethodMiddleware)));
+    const store: Store<State> = createStore(
+        rootReducer(browserHistory),
+        composeWithDevTools(applyMiddleware(routerMiddleware(browserHistory), executeMethodMiddleware))
+    );
     // sagaMiddleware.run(function* () {
     //     yield takeEvery("*", function* (action: Action<any>) {
     //         const handler = app.actionHandlers[action.type];
