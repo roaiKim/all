@@ -1,0 +1,33 @@
+{
+    "apps": [
+        {
+            "name": "nest-3200",
+            "script": "./dist/src/main.js",
+            "error_file": "./dist/logs/error.log",
+            "out_file": "./dist/logs/out_file.log",
+            "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
+            "watch": ["./dist/src"],
+            "ignore_watch": [
+                "node_modules",
+                "logs"
+            ],
+            "exec_mode": "cluster_mode",
+            "instances": 2,
+            "max_memory_restart": "512M",
+            "max_restarts": 30,
+            "autorestart": true,
+            "env": {
+                "NODE_ENV": "production",
+                "REMOTE_ADDR": "wa"
+            },
+            "env_dev": {
+                "NODE_ENV": "development",
+                "REMOTE_ADDR": ""
+            },
+            "env_test": {
+                "NODE_ENV": "test",
+                "REMOTE_ADDR": ""
+            }
+        }
+    ]
+}
