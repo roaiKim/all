@@ -7,6 +7,7 @@ import { Collapse, Input, Table } from "antd";
 import { DataDictionaryRecords } from "../type";
 import { PageLimitResponse } from "type";
 import { actions } from "module/data-dictionary";
+import InputModal from "./InputModal";
 
 const { Panel } = Collapse;
 
@@ -46,11 +47,17 @@ async function transformChineseToPinYin(chinese: string) {
 function DataDictionary(props: DataDictionaryProps) {
     const { records } = props;
     const [adding, setAdding] = useState(false);
+    const [show, setShow] = useState(false);
     const [inputValue, setInputValue] = useState("");
 
     const text = `A dog is a type of domesticated animal.`;
 
     const onAddTreeOuter = (config: boolean) => setAdding(config);
+
+    const closeAddStatus = () => {
+        setAdding(false);
+        setInputValue("");
+    };
 
     const onTreeCreateOrUpdate = async () => {
         if (inputValue) {
@@ -67,7 +74,7 @@ function DataDictionary(props: DataDictionaryProps) {
                         },
                     ]),
                 };
-                dispatch(actions.createTree(pramas));
+                dispatch(actions.createTree(pramas, closeAddStatus));
             } else {
                 const { content: stringContent } = records;
                 const content = JSON.parse(stringContent);
@@ -80,8 +87,10 @@ function DataDictionary(props: DataDictionaryProps) {
                         },
                     ]),
                 };
-                dispatch(actions.updateTree(pramas));
+                dispatch(actions.updateTree(pramas, closeAddStatus));
             }
+        } else {
+            // setAdding(false);
         }
     };
 
@@ -89,11 +98,15 @@ function DataDictionary(props: DataDictionaryProps) {
 
     return (
         <div className="ro-data-dictionary-module-container">
+            <InputModal show={show} setShow={setShow}></InputModal>
             <div className="ro-tree-container">
                 <Collapse accordion ghost>
                     {tree.map((item: TreeContent) => (
                         <Panel header={item.text} key={item.code}>
-                            <p>{text}</p>
+                            <PlusCircleOutlined
+                                onClick={() => setShow(true)}
+                                style={{ fontSize: 16, cursor: "pointer", marginLeft: 25 }}
+                            />
                         </Panel>
                     ))}
                     <div className="ro-tree-add-btn">

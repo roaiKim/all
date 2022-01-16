@@ -21,3 +21,7 @@ export const statement: ModuleStatement = {
     order: 4,
     component: async(() => import(/* webpackChunkName: "dataDictionary" */ "./index"), "MainComponent"),
 };
+
+export interface TreeContent {
+    content: string;
+}
