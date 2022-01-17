@@ -47,10 +47,8 @@ async function transformChineseToPinYin(chinese: string) {
 function DataDictionary(props: DataDictionaryProps) {
     const { records } = props;
     const [adding, setAdding] = useState(false);
-    const [show, setShow] = useState(false);
+    const [subTree, setSubTree] = useState<TreeContent | null>(null);
     const [inputValue, setInputValue] = useState("");
-
-    const text = `A dog is a type of domesticated animal.`;
 
     const onAddTreeOuter = (config: boolean) => setAdding(config);
 
@@ -94,17 +92,27 @@ function DataDictionary(props: DataDictionaryProps) {
         }
     };
 
+    const onAddSubTree = async (text: string) => {
+        if (text) {
+            const py = await transformChineseToPinYin(text);
+            const code = py.join("_").toUpperCase();
+            const pramas = { code, text };
+            const { dispatch } = props;
+            dispatch(actions.addSubTree(subTree!.code, pramas, closeAddStatus));
+        }
+    };
+
     const tree = JSON.parse(records?.content || "[]");
 
     return (
         <div className="ro-data-dictionary-module-container">
-            <InputModal show={show} setShow={setShow}></InputModal>
+            <InputModal show={!!subTree} setShow={setSubTree} onSubmit={onAddSubTree}></InputModal>
             <div className="ro-tree-container">
                 <Collapse accordion ghost>
                     {tree.map((item: TreeContent) => (
                         <Panel header={item.text} key={item.code}>
                             <PlusCircleOutlined
-                                onClick={() => setShow(true)}
+                                onClick={() => setSubTree(item)}
                                 style={{ fontSize: 16, cursor: "pointer", marginLeft: 25 }}
                             />
                         </Panel>

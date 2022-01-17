@@ -4,5 +4,5 @@ export interface DictionaryEntry {
     content: string;
     description: string;
     isJson: number;
-    type: number;
+    type: string;
 }

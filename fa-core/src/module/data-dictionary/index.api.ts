@@ -1,5 +1,5 @@
 import { ajax } from "@core";
-import { DataDictionaryRecords, TreeContent } from "./type";
+import { DataDictionaryRecords, SubTreeText, TreeContent } from "./type";
 
 export class DictionaryService {
     static get(): Promise<DataDictionaryRecords> {
@@ -12,5 +12,9 @@ export class DictionaryService {
 
     static updateTree(request: TreeContent): Promise<DataDictionaryRecords> {
         return ajax("POST", "/api/dictionary/update/tree", {}, request);
+    }
+
+    static addSubTree(type: string, request: SubTreeText): Promise<DataDictionaryRecords> {
+        return ajax("POST", "/api/dictionary/add/:type", { type }, request);
     }
 }

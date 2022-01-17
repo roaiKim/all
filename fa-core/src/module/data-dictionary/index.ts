@@ -3,7 +3,7 @@ import { Module, register } from "@core";
 import Home from "./component";
 import { RootState } from "type/state";
 import { DictionaryService } from "./index.api";
-import { TreeContent } from "./type";
+import { SubTreeText, TreeContent } from "./type";
 
 const initialState = {
     records: null,
@@ -27,6 +27,12 @@ class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
 
     async updateTree(request: TreeContent, callBack: () => void) {
         await DictionaryService.updateTree(request);
+        this.getTree();
+        callBack();
+    }
+
+    async addSubTree(type: string, request: SubTreeText, callBack: () => void) {
+        await DictionaryService.addSubTree(type, request);
         this.getTree();
         callBack();
     }

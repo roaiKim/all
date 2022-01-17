@@ -25,3 +25,5 @@ export const statement: ModuleStatement = {
 export interface TreeContent {
     content: string;
 }
+
+export type SubTreeText = Pick<DataDictionaryRecords, "code" | "text">;

@@ -22,7 +22,6 @@ export class DictionaryService {
         try {
             const tree = {
                 isJson: 1,
-                type: 1,
                 code: "DICTIONARY_TREE_LIST",
                 ...dic,
             };
@@ -54,5 +53,27 @@ export class DictionaryService {
                 HttpStatus.BAD_REQUEST
             );
         }
+    }
+
+    async addSubTree(type: string, text: string, code: string): Promise<string> {
+        try {
+            const tree = { isJson: 1, type, code, text };
+            await this.dictionaryRepository.insert(tree);
+            return "ok";
+        } catch (exception) {
+            throw new HttpException(
+                {
+                    message: exception.sqlMessage,
+                    error: exception.toString(),
+                    code: 15530,
+                },
+                HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    async getSub(type: string): Promise<DictionaryEntity[]> {
+        const dictionary = await this.dictionaryRepository.find({ where: { type } });
+        return dictionary;
     }
 }

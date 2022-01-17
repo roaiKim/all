@@ -10,25 +10,26 @@ import { actions } from "module/data-dictionary";
 
 interface InputModalProps {
     show: boolean;
-    setShow: (show: boolean) => void;
+    setShow: (show: null) => void;
+    onSubmit: (text: string) => void;
 }
 
 function InputModal(props: InputModalProps) {
-    const { show, setShow } = props;
+    const { show, setShow, onSubmit } = props;
     const [inputValue, setInputValue] = useState("");
 
     const handleClose = () => {
-        setShow(false);
+        setShow(null);
         setInputValue("");
     };
 
     const handleOk = () => {
-        //
+        inputValue && onSubmit(inputValue);
         handleClose();
     };
 
     return (
-        <Modal title="--" visible={show} onOk={handleOk} onCancel={handleClose}>
+        <Modal title="--" maskClosable={false} visible={show} onOk={handleOk} onCancel={handleClose}>
             <Input
                 onChange={(event) => setInputValue(event.target.value)}
                 placeholder="请输入"

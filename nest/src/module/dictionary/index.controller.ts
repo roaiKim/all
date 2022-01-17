@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Post, Body, UseGuards, SetMetadata } from "@nestjs/common";
+import { Controller, Get, Query, Post, Body, UseGuards, SetMetadata, Param } from "@nestjs/common";
 import { DictionaryService } from "./index.service";
 import { RoResponse, UserGetUserResponse, UserGetUserRequest, UserUpdateUserRequest, PageLimitResponse } from "module/type";
 import { UserRole } from "guards/user.roles.guard";
@@ -34,6 +34,19 @@ export class DictionaryController {
     async updateTree(@Body() request: DictionaryEntry): Promise<RoResponse<string>> {
         const { content } = request;
         const result = await this.dictionaryService.updateTree(content);
+        return { code: 0, message: "OK", data: result };
+    }
+
+    @Post("add/:type")
+    async addSubTree(@Param("type") type: string, @Body() request: DictionaryEntry): Promise<RoResponse<string>> {
+        const { text, code } = request;
+        const result = await this.dictionaryService.addSubTree(type, text, code);
+        return { code: 0, message: "OK", data: result };
+    }
+
+    @Get("get/:type")
+    async getSubTree(@Param("type") type: string): Promise<RoResponse<DictionaryEntry[]>> {
+        const result = await this.dictionaryService.getSub(type);
         return { code: 0, message: "OK", data: result };
     }
 }
