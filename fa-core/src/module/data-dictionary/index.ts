@@ -2,7 +2,8 @@ import React from "react";
 import { Module, register } from "@core";
 import Home from "./component";
 import { RootState } from "type/state";
-import { Service } from "./index.api";
+import { DictionaryService } from "./index.api";
+import { SubTreeText, TreeContent } from "./type";
 
 const initialState = {
     records: null,
@@ -14,18 +15,26 @@ class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
     }
 
     async getTree() {
-        const records = await Service.get();
+        const records = await DictionaryService.get();
         this.setState({ records });
     }
 
-    async createTree(request) {
-        const records = await Service.createTree(request);
+    async createTree(request: TreeContent, callBack: () => void) {
+        const records = await DictionaryService.createTree(request);
         this.setState({ records });
+        callBack();
     }
 
-    async updateTree(request) {
-        await Service.updateTree(request);
+    async updateTree(request: TreeContent, callBack: () => void) {
+        await DictionaryService.updateTree(request);
         this.getTree();
+        callBack();
+    }
+
+    async addSubTree(type: string, request: SubTreeText, callBack: () => void) {
+        await DictionaryService.addSubTree(type, request);
+        this.getTree();
+        callBack();
     }
 }
 

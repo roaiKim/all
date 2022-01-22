@@ -11,7 +11,7 @@ export class DictionaryEntity {
     @Column({ type: "varchar", nullable: true })
     text: string;
 
-    @Column("longtext")
+    @Column({ type: "longtext", nullable: true })
     content: string;
 
     @Column({ type: "varchar", nullable: true })
@@ -20,8 +20,8 @@ export class DictionaryEntity {
     @Column({ type: "int", default: 2 })
     isJson: number;
 
-    @Column({ type: "int", default: 2 })
-    type: number;
+    @Column({ type: "varchar", nullable: true })
+    type: string;
 
     @CreateDateColumn({ type: "datetime", name: "create_time", select: false })
     createtime: Date;

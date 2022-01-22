@@ -7,6 +7,7 @@ import { Collapse, Input, Table } from "antd";
 import { DataDictionaryRecords } from "../type";
 import { PageLimitResponse } from "type";
 import { actions } from "module/data-dictionary";
+import InputModal from "./InputModal";
 
 const { Panel } = Collapse;
 
@@ -46,11 +47,15 @@ async function transformChineseToPinYin(chinese: string) {
 function DataDictionary(props: DataDictionaryProps) {
     const { records } = props;
     const [adding, setAdding] = useState(false);
+    const [subTree, setSubTree] = useState<TreeContent | null>(null);
     const [inputValue, setInputValue] = useState("");
 
-    const text = `A dog is a type of domesticated animal.`;
-
     const onAddTreeOuter = (config: boolean) => setAdding(config);
+
+    const closeAddStatus = () => {
+        setAdding(false);
+        setInputValue("");
+    };
 
     const onTreeCreateOrUpdate = async () => {
         if (inputValue) {
@@ -67,7 +72,7 @@ function DataDictionary(props: DataDictionaryProps) {
                         },
                     ]),
                 };
-                dispatch(actions.createTree(pramas));
+                dispatch(actions.createTree(pramas, closeAddStatus));
             } else {
                 const { content: stringContent } = records;
                 const content = JSON.parse(stringContent);
@@ -80,8 +85,20 @@ function DataDictionary(props: DataDictionaryProps) {
                         },
                     ]),
                 };
-                dispatch(actions.updateTree(pramas));
+                dispatch(actions.updateTree(pramas, closeAddStatus));
             }
+        } else {
+            // setAdding(false);
+        }
+    };
+
+    const onAddSubTree = async (text: string) => {
+        if (text) {
+            const py = await transformChineseToPinYin(text);
+            const code = py.join("_").toUpperCase();
+            const pramas = { code, text };
+            const { dispatch } = props;
+            dispatch(actions.addSubTree(subTree!.code, pramas, closeAddStatus));
         }
     };
 
@@ -89,11 +106,15 @@ function DataDictionary(props: DataDictionaryProps) {
 
     return (
         <div className="ro-data-dictionary-module-container">
+            <InputModal show={!!subTree} setShow={setSubTree} onSubmit={onAddSubTree}></InputModal>
             <div className="ro-tree-container">
                 <Collapse accordion ghost>
                     {tree.map((item: TreeContent) => (
                         <Panel header={item.text} key={item.code}>
-                            <p>{text}</p>
+                            <PlusCircleOutlined
+                                onClick={() => setSubTree(item)}
+                                style={{ fontSize: 16, cursor: "pointer", marginLeft: 25 }}
+                            />
                         </Panel>
                     ))}
                     <div className="ro-tree-add-btn">
