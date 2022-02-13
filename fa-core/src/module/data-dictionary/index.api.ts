@@ -17,4 +17,8 @@ export class DictionaryService {
     static addSubTree(type: string, request: SubTreeText): Promise<DataDictionaryRecords> {
         return ajax("POST", "/api/dictionary/add/:type", { type }, request);
     }
+
+    static getSubTree(type: string): Promise<DataDictionaryRecords[]> {
+        return ajax("GET", "/api/dictionary/get/:type", { type });
+    }
 }

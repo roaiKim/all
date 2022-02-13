@@ -9,6 +9,9 @@ export class DictionaryEntity {
     code: string;
 
     @Column({ type: "varchar", nullable: true })
+    pid: string;
+
+    @Column({ type: "varchar", nullable: true })
     text: string;
 
     @Column({ type: "longtext", nullable: true })

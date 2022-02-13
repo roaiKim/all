@@ -4,7 +4,7 @@ import "./index.less";
 import { RootState } from "type/state";
 import { connect, DispatchProp } from "react-redux";
 import { Collapse, Input, Table } from "antd";
-import { DataDictionaryRecords } from "../type";
+import { DataDictionaryRecords, SubTree } from "../type";
 import { PageLimitResponse } from "type";
 import { actions } from "module/data-dictionary";
 import InputModal from "./InputModal";
@@ -13,6 +13,7 @@ const { Panel } = Collapse;
 
 interface DataDictionaryProps extends DispatchProp {
     records: DataDictionaryRecords | null;
+    subTrees: Record<string, SubTree[]>;
 }
 
 const columns = [
@@ -45,7 +46,7 @@ async function transformChineseToPinYin(chinese: string) {
 }
 
 function DataDictionary(props: DataDictionaryProps) {
-    const { records } = props;
+    const { records, subTrees, dispatch } = props;
     const [adding, setAdding] = useState(false);
     const [subTree, setSubTree] = useState<TreeContent | null>(null);
     const [inputValue, setInputValue] = useState("");
@@ -61,7 +62,6 @@ function DataDictionary(props: DataDictionaryProps) {
         if (inputValue) {
             const py = await transformChineseToPinYin(inputValue);
             const code = py.join("_").toUpperCase();
-            const { dispatch } = props;
             if (!records) {
                 // 新增
                 const pramas = {
@@ -97,7 +97,6 @@ function DataDictionary(props: DataDictionaryProps) {
             const py = await transformChineseToPinYin(text);
             const code = py.join("_").toUpperCase();
             const pramas = { code, text };
-            const { dispatch } = props;
             dispatch(actions.addSubTree(subTree!.code, pramas, closeAddStatus));
         }
     };
@@ -108,9 +107,20 @@ function DataDictionary(props: DataDictionaryProps) {
         <div className="ro-data-dictionary-module-container">
             <InputModal show={!!subTree} setShow={setSubTree} onSubmit={onAddSubTree}></InputModal>
             <div className="ro-tree-container">
-                <Collapse accordion ghost>
+                <Collapse
+                    accordion
+                    ghost
+                    onChange={(key) => {
+                        if (!(subTrees && subTrees[key as string])) {
+                            dispatch(actions.getSubTree(key as string));
+                        }
+                    }}
+                >
                     {tree.map((item: TreeContent) => (
                         <Panel header={item.text} key={item.code}>
+                            {subTrees[item.code]
+                                ? subTrees[item.code]?.map((item1) => <span key={item1.code}>{item1.text}</span>)
+                                : null}
                             <PlusCircleOutlined
                                 onClick={() => setSubTree(item)}
                                 style={{ fontSize: 16, cursor: "pointer", marginLeft: 25 }}
@@ -145,6 +155,7 @@ function DataDictionary(props: DataDictionaryProps) {
 
 const mapStateToProps = (state: RootState) => ({
     records: state.app.dataDictionary.records,
+    subTrees: state.app.dataDictionary.subTrees,
 });
 
 export default connect(mapStateToProps)(DataDictionary);

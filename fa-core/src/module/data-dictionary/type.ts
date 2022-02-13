@@ -8,12 +8,26 @@ export interface DataDictionaryRecords {
     text: string;
     content: string;
     isJson: number;
-    type: number;
+    type: string;
+}
+
+export interface SubTree {
+    code: string;
+    id: string;
+    type: string;
+    text: string;
 }
 
 export interface State {
     records: DataDictionaryRecords | null;
+    subTrees: Record<string, SubTree[]>;
 }
+
+export interface TreeContent {
+    content: string;
+}
+
+export type SubTreeText = Pick<DataDictionaryRecords, "code" | "text">;
 
 export const statement: ModuleStatement = {
     path: "/dataDictionary",
@@ -21,9 +35,3 @@ export const statement: ModuleStatement = {
     order: 4,
     component: async(() => import(/* webpackChunkName: "dataDictionary" */ "./index"), "MainComponent"),
 };
-
-export interface TreeContent {
-    content: string;
-}
-
-export type SubTreeText = Pick<DataDictionaryRecords, "code" | "text">;

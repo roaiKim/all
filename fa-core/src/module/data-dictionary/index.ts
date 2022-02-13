@@ -7,6 +7,7 @@ import { SubTreeText, TreeContent } from "./type";
 
 const initialState = {
     records: null,
+    subTrees: {},
 };
 
 class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
@@ -35,6 +36,16 @@ class DataDictionaryModule extends Module<RootState, "dataDictionary"> {
         await DictionaryService.addSubTree(type, request);
         this.getTree();
         callBack();
+    }
+
+    async getSubTree(type: string) {
+        const subTree = await DictionaryService.getSubTree(type);
+        const { subTrees } = this.state;
+        const tree = {
+            ...subTrees,
+            [type]: subTree,
+        };
+        this.setState({ subTrees: tree });
     }
 }
 
