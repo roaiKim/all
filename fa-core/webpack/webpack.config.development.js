@@ -5,6 +5,8 @@ const env = require("./env");
 const webpack = require("webpack");
 const HTMLPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const ReactRefreshTypeScript = require("react-refresh-typescript");
 const TSImportPlugin = require("ts-import-plugin");
 
 module.exports = {
@@ -64,7 +66,10 @@ module.exports = {
                     silent: true,
                     transpileOnly: true,
                     getCustomTransformers: () => ({
-                        before: [TSImportPlugin({ libraryName: "antd", libraryDirectory: "es", style: true })],
+                        before: [
+                            TSImportPlugin({ libraryName: "antd", libraryDirectory: "es", style: true }),
+                            ReactRefreshTypeScript(),
+                        ],
                     }),
                 },
             },
@@ -93,6 +98,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new ReactRefreshWebpackPlugin(),
         new HTMLPlugin({
             template: `${env.src}/index.html`,
             favicon: `${env.src}/favicon.ico`,

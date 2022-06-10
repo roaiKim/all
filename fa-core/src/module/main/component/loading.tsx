@@ -6,7 +6,11 @@ import { Button, message } from "antd";
 import { Loading } from "components/loading";
 
 export default function () {
-    const ref = useRef<{ counts: number; timer: NodeJS.Timeout | null; time: number }>({ counts: 0, timer: null, time: 0 });
+    const ref = useRef<{ counts: number; timer: NodeJS.Timeout | null; time: number }>({
+        counts: 0,
+        timer: null,
+        time: 0,
+    });
     const [content, setContent] = useState("");
 
     useEffect(() => {
