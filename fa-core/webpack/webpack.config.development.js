@@ -66,10 +66,7 @@ module.exports = {
                     silent: true,
                     transpileOnly: true,
                     getCustomTransformers: () => ({
-                        before: [
-                            TSImportPlugin({ libraryName: "antd", libraryDirectory: "es", style: true }),
-                            ReactRefreshTypeScript(),
-                        ],
+                        before: [TSImportPlugin({ libraryName: "antd", libraryDirectory: "es", style: true }), ReactRefreshTypeScript()],
                     }),
                 },
             },

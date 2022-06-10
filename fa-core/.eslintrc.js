@@ -1,35 +1,29 @@
-{
-    "parser": "@typescript-eslint/parser",
-    "extends": [
+module.exports = {
+    parser: "@typescript-eslint/parser",
+    extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended",
-        "prettier"
+        "prettier",
     ],
-    "plugins": ["@typescript-eslint", "prettier"],
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "ecmaFeatures": {"jsx": true}
+    plugins: ["@typescript-eslint", "prettier"],
+    parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
     },
-    "rules": {
-        "prettier/prettier": ["error", {
-            "tabWidth": 4,
-            "printWidth": 120,
-            "trailingComma": "es5",
-            "bracketSpacing": true,
-            "endOfLine": "auto"
-        }],
+    rules: {
+        "prettier/prettier": ["error", require("./prettier.json")],
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/explicit-member-accessibility": ["error", {"accessibility": "no-public"}],
+        "@typescript-eslint/explicit-member-accessibility": ["error", { accessibility: "no-public" }],
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/member-ordering": [
             "error",
             {
-                "default": {
-                    "memberTypes": [
+                default: {
+                    memberTypes: [
                         "public-static-field",
                         "protected-static-field",
                         "private-static-field",
@@ -50,11 +44,11 @@
                         "private-instance-method",
                         "public-abstract-method",
                         "protected-abstract-method",
-                        "private-abstract-method"
+                        "private-abstract-method",
                     ],
-                    "order": "as-written"
-                }
-            }
+                    order: "as-written",
+                },
+            },
         ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-inferrable-types": "off",
@@ -71,11 +65,8 @@
         "object-shorthand": "error",
         "prefer-const": ["error"],
         "require-yield": "off",
-        "object-curly-spacing": [
-            "error",
-            "always"
-        ],
-        "no-constant-condition": ["error", {"checkLoops": false}],
-        "no-console": "warn"
-    }
-}
+        "object-curly-spacing": ["error", "always"],
+        "no-constant-condition": ["error", { checkLoops: false }],
+        "no-console": "warn",
+    },
+};
