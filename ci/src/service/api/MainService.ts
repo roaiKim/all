@@ -1,0 +1,8 @@
+import { ajax } from "@core";
+import { CompanyInfoResponse } from "type";
+
+export class MainService {
+    static getCompanyInfo(): Promise<CompanyInfoResponse> {
+        return ajax("GET", "/api/admin/company/info");
+    }
+}

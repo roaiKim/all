@@ -1,0 +1,204 @@
+.ro-home-module {
+  padding-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+
+  .ro-user-info-container {
+    height: 3rem;
+    padding: 0.375rem 0.75rem 0.375rem 0.5rem;
+    background-color: #fff;
+  }
+
+  .ro-avatar {
+    width: 2.3rem;
+    height: 2.3rem;
+    border-radius: 50%;
+
+    img {
+      width: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  .ro-username {
+    margin-left: 0.5rem;
+
+    p:last-child {
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+      color: #bec7d1;
+    }
+  }
+
+  .ro-search {
+    margin-top: 0.05rem;
+    background: #fff;
+    padding: 0.4rem 0.55rem 0.4rem 0.95rem;
+
+    input {
+      background: #f4f4f4;
+      height: 1.4rem;
+      border-radius: 0.2rem 0 0 0.2rem;
+    }
+
+    button {
+      background: #1aad19;
+      height: 1.4rem;
+      padding: 0 1rem;
+      color: #fff;
+      border-radius: 0 0.25rem 0.25rem 0;
+      margin-left: -0.15rem;
+
+      /* border-radius: 0.25rem;
+      margin-left: 0.4rem; */
+    }
+  }
+}
+
+.ro-tabs-container {
+  margin-top: 0.05rem;
+  padding-bottom: 2rem;
+  flex-grow: 1;
+
+  .ro-nav-title {
+    justify-content: space-around;
+    background: #fff;
+    color: #81838f;
+    font-weight: 600;
+
+    > div {
+      padding: 0.65rem;
+    }
+
+    .active {
+      color: #34cc5f;
+      border-bottom: #1aad19 0.1rem solid;
+    }
+  }
+
+  .ro-nav-body {
+    > div {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+  }
+}
+
+.ro-order-card {
+  margin-top: 0.3rem;
+  background-color: #fff;
+
+  .ro-order-title {
+    font-size: 0.6rem;
+    padding: 0.3rem 0.5rem 0.3rem 0;
+    border-bottom: 0.05rem solid #f0f0f0;
+
+    > div,
+    .ro-copy {
+      margin-left: 0.5rem;
+      user-select: none;
+
+      &:focus-visible,
+      &:active,
+      &:focus {
+        outline: none;
+        border: none;
+      }
+    }
+
+    .ro-tag {
+      background: #a4adb3;
+      padding: 0.1rem 0.3rem;
+      color: #fff;
+      border-radius: 0.1rem;
+    }
+
+    .ro-status {
+      background: #d9f7be;
+      color: #27b148;
+      font-weight: 600;
+    }
+  }
+
+  .ro-order-body {
+    font-size: 0.6rem;
+
+    .ro-order-time {
+      padding: 0.3rem 0.5rem;
+
+      label {
+        color: #979797;
+      }
+
+      span {
+        margin-left: 0.1rem;
+      }
+    }
+  }
+
+  .ro-order-start {
+    & + .ro-order-start {
+      margin-top: 0.3rem;
+    }
+
+    .ro-status-tag {
+      margin: 0 0.25rem 0 0.5rem;
+      color: #fff;
+      width: 0.75rem;
+      height: 0.75rem;
+      padding: 0.15rem;
+      border-radius: 50%;
+      background-color: #5d8af0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ro-red-tag {
+      background: #ec554e;
+    }
+
+    .ro-address {
+      color: #979797;
+    }
+
+    .ro-order-user {
+      padding: 0.15rem 1.5rem;
+
+      span {
+        margin: 0.1rem;
+      }
+    }
+  }
+
+  .ro-order-foot {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-top: 0.05rem solid #f0f0f0;
+    justify-content: space-between;
+
+    .ro-cargo {
+      color: #fcca00;
+      font-size: 0.7rem;
+    }
+
+    button {
+      padding: 0.3rem 1.2rem;
+      margin-left: 0.5rem;
+      border-radius: 0.2rem;
+      border: 1px solid rgb(223 223 223 / 10000%);
+      font-weight: 400;
+      color: #000;
+      background-color: transparent;
+
+      &:last-child {
+        color: #fff;
+        background-color: #fa8c16;
+        border-color: #fa8c16;
+      }
+    }
+  }
+}
