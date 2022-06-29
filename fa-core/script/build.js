@@ -22,7 +22,11 @@ function spawn(command, args, errorMessage) {
 
 function checkCodeStyle() {
     console.info(chalk`{green.bold [task]} {white.bold check code style}`);
-    return spawn("prettier", ["--config", "config/prettier.json", "--list-different", "{src,test}/**/*.{ts,tsx}"], "check code style failed, please format above files");
+    return spawn(
+        "prettier",
+        ["--config", "config/prettier.json", "--list-different", "{src,test}/**/*.{ts,tsx}"],
+        "check code style failed, please format above files"
+    );
 }
 
 function test() {

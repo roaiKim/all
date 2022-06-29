@@ -13,10 +13,7 @@ interface Props extends RouteProps {
 }
 
 export class Route extends React.PureComponent<Props> {
-    static defaultProps: Pick<
-        Props,
-        "exact" | "sensitive" | "withErrorBoundary" | "accessCondition" | "unauthorizedRedirectTo" | "notFound"
-    > = {
+    static defaultProps: Pick<Props, "exact" | "sensitive" | "withErrorBoundary" | "accessCondition" | "unauthorizedRedirectTo" | "notFound"> = {
         exact: true,
         sensitive: true,
         withErrorBoundary: true,

@@ -118,13 +118,8 @@ function DataDictionary(props: DataDictionaryProps) {
                 >
                     {tree.map((item: TreeContent) => (
                         <Panel header={item.text} key={item.code}>
-                            {subTrees[item.code]
-                                ? subTrees[item.code]?.map((item1) => <span key={item1.code}>{item1.text}</span>)
-                                : null}
-                            <PlusCircleOutlined
-                                onClick={() => setSubTree(item)}
-                                style={{ fontSize: 16, cursor: "pointer", marginLeft: 25 }}
-                            />
+                            {subTrees[item.code] ? subTrees[item.code]?.map((item1) => <span key={item1.code}>{item1.text}</span>) : null}
+                            <PlusCircleOutlined onClick={() => setSubTree(item)} style={{ fontSize: 16, cursor: "pointer", marginLeft: 25 }} />
                         </Panel>
                     ))}
                     <div className="ro-tree-add-btn">
@@ -138,17 +133,12 @@ function DataDictionary(props: DataDictionaryProps) {
                                 />
                             </div>
                         ) : (
-                            <PlusCircleOutlined
-                                onClick={() => onAddTreeOuter(true)}
-                                style={{ fontSize: 16, cursor: "pointer" }}
-                            />
+                            <PlusCircleOutlined onClick={() => onAddTreeOuter(true)} style={{ fontSize: 16, cursor: "pointer" }} />
                         )}
                     </div>
                 </Collapse>
             </div>
-            <div className="ro-table-container">
-                {/* <Table rowKey="id" columns={columns} dataSource={records || []} /> */}
-            </div>
+            <div className="ro-table-container">{/* <Table rowKey="id" columns={columns} dataSource={records || []} /> */}</div>
         </div>
     );
 }

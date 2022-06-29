@@ -13,25 +13,16 @@ export { SilentOnNetworkConnectionError } from "./SilentOnNetworkConnectionError
 /**
  * Decorator type declaration, required by TypeScript.
  */
-type HandlerDecorator = (
-    target: object,
-    propertyKey: string,
-    descriptor: TypedPropertyDescriptor<ActionHandler>
-) => TypedPropertyDescriptor<ActionHandler>;
+type HandlerDecorator = (target: object, propertyKey: string, descriptor: TypedPropertyDescriptor<ActionHandler>) => TypedPropertyDescriptor<ActionHandler>;
 
 type ActionHandlerWithMetaData = ActionHandler & { actionName: string; maskedParams: string };
 
-type HandlerInterceptor<RootState extends State = State> = (
-    handler: ActionHandlerWithMetaData,
-    thisModule: Module<RootState, any>
-) => unknown;
+type HandlerInterceptor<RootState extends State = State> = (handler: ActionHandlerWithMetaData, thisModule: Module<RootState, any>) => unknown;
 
 /**
  * A helper for ActionHandler functions (Saga).
  */
-export function createActionHandlerDecorator<RootState extends State = State>(
-    interceptor: HandlerInterceptor<RootState>
-): HandlerDecorator {
+export function createActionHandlerDecorator<RootState extends State = State>(interceptor: HandlerInterceptor<RootState>): HandlerDecorator {
     return (target, propertyKey, descriptor) => {
         const fn = descriptor.value!;
         descriptor.value = function (...args: any[]) {

@@ -76,8 +76,7 @@ function detectIEBrowser(onIE?: () => void) {
             if (navigatorLanguage.startsWith("zh")) {
                 ieAlertMessage = "对不起，本网站不支持 IE 浏览器\n请使用 Chrome/Firefox/360 浏览器再访问";
             } else {
-                ieAlertMessage =
-                    "This website does not support IE browser.\nPlease use Chrome/Safari/Firefox to visit.\nSorry for the inconvenience.";
+                ieAlertMessage = "This website does not support IE browser.\nPlease use Chrome/Safari/Firefox to visit.\nSorry for the inconvenience.";
             }
             alert(ieAlertMessage);
         }
@@ -135,11 +134,7 @@ function setupGlobalErrorHandler(errorListener?: ErrorListener) {
     );
 }
 
-function renderRoot(
-    EntryComponent: React.ComponentType,
-    rootContainer: HTMLElement,
-    navigationPreventionMessage: string
-) {
+function renderRoot(EntryComponent: React.ComponentType, rootContainer: HTMLElement, navigationPreventionMessage: string) {
     ReactDOM.render(
         <Provider store={app.store}>
             <ConnectedRouter history={app.browserHistory}>

@@ -12,10 +12,7 @@ export function useLoadingStatus(identifier: string = "global"): boolean {
  * Action parameters must be of primitive types, so that the dependency check can work well.
  * No need add dispatch to dep list, because it is always fixed.
  */
-export function useAction<P extends Array<string | number | boolean | null | undefined>>(
-    actionCreator: (...args: P) => Action<P>,
-    ...deps: P
-): () => void {
+export function useAction<P extends Array<string | number | boolean | null | undefined>>(actionCreator: (...args: P) => Action<P>, ...deps: P): () => void {
     const dispatch = useDispatch();
     return React.useCallback(() => dispatch(actionCreator(...deps)), deps);
 }
@@ -57,13 +54,7 @@ export function useBinaryAction<P extends any[], U, K>(
  * useModuleObjectAction(foo, "key") will return:
  * (objectValue: number) => void;
  */
-export function useObjectKeyAction<T extends object, K extends keyof T>(
-    actionCreator: (arg: T) => Action<[T]>,
-    objectKey: K
-): (objectValue: T[K]) => void {
+export function useObjectKeyAction<T extends object, K extends keyof T>(actionCreator: (arg: T) => Action<[T]>, objectKey: K): (objectValue: T[K]) => void {
     const dispatch = useDispatch();
-    return React.useCallback(
-        (objectValue: T[K]) => dispatch(actionCreator({ [objectKey]: objectValue } as T)),
-        [dispatch, actionCreator, objectKey]
-    );
+    return React.useCallback((objectValue: T[K]) => dispatch(actionCreator({ [objectKey]: objectValue } as T)), [dispatch, actionCreator, objectKey]);
 }

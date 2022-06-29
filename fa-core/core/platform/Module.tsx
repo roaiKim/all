@@ -71,10 +71,7 @@ export class Module<
     }
 
     setState<K extends keyof RootState["app"][ModuleName]>(
-        stateOrUpdater:
-            | ((state: RootState["app"][ModuleName]) => void)
-            | Pick<RootState["app"][ModuleName], K>
-            | RootState["app"][ModuleName]
+        stateOrUpdater: ((state: RootState["app"][ModuleName]) => void) | Pick<RootState["app"][ModuleName], K> | RootState["app"][ModuleName]
     ): void {
         if (typeof stateOrUpdater === "function") {
             const originalState = this.state;
@@ -94,9 +91,7 @@ export class Module<
                     : undefined
             );
             if (newState !== originalState) {
-                const description = `@@${this.name}/setState${
-                    patchDescriptions ? `[${patchDescriptions.join("/")}]` : ``
-                }`;
+                const description = `@@${this.name}/setState${patchDescriptions ? `[${patchDescriptions.join("/")}]` : ``}`;
                 app.store.dispatch(setStateAction(this.name, newState, description));
             }
         } else {

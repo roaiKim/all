@@ -13,7 +13,13 @@
         "start": "webpack serve --config ./webpack/webpack.config.development.js",
         "build": "webpack --config ./webpack/webpack.config.production.js",
         "test": "jest --config config/jest.json",
-        "format": "prettier --config prettier.json --write \"{core,src,test,script,config}/**/*.{js,ts,tsx,json}\""
+        "format": "yarn ts-format & yarn less-format",
+        "ts-format": "prettier --config prettier.json --write \"{core,src,test,script,config}/**/*.{js,ts,tsx,json}\"",
+        "less-format": "stylelint --config stylelint.json \"src/**/*.less\" --fix",
+        "generate-version": "node webpack/version/index.js",
+        "verify": "yarn ts-verify & yarn less-verify",
+        "ts-verify": "eslint \"{core,src,test,script,config}/**/*.{js,ts,tsx}\" --config .eslintrc.json",
+        "less-verify": "stylelint --config stylelint.json \"src/**/*.less\""
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
@@ -94,7 +100,7 @@
         "tslib": "2.3.1"
     },
     "resolutions": {
-        "@types/react": "*"
+        "@types/react": "^17.0.0"
     },
     "engines": {
         "node": ">=13"

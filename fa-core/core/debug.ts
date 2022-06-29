@@ -16,11 +16,7 @@ if (process.env.NODE_ENV === "development") {
                 } else {
                     colorString = "background:yellow; color:#888";
                 }
-                console.info(
-                    `%c${index + 1}. ${_.action}${_.elapsedTime > 0 ? ` (${_.elapsedTime} ms)` : ""}`,
-                    colorString,
-                    _.date.toLocaleString()
-                );
+                console.info(`%c${index + 1}. ${_.action}${_.elapsedTime > 0 ? ` (${_.elapsedTime} ms)` : ""}`, colorString, _.date.toLocaleString());
 
                 if (_.errorCode) {
                     console.info(`%c ${_.errorCode}: ${_.errorMessage} `, "background:red; color:#fff");
