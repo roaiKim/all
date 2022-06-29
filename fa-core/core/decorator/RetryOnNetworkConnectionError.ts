@@ -1,16 +1,15 @@
+import { NetworkConnectionException } from "../Exception";
 import { app } from "../app";
-import { NetworkConnectionException } from "../allException";
 import { createActionHandlerDecorator } from "./index";
 
-/**
- * Re-execute the action if NetworkConnectionException is thrown.
- * A warning log will be also created, for each retry.
- */
-export function RetryOnNetworkConnectionError(retryIntervalSecond: number = 3) {
+export function RetryOnNetworkConnectionError(retryIntervalSecond: number = 3, timesBlock: number = 5) {
     return createActionHandlerDecorator(async function (handler) {
         let retryTime = 0;
         let timer;
         while (true) {
+            if (retryTime > timesBlock) {
+                break;
+            }
             try {
                 await handler();
                 break;
@@ -25,7 +24,7 @@ export function RetryOnNetworkConnectionError(retryIntervalSecond: number = 3) {
                         },
                         handler.actionName
                     );
-                    await new Promise((resolve, reject) => {
+                    await new Promise((resolve) => {
                         timer = setTimeout(resolve, retryIntervalSecond * 1000);
                     });
                 } else {

@@ -207,7 +207,7 @@ function createStartupPerformanceLog(actionName: string): void {
         createStat("dom_content", perfTiming.domContentLoadedEventEnd);
         createStat("dom_end", perfTiming.loadEventEnd);
 
-        const slowStartupThreshold = app.loggerConfig?.slowStartupThreshold || 5;
+        const slowStartupThreshold = app.loggerConfig?.slowStartupThresholdInSecond || 5;
         if (duration / 1000 >= slowStartupThreshold) {
             // app.logger.warn({
             //     action: actionName,

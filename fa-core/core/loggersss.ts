@@ -1,7 +1,7 @@
 import { loggerContext } from "./platform/logger-context";
 import { errorToException } from "./util/error-util";
 import { app } from "./app";
-import { APIException, Exception, JavaScriptException, NetworkConnectionException } from "./allException";
+import { APIException, Exception, JavaScriptException, NetworkConnectionException } from "./Exception";
 
 interface Log {
     date: Date;
@@ -36,7 +36,8 @@ interface ErrorLogEntry extends InfoLogEntry {
  */
 export interface LoggerConfig {
     serverURL: string;
-    slowStartupThreshold?: number; // In second, default: 5
+    slowStartupThresholdInSecond?: number; // Default: 5
+    frequencyInSecond?: number; // Default: 20
     maskedKeywords?: RegExp[];
 }
 
@@ -122,13 +123,7 @@ export class LoggerImpl implements Logger {
             errorCode = "JAVASCRIPT_ERROR";
         }
 
-        this.createLog(isWarning ? "WARN" : "ERROR", {
-            action,
-            errorCode,
-            errorMessage: exception.message,
-            info,
-            elapsedTime: 0,
-        });
+        this.createLog(isWarning ? "WARN" : "ERROR", { action, errorCode, errorMessage: exception.message, info, elapsedTime: 0 });
     }
 
     collect(maxSize: number = 0): ReadonlyArray<Log> {
@@ -193,7 +188,7 @@ export class LoggerImpl implements Logger {
             info,
             stats,
             errorCode: "errorCode" in entry ? entry.errorCode : undefined,
-            errorMessage: "errorMessage" in entry ? entry.errorMessage.substr(0, 1000) : undefined,
+            errorMessage: "errorMessage" in entry ? entry.errorMessage.substring(0, 1000) : undefined,
         };
         this.logQueue.push(event);
     }

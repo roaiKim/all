@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { TOKEN } from "type/global";
-import { APIException, NetworkConnectionException } from "../allException";
+import { APIException, NetworkConnectionException } from "../Exception";
 
 export type PathParams<T extends string> = string extends T
     ? { [key: string]: string | number }

@@ -1,5 +1,5 @@
 import { app } from "./app";
-import { Exception } from "./allException";
+import { Exception } from "./Exception";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";

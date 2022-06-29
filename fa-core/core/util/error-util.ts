@@ -1,4 +1,4 @@
-import { Exception, JavaScriptException } from "../allException";
+import { Exception, JavaScriptException } from "../Exception";
 import { ErrorHandler } from "../module";
 import { app } from "../app";
 import { isIEBrowser } from "./navigator-util";

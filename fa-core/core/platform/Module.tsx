@@ -2,7 +2,7 @@ import { push, replace } from "connected-react-router";
 import { Location } from "history";
 import { produce, enablePatches, enableES5 } from "immer";
 import { app } from "../app";
-import { Logger } from "../logger";
+import { Logger } from "../loggersss";
 import { TickIntervalDecoratorFlag } from "../module";
 import { navigationPreventionAction, setStateAction, State } from "../reducer";
 

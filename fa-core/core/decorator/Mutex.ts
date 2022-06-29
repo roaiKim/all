@@ -1,14 +1,11 @@
+import { app } from "../app";
 import { createActionHandlerDecorator } from "./index";
 
-/**
- * If specified, the action cannot be entered by other sagas during execution.
- * For error handler action, mutex logic is auto added.
- */
 export function Mutex() {
     let lockTime: number | null = null;
-    return createActionHandlerDecorator(async function (handler, thisModule) {
+    return createActionHandlerDecorator(async function (handler) {
         if (lockTime) {
-            thisModule.logger.info({
+            app.logger.info({
                 action: handler.actionName,
                 info: {
                     payload: handler.maskedParams,

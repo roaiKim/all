@@ -1,5 +1,5 @@
 import React from "react";
-import { Exception } from "../allException";
+import { Exception } from "../Exception";
 import { captureError } from "./error-util";
 
 interface Props {
