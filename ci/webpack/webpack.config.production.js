@@ -29,6 +29,7 @@ module.exports = {
         modules: [env.src, env.core, "node_modules"],
         alias: {
             "@core": env.core,
+            "@icon": "@ant-design/icons",
             "@api": "service/api",
         },
     },

@@ -1,33 +1,33 @@
 const prettier = require("./prettier.json");
 
 module.exports = {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
+    parser: "@typescript-eslint/parser",
+    extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended",
         "plugin:react/recommended",
-        "prettier"
+        "prettier",
     ],
-    "plugins": ["@typescript-eslint", "prettier"],
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "ecmaFeatures": {"jsx": true}
+    plugins: ["@typescript-eslint", "prettier"],
+    parserOptions: {
+        ecmaVersion: 2018,
+        sourceType: "module",
+        ecmaFeatures: { jsx: true },
     },
-    "rules": {
+    rules: {
         "prettier/prettier": ["error", prettier],
         "@typescript-eslint/ban-types": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/explicit-member-accessibility": ["error", {"accessibility": "no-public"}],
+        "@typescript-eslint/explicit-member-accessibility": ["error", { accessibility: "no-public" }],
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-empty-interface": "off",
         "@typescript-eslint/member-ordering": [
             "error",
             {
-                "default": {
-                    "memberTypes": [
+                default: {
+                    memberTypes: [
                         "public-static-field",
                         "protected-static-field",
                         "private-static-field",
@@ -48,11 +48,11 @@ module.exports = {
                         "private-instance-method",
                         "public-abstract-method",
                         "protected-abstract-method",
-                        "private-abstract-method"
+                        "private-abstract-method",
                     ],
-                    "order": "as-written"
-                }
-            }
+                    order: "as-written",
+                },
+            },
         ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-inferrable-types": "off",
@@ -68,13 +68,11 @@ module.exports = {
         "object-shorthand": "error",
         "prefer-const": ["error"],
         "require-yield": "off",
-        "object-curly-spacing": [
-            "error",
-            "always"
-        ],
-        "no-constant-condition": ["error", {"checkLoops": false}],
-        "no-console": ["warn", { "allow": ["error", "info", "table"] }],
+        "object-curly-spacing": ["error", "always"],
+        "no-constant-condition": ["error", { checkLoops: false }],
+        "no-console": ["warn", { allow: ["error", "info", "table"] }],
         "react/display-name": "off",
-        "react/prop-types": "off"
-    }
-}
+        "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+    },
+};

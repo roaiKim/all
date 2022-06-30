@@ -1,1 +1,2 @@
-webpack/version
+webpack/**
+.eslintrc.js

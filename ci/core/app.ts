@@ -28,7 +28,7 @@ function composeWithDevTools(enhancer: StoreEnhancer): StoreEnhancer {
         if (extension) {
             composeEnhancers = extension({
                 // Ref: https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md
-                actionsBlacklist: [LOADING_ACTION],
+                actionsDenylist: [LOADING_ACTION],
             });
         }
     }

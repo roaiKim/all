@@ -7,9 +7,11 @@ export interface State {
     userInfo: AuthTokenResponse | null;
 }
 
+const MainComponent = async(() => import(/* webpackChunkName: "login" */ "./index"), "MainComponent");
+
 export const statement: ModuleStatement = {
     path: "/login",
     title: "Login",
     order: 1,
-    component: async(() => import(/* webpackChunkName: "login" */ "./index"), "MainComponent"),
+    component: MainComponent,
 };

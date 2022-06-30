@@ -12,7 +12,7 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "importHelpers": true,
-        "jsx": "react",
+        "jsx": "react-jsx",
         "lib": ["dom", "es2019"],
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
@@ -21,6 +21,7 @@
         "downlevelIteration": true,
         "paths": {
             "@core": ["../core"],
+            "@icon": ["../node_modules/@ant-design/icons"],
             "@api": ["./service/api"]
         }
     },

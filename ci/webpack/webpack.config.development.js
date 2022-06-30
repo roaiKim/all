@@ -11,7 +11,7 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 
 module.exports = {
     devServer: {
-        port: 10086,
+        port: 10010,
         historyApiFallback: true,
         compress: true,
         // https: true,
@@ -45,6 +45,7 @@ module.exports = {
         modules: [env.src, "node_modules"],
         alias: {
             "@core": env.core,
+            "@icon": "@ant-design/icons",
             "@api": "service/api",
         },
     },
