@@ -1,7 +1,7 @@
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
 import { applyMiddleware, compose, createStore, Store, StoreEnhancer } from "redux";
-import { Logger, LoggerConfig, LoggerImpl } from "./loggersss";
+import { Logger, LoggerConfig, LoggerImpl } from "./logger";
 import { ActionHandler, ErrorHandler, executeAction } from "./module";
 import { Action, LOADING_ACTION, rootReducer, State, executeMethodMiddleware } from "./reducer";
 import { captureError } from "./util/error-util";

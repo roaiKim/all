@@ -5,7 +5,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { app } from "../app";
 import { NavigationGuard } from "./NavigationGuard";
-import { LoggerConfig } from "../loggersss";
+import { LoggerConfig } from "../logger";
 import { ErrorListener } from "../module";
 import { ErrorBoundary } from "../util/ErrorBoundary";
 import { ajax } from "../util/network";
