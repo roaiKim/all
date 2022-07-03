@@ -5126,11 +5126,6 @@ pinkie@^2.0.0:
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
   integrity sha512-MnUuEycAemtSaeFSjXKW/aroV7akBbY+Sv+RkyqFjgAe73F+MR0TBWKBRDkmfWq/HiFmdavfZ1G7h4SPZXaCSg==
 
-pinyin-pro@^3.7.0:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/pinyin-pro/-/pinyin-pro-3.10.1.tgz#4846a5a097784d722285237c8b64e5d190c0d6bd"
-  integrity sha512-bt7BsG0U9i+s/kRp7ZDk4KtiLb5d7srnKOTkic/og3MiFDY5NWfbgP4CD3P9g0wyJA0SRJoEpcWmck6l9lCt8Q==
-
 pirates@^4.0.4:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/pirates/-/pirates-4.0.5.tgz#feec352ea5c3268fb23a37c702ab1699f35a5f3b"
