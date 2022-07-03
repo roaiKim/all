@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./index.less";
 import { RootState } from "type/state";
 import { connect, DispatchProp } from "react-redux";
+import { PageModuleHeader } from "components/page-header";
+import { PageModuleTable } from "components/page-table";
 
 interface HomeProps extends DispatchProp {
     userName: string | null;
@@ -9,7 +11,12 @@ interface HomeProps extends DispatchProp {
 }
 
 function Home(props: HomeProps) {
-    return <div className="ro-home-module">HOME</div>;
+    return (
+        <div className="ro-home-module">
+            <PageModuleHeader title="运单管理" />
+            <PageModuleTable />
+        </div>
+    );
 }
 
 const mapStateToProps = (state: RootState) => ({

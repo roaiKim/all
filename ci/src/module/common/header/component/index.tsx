@@ -13,7 +13,7 @@ export default function () {
     };
 
     return (
-        <header className="ro-header-container ro-flex">
+        <header className="ro-header-module ro-flex">
             <div className="ro-header-logo ro-flex ro-col-center">
                 <img alt="logo" src={localStorage.getItem("headerLogo")} />
                 <div className="text-overflow-ellipsis">中集冷云综合服务平台</div>

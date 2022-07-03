@@ -12,7 +12,7 @@ export const ORDER_STATUS = {
     3: "已关闭",
 };
 
-const MainComponent = async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent");
+export const MainComponent = async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent");
 
 export const statement: ModuleStatement = {
     path: "/:type(scan)?",

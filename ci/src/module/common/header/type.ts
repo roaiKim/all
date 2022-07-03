@@ -6,4 +6,4 @@ export interface State {
     prevPathname: string | null;
 }
 
-export const MainComponent = async(() => import(/* webpackChunkName: "header" */ "./index"), "MainComponent");
+export const HeaderComponent = async(() => import(/* webpackChunkName: "header" */ "./index"), "MainComponent");
