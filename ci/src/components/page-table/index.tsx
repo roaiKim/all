@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import "./index.less";
 
-export function PageModuleTable() {
+export function PageTable() {
     const dataSource = [
         {
             key: "1",

@@ -11,9 +11,7 @@ const initialState = {
 };
 
 class HomeModule extends Module<RootState, "home"> {
-    onLocationMatched(routeParam: Pick<State, "type">): void {
-        //
-    }
+    //
 }
 
 const module = register(new HomeModule("home", initialState));

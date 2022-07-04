@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./index.less";
 import { RootState } from "type/state";
 import { connect, DispatchProp } from "react-redux";
-import { PageModuleHeader } from "components/page-header";
-import { PageModuleTable } from "components/page-table";
+import { PageTitle } from "components/page-header";
+import { PageModal } from "components/page-modal";
+import { PageTable } from "components/page-table";
+import { usePageModal } from "utils/hooks/usePageModal";
+import Addition from "./addition";
 
 interface HomeProps extends DispatchProp {
     userName: string | null;
@@ -11,10 +14,12 @@ interface HomeProps extends DispatchProp {
 }
 
 function Home(props: HomeProps) {
+    const { view, setView } = usePageModal({});
     return (
         <div className="ro-home-module">
-            <PageModuleHeader title="运单管理" />
-            <PageModuleTable />
+            <Addition view={view} setView={setView} />
+            <PageTitle title="运单管理" view={view} setView={setView} />
+            <PageTable />
         </div>
     );
 }

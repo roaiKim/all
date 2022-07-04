@@ -12,6 +12,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TSImportPlugin = require("ts-import-plugin");
 const autoprefixer = require("autoprefixer");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
 
 module.exports = {
     mode: "production",
@@ -111,6 +112,7 @@ module.exports = {
                         options: {
                             lessOptions: {
                                 javascriptEnabled: true,
+                                modifyVars: antdLessVars
                             },
                         },
                     },

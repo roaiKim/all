@@ -10,7 +10,7 @@ export default function () {
             <HeaderComponent />
             <div className="ro-main-body">
                 <MenuComponent />
-                <main>
+                <main className="ro-module-body">
                     <MainComponent />
                 </main>
             </div>

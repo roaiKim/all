@@ -8,6 +8,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const ReactRefreshTypeScript = require("react-refresh-typescript");
 const ESLintPlugin = require("eslint-webpack-plugin");
+const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
 
 module.exports = {
     devServer: {
@@ -84,6 +85,7 @@ module.exports = {
                         options: {
                             lessOptions: {
                                 javascriptEnabled: true,
+                                modifyVars: antdLessVars
                             },
                         },
                     },

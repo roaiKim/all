@@ -1,32 +1,40 @@
 @import "./variable";
 
-.ro-flex {
-  display: flex;
-
-  &.ro-row-bewteen {
-    justify-content: space-between;
+.g-theme {
+  button {
+    min-width: 60px;
+    margin-left: 10px;
+    font-size: 12px;
   }
 
-  &.ro-row-center {
-    justify-content: center;
+  .ro-flex {
+    display: flex;
+
+    &.ro-row-bewteen {
+      justify-content: space-between;
+    }
+
+    &.ro-row-center {
+      justify-content: center;
+    }
+
+    &.ro-col-center {
+      align-items: center;
+    }
+
+    &.ro-center {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ro-grow {
+      flex-grow: 1;
+    }
   }
 
-  &.ro-col-center {
-    align-items: center;
+  .text-overflow-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
-
-  &.ro-center {
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ro-grow {
-    flex-grow: 1;
-  }
-}
-
-.text-overflow-ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
