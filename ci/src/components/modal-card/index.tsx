@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { ModalCardHeader } from "./card-header";
+import { ModalCardHeader } from "./header";
 import "./index.less";
 
 interface ModalCardProps {}
