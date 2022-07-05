@@ -112,7 +112,7 @@ module.exports = {
                         options: {
                             lessOptions: {
                                 javascriptEnabled: true,
-                                modifyVars: antdLessVars
+                                modifyVars: antdLessVars,
                             },
                         },
                     },

@@ -85,7 +85,7 @@ module.exports = {
                         options: {
                             lessOptions: {
                                 javascriptEnabled: true,
-                                modifyVars: antdLessVars
+                                modifyVars: antdLessVars,
                             },
                         },
                     },
@@ -101,7 +101,7 @@ module.exports = {
         ],
     },
     plugins: [
-        new ReactRefreshWebpackPlugin(),
+        new ReactRefreshWebpackPlugin({ overlay: false }),
         new HTMLPlugin({
             template: `${env.src}/index.html`,
             favicon: `${env.src}/favicon.ico`,
