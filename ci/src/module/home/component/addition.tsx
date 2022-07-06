@@ -4,6 +4,7 @@ import { FormProvider, Field, VoidField } from "@formily/react";
 import { Button } from "antd";
 import { ModalCard } from "components/modal-card";
 import { PageModal } from "components/page-modal";
+import { BaseSelect } from "components/select";
 import { useMemo } from "react";
 import { SetView, ViewState } from "utils/hooks/usePageModal";
 
@@ -30,6 +31,7 @@ export default function (props: AdditionProps) {
                         <Button
                             size="small"
                             onClick={() => {
+                                console.log("==form.values==", form.values);
                                 form.validate();
                             }}
                         >
@@ -76,7 +78,7 @@ export default function (props: AdditionProps) {
                                 component={[Input, { size: "small" }]}
                             ></Field>
                             <Field
-                                name="transportMethodCode"
+                                name="[transportMethodCode, transportMethodName]"
                                 title="运输模式"
                                 required
                                 decorator={[
@@ -86,7 +88,7 @@ export default function (props: AdditionProps) {
                                         labelAlign: "right",
                                     },
                                 ]}
-                                component={[Input, { size: "small" }]}
+                                component={[BaseSelect, { size: "small" }]}
                             ></Field>
                             <Field
                                 name="businessTypeCode"

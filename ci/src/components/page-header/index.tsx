@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import { PropsWithChildren } from "react";
 import { SetView, ViewState } from "utils/hooks/usePageModal";
 import "./index.less";
 
@@ -8,15 +9,13 @@ interface PageTitleProps {
     setView: SetView;
 }
 
-export function PageTitle(props: PageTitleProps) {
-    const { title, setView } = props;
+export function PageTitle(props: PropsWithChildren<PageTitleProps>) {
+    const { title, setView, children } = props;
     return (
         <div className="ro-page-header">
             <div>{title}</div>
             <div className="ro-header-btns">
-                <div>
-                    <Button size="small">自定义</Button>
-                </div>
+                <div>{children}</div>
                 <Button
                     size="small"
                     type="primary"

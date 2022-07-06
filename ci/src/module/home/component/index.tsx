@@ -7,6 +7,8 @@ import { PageModal } from "components/page-modal";
 import { PageTable } from "components/page-table";
 import { usePageModal } from "utils/hooks/usePageModal";
 import Addition from "./addition";
+import { Button } from "antd";
+import { v4 } from "uuid";
 
 interface HomeProps extends DispatchProp {
     userName: string | null;
@@ -14,11 +16,21 @@ interface HomeProps extends DispatchProp {
 }
 
 function Home(props: HomeProps) {
-    const { view, setView } = usePageModal({});
+    const [name, setName] = useState<string>("wawa");
+    const { view, setView } = usePageModal({ name });
     return (
         <div className="ro-home-module">
             <Addition view={view} setView={setView} />
-            <PageTitle title="运单管理" view={view} setView={setView} />
+            <PageTitle title="运单管理" view={view} setView={setView}>
+                <Button
+                    size="small"
+                    onClick={() => {
+                        setName(v4());
+                    }}
+                >
+                    改名
+                </Button>
+            </PageTitle>
             <PageTable />
         </div>
     );

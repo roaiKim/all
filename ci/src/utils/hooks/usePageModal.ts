@@ -1,6 +1,8 @@
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 
-interface PageModalProps {}
+interface PageModalProps {
+    name?: string;
+}
 
 export interface ViewState {
     show: boolean;
@@ -24,11 +26,16 @@ const initialViewState = () => ({
 });
 
 export function usePageModal(props: PageModalProps): PageModalAction {
+    const { name } = props;
     const [view, setView] = useState<ViewState>(initialViewState());
 
     const viewState = useCallback((views) => {
         setView((prevView) => ({ ...prevView, ...views }));
     }, []);
+
+    useEffect(() => {
+        console.log("--name--change");
+    }, [name]);
 
     return {
         view,
