@@ -1,19 +1,16 @@
-import { Button, Select } from "antd";
+import { Button, Select, SelectProps } from "antd";
+import { BaseOptionType, DefaultOptionType } from "antd/lib/select";
 import { useEffect, useState } from "react";
-import { SetView, ViewState } from "utils/hooks/usePageModal";
 import "./index.less";
 
-export interface CustomerFormComponentProps<T = any> {
-    onChange: (...args: T[]) => T;
-}
-
-interface PageTitleProps extends CustomerFormComponentProps {
+interface PageTitleProps extends SelectProps<any, BaseOptionType | DefaultOptionType> {
     keyName?: string;
     labelName?: string;
+    onChange: (...args: any[]) => void;
 }
 
 export function BaseSelect(props: PageTitleProps) {
-    const { onChange } = props;
+    const { onChange, value, children, onBlur, onFocus, size, ...antdProps } = props;
 
     const [dataSource, setDataSource] = useState<{ label: string; value: any }[]>([]);
 
@@ -21,14 +18,15 @@ export function BaseSelect(props: PageTitleProps) {
         setTimeout(() => {
             const source = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => ({ label: `天下第${item}`, value: `${item}` }));
             setDataSource(source);
-        }, 3000);
+        }, 1000);
     }, []);
     console.log("--select--", props);
     return (
         <div className="ro-select-container">
             <Select
                 options={dataSource}
-                // mode="multiple"
+                mode="multiple"
+                // value={null}
                 allowClear
                 onChange={(value) => {
                     if (!value?.length) {

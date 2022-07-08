@@ -1,5 +1,5 @@
 import { Form, FormGrid, FormItem, Input, Password, Submit } from "@formily/antd";
-import { createForm, registerValidateLocale } from "@formily/core";
+import { createForm, onFieldReact, registerValidateLocale, Field as FieldType } from "@formily/core";
 import { FormProvider, Field, VoidField } from "@formily/react";
 import { Button } from "antd";
 import { ModalCard } from "components/modal-card";
@@ -21,7 +21,19 @@ registerValidateLocale({
 
 export default function (props: AdditionProps) {
     const { view, setView } = props;
-    const form = useMemo(() => createForm(), []);
+    const form = useMemo(
+        () =>
+            createForm({
+                effects() {
+                    onFieldReact("projectId", (field: FieldType) => {
+                        const { clientId, projectId } = form.values;
+                        console.log("---effect--");
+                        field.setValue((state) => (state.value = null));
+                    });
+                },
+            }),
+        []
+    );
 
     return (
         <div>
@@ -32,7 +44,7 @@ export default function (props: AdditionProps) {
                             size="small"
                             onClick={() => {
                                 console.log("==form.values==", form.values);
-                                form.validate();
+                                // form.validate();
                             }}
                         >
                             保存
@@ -52,7 +64,7 @@ export default function (props: AdditionProps) {
                             ]}
                         >
                             <Field
-                                name="client"
+                                name="[clientId, clientName]"
                                 title="客户名称"
                                 required
                                 decorator={[
@@ -62,10 +74,10 @@ export default function (props: AdditionProps) {
                                         labelAlign: "right",
                                     },
                                 ]}
-                                component={[Input, { size: "small" }]}
+                                component={[BaseSelect, { size: "small" }]}
                             ></Field>
                             <Field
-                                name="projectId"
+                                name="[projectId, projectName]"
                                 title="冷云项目"
                                 required
                                 decorator={[
@@ -75,7 +87,7 @@ export default function (props: AdditionProps) {
                                         labelAlign: "right",
                                     },
                                 ]}
-                                component={[Input, { size: "small" }]}
+                                component={[BaseSelect, { size: "small" }]}
                             ></Field>
                             <Field
                                 name="[transportMethodCode, transportMethodName]"
