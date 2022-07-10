@@ -13,14 +13,20 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "rootDir": ".",
     "jsx": "react-jsx",
     "allowJs": true,
     "resolveJsonModule": true,
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "@core": ["../core"],
+      "@api": ["./service/api"],
+      "@img": ["./asset/image"],
+      "@utils": ["./utils"]
+  }
   },
   "include": ["./src", "global.d.ts"],
   "compileOnSave": false

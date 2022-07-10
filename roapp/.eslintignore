@@ -2,3 +2,4 @@ webpack/**
 .eslintrc
 babel.config.js
 config
+.eslintrc.js
