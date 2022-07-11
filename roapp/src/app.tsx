@@ -1,15 +1,8 @@
-import { window } from "@tarojs/runtime";
 import { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import AppLoading from "./app.loading";
 import { app } from "../core/app";
 import "./app.less";
-
-if (process.env.NODE_ENV === "development") {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.global._REDEX_STORE_RO = () => app.store.getState();
-}
 
 // class App extends Component {
 //     componentDidMount() {}
