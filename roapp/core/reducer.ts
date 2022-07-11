@@ -52,7 +52,7 @@ interface LoadingActionPayload {
 
 export const LOADING_ACTION = "@@framework/loading";
 
-export function loadingAction(show: boolean, identifier: string = "global"): Action<LoadingActionPayload> {
+export function loadingAction(show: boolean, identifier = "global"): Action<LoadingActionPayload> {
     return {
         type: LOADING_ACTION,
         payload: { identifier, show },
@@ -85,7 +85,7 @@ export function navigationPreventionAction(isPrevented: boolean): Action<Navigat
     };
 }
 
-function navigationPreventionReducer(state: boolean = false, action: Action<NavigationPreventionActionPayload>): boolean {
+function navigationPreventionReducer(state = false, action: Action<NavigationPreventionActionPayload>): boolean {
     if (action.type === NAVIGATION_PREVENTION_ACTION) {
         const payload = action.payload as NavigationPreventionActionPayload;
         return payload.isPrevented;
@@ -103,7 +103,7 @@ export function rootReducer(): Reducer<State> {
 }
 
 // Helper function, to determine if show loading
-export function showLoading(state: State, identifier: string = "global") {
+export function showLoading(state: State, identifier = "global") {
     return state.loading[identifier] > 0;
 }
 

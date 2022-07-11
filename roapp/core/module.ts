@@ -1,5 +1,5 @@
 import { app } from "./app";
-import { Module } from "./platform/Module";
+import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";
 
@@ -7,7 +7,14 @@ export interface TickIntervalDecoratorFlag {
     tickInterval?: number;
 }
 
+export interface onDestroyIntervalDecoratorFlag {
+    keep?: boolean;
+}
+
 export type ActionHandler = (...args: any[]) => any;
+type ActionCreator<H> = H extends (...args: infer P) => unknown ? (...args: P) => Action<P> : never;
+type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: any[]) => unknown ? K : never }[Exclude<keyof H, keyof ModuleLifecycleListener>];
+export type ActionCreators<H> = { readonly [K in HandlerKeys<H>]: ActionCreator<H[K]> };
 
 export function register<M extends Module<any, any>>(module: M): ModuleProxy<M> {
     const moduleName: string = module.name;

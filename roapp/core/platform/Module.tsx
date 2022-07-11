@@ -1,6 +1,6 @@
 import { produce, enablePatches, enableES5 } from "immer";
 import { app } from "../app";
-import { TickIntervalDecoratorFlag } from "../module";
+import { TickIntervalDecoratorFlag, onDestroyIntervalDecoratorFlag } from "../module";
 import { navigationPreventionAction, setStateAction, State } from "../reducer";
 
 // enableES5();
@@ -9,15 +9,15 @@ if (process.env.NODE_ENV === "development") {
 }
 
 export interface ModuleLifecycleListener {
-    onEnter: (entryComponentProps?: any) => unknown;
-    onDestroy: () => unknown;
+    onEnter: (params: Record<string, any> | undefined) => unknown;
+    onDestroy: (() => unknown) & onDestroyIntervalDecoratorFlag;
     onTick: (() => unknown) & TickIntervalDecoratorFlag;
 }
 
 export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string> implements ModuleLifecycleListener {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    onEnter(entryComponentProps: any) {
+    onEnter(params: Record<string, any> | undefined) {
         /**
          * Called when the attached component is initially mounted.
          */

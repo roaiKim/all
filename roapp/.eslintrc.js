@@ -17,6 +17,8 @@ module.exports = {
         "react/jsx-uses-react": "off",
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/no-empty-function": "off",
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "react/sort-comp": "off",
+        "@typescript-eslint/no-explicit-any": "off",
     },
 };

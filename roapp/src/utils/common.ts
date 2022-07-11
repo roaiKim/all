@@ -1,6 +1,6 @@
 import Taro from "@tarojs/taro";
 
-export function autoShowLoading(autoLoading, title = "加载中") {
+export function autoShowLoading(autoLoading: boolean, title = "加载中") {
     if (autoLoading) {
         Taro.showLoading({ title });
     } else {
