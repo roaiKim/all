@@ -3,7 +3,7 @@ import Login from "./component";
 import { RootState } from "type/state";
 import { LoginService } from "service/api/LoginService";
 import { MainService } from "service/api/MainService";
-import { encrypted } from "utils/function";
+import { encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 import { WEB_TOKEN } from "type/global";
 import { v4 } from "uuid";

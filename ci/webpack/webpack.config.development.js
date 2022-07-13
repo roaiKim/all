@@ -112,6 +112,7 @@ module.exports = {
             extensions: ["js", "mjs", "jsx", "ts", "tsx"],
             quiet: true,
             cache: true,
+            cacheLocation: env.eslintcache,
         }),
     ],
 };

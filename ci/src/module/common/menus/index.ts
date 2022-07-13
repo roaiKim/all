@@ -2,6 +2,7 @@ import { Module, register } from "@core";
 import Main from "./component";
 import { RootState } from "type/state";
 import { MainService } from "service/api/MainService";
+import { transformMeuns } from "utils/function";
 
 const initialState = {
     menus: null,
@@ -9,7 +10,8 @@ const initialState = {
 
 class MenusModule extends Module<RootState, "menus"> {
     async onEnter() {
-        const menus = await MainService.getMeuns();
+        const response = await MainService.getMeuns();
+        const menus = transformMeuns(response);
         this.setState({ menus });
     }
 }
