@@ -25,7 +25,8 @@
       "@core": ["../core"],
       "@api": ["./service/api"],
       "@img": ["./asset/image"],
-      "@utils": ["./utils"]
+      "@utils": ["./utils"],
+      "@utils/*": ["./utils/*"]
   }
   },
   "include": ["./src", "global.d.ts"],
