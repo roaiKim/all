@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 import { SetView, ViewState } from "utils/hooks/usePageModal";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { Dispatch, MutableRefObject, PropsWithChildren, ReactNode, useMemo, useRef, useState } from "react";
+import { Dispatch, MutableRefObject, PropsWithChildren, ReactNode, useRef, useState } from "react";
 import "./index.less";
 import { createPortal } from "react-dom";
 
@@ -44,14 +44,35 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
     const [disabled, setDisabled] = useState(false);
     const [bounds, setBounds] = useState<BoundsState>({ left: 0, top: 0, bottom: 0, right: 0 });
     const draggleRef = useRef<HTMLDivElement>(null);
-    const ad = useMemo(() => {
-        const portal = document.querySelector(".ro-module-body");
-        const { width, height } = portal.getBoundingClientRect();
-    }, []);
-    if (!show) {
-        return null;
-    }
-    const nodeModule = <div className="ro-page-modal">jk</div>;
+
+    const nodeModule = (
+        <div className="ro-page-modal">
+            <Modal
+                title={
+                    <div onMouseOver={() => disabled && setDisabled(false)} onMouseOut={() => setDisabled(true)}>
+                        {title}
+                    </div>
+                }
+                wrapClassName="ro-page-modal-container"
+                centered
+                destroyOnClose
+                visible={show}
+                onOk={() => setView({ show: false })}
+                onCancel={() => setView({ show: false })}
+                width={width || 800}
+                maskClosable={false}
+                footer={null}
+                getContainer={() => document.querySelector(".ro-module-body")}
+                modalRender={(modal) => (
+                    <Draggable disabled={disabled} bounds={bounds} onStart={(event, uiData) => onDragStart(event, uiData, draggleRef, setBounds)}>
+                        <div ref={draggleRef}>{modal}</div>
+                    </Draggable>
+                )}
+            >
+                {children}
+            </Modal>
+        </div>
+    );
 
     return createPortal(nodeModule, document.querySelector(".ro-module-body"));
 }
