@@ -1,6 +1,7 @@
 import { push, replace } from "connected-react-router";
 import { Location } from "history";
 import { produce, enablePatches, enableES5 } from "immer";
+import { RouteComponentProps } from "react-router";
 import { app } from "../app";
 import { Logger } from "../logger";
 import { TickIntervalDecoratorFlag } from "../module";
@@ -12,10 +13,10 @@ if (process.env.NODE_ENV === "development") {
 }
 
 export interface ModuleLifecycleListener<RouteParam extends object = object, HistoryState extends object = object> {
-    onEnter: (entryComponentProps?: any) => unknown;
-    onDestroy: () => unknown;
-    onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState> | undefined>) => unknown;
-    onTick: (() => unknown) & TickIntervalDecoratorFlag;
+    onEnter: (parms: RouteComponentProps["match"]["params"], location: RouteComponentProps["location"]) => void | Promise<void>;
+    onDestroy: () => void | Promise<void>;
+    onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState> | undefined>) => void | Promise<void>;
+    onTick: (() => void | Promise<void>) & TickIntervalDecoratorFlag;
 }
 
 export class Module<
@@ -27,26 +28,26 @@ export class Module<
 {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    onEnter(entryComponentProps: any) {
+    onEnter(parms: RouteComponentProps["match"]["params"], location: RouteComponentProps["location"]): void | Promise<void> {
         /**
          * Called when the attached component is initially mounted.
          */
     }
 
-    onDestroy() {
+    onDestroy(): void | Promise<void> {
         /**
          * Called when the attached component is going to unmount
          */
     }
 
-    onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>) {
+    onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>): void | Promise<void> {
         /**
          * Called when the attached component is a React-Route component and its Route location matches
          * It is called each time the location changes, as long as it still matches
          */
     }
 
-    onTick() {
+    onTick(): void | Promise<void> {
         /**
          * Called periodically during the lifecycle of attached component
          * Usually used together with @Interval decorator, to specify the period (in second)

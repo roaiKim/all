@@ -19,7 +19,8 @@
         "generate-version": "node webpack/version/index.js",
         "verify": "yarn eslint-verify & yarn stylelint-verify",
         "eslint-verify": "eslint \"{core,src,test,script,config}/**/*.{js,ts,tsx}\" --config .eslintrc.js",
-        "stylelint-verify": "stylelint --config stylelint.json \"src/**/*.less\""
+        "stylelint-verify": "stylelint --config stylelint.json \"src/**/*.less\"",
+        "module": "node webpack/module.js"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
@@ -89,7 +90,7 @@
         "ts-import-plugin": "^1.6.7",
         "ts-loader": "^9.2.6",
         "tslib": "2.3.1",
-        "typescript": "4.4.4",
+        "typescript": "^4.7.4",
         "uuid": "^8.3.2",
         "yup": "^0.32.11"
     },

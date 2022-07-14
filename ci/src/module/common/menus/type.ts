@@ -4,4 +4,4 @@ export interface State {
     menus: any[];
 }
 
-export const MenuComponent = async(() => import(/* webpackChunkName: "header" */ "./index"), "MainComponent");
+export const MenuComponent = async(() => import(/* webpackChunkName: "menus" */ "./index"), "MainComponent");

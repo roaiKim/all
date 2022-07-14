@@ -1,4 +1,3 @@
-import { ModuleStatement } from "utils/function/loadComponent";
 import { async } from "@core";
 
 export interface State {

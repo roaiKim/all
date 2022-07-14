@@ -1,19 +1,16 @@
-import React from "react";
 import "./index.less";
-import { HeaderComponent } from "module/common/header/type";
-import { MenuComponent } from "module/common/menus/type";
-import { MainComponent } from "module/home/type";
+import { Switch } from "react-router-dom";
+import { Route } from "@core";
+import BodyContainer from "./main";
+import { LoginComponent } from "module/login/type";
 
 export default function () {
     return (
-        <main className="ro-main-container">
-            <HeaderComponent />
-            <div className="ro-main-body">
-                <MenuComponent />
-                <main className="ro-module-body">
-                    <MainComponent />
-                </main>
-            </div>
-        </main>
+        <div className="ro-main-container">
+            <Switch>
+                <Route path="/login" component={LoginComponent} />
+                <BodyContainer></BodyContainer>
+            </Switch>
+        </div>
     );
 }
