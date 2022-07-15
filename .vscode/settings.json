@@ -3,6 +3,5 @@
         "source.fixAll.eslint": true,
         "source.fixAll.stylelint": true
     },
-    "stylelint.packageManager": "yarn",
-    "stylelint.configFile": "fa-core/stylelint.json"
+    "stylelint.packageManager": "yarn"
 }

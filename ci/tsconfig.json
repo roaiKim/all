@@ -25,5 +25,6 @@
             "@api": ["./service/api"]
         }
     },
-    "include": ["./src", "./core"]
+    "include": ["./src", "./core"],
+    "exclude": ["./webpack/**"]
 }
