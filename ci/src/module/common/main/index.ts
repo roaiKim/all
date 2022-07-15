@@ -10,7 +10,7 @@ const initialState = {
 class MainModule extends Module<RootState, "main"> {
     calcPageHeight() {
         try {
-            const container = document.querySelector(".ro-main-body");
+            const container = document.querySelector(".ro-main-container");
             if (container) {
                 (container as any).style.height = `${window.innerHeight}px`;
             }
