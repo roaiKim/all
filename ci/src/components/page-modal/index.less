@@ -1,12 +1,34 @@
-.ro-page-modal {
+.ro-page-drag-panel {
   color: initial;
   position: absolute;
   top: -5px;
   left: -5px;
   right: -5px;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.30);
+  background: rgb(0 0 0 / 30%);
   z-index: 10000;
+
+  .ro-drag-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    background: #313131;
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 22%), 0 1px 4px rgb(0 0 0 / 22%);
+    cursor: move;
+
+    .ro-drag-header-title {
+      margin-left: 10px;
+    }
+
+    > span {
+      width: 40px;
+      line-height: 40px;
+      cursor: pointer;
+    }
+  }
 }
 
 .ro-page-modal-container {
