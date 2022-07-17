@@ -33,10 +33,6 @@ export function usePageModal(props: PageModalProps): PageModalAction {
         setView((prevView) => ({ ...prevView, ...views }));
     }, []);
 
-    useEffect(() => {
-        console.log("--name--change");
-    }, [name]);
-
     return {
         view,
         setView: viewState,

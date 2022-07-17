@@ -14,7 +14,7 @@ export const SortableItem = SortableElement((props: HeaderTabProps) => {
         <div title={`${name}`} className={`ro-header-tab-item-g ro-flex ${isActive ? "active" : ""}`}>
             <div className="ro-tab-trapezoid" onClick={onClick}></div>
             <span className="ro-tab-title" onClick={onClick}>
-                项理{name}
+                {name}
             </span>
             <CloseOutlined />
         </div>

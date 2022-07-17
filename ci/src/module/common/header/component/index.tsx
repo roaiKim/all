@@ -5,7 +5,7 @@ import "./index.less";
 
 export default function () {
     const [activeKey, setActiveKey] = useState<string>();
-    const [tabs, setTabs] = useState<string[]>(["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"]);
+    const [tabs, setTabs] = useState<string[]>(["客户管理", "项目管理", "路由管理", "承运路线", "车辆调度", "运单管理"]);
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
         if (oldIndex === newIndex) return;
