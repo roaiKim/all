@@ -37,7 +37,7 @@ export default function (props: AdditionProps) {
 
     return (
         <div>
-            <PageModal view={view} setView={setView} width={1250} title={"运单管理"}>
+            <PageModal view={view} setView={setView} width={1100} title={"运单管理"}>
                 <ModalCard>
                     <ModalCard.Header title="基本信息">
                         <Button

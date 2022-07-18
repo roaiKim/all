@@ -1,15 +1,20 @@
 .ro-page-drag-panel-masx {
   color: initial;
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
+  position: fixed;
+  top: 46px;
+  left: 200px;
+  right: 0;
   bottom: 0;
   background: rgb(0 0 0 / 30%);
   z-index: 10000;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .ro-drag-container {
+    max-height: 95%;
+    min-width: 60%;
+  }
 
   .ro-drag-header {
     display: flex;
@@ -36,36 +41,8 @@
       }
     }
   }
-}
 
-.ro-page-modal-container {
-  .ant-modal-header {
-    cursor: move;
-    background: #313131;
-    padding: 9px 10px;
-  }
-
-  .ant-modal-body {
-    padding: 0;
-  }
-
-  .ant-modal-close {
-    margin: 0;
-    min-width: 40px;
-    color: #fff;
-
-    &:hover {
-      background: rgb(255 255 255 / 10%);
-    }
-  }
-
-  .ant-modal-close-x {
-    height: 40px;
-    width: 40px;
-    line-height: 40px;
-  }
-
-  .ant-modal-title {
-    color: #fff;
+  .ro-drag-body {
+    overflow-y: auto;
   }
 }
