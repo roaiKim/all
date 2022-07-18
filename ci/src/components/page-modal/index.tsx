@@ -36,7 +36,7 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
 
     const nodeModule = (
         <div className="ro-page-drag-panel-masx">
-            <Draggable handle=".ro-drag-header" scale={1} defaultPosition={{ x: defaultX, y: 20 }} bounds="parent">
+            <Draggable handle=".ro-drag-header" scale={1} bounds="parent">
                 <div className="ro-drag-container" style={{ width: panelWidth, maxHeight: "95%" }}>
                     <div className="ro-drag-header">
                         <div className="ro-drag-header-title">新建运单管理</div>
