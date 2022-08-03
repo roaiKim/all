@@ -6,6 +6,7 @@ import { transformMeuns } from "utils/function";
 
 const initialState = {
     menus: null,
+    collapsed: false,
 };
 
 class MenusModule extends Module<RootState, "menus"> {
@@ -13,6 +14,10 @@ class MenusModule extends Module<RootState, "menus"> {
         const response = await MainService.getMeuns();
         const menus = transformMeuns(response);
         this.setState({ menus });
+    }
+
+    toggleCollapsed(collapsed: boolean) {
+        this.setState({ collapsed });
     }
 }
 

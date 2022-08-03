@@ -4,6 +4,7 @@ import { Dispatch, MutableRefObject, PropsWithChildren, ReactNode, useEffect, us
 import { createPortal } from "react-dom";
 import { CloseOutlined } from "@icon";
 import "./index.less";
+import { useSlideWidth } from "utils/hooks/useSlideWidth";
 
 interface ViewModalProps {
     view: ViewState;
@@ -17,22 +18,10 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
     const { show } = view;
     if (!show) return null;
 
-    const { panelWidth, maxPanelHeight, left } = useMemo(() => {
-        const body = document.body;
-        const slider = document.querySelector(".ro-meuns-module");
-
-        const { width: bodyWidth, height: bodyHeight } = body.getBoundingClientRect();
-        const { width: sliderWight } = slider?.getBoundingClientRect() || {};
-
-        const parentWidth = bodyWidth - sliderWight || 200;
-        const panelWidth = width ? (width > parentWidth ? parentWidth * 0.95 : width) : parentWidth * 0.8;
-        const maxPanelHeight = (bodyHeight - 96) * 0.96;
-
-        return { panelWidth, maxPanelHeight, left: sliderWight || 200 };
-    }, []);
+    const { panelWidth, maxPanelHeight, sliderWight } = useSlideWidth({ width });
 
     return (
-        <div className="ro-page-drag-panel-masx" style={{ left: left || "auto" }}>
+        <div className="ro-page-drag-panel-masx" style={{ left: sliderWight || "auto" }}>
             <Draggable handle=".ro-drag-header" scale={1} bounds="parent">
                 <div className="ro-drag-container" style={{ width: panelWidth }}>
                     <div className="ro-drag-header">
