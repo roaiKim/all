@@ -5,6 +5,7 @@ const modules = require.context("module/", true, /type\.ts$/);
 const modulesId: string[] = modules.keys().filter((item: string) => item.startsWith("module"));
 
 export declare interface ModuleStatement {
+    name: string;
     path: string;
     title: string;
     icon?: string;
@@ -21,3 +22,28 @@ export const cacheModules = modulesId
     .filter((item) => !!item.module)
     .filter((item) => !item.module.disabled)
     .sort((prev, next) => (prev.module.order || 9) - (next.module.order || 10));
+
+interface Cache {
+    moduleId: string;
+    module: ModuleStatement;
+}
+
+const cache: Record<string, Cache> = {};
+
+modulesId.forEach((id) => {
+    const statement: ModuleStatement = modules(id).statement;
+    if (statement) {
+        const { name } = statement;
+        if (cache[name]) {
+            const { moduleId } = cache[name];
+            throw new Error(`模块名(${name})重复, 重复路径为${id}、${moduleId}`);
+        } else {
+            cache[name] = {
+                moduleId: id,
+                module: statement,
+            };
+        }
+    }
+});
+
+export { cache };

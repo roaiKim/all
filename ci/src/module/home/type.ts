@@ -1,6 +1,8 @@
 import { async } from "@core";
 import { ModuleStatement } from "utils/function/loadComponent";
 
+export const moduleName = "home";
+
 export interface State {
     type: string | null;
     orders: Record<string, any>[];
@@ -9,6 +11,7 @@ export interface State {
 export const MainComponent = async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent");
 
 export const statement: ModuleStatement = {
+    name: moduleName,
     path: "/",
     title: "Home",
     order: 1,

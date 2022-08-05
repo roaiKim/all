@@ -4,6 +4,7 @@ import { State as MainState } from "module/common/main/type";
 import { State as LoginState } from "module/login/type";
 import { State as HeaderState } from "module/common/header/type";
 import { State as MenuState } from "module/common/menus/type";
+import { State as ProjectState } from "module/project/type";
 
 export interface RootState extends State {
     app: {
@@ -12,5 +13,6 @@ export interface RootState extends State {
         login: LoginState;
         header: HeaderState;
         menus: MenuState;
+        project?: ProjectState;
     };
 }

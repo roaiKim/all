@@ -5,13 +5,13 @@ import { State, moduleName } from "./type";
 
 const initialState: State = {};
 
-class {1} extends Module<RootState, typeof moduleName> {
+class ProjectModule extends Module<RootState, typeof moduleName> {
     @Loading()
     async onEnter(params, location) {
         //
     }
 }
 
-const module = register(new {1}(moduleName, initialState));
+const module = register(new ProjectModule(moduleName, initialState));
 export const actions = module.getActions();
 export const MainComponent = module.connect(Main);

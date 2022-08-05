@@ -17,7 +17,14 @@ function MeunComponent(props: MeunComponentProps) {
     return (
         <menu className={`ro-meuns-module ${!collapsed ? "collapsed" : ""}`}>
             <div className="ro-meuns-container">
-                <Menu items={menus || []} mode="inline" inlineCollapsed={collapsed} />
+                <Menu
+                    onClick={(a) => {
+                        console.log(a);
+                    }}
+                    items={menus || []}
+                    mode="inline"
+                    inlineCollapsed={collapsed}
+                />
             </div>
             <div
                 className="ro-meuns-collapsed"

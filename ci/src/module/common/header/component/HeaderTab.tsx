@@ -1,30 +1,32 @@
 import { CloseOutlined } from "@icon";
 import { Dispatch, SetStateAction } from "react";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import { HeaderTab } from "../type";
 
 interface HeaderTabProps {
-    name: number;
+    data: HeaderTab;
     isActive: boolean;
     onClick: () => void;
 }
 
 export const SortableItem = SortableElement((props: HeaderTabProps) => {
-    const { name, isActive, onClick } = props;
+    const { data, isActive, onClick } = props;
+    const { label, key, noClosed } = data;
     return (
-        <div title={`${name}`} className={`ro-header-tab-item-g ro-flex ${isActive ? "active" : ""}`}>
+        <div title={`${label}`} className={`ro-header-tab-item-g ro-flex ${isActive ? "active" : ""}`}>
             <div className="ro-tab-trapezoid" onClick={onClick}></div>
             <span className="ro-tab-title" onClick={onClick}>
-                {name}
+                {label}
             </span>
-            <CloseOutlined />
+            {noClosed && <CloseOutlined />}
         </div>
     );
 });
 
 interface SortableTabsProps {
-    tabs: any[];
+    tabs: HeaderTab[];
     activeKey: string;
-    onClick: Dispatch<SetStateAction<string>>;
+    onClick: Dispatch<SetStateAction<HeaderTab>>;
 }
 
 export const SortableTabs = SortableContainer((props: SortableTabsProps) => {
@@ -32,7 +34,7 @@ export const SortableTabs = SortableContainer((props: SortableTabsProps) => {
     return (
         <div className="ro-header-tabs ro-flex ro-col-center">
             {tabs.map((item, index) => (
-                <SortableItem key={`item-${item}`} isActive={activeKey === item} name={item} index={index} onClick={() => onClick(item)} />
+                <SortableItem key={`item-${item.key}`} isActive={activeKey === item.key} data={item} index={index} onClick={() => onClick(item)} />
             ))}
         </div>
     );

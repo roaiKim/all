@@ -3,10 +3,12 @@ import Main from "./component";
 import { RootState } from "type/state";
 import { MainService } from "service/api/MainService";
 import { transformMeuns } from "utils/function";
+import { StorageService } from "utils/StorageService";
+import { COLLAPSED } from "./type";
 
 const initialState = {
     menus: null,
-    collapsed: false,
+    collapsed: StorageService.get<boolean>(COLLAPSED),
 };
 
 class MenusModule extends Module<RootState, "menus"> {
@@ -18,6 +20,7 @@ class MenusModule extends Module<RootState, "menus"> {
 
     toggleCollapsed(collapsed: boolean) {
         this.setState({ collapsed });
+        StorageService.set(COLLAPSED, collapsed);
     }
 }
 
