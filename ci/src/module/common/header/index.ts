@@ -1,10 +1,12 @@
 import { Module, register } from "@core";
 import Main from "./component";
 import { RootState } from "type/state";
+import { cache } from "utils/function/loadComponent";
 
 const initialState = {
     userName: null,
     prevPathname: null,
+    activeTabName: "home",
     headerTabs: [
         {
             key: "home",
@@ -28,7 +30,12 @@ class HeaderModule extends Module<RootState, "header"> {
         // this.setState({ headerTabs: tabs });
     }
 
-    pushTab(keyPath) {}
+    pushTab(keyPath) {
+        const module = cache[keyPath];
+        if (module) {
+            //
+        }
+    }
 }
 
 const module = register(new HeaderModule("header", initialState));
