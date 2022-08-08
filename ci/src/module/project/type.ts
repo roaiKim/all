@@ -10,7 +10,7 @@ export const MainComponent = async(() => import(/* webpackChunkName: "project" *
 export const statement: ModuleStatement = {
     name: moduleName,
     path: "/project",
-    title: "Project",
+    title: "项目管理",
     order: 1,
     component: MainComponent,
 };

@@ -3,6 +3,7 @@ import { Menu } from "antd";
 import { connect, DispatchProp } from "react-redux";
 import { RootState } from "type/state";
 import { actions } from "module/common/menus";
+import { actions as HeaderActions } from "module/common/header";
 import { State } from "../type";
 import "./index.less";
 
@@ -18,8 +19,8 @@ function MeunComponent(props: MeunComponentProps) {
         <menu className={`ro-meuns-module ${!collapsed ? "collapsed" : ""}`}>
             <div className="ro-meuns-container">
                 <Menu
-                    onClick={(a) => {
-                        console.log(a);
+                    onClick={({ key }) => {
+                        dispatch(HeaderActions.pushTab(key));
                     }}
                     items={menus || []}
                     mode="inline"

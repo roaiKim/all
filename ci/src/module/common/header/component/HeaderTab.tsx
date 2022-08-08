@@ -1,16 +1,16 @@
 import { CloseOutlined } from "@icon";
-import { Dispatch, SetStateAction } from "react";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
-import { HeaderTab } from "../type";
+import { HeaderTab } from "module/common/header/type";
 
 interface HeaderTabProps {
     data: HeaderTab;
     isActive: boolean;
     onClick: () => void;
+    onClose: () => void;
 }
 
 export const SortableItem = SortableElement((props: HeaderTabProps) => {
-    const { data, isActive, onClick } = props;
+    const { data, isActive, onClick, onClose } = props;
     const { label, key, noClosed } = data;
     return (
         <div title={`${label}`} className={`ro-header-tab-item-g ro-flex ${isActive ? "active" : ""}`}>
@@ -18,7 +18,7 @@ export const SortableItem = SortableElement((props: HeaderTabProps) => {
             <span className="ro-tab-title" onClick={onClick}>
                 {label}
             </span>
-            {noClosed && <CloseOutlined />}
+            {!noClosed && <CloseOutlined onClick={onClose} />}
         </div>
     );
 });
@@ -26,15 +26,24 @@ export const SortableItem = SortableElement((props: HeaderTabProps) => {
 interface SortableTabsProps {
     tabs: HeaderTab[];
     activeKey: string;
-    onClick: Dispatch<SetStateAction<HeaderTab>>;
+    onClick: (tab: HeaderTab) => void;
+    onClose: (tab: HeaderTab) => void;
 }
 
 export const SortableTabs = SortableContainer((props: SortableTabsProps) => {
-    const { tabs, onClick, activeKey } = props;
+    const { tabs, onClick, activeKey, onClose } = props;
     return (
         <div className="ro-header-tabs ro-flex ro-col-center">
             {tabs.map((item, index) => (
-                <SortableItem key={`item-${item.key}`} isActive={activeKey === item.key} data={item} index={index} onClick={() => onClick(item)} />
+                <SortableItem
+                    key={`item-${item.key}`}
+                    isActive={activeKey === item.key}
+                    data={item}
+                    index={index}
+                    onClick={() => onClick(item)}
+                    onClose={() => onClose(item)}
+                    disabled={item.key === "home"}
+                />
             ))}
         </div>
     );

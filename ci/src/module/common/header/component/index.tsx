@@ -1,23 +1,25 @@
 import { arrayMoveImmutable } from "array-move";
 import React, { useState } from "react";
+import { actions } from "module/common/header";
 import { SortableTabs } from "./HeaderTab";
 import logoimg from "asset/images/global/logoimg.png";
-import { connect } from "react-redux";
+import { connect, DispatchProp } from "react-redux";
 import { RootState } from "type/state";
 import { State } from "../type";
 import "./index.less";
 
-interface HeaderProps {
+interface HeaderProps extends DispatchProp {
     headerTabs: State["headerTabs"];
+    activeTabName: string;
 }
 
 function Header(props: HeaderProps) {
-    // const [activeKey, setActiveKey] = useState<string>();
-    // const [tabs, setTabs] = useState<string[]>(["客户管理", "项目管理", "路由管理", "承运路线", "车辆调度", "运单管理"]);
-    const { headerTabs } = props;
+    const { headerTabs, activeTabName, dispatch } = props;
+
     const onSortEnd = ({ oldIndex, newIndex }) => {
-        if (oldIndex === newIndex) return;
-        // setTabs((prevTabs) => arrayMoveImmutable(prevTabs, oldIndex, newIndex));
+        if (oldIndex === newIndex || newIndex === 0) return;
+        const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
+        dispatch(actions.sortHeaderTabs(tabs));
     };
 
     return (
@@ -36,8 +38,13 @@ function Header(props: HeaderProps) {
                 onSortEnd={onSortEnd}
                 helperClass="ro-header-tab-help-sort"
                 tabs={headerTabs}
-                activeKey={""}
-                onClick={() => {}}
+                activeKey={activeTabName}
+                onClick={({ key }) => {
+                    dispatch(actions.toggleActiveKey(key));
+                }}
+                onClose={({ key }) => {
+                    dispatch(actions.closeTabByKey(key));
+                }}
             />
             <div className="ro-header-operate"></div>
         </header>
@@ -47,6 +54,7 @@ function Header(props: HeaderProps) {
 const mapStateToProps = (state: RootState) => {
     return {
         headerTabs: state.app.header.headerTabs,
+        activeTabName: state.app.header.activeTabName,
     };
 };
 
