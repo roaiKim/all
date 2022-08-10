@@ -11,13 +11,13 @@ import { Button } from "antd";
 import { v4 } from "uuid";
 
 interface HomeProps extends DispatchProp {
-    userName: string | null;
     type: string | null;
 }
 
 function Home(props: HomeProps) {
     const [name, setName] = useState<string>("wawa");
     const { view, setView } = usePageModal({ name });
+
     return (
         <div className="ro-home-module">
             <Addition view={view} setView={setView} />
@@ -37,7 +37,6 @@ function Home(props: HomeProps) {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    userName: state.app.main.userName,
     type: state.app.home.type,
 });
 

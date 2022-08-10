@@ -1,6 +1,6 @@
 import { arrayMoveImmutable } from "array-move";
 import React, { useState } from "react";
-import { actions } from "module/common/header";
+import { actions } from "module/common/header/module";
 import { SortableTabs } from "./HeaderTab";
 import logoimg from "asset/images/global/logoimg.png";
 import { connect, DispatchProp } from "react-redux";

@@ -10,9 +10,21 @@
     border-radius: 5px;
     margin: 5px 5px 0;
   }
+}
 
-  .ro-module-body {
-    position: relative;
+.ro-module-body {
+  > div[class*="-container-module"] {
+    height: 100%;
+    display: none;
+
+    &.active-module {
+      display: block;
+      overflow-y: auto;
+    }
+
+    > div {
+      height: 100%;
+    }
   }
 }
 

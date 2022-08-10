@@ -28,7 +28,7 @@ export class Module<
 {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    onEnter(parms: RouteComponentProps["match"]["params"], location: RouteComponentProps["location"]): void | Promise<void> {
+    onEnter(parms: RouteComponentProps["match"]["params"], location: Location): void | Promise<void> {
         /**
          * Called when the attached component is initially mounted.
          */

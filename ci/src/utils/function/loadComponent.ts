@@ -30,10 +30,16 @@ interface Cache {
 
 const cache: Record<string, Cache> = {};
 
+const isDevelopment = process.env.NODE_ENV === "development";
 modulesId.forEach((id) => {
     const statement: ModuleStatement = modules(id).statement;
     if (statement) {
         const { name } = statement;
+        if (isDevelopment) {
+            if (/^\/|\/$/g.test(name || "")) {
+                throw new Error(`模块名(${name})不合法, 不能以/开头和结尾`);
+            }
+        }
         if (cache[name]) {
             const { moduleId } = cache[name];
             throw new Error(`模块名(${name})重复, 重复路径为${id}、${moduleId}`);
