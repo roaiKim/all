@@ -8,7 +8,7 @@ import { NavigationGuard } from "./NavigationGuard";
 import { LoggerConfig } from "../logger";
 import { ErrorListener } from "../module";
 import { ErrorBoundary } from "../util/ErrorBoundary";
-import { ajax } from "../util/network";
+// import { ajax } from "../util/network";
 import { APIException } from "../Exception";
 import { isIEBrowser } from "../util/navigator-util";
 import { captureError, errorToException } from "../util/error-util";
@@ -195,7 +195,7 @@ export async function sendEventLogs(): Promise<void> {
                  * - Event server allows cross-origin request from current domain
                  * - Root-domain cookies, whose domain is set by current domain as ".abc.com", can be sent (withCredentials = true)
                  */
-                await ajax("POST", app.loggerConfig.serverURL, {}, { events: logs }, { withCredentials: true });
+                // await ajax("POST", app.loggerConfig.serverURL, {}, { events: logs }, { withCredentials: true });
                 app.logger.emptyLastCollection();
             } catch (e) {
                 if (e instanceof APIException) {

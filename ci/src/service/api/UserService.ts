@@ -1,5 +1,5 @@
-import { ajax } from "@core";
-import { ContentType } from "type/global";
+import { ajax } from "network";
+import { ContentType } from "utils/function/staticEnvs";
 
 export interface PasswordRequest {
     oldPassword: string;
@@ -81,7 +81,7 @@ export class UserService {
 
     static password(id: string, request: PasswordRequest): Promise<Record<string, any>> {
         return ajax("POST", "/api/common/h5customerUser/password/update/:id", { id }, request, {
-            contentType: ContentType.FORM_CONTENT_TYPE,
+            contentType: ContentType.FORM,
         } as any);
     }
 
@@ -91,7 +91,7 @@ export class UserService {
 
     static address(request: any): Promise<AddressInfo> {
         return ajax("POST", "/api/common/h5CustomerAddress/customerAddressList", {}, request, {
-            contentType: ContentType.FORM_CONTENT_TYPE,
+            contentType: ContentType.FORM,
         } as any);
     }
 
@@ -108,7 +108,7 @@ export class UserService {
     }
 
     static deteleAddress(id: string): Promise<Record<string, any>> {
-        return ajax("DELETE", "/api/common/h5CustomerAddress/remove", {}, { id }, { contentType: ContentType.FORM_CONTENT_TYPE } as any);
+        return ajax("DELETE", "/api/common/h5CustomerAddress/remove", {}, { id }, { contentType: ContentType.FORM } as any);
     }
 
     static getAllProvinces(): Promise<CityRecord[]> {

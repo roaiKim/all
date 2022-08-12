@@ -1,4 +1,5 @@
 import { ComponentType } from "react";
+import { isDevelopment } from "./staticEnvs";
 // 这个是全局加载的功能
 // @ts-ignore webpack 提供的功能 ts 暂时无法识别
 const modules = require.context("module/", true, /type\.ts$/);
@@ -30,7 +31,6 @@ interface Cache {
 
 const cache: Record<string, Cache> = {};
 
-const isDevelopment = process.env.NODE_ENV === "development";
 modulesId.forEach((id) => {
     const statement: ModuleStatement = modules(id).statement;
     if (statement) {

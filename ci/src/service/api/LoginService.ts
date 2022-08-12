@@ -1,10 +1,12 @@
-import { ajax } from "@core";
+import { ajax } from "network";
+import { stringify } from "querystring";
 import { AuthTokenRequest, AuthTokenResponse } from "type";
-import { ContentType } from "type/global";
+import { ContentType } from "utils/function/staticEnvs";
 
 export class LoginService {
     static login(request: AuthTokenRequest): Promise<AuthTokenResponse> {
-        return ajax("POST", "/api/auth/oauth/token", {}, request, { contentType: ContentType.FORM_CONTENT_TYPE } as any);
+        const requestString = stringify(request as any);
+        return ajax("POST", `/api/auth/oauth/token?${requestString}` + requestString, {}, requestString, { contentType: ContentType.FORM });
     }
 
     static logout(): Promise<AuthTokenResponse> {

@@ -1,6 +1,7 @@
 import { Module, register } from "@core";
 import Main from "./component";
 import { RootState } from "type/state";
+import { GolbalService } from "service/api/GolbalService";
 
 const initialState = {
     userName: null,
@@ -8,6 +9,9 @@ const initialState = {
 };
 
 class MainModule extends Module<RootState, "main"> {
+    onEnter(parms: {}, location: Location): void | Promise<void> {
+        const d = GolbalService.getByUserId();
+    }
     calcPageHeight() {
         try {
             const container = document.querySelector(".ro-main-container");

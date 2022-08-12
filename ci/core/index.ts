@@ -7,7 +7,7 @@ export { Module } from "./platform/Module";
 
 export { async } from "./util/async";
 export { captureError } from "./util/error-util";
-export { ajax, uri } from "./util/network";
+// export { ajax, uri } from "./util/network";
 export { ErrorBoundary } from "./util/ErrorBoundary";
 export { Route } from "./util/Route";
 

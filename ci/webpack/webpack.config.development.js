@@ -9,6 +9,20 @@ const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin"
 const ReactRefreshTypeScript = require("react-refresh-typescript");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
+const developmentProxy = require("./development.proxy.json");
+
+const proxy = (origin={}) => {
+    const envs = {};
+    Object.entries(developmentProxy).forEach(([key, value]) => envs[key] = {
+        pathRewrite: {[`^/${key}`]: ""},
+        target: value,
+        changeOrigin: true,
+        headers: {
+            Connection: "keep-alive"
+        }
+    });
+    return Object.assign({}, envs, origin);
+}
 
 module.exports = {
     devServer: {
@@ -23,14 +37,13 @@ module.exports = {
         //         warnings: false,
         //     },
         // },
-        proxy: {
+        proxy: proxy({
             "/api": {
-                // target: "http://192.168.2.121",
                 target: "http://cccc.smartcomma.com",
                 secure: false,
                 changeOrigin: true,
-            },
-        },
+            }
+        }),
     },
     mode: "development",
     entry: {

@@ -64,7 +64,9 @@ function Login(props: LoginProps) {
                         onChange({ password: event.target.value });
                     }}
                 ></input>
-                <button onClick={onSubmit}>登录</button>
+                <button style={{ cursor: "pointer" }} onClick={onSubmit}>
+                    登录
+                </button>
             </div>
         </div>
     );

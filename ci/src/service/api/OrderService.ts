@@ -1,6 +1,6 @@
-import { ajax } from "@core";
+import { ajax } from "network";
 import { OrderServicePaymentRequest, PageDataLimitResponse, PageRecordsLimitResponse } from "type";
-import { ContentType } from "type/global";
+import { ContentType } from "utils/function/staticEnvs";
 
 export class OrderService {
     static getCarType(): Promise<PageRecordsLimitResponse> {
@@ -16,7 +16,7 @@ export class OrderService {
     }
 
     static payment(request: OrderServicePaymentRequest): Promise<any> {
-        return ajax("POST", `/api/tms/cashOrder/order`, {}, request, { contentType: ContentType.FORM_CONTENT_TYPE } as any);
+        return ajax("POST", `/api/tms/cashOrder/order`, {}, request, { contentType: ContentType.FORM } as any);
     }
 
     static sendInvoice(id: string, invoiceTitleId: string): Promise<any> {

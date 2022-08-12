@@ -45,6 +45,7 @@ export interface AuthTokenResponse {
     token_type: string;
     user_id: number;
     username: string;
+    new_user: boolean;
 }
 
 export interface OrderServicePaymentRequest {
