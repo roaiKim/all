@@ -47,17 +47,18 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
     };
 
     const errorCode = specialErrorCode(exception, action, errorStacktrace);
+    console.log("====errorCode====", errorCode);
     if (errorCode) {
-        app.logger.warn({
-            action,
-            elapsedTime: 0,
-            info,
-            errorMessage: exception.message,
-            errorCode,
-        });
+        // app.logger.warn({
+        //     action,
+        //     elapsedTime: 0,
+        //     info,
+        //     errorMessage: exception.message,
+        //     errorCode,
+        // });
     } else {
-        app.logger.exception(exception, info, action);
-        // app.sagaMiddleware.run(runUserErrorHandler, app.errorHandler, exception);
+        // app.logger.exception(exception, info, action);
+        runUserErrorHandler(app.errorHandler, exception);
     }
 
     return exception;
@@ -66,6 +67,7 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
 export async function runUserErrorHandler(handler: ErrorHandler, exception: Exception) {
     // For app, report errors to event server ASAP, in case of sudden termination
     sendEventLogs();
+    console.log("iopp");
     if (errorHandlerRunning) return;
 
     try {

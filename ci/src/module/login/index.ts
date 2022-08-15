@@ -46,25 +46,24 @@ class LoginModule extends Module<RootState, "login"> {
             code: "0000",
             imgCode: "0000",
         };
-        LoginService.login(request)
-            .then((response) => {
-                this.setState({ userInfo: response });
-                this.pushHistory("/");
-                // Toast.show("登录成功");
-                const { access_token, refresh_token = "", username, user_id, dept_id, new_user } = response;
-                StorageService.set(WEB_ISLOGIN, true);
-                StorageService.set(WEB_TOKEN, access_token);
-                StorageService.set(WEB_USERID, `${user_id}`);
-                StorageService.set(WEB_DEPARTMENT_ID, `${dept_id}`);
-                StorageService.set(WEB_REFRESHTOKEN, refresh_token);
-                StorageService.set(WEB_USERNAME, username);
-                StorageService.set(WEB_NEW_USER, new_user);
-                StorageService.set(WEB_GETTOKENTIME, new Date().getTime());
-                StorageService.set(WEB_USER_INFO, response);
-            })
-            .catch(() => {
-                StorageService.clear();
-            });
+        LoginService.login(request).then((response) => {
+            this.setState({ userInfo: response });
+            this.pushHistory("/");
+            // Toast.show("登录成功");
+            const { access_token, refresh_token = "", username, user_id, dept_id, new_user } = response;
+            StorageService.set(WEB_ISLOGIN, true);
+            StorageService.set(WEB_TOKEN, access_token);
+            StorageService.set(WEB_USERID, `${user_id}`);
+            StorageService.set(WEB_DEPARTMENT_ID, `${dept_id}`);
+            StorageService.set(WEB_REFRESHTOKEN, refresh_token);
+            StorageService.set(WEB_USERNAME, username);
+            StorageService.set(WEB_NEW_USER, new_user);
+            StorageService.set(WEB_GETTOKENTIME, new Date().getTime());
+            StorageService.set(WEB_USER_INFO, response);
+        });
+        // .catch(() => {
+        //     StorageService.clear();
+        // });
     }
 }
 

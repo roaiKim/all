@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
-import { APIException, NetworkConnectionException } from "@core";
+import { APIException, NetworkConnectionException, setHistory } from "@core";
 import { ContentType, DEV_PROXY_HOST, isDevelopment } from "utils/function/staticEnvs";
 import { StorageService } from "utils/StorageService";
 import { getToken } from "./config";
 import { stringify } from "querystring";
+import { push } from "connected-react-router";
 
 export type PathParams<T extends string> = string extends T
     ? { [key: string]: string | number }
@@ -14,9 +15,10 @@ export type PathParams<T extends string> = string extends T
     : {};
 
 export interface APIErrorResponse {
-    id?: string | null;
-    errorCode?: string | null;
-    message?: string | null;
+    code: number;
+    data: string;
+    msg: string;
+    success: boolean;
 }
 
 axios.defaults.transformResponse = (data, headers) => {
@@ -41,20 +43,23 @@ axios.interceptors.response.use(
             const requestURL = error.config.url || "-";
             if (error.response) {
                 const responseData = error.response.data;
-                const errorId: string | null = responseData?.id || null;
-                const errorCode: string | null = responseData?.errorCode || null;
-
-                if (!errorId && (error.response.status === 502 || error.response.status === 504)) {
-                    throw new NetworkConnectionException(`Gateway error (${error.response.status})`, requestURL, error.message);
+                const errorCode = responseData?.code || null;
+                if (error.response.status === 502 || error.response.status === 504) {
+                    throw new NetworkConnectionException(`网络错误: (${error.response.status})`, requestURL, error.message);
+                } else if (error.response.status === 401) {
+                    const isLoginPage = location.href.includes("login"); // 是登录页
+                    const isLoginAction = requestURL.includes("auth/oauth/token");
+                    const errorMessage: string = isLoginPage && isLoginAction ? "账号或密码错误" : "未登录或登录过期, 请重新登录";
+                    throw new APIException(errorMessage, error.response.status, requestURL, responseData, "0", errorCode);
                 } else {
-                    const errorMessage: string = responseData && responseData.message ? responseData.message : `[No Response]`;
-                    throw new APIException(errorMessage, error.response.status, requestURL, responseData, errorId, errorCode);
+                    const errorMessage: string = responseData?.msg || `[No Response]`;
+                    throw new APIException(errorMessage, error.response.status, requestURL, responseData, "0", errorCode);
                 }
             } else {
-                throw new NetworkConnectionException(`Failed to connect: ${requestURL}`, requestURL, error.message);
+                throw new NetworkConnectionException(`连接失败: ${requestURL}`, requestURL, error.message);
             }
         } else {
-            throw new NetworkConnectionException(`Unknown network error`, `[No URL]`, e.toString());
+            throw new NetworkConnectionException(`未知的网络错误:`, `[No URL]`, e.toString());
         }
     }
 );

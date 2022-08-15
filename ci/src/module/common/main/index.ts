@@ -10,8 +10,12 @@ const initialState = {
 
 class MainModule extends Module<RootState, "main"> {
     onEnter(parms: {}, location: Location): void | Promise<void> {
-        const d = GolbalService.getByUserId();
+        const permission = GolbalService.getByUserId().then(() => {});
+        // .catch((response) => {
+        //     // console.log("---", response);
+        // });
     }
+
     calcPageHeight() {
         try {
             const container = document.querySelector(".ro-main-container");

@@ -13,7 +13,7 @@ export class APIException extends Exception {
         public requestURL: string,
         public responseData: any,
         public errorId: string | null,
-        public errorCode: string | null
+        public errorCode: number
     ) {
         super(message);
     }
