@@ -15,6 +15,8 @@ export const WEB_GETTOKENTIME = "WEB_GETTOKENTIME";
 export const WEB_USER_INFO = "WEB_USER_INFO";
 export const WEB_DEPARTMENT_ID = "WEB_DEPARTMENT_ID";
 export const WEB_NEW_USER = "WEB_NEW_USER";
+export const LOGIN_REMEMBER_USERNAME = "LOGIN_REMEMBER_USERNAME";
+export const LOGIN_REMEMBER_PASSWORD = "LOGIN_REMEMBER_PASSWORD";
 
 export enum ContentType {
     JSON = "application/json",

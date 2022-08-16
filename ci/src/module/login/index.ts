@@ -7,6 +7,8 @@ import { encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 import { v4 } from "uuid";
 import {
+    LOGIN_REMEMBER_USERNAME,
+    LOGIN_REMEMBER_PASSWORD,
     WEB_DEPARTMENT_ID,
     WEB_GETTOKENTIME,
     WEB_ISLOGIN,
@@ -17,6 +19,7 @@ import {
     WEB_USERNAME,
     WEB_USER_INFO,
 } from "utils/function/staticEnvs";
+import { message } from "antd";
 
 const initialState = {
     companyInfo: null,
@@ -49,7 +52,7 @@ class LoginModule extends Module<RootState, "login"> {
         LoginService.login(request).then((response) => {
             this.setState({ userInfo: response });
             this.pushHistory("/");
-            // Toast.show("登录成功");
+            message.success("登录成功");
             const { access_token, refresh_token = "", username, user_id, dept_id, new_user } = response;
             StorageService.set(WEB_ISLOGIN, true);
             StorageService.set(WEB_TOKEN, access_token);
@@ -60,10 +63,9 @@ class LoginModule extends Module<RootState, "login"> {
             StorageService.set(WEB_NEW_USER, new_user);
             StorageService.set(WEB_GETTOKENTIME, new Date().getTime());
             StorageService.set(WEB_USER_INFO, response);
+            StorageService.set(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(username));
+            StorageService.set(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(password));
         });
-        // .catch(() => {
-        //     StorageService.clear();
-        // });
     }
 }
 

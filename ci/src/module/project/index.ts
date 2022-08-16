@@ -6,7 +6,6 @@ import { State, moduleName } from "./type";
 const initialState: State = {};
 
 class ProjectModule extends Module<RootState, typeof moduleName> {
-    @Loading()
     async onEnter(params, location) {
         //
     }

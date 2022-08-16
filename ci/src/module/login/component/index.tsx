@@ -5,6 +5,9 @@ import { connect, DispatchProp } from "react-redux";
 import { actions } from "module/login";
 import { CompanyInfoResponse } from "type";
 import { object, string } from "yup";
+import { StorageService } from "utils/StorageService";
+import { decrypted, encrypted } from "utils/function/crypto";
+import { LOGIN_REMEMBER_USERNAME, LOGIN_REMEMBER_PASSWORD } from "utils/function/staticEnvs";
 
 interface LoginProps extends DispatchProp {
     companyInfo: CompanyInfoResponse | null;
@@ -19,9 +22,15 @@ function Login(props: LoginProps) {
     const { companyInfo } = props;
     const { logo } = companyInfo || {};
 
-    const [state, setState] = useState<LoginState>({
-        username: "",
-        password: "",
+    const [state, setState] = useState<LoginState>(() => {
+        const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
+        const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
+        const un = decrypted(userName);
+        const pw = decrypted(password);
+        return {
+            username: un,
+            password: pw,
+        };
     });
 
     const onChange = (record: Partial<LoginState>) => {

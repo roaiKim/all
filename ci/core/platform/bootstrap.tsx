@@ -69,6 +69,7 @@ function setupGlobalErrorHandler(errorListener?: ErrorListener) {
     window.addEventListener(
         "error",
         (event) => {
+            // event.preventDefault();
             console.log("---error---", event);
             try {
                 const analyzeByTarget = (): string => {
@@ -99,6 +100,9 @@ function setupGlobalErrorHandler(errorListener?: ErrorListener) {
     window.addEventListener(
         "unhandledrejection",
         (event) => {
+            // event.preventDefault();
+            // const msg = event.reason;
+            // console.log(`%c${JSON.stringify(msg, null, 4)}`, "color: red");
             try {
                 captureError(event.reason, GLOBAL_PROMISE_REJECTION_ACTION);
             } catch (e) {

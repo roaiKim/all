@@ -1,18 +1,17 @@
 import { HeaderComponent, HeaderTab } from "module/common/header/type";
 import { MenuComponent } from "module/common/menus/type";
 import { cacheModules, cache } from "utils/function/loadComponent";
-import DevelopingModule from "./developing.module";
+import { DevelopingModule } from "components/common";
 import { connect, DispatchProp } from "react-redux";
 import { RootState } from "type/state";
 import "./index.less";
+import { showLoading } from "@core";
 
-interface BodyContainerProps extends DispatchProp {
-    tabs: HeaderTab[];
-    activeTabName: string;
-}
+interface BodyContainerProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
 function BodyContainer(props: BodyContainerProps) {
-    const { tabs, activeTabName } = props;
+    const { tabs, activeTabName, globalLoading } = props;
+
     return (
         <div className="ro-body-container">
             <HeaderComponent />
@@ -44,6 +43,7 @@ const mapStateToProps = (state: RootState) => {
     return {
         tabs: state.app.header?.headerTabs,
         activeTabName: state.app.header?.activeTabName,
+        globalLoading: showLoading(state),
     };
 };
 

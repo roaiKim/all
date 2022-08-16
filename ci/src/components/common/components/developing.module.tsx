@@ -1,4 +1,4 @@
-export default function (props: { hidden: boolean }) {
+export function DevelopingModule(props: { hidden: boolean }) {
     const { hidden } = props;
     return (
         <div className={`ro-g-developing-container-module ${hidden ? "" : "active-module"}`}>

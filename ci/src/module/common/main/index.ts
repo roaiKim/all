@@ -1,4 +1,4 @@
-import { Module, register } from "@core";
+import { Loading, Module, register } from "@core";
 import Main from "./component";
 import { RootState } from "type/state";
 import { GolbalService } from "service/api/GolbalService";
@@ -9,8 +9,9 @@ const initialState = {
 };
 
 class MainModule extends Module<RootState, "main"> {
-    onEnter(parms: {}, location: Location): void | Promise<void> {
-        const permission = GolbalService.getByUserId().then(() => {});
+    @Loading("PERMISSION")
+    async onEnter(parms: {}, location: Location) {
+        const permission = await GolbalService.getByUserId();
         // .catch((response) => {
         //     // console.log("---", response);
         // });
