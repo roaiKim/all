@@ -16,7 +16,7 @@ export function GlobalMask(props: PropsWithChildren<Props>) {
                 <LoadingSVG>
                     <div>
                         {title}
-                        <a className="ro-a-action">刷新</a>
+                        <p className="ro-a-action">刷新</p>
                     </div>
                 </LoadingSVG>
             </div>
