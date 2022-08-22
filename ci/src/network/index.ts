@@ -50,6 +50,9 @@ axios.interceptors.response.use(
                     const isLoginPage = location.href.includes("login"); // 是登录页
                     const isLoginAction = requestURL.includes("auth/oauth/token");
                     const errorMessage: string = isLoginPage && isLoginAction ? "账号或密码错误" : "未登录或登录过期, 请重新登录";
+                    if (!isLoginPage) {
+                        setHistory("/login");
+                    }
                     throw new APIException(errorMessage, error.response.status, requestURL, responseData, "0", errorCode);
                 } else {
                     const errorMessage: string = responseData?.msg || `[No Response]`;

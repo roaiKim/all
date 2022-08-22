@@ -12,7 +12,7 @@ interface MainProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 function Main(props: MainProps) {
     const { permissionLoading } = props;
     return (
-        <GlobalMask loading={true} title="权限数据加载中请稍后...">
+        <GlobalMask loading={permissionLoading} title="权限数据加载中请稍后...">
             <div className="ro-main-container">
                 <Switch>
                     <Route path="/login" component={LoginComponent} />

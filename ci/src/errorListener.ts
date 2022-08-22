@@ -12,11 +12,6 @@ export default class ErrorHandler implements ErrorListener {
     onError(error: Exception) {
         if (error instanceof APIException) {
             if (error.statusCode === 401 || error.statusCode === 403) {
-                const isLoginPage = location.href.includes("login"); // 是登录页
-                // StorageService.clear();
-                if (!isLoginPage) {
-                    setHistory("/login");
-                }
                 createErrorMessage({ title: "发生错误", content: error.message });
             } else if (error.statusCode === 404) {
                 setHistory("/");

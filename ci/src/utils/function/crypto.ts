@@ -27,6 +27,6 @@ export const decrypted = (s) => {
         });
         return CryptoJS.enc.Utf8.stringify(decrypt).toString();
     } catch (e) {
-        console.error("error", e);
+        console.error("解密错误: error", e);
     }
 };

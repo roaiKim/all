@@ -15,6 +15,7 @@ class MainModule extends Module<RootState, "main"> {
         // .catch((response) => {
         //     // console.log("---", response);
         // });
+        console.log("--permission--");
     }
 
     calcPageHeight() {
