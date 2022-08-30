@@ -47,7 +47,6 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
     };
 
     const errorCode = specialErrorCode(exception, action, errorStacktrace);
-    console.log("====errorCode====", errorCode);
     if (errorCode) {
         // app.logger.warn({
         //     action,
@@ -67,7 +66,6 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
 export async function runUserErrorHandler(handler: ErrorHandler, exception: Exception) {
     // For app, report errors to event server ASAP, in case of sudden termination
     sendEventLogs();
-    console.log("iopp");
     if (errorHandlerRunning) return;
 
     try {

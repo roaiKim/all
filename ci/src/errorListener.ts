@@ -1,12 +1,8 @@
-import { APIException, ErrorListener, Exception, Module, NetworkConnectionException, setHistory } from "@core";
-import { message, Modal } from "antd";
+import { APIException, ErrorListener, Exception, NetworkConnectionException, setHistory } from "@core";
+import { message } from "antd";
 import { isProduntion } from "utils/function/staticEnvs";
-// import { createErrorMessage } from "util/ui/message";
-// import { createSyncModal } from "util/ui/modal";
-import { StorageService } from "utils/StorageService";
 
 const createErrorMessage = message.error;
-const createSyncModal = Modal.error;
 
 export default class ErrorHandler implements ErrorListener {
     onError(error: Exception) {
@@ -16,7 +12,7 @@ export default class ErrorHandler implements ErrorListener {
             } else if (error.statusCode === 404) {
                 setHistory("/");
             } else if (error.statusCode === 400) {
-                createSyncModal({ title: "发生错误", content: error.message });
+                createErrorMessage({ title: "发生错误", content: error.message });
             } else {
                 createErrorMessage(isProduntion ? "发生网络错误，请稍后重试" : error.message);
             }

@@ -25,8 +25,8 @@ function Login(props: LoginProps) {
     const [state, setState] = useState<LoginState>(() => {
         const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
         const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
-        const un = decrypted(userName);
-        const pw = decrypted(password);
+        const un = decrypted(userName || "");
+        const pw = decrypted(password || "");
         return {
             username: un,
             password: pw,

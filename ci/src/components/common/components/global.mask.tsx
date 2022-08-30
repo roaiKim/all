@@ -11,29 +11,24 @@ interface Props {
 
 export function GlobalMask(props: PropsWithChildren<Props>) {
     const { title, loading, children, backgroundColor = "#fff", loadingRender = false, refresh } = props;
-    const dev = (
-        <div className="ro-global-mask" style={{ backgroundColor }}>
-            <div className="ro-develop-module ro-flex ro-center ro-height-100">
-                <LoadingSVG>
-                    <div>
-                        {title}
-                        {refresh && (
-                            <p onClick={refresh} className="ro-a-action">
-                                刷新
-                            </p>
-                        )}
-                    </div>
-                </LoadingSVG>
+
+    return (
+        <React.Fragment>
+            <div className="ro-global-mask" style={{ backgroundColor, display: loading ? "block" : "none" }}>
+                <div className="ro-develop-module ro-flex ro-center ro-height-100">
+                    <LoadingSVG>
+                        <div>
+                            {title}
+                            {refresh && (
+                                <p onClick={refresh} className="ro-a-action">
+                                    刷新
+                                </p>
+                            )}
+                        </div>
+                    </LoadingSVG>
+                </div>
             </div>
-        </div>
+            {loading ? (loadingRender ? children : null) : children}
+        </React.Fragment>
     );
-    if (loadingRender) {
-        return (
-            <React.Fragment>
-                {loading && dev}
-                {children}
-            </React.Fragment>
-        );
-    }
-    return <React.Fragment>{loading ? dev : children}</React.Fragment>;
 }

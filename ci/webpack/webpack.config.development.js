@@ -13,7 +13,7 @@ const developmentProxy = require("./development.proxy.json");
 
 const proxy = (origin={}) => {
     const envs = {};
-    Object.entries(developmentProxy).forEach(([key, value]) => envs[key] = {
+    Object.entries(developmentProxy).forEach(([key, value]) => envs[`/${key}`] = {
         pathRewrite: {[`^/${key}`]: ""},
         target: value,
         changeOrigin: true,
@@ -21,6 +21,7 @@ const proxy = (origin={}) => {
             Connection: "keep-alive"
         }
     });
+    console.log("--", Object.assign({}, envs, origin));
     return Object.assign({}, envs, origin);
 }
 
@@ -37,13 +38,22 @@ module.exports = {
         //         warnings: false,
         //     },
         // },
-        proxy: proxy({
+        // proxy: proxy({
+        //     "/default-proxy": {
+        //         target: "http://cccc.smartcomma.com",
+        //         secure: false,
+        //         changeOrigin: true,
+        //         pathRewrite: {[`^/default-proxy`]: ""}
+        //     }
+        // }),
+        proxy: {
             "/api": {
-                target: "http://cccc.smartcomma.com",
+                // target: "http://192.168.2.121",
+                target: "http://192.168.2.91",
                 secure: false,
                 changeOrigin: true,
-            }
-        }),
+            },
+        },
     },
     mode: "development",
     entry: {

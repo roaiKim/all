@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { APIException, NetworkConnectionException, setHistory } from "@core";
 import { ContentType, DEV_PROXY_HOST, isDevelopment } from "utils/function/staticEnvs";
 import { StorageService } from "utils/StorageService";
-import { getToken } from "./config";
+import { getToken, whitelistUrl } from "./config";
 import { stringify } from "querystring";
 import { push } from "connected-react-router";
 
@@ -31,11 +31,22 @@ axios.defaults.transformResponse = (data, headers) => {
 
 axios.interceptors.response.use(
     (response: any) => {
-        const serviceData = response.data || {};
-        if (serviceData && serviceData.code === 0) {
-            return serviceData.data;
-        }
-        return serviceData;
+        return new Promise((resolve, reject) => {
+            const serviceData = response.data || {};
+            if (serviceData.success && serviceData?.code === 200) {
+                return resolve(serviceData.data);
+            }
+            const url = response.config?.url || "";
+            const white = whitelistUrl.some((item) => url.includes(item));
+            if (white) {
+                return resolve(serviceData);
+            }
+
+            const errorMessage = `请求失败: code=${serviceData?.code || ""} ${serviceData?.msg || ""}`;
+            reject(serviceData);
+
+            throw new APIException(errorMessage, serviceData?.code, response.config?.url, serviceData, "0", serviceData?.code);
+        });
     },
     (e) => {
         if (axios.isAxiosError(e)) {
@@ -89,7 +100,7 @@ export async function ajax<Response, Path extends string>(
         method,
         url: fullURL,
     };
-
+    console.log("--fullURL--", fullURL);
     if (method === "GET" || method === "DELETE") {
         requestConfig.params = request;
     } else if (method === "POST" || method === "PUT" || method === "PATCH") {
@@ -113,9 +124,9 @@ export function uri<Request>(path: string, request: Request): string {
 
 export function urlParams(pattern: string, params?: object): string {
     if (!params) {
-        if (isDevelopment) {
-            return StorageService.get(DEV_PROXY_HOST, "") + pattern;
-        }
+        // if (isDevelopment) {
+        //     return StorageService.get(DEV_PROXY_HOST, "") + pattern;
+        // }
         return pattern;
     }
     let url = pattern;
@@ -123,8 +134,8 @@ export function urlParams(pattern: string, params?: object): string {
         const encodedValue = encodeURIComponent(value.toString());
         url = url.replace(":" + name, encodedValue);
     });
-    if (isDevelopment) {
-        return StorageService.get(DEV_PROXY_HOST, "") + url;
-    }
+    // if (isDevelopment) {
+    //     return StorageService.get(DEV_PROXY_HOST, "") + url;
+    // }
     return url;
 }
