@@ -6,22 +6,27 @@ import { CloseOutlined } from "@icon";
 import "./index.less";
 import { useSlideWidth } from "utils/hooks/useSlideWidth";
 
+export type PageModalPlace = true | "global" | "default";
+
 interface ViewModalProps {
     view: ViewState;
     setView: SetView;
     title: string | ReactNode;
     width?: number;
+    place?: PageModalPlace;
+    wrapClassName?: string;
 }
 
 export function PageModal(props: PropsWithChildren<ViewModalProps>) {
-    const { view, setView, width, title, children } = props;
+    const { view, setView, width, title, children, place = "default", wrapClassName = "" } = props;
     const { show } = view;
     if (!show) return null;
 
-    const { panelWidth, maxPanelHeight, sliderWight } = useSlideWidth({ width });
+    const { maskLeft, maskTop, panelWidth, maxPanelHeight, sliderWight } = useSlideWidth({ width, place });
+    const className = typeof place === "string" ? place : "";
 
     return (
-        <div className="ro-page-drag-panel-masx" style={{ left: sliderWight || "auto" }}>
+        <div className={`ro-page-drag-panel-masx ${wrapClassName} ${className}`} /*  style={{ left: sliderWight || "auto" }} */>
             <Draggable handle=".ro-drag-header" scale={1} bounds="parent">
                 <div className="ro-drag-container" style={{ width: panelWidth }}>
                     <div className="ro-drag-header">

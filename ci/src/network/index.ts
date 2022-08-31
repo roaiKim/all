@@ -100,7 +100,6 @@ export async function ajax<Response, Path extends string>(
         method,
         url: fullURL,
     };
-    console.log("--fullURL--", fullURL);
     if (method === "GET" || method === "DELETE") {
         requestConfig.params = request;
     } else if (method === "POST" || method === "PUT" || method === "PATCH") {
@@ -124,9 +123,9 @@ export function uri<Request>(path: string, request: Request): string {
 
 export function urlParams(pattern: string, params?: object): string {
     if (!params) {
-        // if (isDevelopment) {
-        //     return StorageService.get(DEV_PROXY_HOST, "") + pattern;
-        // }
+        if (isDevelopment) {
+            return StorageService.get(DEV_PROXY_HOST, "/default-proxy") + pattern;
+        }
         return pattern;
     }
     let url = pattern;
@@ -134,8 +133,8 @@ export function urlParams(pattern: string, params?: object): string {
         const encodedValue = encodeURIComponent(value.toString());
         url = url.replace(":" + name, encodedValue);
     });
-    // if (isDevelopment) {
-    //     return StorageService.get(DEV_PROXY_HOST, "") + url;
-    // }
+    if (isDevelopment) {
+        return StorageService.get(DEV_PROXY_HOST, "/default-proxy") + url;
+    }
     return url;
 }

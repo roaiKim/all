@@ -66,6 +66,18 @@ class LoginModule extends Module<RootState, "login"> {
             StorageService.set(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(username));
             StorageService.set(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(password));
         });
+        // .catch((error) => {
+        //     StorageService.set(WEB_ISLOGIN, null);
+        //     StorageService.set(WEB_TOKEN, null);
+        //     StorageService.set(WEB_USERID, null);
+        //     StorageService.set(WEB_DEPARTMENT_ID, null);
+        //     StorageService.set(WEB_REFRESHTOKEN, null);
+        //     StorageService.set(WEB_USERNAME, null);
+        //     StorageService.set(WEB_NEW_USER, null);
+        //     StorageService.set(WEB_GETTOKENTIME, null);
+        //     StorageService.set(WEB_USER_INFO, null);
+        //     throw error;
+        // });
     }
 }
 

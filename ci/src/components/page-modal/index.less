@@ -1,8 +1,5 @@
 .ro-page-drag-panel-masx {
   color: initial;
-  position: fixed;
-  top: 46px;
-  left: 200px;
   right: 0;
   bottom: 0;
   background: rgb(0 0 0 / 30%);
@@ -10,6 +7,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &.global {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  &.default {
+    position: fixed;
+    top: 46px;
+    left: 200px;
+  }
 
   .ro-drag-container {
     max-height: 95%;

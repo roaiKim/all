@@ -15,5 +15,6 @@ export class GolbalService {
                     setTimeout(reject, Math.random() * 2000 + 1000, error);
                 });
         });
+        // return ajax("GET", "/api/admin/account/dataPermissionTree/getByUserId");
     }
 }

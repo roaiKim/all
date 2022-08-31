@@ -1,17 +1,21 @@
+import { PageModalPlace } from "components/page-modal";
 import { useEffect, useRef, useState } from "react";
 
 interface SlideWidthProps {
     width?: number;
+    place?: PageModalPlace;
 }
 
 interface WidthState {
+    maskLeft: number;
+    maskTop: number;
     panelWidth: number;
     maxPanelHeight: number;
     sliderWight: number;
 }
 
 export function useSlideWidth(props: SlideWidthProps): WidthState {
-    const { width } = props;
+    const { width, place } = props;
     const sliderRef = useRef(document.querySelector(".ro-meuns-module"));
 
     const [state, setState] = useState<WidthState>(() => {
@@ -19,13 +23,28 @@ export function useSlideWidth(props: SlideWidthProps): WidthState {
         const slider = sliderRef.current;
 
         const { width: bodyWidth, height: bodyHeight } = body.getBoundingClientRect();
-        const { width: sliderWight } = slider?.getBoundingClientRect() || {};
 
-        const parentWidth = bodyWidth - sliderWight || 200;
-        const panelWidth = width ? (width > parentWidth ? parentWidth * 0.95 : width) : parentWidth * 0.8;
-        const maxPanelHeight = (bodyHeight - 96) * 0.96;
+        let maskWidth = bodyWidth;
+        let maskHeight = bodyHeight;
+        let otherHegiht = 0;
+        let otherWidth = 0;
 
-        return { panelWidth, maxPanelHeight, sliderWight: sliderWight || 200 };
+        if (slider && place === "default") {
+            const { width: sliderWight } = slider.getBoundingClientRect() || {};
+            otherWidth = sliderWight || 200;
+            otherHegiht = 46;
+
+            maskWidth -= otherWidth;
+            maskHeight -= otherHegiht;
+        }
+
+        const panelWidth = width ? (width > maskWidth ? maskWidth * 0.95 : width) : maskWidth * 0.8;
+        const maxPanelHeight = (bodyHeight - 40 - otherHegiht) * 0.96;
+
+        const maskLeft = bodyWidth - maskWidth;
+        const maskTop = bodyHeight - maskHeight;
+
+        return { maskLeft, maskTop, panelWidth, maxPanelHeight, sliderWight: otherWidth };
     });
 
     useEffect(() => {
