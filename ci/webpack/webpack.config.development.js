@@ -38,22 +38,22 @@ module.exports = {
         //         warnings: false,
         //     },
         // },
-        // proxy: proxy({
-        //     "/default-proxy": {
-        //         target: "http://cccc.smartcomma.com",
-        //         secure: false,
-        //         changeOrigin: true,
-        //         pathRewrite: {[`^/default-proxy`]: ""}
-        //     }
-        // }),
-        proxy: {
-            "/api": {
-                // target: "http://192.168.2.121",
-                target: "http://192.168.2.91",
+        proxy: proxy({
+            "/default-proxy": {
+                target: "http://cccc.smartcomma.com",
                 secure: false,
                 changeOrigin: true,
-            },
-        },
+                pathRewrite: {[`^/default-proxy`]: ""}
+            }
+        }),
+        // proxy: {
+        //     "/api": {
+        //         // target: "http://192.168.2.121",
+        //         target: "http://192.168.2.91",
+        //         secure: false,
+        //         changeOrigin: true,
+        //     },
+        // },
     },
     mode: "development",
     entry: {

@@ -25,8 +25,8 @@ const initialViewState = () => ({
     readonly: false,
 });
 
-export function usePageModal(props: PageModalProps): PageModalAction {
-    const { name } = props;
+export function usePageModal(props?: PageModalProps): PageModalAction {
+    const { name } = props || {};
     const [view, setView] = useState<ViewState>(initialViewState());
 
     const viewState = useCallback((views) => {

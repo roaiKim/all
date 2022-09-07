@@ -15,8 +15,8 @@ interface HomeProps extends DispatchProp {
 }
 
 function Home(props: HomeProps) {
-    const [name, setName] = useState<string>("wawa");
-    const { view, setView } = usePageModal({ name });
+    const [count, setCount] = useState<{ count: number; count2: number; count3: number }>({ count: 1, count2: 1, count3: 1 });
+    const { view, setView } = usePageModal();
 
     return (
         <div className="ro-home-module">
@@ -25,10 +25,12 @@ function Home(props: HomeProps) {
                 <Button
                     size="small"
                     onClick={() => {
-                        setName(v4());
+                        setCount((prev) => ({ ...prev, count: prev.count + 1 }));
+                        setCount((prev) => ({ ...prev, count2: prev.count2 + 1 }));
+                        setCount((prev) => ({ ...prev, count3: prev.count3 + 1 }));
                     }}
                 >
-                    改名
+                    改名{count.count}-{count.count2}-{count.count3}
                 </Button>
             </PageTitle>
             <PageTable />
