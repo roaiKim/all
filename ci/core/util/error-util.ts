@@ -33,18 +33,18 @@ export function errorToException(error: unknown): Exception {
     }
 }
 
-export function captureError(error: unknown, action: string, extra: ErrorExtra = {}): Exception {
+export function captureError(error: unknown, action: string = ""): Exception {
     if (process.env.NODE_ENV === "development") {
         console.error(`[framework] Error captured from [${action}]`, error);
     }
 
     const exception = errorToException(error);
     const errorStacktrace = error instanceof Error ? error.stack : undefined;
-    const info: { [key: string]: string | undefined } = {
-        payload: extra.actionPayload,
-        extra_stacktrace: extra.extraStacktrace,
-        stacktrace: errorStacktrace,
-    };
+    // const info: { [key: string]: string | undefined } = {
+    //     payload: extra.actionPayload,
+    //     extra_stacktrace: extra.extraStacktrace,
+    //     stacktrace: errorStacktrace,
+    // };
 
     const errorCode = specialErrorCode(exception, action, errorStacktrace);
     if (errorCode) {
@@ -65,7 +65,7 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
 
 export async function runUserErrorHandler(handler: ErrorHandler, exception: Exception) {
     // For app, report errors to event server ASAP, in case of sudden termination
-    sendEventLogs();
+    // sendEventLogs();
     if (errorHandlerRunning) return;
 
     try {

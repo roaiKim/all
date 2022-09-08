@@ -6,6 +6,7 @@ const createErrorMessage = message.error;
 
 export default class ErrorHandler implements ErrorListener {
     onError(error: Exception) {
+        console.log("-errorListener-error-", error);
         if (error instanceof APIException) {
             if (error.statusCode === 401 || error.statusCode === 403) {
                 createErrorMessage({ title: "发生错误", content: error.message });

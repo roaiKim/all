@@ -49,23 +49,24 @@ class LoginModule extends Module<RootState, "login"> {
             code: "0000",
             imgCode: "0000",
         };
-        LoginService.login(request).then((response) => {
-            this.setState({ userInfo: response });
-            this.pushHistory("/");
-            message.success("登录成功");
-            const { access_token, refresh_token = "", username, user_id, dept_id, new_user } = response;
-            StorageService.set(WEB_ISLOGIN, true);
-            StorageService.set(WEB_TOKEN, access_token);
-            StorageService.set(WEB_USERID, `${user_id}`);
-            StorageService.set(WEB_DEPARTMENT_ID, `${dept_id}`);
-            StorageService.set(WEB_REFRESHTOKEN, refresh_token);
-            StorageService.set(WEB_USERNAME, username);
-            StorageService.set(WEB_NEW_USER, new_user);
-            StorageService.set(WEB_GETTOKENTIME, new Date().getTime());
-            StorageService.set(WEB_USER_INFO, response);
-            StorageService.set(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(username));
-            StorageService.set(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(password));
-        });
+        const response = await LoginService.login(request);
+
+        this.setState({ userInfo: response });
+        this.pushHistory("/");
+        message.success("登录成功");
+
+        const { access_token, refresh_token = "", user_id, dept_id, new_user } = response;
+        StorageService.set(WEB_ISLOGIN, true);
+        StorageService.set(WEB_TOKEN, access_token);
+        StorageService.set(WEB_USERID, `${user_id}`);
+        StorageService.set(WEB_DEPARTMENT_ID, `${dept_id}`);
+        StorageService.set(WEB_REFRESHTOKEN, refresh_token);
+        StorageService.set(WEB_USERNAME, username);
+        StorageService.set(WEB_NEW_USER, new_user);
+        StorageService.set(WEB_GETTOKENTIME, new Date().getTime());
+        StorageService.set(WEB_USER_INFO, response);
+        StorageService.set(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(username));
+        StorageService.set(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(password));
         // .catch((error) => {
         //     StorageService.set(WEB_ISLOGIN, null);
         //     StorageService.set(WEB_TOKEN, null);
