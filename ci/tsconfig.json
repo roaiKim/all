@@ -22,7 +22,7 @@
         "paths": {
             "@core": ["../core"],
             "@icon": ["../node_modules/@ant-design/icons"],
-            "@api": ["./service/api"]
+            "@api/*": ["./service/api/*"]
         }
     },
     "include": ["./src", "./core"],

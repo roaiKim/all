@@ -11,19 +11,22 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
 const developmentProxy = require("./development.proxy.json");
 
-const proxy = (origin={}) => {
+const proxy = (origin = {}) => {
     const envs = {};
-    Object.entries(developmentProxy).forEach(([key, value]) => envs[`/${key}`] = {
-        pathRewrite: {[`^/${key}`]: ""},
-        target: value,
-        changeOrigin: true,
-        headers: {
-            Connection: "keep-alive"
-        }
-    });
+    Object.entries(developmentProxy).forEach(
+        ([key, value]) =>
+            (envs[`/${key}`] = {
+                pathRewrite: { [`^/${key}`]: "" },
+                target: value,
+                changeOrigin: true,
+                headers: {
+                    Connection: "keep-alive",
+                },
+            })
+    );
     console.log("--", Object.assign({}, envs, origin));
     return Object.assign({}, envs, origin);
-}
+};
 
 module.exports = {
     devServer: {
@@ -43,8 +46,8 @@ module.exports = {
                 target: "http://cccc.smartcomma.com",
                 secure: false,
                 changeOrigin: true,
-                pathRewrite: {[`^/default-proxy`]: ""}
-            }
+                pathRewrite: { [`^/default-proxy`]: "" },
+            },
         }),
         // proxy: {
         //     "/api": {

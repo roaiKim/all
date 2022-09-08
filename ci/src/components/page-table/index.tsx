@@ -1,5 +1,6 @@
 import { Table } from "antd";
 import "./index.less";
+import { useTableTitle } from "./useTableTitle";
 
 export function PageTable() {
     const dataSource = [
@@ -34,6 +35,9 @@ export function PageTable() {
             key: "address",
         },
     ];
+    const title = useTableTitle({
+        moduleName: "s/project",
+    });
 
     return (
         <div className="ro-page-table">
