@@ -1,9 +1,13 @@
 import { ajax } from "network";
 
-export class TableService {
+export class AdvancedTableService {
     static title(moduleName: string): Promise<TableServicResponse> {
         const request = { conditionBodies: [{ conditions: [{ property: "commaListConfigData.code", values: [moduleName], type: "EQUAL" }] }] };
         return ajax("POST", "/api/common/comma-list-config/advanced-unique-get", {}, request);
+    }
+
+    static table(request: AdvancedTableRequest): Promise<AdvancedTableResponse<any>> {
+        return ajax("POST", "/api/common/project/advanced-page", {}, request);
     }
 }
 
@@ -17,7 +21,7 @@ export interface TableServicResponse {
     userId: string;
 }
 
-interface CommaListConfigData {
+export interface CommaListConfigData {
     id: string;
     code: string;
     visible: boolean;
@@ -30,4 +34,26 @@ interface CommaListConfigData {
     config: string;
     sort: true;
     userId: string;
+}
+
+export interface Orders {
+    orderBy: string;
+    ascending: boolean;
+}
+
+export interface AdvancedTableRequest {
+    offset?: number;
+    limit?: number;
+    pageNo: number;
+    pageSize: number;
+    selectColumns?: string[];
+    conditionBodies?: Record<string, any>[];
+    orders?: Orders[];
+}
+
+export interface AdvancedTableResponse<T> {
+    pageIndex: number;
+    pageSize: number;
+    total: string;
+    data: T[];
 }

@@ -4,14 +4,19 @@ import { RootState } from "type/state";
 import { moduleName, State } from "./type";
 import { StorageService } from "utils/StorageService";
 import { OrderService } from "service/api/OrderService";
+import { AdvancedTableService } from "@api/AdvancedTableService";
+import { initialTableSource } from "utils/function";
 
 const initialState = {
-    type: null,
-    orders: null,
+    tableSource: initialTableSource(),
 };
 
 class HomeModule extends Module<RootState, typeof moduleName> {
-    //
+    @Loading("table")
+    async fetchPageTable() {
+        const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 20 });
+        this.setState({ tableSource: source });
+    }
 }
 
 const module = register(new HomeModule(moduleName, initialState));

@@ -14,3 +14,12 @@ export function transformMeuns(menus) {
     });
     return list;
 }
+
+export function initialTableSource() {
+    return {
+        data: [],
+        pageIndex: 1,
+        pageSize: 20,
+        total: "0",
+    };
+}

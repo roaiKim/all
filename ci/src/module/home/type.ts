@@ -1,11 +1,11 @@
+import { AdvancedTableResponse } from "@api/AdvancedTableService";
 import { async } from "@core";
 import { ModuleStatement } from "utils/function/loadComponent";
 
 export const moduleName = "home";
 
 export interface State {
-    type: string | null;
-    orders: Record<string, any>[];
+    tableSource: AdvancedTableResponse<any>;
 }
 
 export const MainComponent = async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent");

@@ -1,47 +1,35 @@
+import { AdvancedTableResponse } from "@api/AdvancedTableService";
 import { Table } from "antd";
 import "./index.less";
-import { useTableTitle } from "./useTableTitle";
+import { useColumns } from "./useColumns";
 
-export function PageTable() {
-    const dataSource = [
-        {
-            key: "1",
-            name: "胡彦斌",
-            age: 32,
-            address: "西湖区湖底公园1号",
-        },
-        {
-            key: "2",
-            name: "胡彦祖",
-            age: 42,
-            address: "西湖区湖底公园1号",
-        },
-    ];
+interface Signature {
+    name: string;
+    fetch: any;
+}
+interface PageTableProps<T> {
+    signature: Signature;
+    tableSource: AdvancedTableResponse<T>;
+}
 
-    const columns = [
-        {
-            title: "姓名",
-            dataIndex: "name",
-            key: "name",
-        },
-        {
-            title: "年龄",
-            dataIndex: "age",
-            key: "age",
-        },
-        {
-            title: "住址",
-            dataIndex: "address",
-            key: "address",
-        },
-    ];
-    const title = useTableTitle({
-        moduleName: "s/project",
+export function PageTable<T extends object>(props: PageTableProps<T>) {
+    const { signature, tableSource } = props;
+    const { name, fetch } = signature;
+    const { data } = tableSource;
+
+    const { columns } = useColumns({
+        moduleName: name,
+        fetch,
     });
 
+    if (!columns) {
+        return <div>上传配置</div>;
+    }
+
+    console.log("--columns--", columns);
     return (
         <div className="ro-page-table">
-            <Table size="small" bordered dataSource={dataSource} columns={columns} />
+            <Table size="small" bordered dataSource={data || []} columns={columns} />
         </div>
     );
 }
