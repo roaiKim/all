@@ -26,10 +26,9 @@ export function PageTable<T extends object>(props: PageTableProps<T>) {
         return <div>上传配置</div>;
     }
 
-    console.log("--columns--", columns);
     return (
         <div className="ro-page-table">
-            <Table size="small" bordered dataSource={data || []} columns={columns} />
+            <Table size="small" rowKey="id" bordered dataSource={data || []} columns={columns} />
         </div>
     );
 }

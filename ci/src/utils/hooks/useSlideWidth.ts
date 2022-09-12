@@ -14,9 +14,14 @@ interface WidthState {
     sliderWight: number;
 }
 
+const calcWidth = () => {
+    //
+};
+
 export function useSlideWidth(props: SlideWidthProps): WidthState {
     const { width, place } = props;
     const sliderRef = useRef(document.querySelector(".ro-meuns-module"));
+    const moduleContainer = useRef(document.querySelector(".ro-module-body"));
 
     const [state, setState] = useState<WidthState>(() => {
         const body = document.body;
@@ -51,6 +56,8 @@ export function useSlideWidth(props: SlideWidthProps): WidthState {
         const observer = new ResizeObserver((entries) => {
             const entry = entries?.[0];
             const { width } = entry?.contentRect || {};
+            const rect = moduleContainer.current.getBoundingClientRect() || {};
+            // console.log("--rect--", rect);
             setState((prevState) => ({ ...prevState, sliderWight: width || prevState.sliderWight }));
         });
         observer.observe(sliderRef.current);
