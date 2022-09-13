@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { APIException, NetworkConnectionException, setHistory } from "@core";
-import { ContentType, DEV_PROXY_HOST, isDevelopment } from "utils/function/staticEnvs";
+import { ContentType, DEV_PROXY_HOST, isDevelopment, WEB_TOKEN } from "utils/function/staticEnvs";
 import { StorageService } from "utils/StorageService";
 import { getToken, whitelistUrl } from "./config";
 import { stringify } from "querystring";
@@ -58,6 +58,7 @@ axios.interceptors.response.use(
                 if (error.response.status === 502 || error.response.status === 504) {
                     throw new NetworkConnectionException(`网络错误: (${error.response.status})`, requestURL, error.message);
                 } else if (error.response.status === 401) {
+                    StorageService.set(WEB_TOKEN, null);
                     const isLoginPage = location.href.includes("login"); // 是登录页
                     const isLoginAction = requestURL.includes("auth/oauth/token");
                     const errorMessage: string = isLoginPage && isLoginAction ? "账号或密码错误" : "未登录或登录过期, 请重新登录";

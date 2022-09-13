@@ -1,5 +1,4 @@
 .ro-page-drag-panel-masx {
-  color: initial;
   right: 0;
   bottom: 0;
   background: rgb(0 0 0 / 30%);
@@ -52,5 +51,21 @@
 
   .ro-drag-body {
     overflow-y: auto;
+
+    .ro-modal-title {
+      display: flex;
+      background-color: #fff;
+      min-height: 35px;
+      padding: 5px 5px 5px 10px;
+      align-items: center;
+      flex-flow: wrap;
+
+      > div {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+    }
   }
 }

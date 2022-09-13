@@ -1,12 +1,13 @@
 import { Form, FormGrid, FormItem, Input, Password, Submit } from "@formily/antd";
 import { createForm, onFieldReact, registerValidateLocale, Field as FieldType } from "@formily/core";
 import { FormProvider, Field, VoidField } from "@formily/react";
-import { Button } from "antd";
+import { Button, Tag } from "antd";
 import { ModalCard } from "components/modal-card";
 import { PageModal } from "components/page-modal";
 import { BaseSelect } from "components/select";
 import { useMemo } from "react";
 import { SetView, ViewState } from "utils/hooks/usePageModal";
+import { STATUS_TAG } from "../type";
 
 interface AdditionProps {
     view: ViewState;
@@ -34,10 +35,17 @@ export default function (props: AdditionProps) {
             }),
         []
     );
-
+    const baseInfo = {
+        status: 3,
+        createTime: 1658745167000,
+        createUserName: "罗森",
+        updateTime: 166099785000,
+        updateUserName: "罗森2",
+    };
     return (
         <div>
             <PageModal view={view} setView={setView} width={1100} title={"运单管理"}>
+                <PageModal.header statusTag={STATUS_TAG} baseInfo={baseInfo}></PageModal.header>
                 <ModalCard>
                     <ModalCard.Header title="基本信息">
                         <Button

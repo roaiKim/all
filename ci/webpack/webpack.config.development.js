@@ -24,7 +24,6 @@ const proxy = (origin = {}) => {
                 },
             })
     );
-    console.log("--", Object.assign({}, envs, origin));
     return Object.assign({}, envs, origin);
 };
 
@@ -48,15 +47,7 @@ module.exports = {
                 changeOrigin: true,
                 pathRewrite: { [`^/default-proxy`]: "" },
             },
-        }),
-        // proxy: {
-        //     "/api": {
-        //         // target: "http://192.168.2.121",
-        //         target: "http://192.168.2.91",
-        //         secure: false,
-        //         changeOrigin: true,
-        //     },
-        // },
+        })
     },
     mode: "development",
     entry: {

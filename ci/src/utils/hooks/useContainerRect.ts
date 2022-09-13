@@ -22,6 +22,10 @@ interface BodyRect {
     bodyHeight: number;
 }
 
+const baseWidthRate = 0.8;
+const maxWidthRate = 0.95;
+const pagemodalHeaderHegiht = 46;
+
 export function useContainerRect(props: ContainerRectProps): ContainerRect {
     const { width: originWidth } = props || {};
     const container = useRef(document.querySelector(".ro-module-body"));
@@ -32,12 +36,17 @@ export function useContainerRect(props: ContainerRectProps): ContainerRect {
         return { bodyWidth: width, bodyHeight: height };
     });
 
+    const calcRect = (width: number, height: number) => {
+        const panelWidth = originWidth ? (originWidth > width ? width * maxWidthRate : originWidth) : width * baseWidthRate;
+        const maxPanelBodyHeight = (height - pagemodalHeaderHegiht) * maxWidthRate;
+        return { panelWidth, maxPanelBodyHeight };
+    };
+
     const [state, setState] = useState<ContainerRect>(() => {
         const containerRef = container.current;
         const { top, right, bottom, left, width, height } = containerRef.getBoundingClientRect();
         const { bodyWidth, bodyHeight } = bodyRect;
-        const panelWidth = originWidth ? (originWidth > width ? width * 0.95 : originWidth) : width * 0.8;
-        const maxPanelBodyHeight = (height - 46) * 0.96;
+        const { panelWidth, maxPanelBodyHeight } = calcRect(width, height);
 
         return {
             top,
@@ -55,10 +64,9 @@ export function useContainerRect(props: ContainerRectProps): ContainerRect {
         const observer = new ResizeObserver((entries) => {
             const containerRef = container.current;
             const { top, right, bottom, left, width, height } = containerRef.getBoundingClientRect();
-            const { bodyWidth, bodyHeight } = bodyRect;
-            const panelWidth = originWidth ? (originWidth > width ? width * 0.95 : originWidth) : width * 0.8;
-            const maxPanelBodyHeight = (height - 46) * 0.96;
-
+            const { panelWidth, maxPanelBodyHeight } = calcRect(width, height);
+            const body = document.body;
+            const { width: bodyWidth, height: bodyHeight } = body.getBoundingClientRect();
             setState({
                 top,
                 right: bodyWidth - right,
@@ -73,6 +81,6 @@ export function useContainerRect(props: ContainerRectProps): ContainerRect {
         observer.observe(container.current);
         return () => observer.disconnect();
     }, []);
-    console.log("useContainerRect", state);
+
     return state;
 }

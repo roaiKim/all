@@ -1,4 +1,7 @@
 {
     "font-size-base": "12px",
-    "table-font-size-sm": "12px"
+    "table-font-size-sm": "12px",
+    "text-color": "rgba(0, 0, 0, 0.85)",
+    "menu-item-color": "rgba(0, 0, 0, 0.6)",
+    "menu-item-font-size": "14px"
 }
