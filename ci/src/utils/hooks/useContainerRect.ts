@@ -1,5 +1,6 @@
 import { PageModalPlace } from "components/page-modal";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { debounce } from "utils/function";
 
 interface ContainerRectProps {
     width?: number;
@@ -17,68 +18,59 @@ interface ContainerRect {
     maxPanelBodyHeight: number;
 }
 
-interface BodyRect {
-    bodyWidth: number;
-    bodyHeight: number;
-}
-
 const baseWidthRate = 0.8;
 const maxWidthRate = 0.95;
 const pagemodalHeaderHegiht = 46;
 
-export function useContainerRect(props: ContainerRectProps): ContainerRect {
-    const { width: originWidth } = props || {};
-    const container = useRef(document.querySelector(".ro-module-body"));
+const calcRect = ({ container, originWidth }) => {
+    const { top, right, bottom, left, width, height } = container.getBoundingClientRect();
 
-    const [bodyRect] = useState<BodyRect>(() => {
-        const body = document.body;
-        const { width, height } = body.getBoundingClientRect();
-        return { bodyWidth: width, bodyHeight: height };
-    });
+    const body = document.body;
+    const { width: bodyWidth, height: bodyHeight } = body.getBoundingClientRect();
 
-    const calcRect = (width: number, height: number) => {
-        const panelWidth = originWidth ? (originWidth > width ? width * maxWidthRate : originWidth) : width * baseWidthRate;
-        const maxPanelBodyHeight = (height - pagemodalHeaderHegiht) * maxWidthRate;
-        return { panelWidth, maxPanelBodyHeight };
+    const panelWidth = originWidth ? (originWidth > width ? width * maxWidthRate : originWidth) : width * baseWidthRate;
+    const maxPanelBodyHeight = (height - pagemodalHeaderHegiht) * maxWidthRate;
+
+    return {
+        top,
+        right: bodyWidth - right,
+        bottom: bodyHeight - bottom,
+        left,
+        width,
+        height,
+        panelWidth,
+        maxPanelBodyHeight,
     };
+};
+
+export function useContainerRect(props?: ContainerRectProps): ContainerRect {
+    const { width: originWidth, place } = props || {};
+
+    const container = useMemo(() => {
+        let element = undefined;
+        if (place === undefined || place === "default") {
+            element = document.querySelector(".ro-module-body");
+        } else if (place === "global") {
+            element = document.body;
+        } else if (typeof place === "object") {
+            element = place;
+        }
+        return element || document.body;
+    }, []);
 
     const [state, setState] = useState<ContainerRect>(() => {
-        const containerRef = container.current;
-        const { top, right, bottom, left, width, height } = containerRef.getBoundingClientRect();
-        const { bodyWidth, bodyHeight } = bodyRect;
-        const { panelWidth, maxPanelBodyHeight } = calcRect(width, height);
-
-        return {
-            top,
-            right: bodyWidth - right,
-            bottom: bodyHeight - bottom,
-            left,
-            width,
-            height,
-            panelWidth,
-            maxPanelBodyHeight,
-        };
+        return calcRect({ container, originWidth });
     });
 
     useEffect(() => {
+        const debounceCalc = debounce(() => {
+            const rect = calcRect({ container, originWidth });
+            setState(rect);
+        }, 200);
         const observer = new ResizeObserver((entries) => {
-            const containerRef = container.current;
-            const { top, right, bottom, left, width, height } = containerRef.getBoundingClientRect();
-            const { panelWidth, maxPanelBodyHeight } = calcRect(width, height);
-            const body = document.body;
-            const { width: bodyWidth, height: bodyHeight } = body.getBoundingClientRect();
-            setState({
-                top,
-                right: bodyWidth - right,
-                bottom: bodyHeight - bottom,
-                left,
-                width,
-                height,
-                panelWidth,
-                maxPanelBodyHeight,
-            });
+            debounceCalc();
         });
-        observer.observe(container.current);
+        observer.observe(container);
         return () => observer.disconnect();
     }, []);
 

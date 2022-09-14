@@ -32,14 +32,6 @@ const FIELDS_MAP = {
 export function PageModalHeader(props: PropsWithChildren<PageModalHeaderProps>) {
     const { statusTag, baseInfo, children } = props;
 
-    // const baseInfo = {
-    //     status: 3,
-    //     createTime: 1658745167000,
-    //     createUserName: "罗森",
-    //     updateTime: 166099785000,
-    //     updateUserName: "罗森2",
-    // };
-
     return (
         <div className="ro-modal-title">
             {Object.keys(FIELDS_MAP)

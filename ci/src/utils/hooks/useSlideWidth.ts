@@ -53,15 +53,15 @@ export function useSlideWidth(props: SlideWidthProps): WidthState {
     });
 
     useEffect(() => {
-        const observer = new ResizeObserver((entries) => {
-            const entry = entries?.[0];
-            const { width } = entry?.contentRect || {};
-            const rect = moduleContainer.current.getBoundingClientRect() || {};
-            // console.log("--rect--", rect);
-            setState((prevState) => ({ ...prevState, sliderWight: width || prevState.sliderWight }));
-        });
-        observer.observe(sliderRef.current);
-        return () => observer.disconnect();
+        // const observer = new ResizeObserver((entries) => {
+        //     const entry = entries?.[0];
+        //     const { width } = entry?.contentRect || {};
+        //     const rect = moduleContainer.current.getBoundingClientRect() || {};
+        //     // console.log("--rect--", rect);
+        //     setState((prevState) => ({ ...prevState, sliderWight: width || prevState.sliderWight }));
+        // });
+        // observer.observe(sliderRef.current);
+        // return () => observer.disconnect();
     }, []);
 
     return state;

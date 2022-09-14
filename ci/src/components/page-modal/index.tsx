@@ -1,13 +1,12 @@
 import { SetView, ViewState } from "utils/hooks/usePageModal";
-import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { Dispatch, MutableRefObject, PropsWithChildren, ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import Draggable from "react-draggable";
+import { PropsWithChildren, ReactNode } from "react";
 import { CloseOutlined } from "@icon";
-import "./index.less";
 import { useContainerRect } from "utils/hooks/useContainerRect";
 import { PageModalHeader } from "./header";
+import "./index.less";
 
-export type PageModalPlace = true | "global" | "default";
+export type PageModalPlace = "global" | "default" | Element;
 
 interface ViewModalProps {
     view: ViewState;
@@ -31,7 +30,7 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
             <Draggable handle=".ro-drag-header" scale={1} bounds="parent">
                 <div className="ro-drag-container" style={{ width: panelWidth }}>
                     <div className="ro-drag-header">
-                        <div className="ro-drag-header-title">新建运单管理</div>
+                        <div className="ro-drag-header-title">{title}</div>
                         <CloseOutlined onClick={() => setView({ show: false })} />
                     </div>
                     <div className="ro-drag-body" style={{ maxHeight: maxPanelBodyHeight }}>

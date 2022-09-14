@@ -33,19 +33,20 @@ export function errorToException(error: unknown): Exception {
     }
 }
 
+const ignoreErrors = ["ResizeObserver loop limit exceeded"];
+
 export function captureError(error: unknown, action: string = ""): Exception {
+    const exception = errorToException(error);
+
+    const errorMessage = exception.message;
+    const ignore = ignoreErrors.find((errorKey) => errorMessage.includes(errorKey));
+    if (ignore) return;
+
     if (process.env.NODE_ENV === "development") {
         console.error(`[framework] Error captured from [${action}]`, error);
     }
 
-    const exception = errorToException(error);
     const errorStacktrace = error instanceof Error ? error.stack : undefined;
-    // const info: { [key: string]: string | undefined } = {
-    //     payload: extra.actionPayload,
-    //     extra_stacktrace: extra.extraStacktrace,
-    //     stacktrace: errorStacktrace,
-    // };
-
     const errorCode = specialErrorCode(exception, action, errorStacktrace);
     if (errorCode) {
         // app.logger.warn({
@@ -56,7 +57,6 @@ export function captureError(error: unknown, action: string = ""): Exception {
         //     errorCode,
         // });
     } else {
-        // app.logger.exception(exception, info, action);
         runUserErrorHandler(app.errorHandler, exception);
     }
 

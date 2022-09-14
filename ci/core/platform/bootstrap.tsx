@@ -70,7 +70,6 @@ function setupGlobalErrorHandler(errorListener?: ErrorListener) {
         "error",
         (event) => {
             // event.preventDefault();
-            console.log("---error---", event);
             try {
                 const analyzeByTarget = (): string => {
                     if (event.target && event.target !== window) {
