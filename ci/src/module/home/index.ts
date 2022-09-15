@@ -14,7 +14,7 @@ const initialState = {
 class HomeModule extends Module<RootState, typeof moduleName> {
     @Loading("table")
     async fetchPageTable() {
-        const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 20 });
+        const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 200 });
         this.setState({ tableSource: source });
     }
 }

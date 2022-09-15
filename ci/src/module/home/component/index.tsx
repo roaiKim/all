@@ -30,7 +30,7 @@ function Home(props: HomeProps) {
             </PageTable.header>
             <PageTable
                 signature={{
-                    name: "s/project",
+                    name: "s/waybill",
                     fetch: actions.fetchPageTable,
                 }}
                 tableSource={tableSource}

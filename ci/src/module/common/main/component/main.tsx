@@ -7,10 +7,16 @@ import { RootState } from "type/state";
 import "./index.less";
 import { showLoading } from "@core";
 
-interface BodyContainerProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
+interface BodyContainerProps extends DispatchProp, ReturnType<typeof mapStateToProps> {
+    PERMISSION_DONE: boolean;
+}
 
 function BodyContainer(props: BodyContainerProps) {
-    const { tabs, activeTabName, globalLoading } = props;
+    const { tabs, activeTabName, globalLoading, PERMISSION_DONE } = props;
+
+    if (PERMISSION_DONE === false) {
+        return <div>权限数据加载失败，请稍后重试</div>;
+    }
 
     return (
         <div className="ro-body-container">
@@ -44,6 +50,7 @@ const mapStateToProps = (state: RootState) => {
         tabs: state.app.header?.headerTabs,
         activeTabName: state.app.header?.activeTabName,
         globalLoading: showLoading(state),
+        PERMISSION_DONE: state.app.main.PERMISSION_DONE,
     };
 };
 

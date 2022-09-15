@@ -1,11 +1,18 @@
 import { useEffect, useRef, useState } from "react";
+import { debounce } from "utils/function";
 
 interface DocumentSize {
     width: number;
     height: number;
 }
 
-export function useDocumentResizeObserver(doc?: Element, frequency?: number): DocumentSize {
+/**
+ * 监听 元素的大小变化
+ * @param doc
+ * @param frequency
+ * @returns
+ */
+export function useElementResizeObserver(doc?: Element, frequency: number = 200): DocumentSize {
     const bodyRef = useRef(doc || document.body);
 
     const [documentSize, setDocumentSize] = useState<DocumentSize>(() => {
@@ -15,9 +22,12 @@ export function useDocumentResizeObserver(doc?: Element, frequency?: number): Do
     });
 
     useEffect(() => {
-        const observer = new ResizeObserver((entries) => {
+        const debounceCalc = debounce((entries) => {
             const { width, height } = entries[0].contentRect;
             setDocumentSize({ width, height });
+        }, frequency);
+        const observer = new ResizeObserver((entries) => {
+            debounceCalc(entries);
         });
         observer.observe(bodyRef.current);
         return () => observer.disconnect();

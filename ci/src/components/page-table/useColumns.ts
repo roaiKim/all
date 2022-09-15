@@ -27,7 +27,9 @@ export function useColumns(props: TableTitleProps): PageModalAction {
     const [columns, setColumns] = useState();
 
     async function fetchTitle() {
-        const response = await AdvancedTableService.title(moduleName);
+        const response = await AdvancedTableService.title(moduleName).catch((error) => {
+            console.log("----", error);
+        });
         if (response) {
             dispatch(fetch());
             const columns = transformTitle(response.commaListConfigData);

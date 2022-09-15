@@ -1,25 +1,36 @@
-import { captureError, Loading, Module, register } from "@core";
+import { captureError, Loading, Module, register, RetryOnNetworkConnectionError } from "@core";
 import Main from "./component";
 import { RootState } from "type/state";
 import { GolbalService } from "service/api/GolbalService";
 
 const initialState = {
-    userName: null,
-    prevPathname: null,
+    PERMISSION_DONE: null,
 };
 
 class MainModule extends Module<RootState, "main"> {
-    @Loading("PERMISSION")
     async onEnter(parms: {}, location: Location) {
+        this.fetchPermission();
+    }
+
+    @Loading("PERMISSION")
+    @RetryOnNetworkConnectionError(1, 2)
+    async fetchPermission() {
         const permission = await new Promise((resolve, reject) => {
+            console.log("--1--");
             setTimeout(() => {
                 GolbalService.getByUserId()
-                    .then((response) => resolve(response))
+                    .then((response) => {
+                        console.log("--2--");
+                        this.setState({ PERMISSION_DONE: true });
+                        resolve(response);
+                    })
                     .catch((error) => {
+                        console.log("--3--");
+                        this.setState({ PERMISSION_DONE: false });
                         reject(error);
-                        captureError(error);
+                        // captureError(error);
                     });
-            }, 2000);
+            }, 1000);
         });
         // .catch((response) => {
         //     // console.log("---", response);

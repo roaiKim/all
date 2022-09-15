@@ -7,7 +7,7 @@ export class AdvancedTableService {
     }
 
     static table(request: AdvancedTableRequest): Promise<AdvancedTableResponse<any>> {
-        return ajax("POST", "/api/common/project/advanced-page", {}, request);
+        return ajax("POST", "/api/tms/transportOrder/advanced-page", {}, request);
     }
 }
 

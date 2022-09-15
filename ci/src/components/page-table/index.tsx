@@ -1,8 +1,8 @@
 import { AdvancedTableResponse } from "@api/AdvancedTableService";
 import { Pagination, PaginationProps, Table } from "antd";
 import { LoadingSVG } from "components/loadingSVG";
-import { useRef } from "react";
-import { useContainerRect } from "utils/hooks/useContainerRect";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useElementResizeObserver } from "utils/hooks/useElementResizeObserver";
 import { v4 } from "uuid";
 import { PageTitle } from "./header";
 import "./index.less";
@@ -25,34 +25,51 @@ export function PageTable<T extends object>(props: PageTableProps<T>) {
     const { name, fetch } = signature;
     const { data, total, pageIndex, pageSize } = tableSource;
 
-    const tableSignature = useRef(v4());
-    const { width, height } = useContainerRect();
+    const [containerId] = useState(v4());
+    const { width, height } = useElementResizeObserver(document.querySelector(".ro-module-body"));
 
     const { columns } = useColumns({
         moduleName: name,
         fetch,
     });
 
+    /**
+     * 高度控制
+     */
+    useEffect(() => {
+        try {
+            const container = document.querySelector(`#ro-table-container-${containerId} .ant-table-body`);
+            if (!container) return;
+            if (!originHeight) {
+                (container as any).style.height = `${height - 133}px`;
+            } else {
+                (container as any).style.height = `${originHeight}px`;
+            }
+        } catch (e) {
+            console.error("设置table高度失败 table-id:" + containerId, e);
+        }
+    }, [height]);
+
+    // console.log("--PageTable--", width, height, originHeight);
     if (!columns) {
         return <div>上传配置</div>;
     }
-    console.log("--PageTable--", width, height);
     return (
-        <div className="ro-page-table">
+        <div className="ro-page-table" id={`ro-table-container-${containerId}`}>
             <Table
                 size="small"
                 rowKey="id"
                 bordered
-                dataSource={[]}
+                dataSource={data || []}
                 columns={columns}
                 scroll={{
                     x: width,
                     y: originHeight || height - 133,
                 }}
-                loading={{
-                    spinning: false,
-                    indicator: <LoadingSVG />,
-                }}
+                // loading={{
+                //     spinning: true,
+                //     indicator: <LoadingSVG />,
+                // }}
                 pagination={{
                     showSizeChanger: true,
                     size: "small",

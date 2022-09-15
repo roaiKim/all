@@ -43,6 +43,11 @@ const calcRect = ({ container, originWidth }) => {
     };
 };
 
+/**
+ * 用于 PageModal 弹窗，监听文档高度变化
+ * @param props
+ * @returns
+ */
 export function useContainerRect(props?: ContainerRectProps): ContainerRect {
     const { width: originWidth, place } = props || {};
 
