@@ -12,30 +12,28 @@ class MainModule extends Module<RootState, "main"> {
         this.fetchPermission();
     }
 
+    @RetryOnNetworkConnectionError()
     @Loading("PERMISSION")
-    @RetryOnNetworkConnectionError(1, 2)
     async fetchPermission() {
         const permission = await new Promise((resolve, reject) => {
-            console.log("--1--");
             setTimeout(() => {
                 GolbalService.getByUserId()
                     .then((response) => {
-                        console.log("--2--");
                         this.setState({ PERMISSION_DONE: true });
                         resolve(response);
                     })
                     .catch((error) => {
-                        console.log("--3--");
                         this.setState({ PERMISSION_DONE: false });
                         reject(error);
                         // captureError(error);
                     });
             }, 1000);
         });
-        // .catch((response) => {
-        //     // console.log("---", response);
-        // });
-        console.log("--permission--");
+        // console.log("--permission--");
+
+        // const permission = await GolbalService.getByUserId();
+        // this.setState({ PERMISSION_DONE: true });
+        // console.log("--permission--");
     }
 
     calcPageHeight() {

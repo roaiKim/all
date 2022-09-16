@@ -7,14 +7,15 @@ import Addition from "./addition";
 import { Button } from "antd";
 import { actions } from "module/home";
 import "./index.less";
+import { showLoading } from "@core";
 
 interface HomeProps extends ReturnType<typeof mapStateToProps> {}
 
 function Home(props: HomeProps) {
     const [count, setCount] = useState<{ count: number; count2: number; count3: number }>({ count: 1, count2: 1, count3: 1 });
     const { view, setView } = usePageModal();
-    const { tableSource } = props;
-
+    const { tableSource, tableLoading } = props;
+    // console.log("ttableLoadingt", tableLoading);
     return (
         <div className="ro-home-module">
             <Addition view={view} setView={setView} />
@@ -41,6 +42,7 @@ function Home(props: HomeProps) {
 
 const mapStateToProps = (state: RootState) => ({
     tableSource: state.app.home.tableSource,
+    tableLoading: showLoading(state, "table"),
 });
 
 export default connect(mapStateToProps)(Home);

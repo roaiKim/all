@@ -5,6 +5,7 @@ import { debounce } from "utils/function";
 interface ContainerRectProps {
     width?: number;
     place?: PageModalPlace;
+    frequency?: number;
 }
 
 interface ContainerRect {
@@ -49,7 +50,7 @@ const calcRect = ({ container, originWidth }) => {
  * @returns
  */
 export function useContainerRect(props?: ContainerRectProps): ContainerRect {
-    const { width: originWidth, place } = props || {};
+    const { width: originWidth, place, frequency = 0 } = props || {};
 
     const container = useMemo(() => {
         let element = undefined;
@@ -71,7 +72,7 @@ export function useContainerRect(props?: ContainerRectProps): ContainerRect {
         const debounceCalc = debounce(() => {
             const rect = calcRect({ container, originWidth });
             setState(rect);
-        }, 200);
+        }, frequency);
         const observer = new ResizeObserver((entries) => {
             debounceCalc();
         });

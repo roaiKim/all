@@ -10,17 +10,13 @@ import { GlobalMask } from "components/common";
 interface MainProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
 function Main(props: MainProps) {
-    const { PERMISSION_DONE, globalLoading } = props;
-
     return (
-        <GlobalMask loading={!PERMISSION_DONE} loadingRender={PERMISSION_DONE} title="权限数据加载中请稍后...">
-            <div className="ro-main-container">
-                <Switch>
-                    <Route path="/login" component={LoginComponent} />
-                    <BodyContainer></BodyContainer>
-                </Switch>
-            </div>
-        </GlobalMask>
+        <div className="ro-main-container">
+            <Switch>
+                <Route path="/login" component={LoginComponent} />
+                <BodyContainer></BodyContainer>
+            </Switch>
+        </div>
     );
 }
 

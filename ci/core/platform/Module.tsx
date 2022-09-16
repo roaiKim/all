@@ -28,19 +28,19 @@ export class Module<
 {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    onEnter(parms: RouteComponentProps["match"]["params"], location: Location): void | Promise<void> {
+    onEnter(parms: RouteComponentProps["match"]["params"], location: Location) {
         /**
          * Called when the attached component is initially mounted.
          */
     }
 
-    onDestroy(): void | Promise<void> {
+    onDestroy() {
         /**
          * Called when the attached component is going to unmount
          */
     }
 
-    onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>): void | Promise<void> {
+    onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>) {
         /**
          * Called when the attached component is a React-Route component and its Route location matches
          * It is called each time the location changes, as long as it still matches
