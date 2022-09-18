@@ -5,7 +5,6 @@ import BodyContainer from "./main";
 import { LoginComponent } from "module/login/type";
 import { connect, DispatchProp } from "react-redux";
 import { RootState } from "type/state";
-import { GlobalMask } from "components/common";
 
 interface MainProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
@@ -14,7 +13,8 @@ function Main(props: MainProps) {
         <div className="ro-main-container">
             <Switch>
                 <Route path="/login" component={LoginComponent} />
-                <BodyContainer></BodyContainer>
+                <Route component={BodyContainer} />
+                {/* <BodyContainer></BodyContainer> */}
             </Switch>
         </div>
     );

@@ -36,6 +36,10 @@ class MainModule extends Module<RootState, "main"> {
         // console.log("--permission--");
     }
 
+    onLocationMatched(routeParam: object, location): void {
+        console.log("-------");
+    }
+
     calcPageHeight() {
         try {
             const container = document.querySelector(".ro-main-container");

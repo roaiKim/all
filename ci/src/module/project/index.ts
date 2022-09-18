@@ -8,6 +8,11 @@ const initialState: State = {};
 class ProjectModule extends Module<RootState, typeof moduleName> {
     async onEnter(params, location) {
         //
+        console.log("-onEnter-project-", params, location);
+    }
+
+    onLocationMatched(routeParam: object, location): void {
+        console.log("-onLocationMatched-", routeParam, location);
     }
 }
 

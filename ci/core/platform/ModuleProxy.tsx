@@ -55,7 +55,7 @@ export class ModuleProxy<M extends Module<any, any>> {
                 const props = this.props as RouteComponentProps & P;
                 const currentLocation = props.location;
                 const currentRouteParams = props.match ? props.match.params : null;
-
+                console.log("-componentDidUpdate-" + moduleName, props);
                 if (currentLocation && currentRouteParams && !locationsAreEqual(currentLocation, prevLocation) && this.hasOwnLifecycle("onLocationMatched")) {
                     const actionName = `${moduleName}/@@LOCATION_MATCHED`;
                     const startTime = Date.now();

@@ -5,7 +5,8 @@ import { DevelopingModule, GlobalMask } from "components/common";
 import { connect, DispatchProp } from "react-redux";
 import { RootState } from "type/state";
 import "./index.less";
-import { showLoading } from "@core";
+import { Route, showLoading } from "@core";
+import { Switch, useLocation, useParams } from "react-router-dom";
 
 interface BodyContainerProps extends DispatchProp, ReturnType<typeof mapStateToProps> {
     PERMISSION_DONE: boolean;
@@ -26,7 +27,9 @@ function BodyContainer(props: BodyContainerProps) {
     if (PERMISSION_DONE === false) {
         return <div>权限数据加载失败，请稍后重试</div>;
     }
-
+    const location = useLocation();
+    const params = useParams();
+    console.log("--location=params--", location, params);
     return (
         <GlobalMask loading={!PERMISSION_DONE || globalLoading} loadingRender={PERMISSION_DONE} title={title}>
             <div className="ro-body-container">
@@ -43,7 +46,7 @@ function BodyContainer(props: BodyContainerProps) {
                                 const MainComponent = component;
                                 return (
                                     <div key={key} className={`ro-g-container-module ${hidden ? "" : "active-module"}`}>
-                                        <MainComponent hidden={activeTabName !== key} />
+                                        <MainComponent location={location} params={params} hidden={activeTabName !== key} />
                                     </div>
                                 );
                             }
