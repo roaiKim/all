@@ -2,7 +2,7 @@ import { Module, register } from "@core";
 import Login from "./component";
 import { RootState } from "type/state";
 import { LoginService } from "service/api/LoginService";
-import { MainService } from "service/api/MainService";
+import { actions as MainActions } from "module/common/main";
 import { encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 import { v4 } from "uuid";
@@ -49,7 +49,8 @@ class LoginModule extends Module<RootState, "login"> {
             code: "0000",
             imgCode: "0000",
         };
-        const response = await LoginService.login(request);
+        const loginPromise = LoginService.login(request);
+        const response = await loginPromise;
 
         this.setState({ userInfo: response });
         this.pushHistory("/");
@@ -67,18 +68,10 @@ class LoginModule extends Module<RootState, "login"> {
         StorageService.set(WEB_USER_INFO, response);
         StorageService.set(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(username));
         StorageService.set(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(password));
-        // .catch((error) => {
-        //     StorageService.set(WEB_ISLOGIN, null);
-        //     StorageService.set(WEB_TOKEN, null);
-        //     StorageService.set(WEB_USERID, null);
-        //     StorageService.set(WEB_DEPARTMENT_ID, null);
-        //     StorageService.set(WEB_REFRESHTOKEN, null);
-        //     StorageService.set(WEB_USERNAME, null);
-        //     StorageService.set(WEB_NEW_USER, null);
-        //     StorageService.set(WEB_GETTOKENTIME, null);
-        //     StorageService.set(WEB_USER_INFO, null);
-        //     throw error;
-        // });
+
+        loginPromise.then(() => {
+            this.dispatch(MainActions.fetchPermission);
+        });
     }
 }
 

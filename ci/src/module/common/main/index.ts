@@ -10,9 +10,10 @@ const initialState = {
 class MainModule extends Module<RootState, "main"> {
     async onEnter(parms: {}, location: Location) {
         this.fetchPermission();
+        console.log("----onEnter-main---");
     }
 
-    @RetryOnNetworkConnectionError()
+    // @RetryOnNetworkConnectionError()
     @Loading("PERMISSION")
     async fetchPermission() {
         const permission = await new Promise((resolve, reject) => {
@@ -34,10 +35,6 @@ class MainModule extends Module<RootState, "main"> {
         // const permission = await GolbalService.getByUserId();
         // this.setState({ PERMISSION_DONE: true });
         // console.log("--permission--");
-    }
-
-    onLocationMatched(routeParam: object, location): void {
-        console.log("-------");
     }
 
     calcPageHeight() {

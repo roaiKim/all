@@ -2,7 +2,7 @@ import { LoadingSVG } from "components/loadingSVG";
 import React, { PropsWithChildren } from "react";
 
 interface Props {
-    title?: string;
+    title?: string | React.ReactNode;
     loading?: boolean;
     backgroundColor?: string;
     loadingRender?: boolean; // loading时 是否渲染 children

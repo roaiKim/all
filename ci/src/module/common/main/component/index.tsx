@@ -1,5 +1,5 @@
 import "./index.less";
-import { Switch } from "react-router-dom";
+import { Switch, useLocation, useParams } from "react-router-dom";
 import { Route, showLoading } from "@core";
 import BodyContainer from "./main";
 import { LoginComponent } from "module/login/type";

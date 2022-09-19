@@ -5,17 +5,17 @@ import { State, moduleName } from "./type";
 
 const initialState: State = {};
 
-class ProjectModule extends Module<RootState, typeof moduleName> {
+class WaybillModule extends Module<RootState, typeof moduleName> {
     async onEnter(params, location) {
         //
-        console.log("-onEnter-project-", params, location);
+        console.log("-onEnter-waybill-", params, location);
     }
 
     onLocationMatched(routeParam: object, location): void {
-        console.log("-onLocationMatched-project-", routeParam, location);
+        console.log("-onLocationMatched-waybill-", routeParam, location);
     }
 }
 
-const module = register(new ProjectModule(moduleName, initialState));
+const module = register(new WaybillModule(moduleName, initialState));
 export const actions = module.getActions();
 export const MainComponent = module.connect(Main);

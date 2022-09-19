@@ -5,6 +5,7 @@ import { State as LoginState } from "module/login/type";
 import { State as HeaderState } from "module/common/header/type";
 import { State as MenuState } from "module/common/menus/type";
 import { State as ProjectState } from "module/project/type";
+import { State as WaybillState } from "module/waybill/type";
 
 export interface RootState extends State {
     app: {
@@ -14,5 +15,6 @@ export interface RootState extends State {
         header: HeaderState;
         menus: MenuState;
         project?: ProjectState;
+        waybill?: WaybillState;
     };
 }

@@ -5,7 +5,7 @@ import { RouteComponentProps } from "react-router";
 import { app } from "../app";
 import { Logger } from "../logger";
 import { TickIntervalDecoratorFlag } from "../module";
-import { navigationPreventionAction, setStateAction, State } from "../reducer";
+import { Action, navigationPreventionAction, setStateAction, State } from "../reducer";
 
 // enableES5();
 if (process.env.NODE_ENV === "development") {
@@ -17,6 +17,7 @@ export interface ModuleLifecycleListener<RouteParam extends object = object, His
     onDestroy: () => void | Promise<void>;
     onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState> | undefined>) => void | Promise<void>;
     onTick: (() => void | Promise<void>) & TickIntervalDecoratorFlag;
+    dispatch: (actionFunction: (...args: any[]) => Action<any>) => void | Promise<void>;
 }
 
 export class Module<
@@ -53,6 +54,11 @@ export class Module<
          * Usually used together with @Interval decorator, to specify the period (in second)
          * Attention: The next tick will not be triggered, until the current tick has finished
          */
+    }
+
+    dispatch(action: (...args: any[]) => Action<any>) {
+        if (typeof action !== "function") throw new Error("this.dispatch 的参数必须为 Function");
+        app.store.dispatch(action());
     }
 
     get state(): Readonly<RootState["app"][ModuleName]> {

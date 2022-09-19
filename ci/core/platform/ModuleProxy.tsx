@@ -43,20 +43,19 @@ export class ModuleProxy<M extends Module<any, any>> {
             }
 
             override async componentDidUpdate(prevProps: Readonly<P>) {
-                // onRender 在初始化中也会执行
-                // const prevLocation = prevProps.location;
-                // const { props } = this;
-                // const currentLocation = props.location;
-                // const currentRouteParams = props.match ? props.match.params : null;
-                // if (currentLocation && currentRouteParams && prevLocation !== currentLocation && lifecycleListener.onRender.isLifecycle) {
-                //     app.store.dispatch(actions.onRender(currentRouteParams, currentLocation));
-                // }
                 const prevLocation = (prevProps as any).location;
-                const props = this.props as RouteComponentProps & P;
+                const props = this.props as RouteComponentProps & P & { hidden: boolean };
                 const currentLocation = props.location;
-                const currentRouteParams = props.match ? props.match.params : null;
-                console.log("-componentDidUpdate-" + moduleName, props);
-                if (currentLocation && currentRouteParams && !locationsAreEqual(currentLocation, prevLocation) && this.hasOwnLifecycle("onLocationMatched")) {
+                const currentRouteParams = props.match || null;
+                const hidden = props.hidden || null;
+                console.log("-componentDidUpdate-" + moduleName, prevProps, props);
+                if (
+                    !hidden &&
+                    currentLocation &&
+                    currentRouteParams &&
+                    !locationsAreEqual(currentLocation, prevLocation) &&
+                    this.hasOwnLifecycle("onLocationMatched")
+                ) {
                     const actionName = `${moduleName}/@@LOCATION_MATCHED`;
                     const startTime = Date.now();
                     await executeAction(
@@ -65,33 +64,17 @@ export class ModuleProxy<M extends Module<any, any>> {
                         currentRouteParams,
                         currentLocation
                     );
-                    // app.logger.info({
-                    //     action,
-                    //     elapsedTime: Date.now() - startTime,
-                    //     info: {
-                    //         // URL params should not contain any sensitive or complicated objects
-                    //         route_params: JSON.stringify(currentRouteParams),
-                    //         history_state: JSON.stringify(currentLocation.state),
-                    //     },
-                    // });
                     app.store.dispatch(navigationPreventionAction(false));
                 }
             }
 
             override componentWillUnmount() {
-                // if (lifecycleListener.onDestroy.isLifecycle) {
-                //     app.store.dispatch(actions.onDestroy());
-                // }
-                // if (!config.retainStateOnLeave) {
-                //     app.store.dispatch(setStateAction(moduleName, initialState, `@@${moduleName}/@@reset`));
-                // }
                 if (this.hasOwnLifecycle("onDestroy")) {
                     app.store.dispatch(actions.onDestroy());
                 }
 
                 const currentLocation = (this.props as any).location;
                 if (currentLocation) {
-                    // Only cancel navigation prevention if current component is connected to <Route>
                     app.store.dispatch(navigationPreventionAction(false));
                 }
 
@@ -100,59 +83,29 @@ export class ModuleProxy<M extends Module<any, any>> {
                 } catch {
                     //
                 }
-
-                // app.logger.info({
-                //     action: `${moduleName}/@@DESTROY`,
-                //     info: {
-                //         tick_count: this.tickCount.toString(),
-                //         staying_second: ((Date.now() - this.mountedTime) / 1000).toFixed(2),
-                //     },
-                // });
             }
 
             async initialLifecycle() {
-                // const { props } = this;
-                // if (lifecycleListener.onRender.isLifecycle) {
-                //     if ("match" in props && "location" in props) {
-                //         await executeAction(lifecycleListener.onRender.bind(lifecycleListener), props.match.params, props.location);
-                //     } else {
-                //         await executeAction(lifecycleListener.onRender.bind(lifecycleListener), {}, app.browserHistory);
-                //     }
-                // }
-                const props = this.props as RouteComponentProps & P;
+                const props = this.props as RouteComponentProps & P & { hidden: boolean };
 
                 const enterActionName = `${moduleName}/@@ENTER`;
                 const startTime = Date.now();
-                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props?.match?.params, props.location);
+                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props?.match, props.location);
 
-                // app.logger.info({
-                //     action: enterActionName,
-                //     elapsedTime: Date.now() - startTime,
-                //     info: {
-                //         component_props: JSON.stringify(props),
-                //     },
-                // });
+                console.log("-initialLifecycle-" + moduleName, props);
 
                 if (this.hasOwnLifecycle("onLocationMatched")) {
-                    if ("match" in props && "location" in props) {
+                    if ("match" in props && "location" in props && "hidden" in props) {
                         const initialRenderActionName = `${moduleName}/@@LOCATION_MATCHED`;
                         const startTime = Date.now();
                         await executeAction(
                             initialRenderActionName,
                             lifecycleListener.onLocationMatched.bind(lifecycleListener) as ActionHandler,
-                            props.match.params,
+                            props.match,
                             props.location
                         );
-                        // app.logger.info({
-                        //     action: initialRenderActionName,
-                        //     elapsedTime: Date.now() - startTime,
-                        //     info: {
-                        //         route_params: JSON.stringify(props.match.params),
-                        //         history_state: JSON.stringify(props.location.state),
-                        //     },
-                        // });
                     } else {
-                        console.error(`[framework] Module component [${moduleName}] is non-route, use onEnter() instead of onLocationMatched()`);
+                        console.error(`模块 [${moduleName}] 不支持 onLocationMatched() 方法, 使用 onEnter() 代替 onLocationMatched()`);
                     }
                 }
 
