@@ -21,26 +21,32 @@ interface PageModalAction {
     columns: any;
 }
 
+interface ColumnState {
+    columnLoading: boolean;
+    columnLoadError: boolean;
+    columns: any[];
+}
+
 export function useColumns(props: TableTitleProps): PageModalAction {
     const { moduleName, fetch } = props;
     const dispatch = useDispatch();
-    const [columns, setColumns] = useState();
+    const [columns, setColumns] = useState<ColumnState>();
 
-    async function fetchTitle() {
+    async function fetchColumns() {
         const response = await AdvancedTableService.title(moduleName).catch((error) => {
-            console.log("----", error);
+            setColumns((prevState) => ({ ...prevState, columnLoadError: true }));
         });
         if (response) {
             dispatch(fetch());
             const columns = transformTitle(response.commaListConfigData);
-            setColumns(columns);
+            setColumns((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns }));
         } else {
             //
         }
     }
 
     useEffect(() => {
-        fetchTitle();
+        fetchColumns();
     }, []);
 
     return {
