@@ -3,7 +3,7 @@ import { Exception } from "./Exception";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";
-import { captureError } from "./util/error-util";
+
 export interface TickIntervalDecoratorFlag {
     tickInterval?: number;
 }

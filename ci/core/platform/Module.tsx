@@ -2,6 +2,7 @@ import { push, replace } from "connected-react-router";
 import { Location } from "history";
 import { produce, enablePatches, enableES5 } from "immer";
 import { RouteComponentProps } from "react-router";
+import { roDispatch, setHistory } from "../actions";
 import { app } from "../app";
 import { Logger } from "../logger";
 import { TickIntervalDecoratorFlag } from "../module";
@@ -57,8 +58,7 @@ export class Module<
     }
 
     dispatch(action: (...args: any[]) => Action<any>) {
-        if (typeof action !== "function") throw new Error("this.dispatch 的参数必须为 Function");
-        app.store.dispatch(action());
+        roDispatch(action);
     }
 
     get state(): Readonly<RootState["app"][ModuleName]> {
@@ -113,18 +113,7 @@ export class Module<
     pushHistory(state: HistoryState): void;
 
     pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state") {
-        if (typeof urlOrState === "string") {
-            const url: string = urlOrState;
-            if (state) {
-                app.store.dispatch(push(url, state === "keep-state" ? app.browserHistory.location.state : state));
-            } else {
-                app.store.dispatch(push(url));
-            }
-        } else {
-            const currentURL = location.pathname + location.search;
-            const state: HistoryState = urlOrState;
-            app.store.dispatch(push(currentURL, state));
-        }
+        setHistory(urlOrState, state);
     }
 
     // protected setHistory(urlOrState: HistoryState | string, usePush = true) {

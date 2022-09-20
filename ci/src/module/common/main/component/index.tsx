@@ -14,7 +14,6 @@ function Main(props: MainProps) {
             <Switch>
                 <Route path="/login" component={LoginComponent} />
                 <Route component={BodyContainer} />
-                {/* <BodyContainer></BodyContainer> */}
             </Switch>
         </div>
     );

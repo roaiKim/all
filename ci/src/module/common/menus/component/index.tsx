@@ -3,8 +3,8 @@ import { Menu } from "antd";
 import { connect, DispatchProp } from "react-redux";
 import { RootState } from "type/state";
 import { actions } from "module/common/menus";
-import { actions as HeaderActions } from "module/common/header/module";
 import { State } from "../type";
+import { setHistory } from "@core";
 import "./index.less";
 
 interface MeunComponentProps extends DispatchProp {
@@ -22,7 +22,7 @@ function MeunComponent(props: MeunComponentProps) {
                 <Menu
                     selectedKeys={[activeName || "home"]}
                     onClick={({ key }) => {
-                        dispatch(HeaderActions.pushTab(key));
+                        setHistory(key);
                     }}
                     items={menus || []}
                     mode="inline"

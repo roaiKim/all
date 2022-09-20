@@ -48,7 +48,7 @@ export class ModuleProxy<M extends Module<any, any>> {
                 const currentLocation = props.location;
                 const currentRouteParams = props.match || null;
                 const hidden = props.hidden || null;
-                console.log("-componentDidUpdate-" + moduleName, prevProps, props);
+                // console.log("-componentDidUpdate-" + moduleName, prevProps, props);
                 if (
                     !hidden &&
                     currentLocation &&
@@ -91,8 +91,6 @@ export class ModuleProxy<M extends Module<any, any>> {
                 const enterActionName = `${moduleName}/@@ENTER`;
                 const startTime = Date.now();
                 await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props?.match, props.location);
-
-                console.log("-initialLifecycle-" + moduleName, props);
 
                 if (this.hasOwnLifecycle("onLocationMatched")) {
                     if ("match" in props && "location" in props && "hidden" in props) {

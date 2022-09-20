@@ -10,7 +10,7 @@ export { captureError } from "./util/error-util";
 // export { ajax, uri } from "./util/network";
 export { ErrorBoundary } from "./util/ErrorBoundary";
 export { Route } from "./util/Route";
-export { setHistory } from "./actions";
+export { setHistory, roDispatch } from "./actions";
 
 export { createActionHandlerDecorator, Loading, Interval, Mutex, RetryOnNetworkConnectionError } from "./decorator";
 export { Exception, APIException, NetworkConnectionException } from "./Exception";

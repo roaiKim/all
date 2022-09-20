@@ -34,11 +34,6 @@ function BodyContainer(props: BodyContainerProps) {
         dispatch(actions.fetchPermission());
     };
 
-    // if (PERMISSION_DONE === false && !PERMISSION_LOADING) {
-    //     title = "权限数据加载失败，请稍后重试";
-    // }
-
-    // console.log("--location=params--", location, params);
     return (
         <GlobalMask
             loading={!PERMISSION_DONE || globalLoading}

@@ -6,7 +6,6 @@ const createErrorMessage = message.error;
 
 export default class ErrorHandler implements ErrorListener {
     onError(error: Exception) {
-        console.log("-errorListener-error-", error);
         if (error instanceof APIException) {
             if (error.statusCode === 401 || error.statusCode === 403) {
                 createErrorMessage({ title: "发生错误", content: error.message });
@@ -20,8 +19,8 @@ export default class ErrorHandler implements ErrorListener {
         } else if (error instanceof NetworkConnectionException) {
             createErrorMessage("网络连接超时，请稍后重试");
         } else {
-            const errorMessage = isProduntion ? "发生错误，请稍后重试" : error.message;
-            createErrorMessage(errorMessage);
+            // const errorMessage = isProduntion ? "发生错误，请稍后重试" : error.message;
+            // createErrorMessage(errorMessage);
         }
     }
 }

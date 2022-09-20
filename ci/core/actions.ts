@@ -1,5 +1,6 @@
 import { push } from "connected-react-router";
 import { app } from "./app";
+import { Action } from "./reducer";
 
 export const setHistory = (urlOrState: Record<string, any> | string, state?: object | "keep-state") => {
     if (typeof urlOrState === "string") {
@@ -15,3 +16,8 @@ export const setHistory = (urlOrState: Record<string, any> | string, state?: obj
         app.store.dispatch(push(currentURL, state));
     }
 };
+
+export function roDispatch(action: (...args: any[]) => Action<any>) {
+    if (typeof action !== "function") throw new Error("this.dispatch 的参数必须为 Function");
+    app.store.dispatch(action());
+}

@@ -26,10 +26,10 @@ class HeaderModule extends Module<RootState, "header"> {
     }
 
     pushTab(keyPath: string) {
-        if (!keyPath) return;
+        const { headerTabs, activeTabName } = this.state;
+        if (!keyPath || keyPath === activeTabName) return;
 
         const cacheModule = cache[keyPath];
-        const { headerTabs, activeTabName } = this.state;
         const currentTabIndex = headerTabs.findIndex((item) => item.key === activeTabName);
         const hasTab = headerTabs.find((item) => item.key === keyPath);
 
@@ -60,7 +60,7 @@ class HeaderModule extends Module<RootState, "header"> {
             }
         }
         this.setState({ headerTabs: newTabs, activeTabName: activeKey });
-        this.pushHistoryByActiveKey(activeKey);
+        // this.pushHistoryByActiveKey(activeKey);
     }
 
     toggleActiveKey(activeKey: string) {
