@@ -3,9 +3,8 @@ import { AdvancedTableService } from "@api/AdvancedTableService";
 import { transformTitle } from "./utils";
 import { useDispatch } from "react-redux";
 
-interface TableTitleProps {
+interface ColumnsProps {
     moduleName: string;
-    fetch: any;
 }
 
 export interface ViewState {
@@ -17,31 +16,32 @@ export interface ViewState {
 
 export type SetView = Dispatch<SetStateAction<Partial<ViewState>>>;
 
-interface PageModalAction {
-    columns: any;
-}
-
 interface ColumnState {
     columnLoading: boolean;
     columnLoadError: boolean;
     columns: any[];
 }
 
-export function useColumns(props: TableTitleProps): PageModalAction {
-    const { moduleName, fetch } = props;
-    const dispatch = useDispatch();
-    const [columns, setColumns] = useState<ColumnState>();
+const initialState = {
+    columnLoading: true,
+    columnLoadError: false,
+    columns: [],
+};
+
+export function useColumns(props: ColumnsProps): ColumnState {
+    const { moduleName } = props;
+
+    const [state, setState] = useState<ColumnState>(initialState);
 
     async function fetchColumns() {
         const response = await AdvancedTableService.title(moduleName).catch((error) => {
-            setColumns((prevState) => ({ ...prevState, columnLoadError: true }));
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: true, columns: [] }));
         });
         if (response) {
-            dispatch(fetch());
             const columns = transformTitle(response.commaListConfigData);
-            setColumns((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns }));
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns }));
         } else {
-            //
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns: null }));
         }
     }
 
@@ -49,7 +49,5 @@ export function useColumns(props: TableTitleProps): PageModalAction {
         fetchColumns();
     }, []);
 
-    return {
-        columns,
-    };
+    return state;
 }

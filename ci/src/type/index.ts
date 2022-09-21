@@ -1,3 +1,5 @@
+import { AdvancedTableResponse, AdvancedTableService } from "@api/AdvancedTableService";
+
 export interface PageLimitResponse<T> {
     list: T[];
     totalRecord: number;
@@ -51,4 +53,15 @@ export interface AuthTokenResponse {
 export interface OrderServicePaymentRequest {
     id: string;
     tradeType: string;
+}
+
+export interface AdvancedTableSource {
+    table: {
+        source: AdvancedTableResponse<any>;
+        sourceLoading: boolean;
+        sourceLoadError: boolean;
+        columns: any[];
+        columnLoading: boolean;
+        columnLoadError: boolean;
+    };
 }

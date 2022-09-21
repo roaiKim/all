@@ -26,10 +26,19 @@ export function transformMeuns(menus) {
  */
 export function initialTableSource() {
     return {
-        data: [],
-        pageIndex: 1,
-        pageSize: 20,
-        total: "0",
+        table: {
+            source: {
+                data: [],
+                pageIndex: 1,
+                pageSize: 20,
+                total: "0",
+            },
+            sourceLoading: true,
+            sourceLoadError: false,
+            columns: null,
+            columnLoading: true,
+            columnLoadError: false,
+        },
     };
 }
 

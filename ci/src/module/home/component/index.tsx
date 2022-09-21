@@ -32,7 +32,6 @@ function Home(props: HomeProps) {
             <PageTable
                 signature={{
                     name: "s/waybill",
-                    fetch: actions.fetchPageTable,
                 }}
                 tableSource={tableSource}
             />
@@ -41,7 +40,7 @@ function Home(props: HomeProps) {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    tableSource: state.app.home.tableSource,
+    tableSource: state.app.home.table,
     tableLoading: showLoading(state, "table"),
 });
 
