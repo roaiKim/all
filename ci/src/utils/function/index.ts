@@ -35,9 +35,6 @@ export function initialTableSource() {
             },
             sourceLoading: true,
             sourceLoadError: false,
-            columns: null,
-            columnLoading: true,
-            columnLoadError: false,
         },
     };
 }

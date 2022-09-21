@@ -1,35 +1,18 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
-import { AdvancedTableService } from "@api/AdvancedTableService";
-import { transformTitle } from "./utils";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 interface DataSourceProps {
-    moduleName: string;
     fetch: any;
-    columns: any;
+    sourceRely: string;
 }
-
-interface SourceState {
-    sourceLoading: boolean;
-    sourceLoadError: boolean;
-    sources: any[];
-}
-
-const initialState = {
-    sourceLoading: true,
-    sourceLoadError: false,
-    sources: [],
-};
 
 export function useDataSource(props: DataSourceProps) {
-    const { fetch, columns } = props;
+    const { fetch, sourceRely } = props;
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (columns) {
-            dispatch(fetch());
-        }
-    }, [columns]);
+        dispatch(fetch());
+    }, [sourceRely]);
 
     return null;
 }

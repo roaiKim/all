@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { RootState } from "type/state";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { PageTable } from "components/page-table";
 import { usePageModal } from "utils/hooks/usePageModal";
 import Addition from "./addition";
@@ -14,6 +14,7 @@ interface HomeProps extends ReturnType<typeof mapStateToProps> {}
 function Home(props: HomeProps) {
     const [count, setCount] = useState<{ count: number; count2: number; count3: number }>({ count: 1, count2: 1, count3: 1 });
     const { view, setView } = usePageModal();
+
     const { tableSource, tableLoading } = props;
     // console.log("ttableLoadingt", tableLoading);
     return (
@@ -32,6 +33,7 @@ function Home(props: HomeProps) {
             <PageTable
                 signature={{
                     name: "s/waybill",
+                    actions,
                 }}
                 tableSource={tableSource}
             />

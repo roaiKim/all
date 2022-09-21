@@ -1,7 +1,6 @@
 import { Button } from "antd";
 import { PropsWithChildren } from "react";
 import { SetView, ViewState } from "utils/hooks/usePageModal";
-import "./index.less";
 
 interface PageTitleProps {
     title?: string;

@@ -1,4 +1,4 @@
-import { Loading, Module, register } from "@core";
+import { captureError, Loading, Module, register } from "@core";
 import Home from "./component";
 import { RootState } from "type/state";
 import { moduleName, State } from "./type";
@@ -14,24 +14,17 @@ const initialState = {
 
 class HomeModule extends Module<RootState, typeof moduleName> {
     onEnter(parms: {}, location: Location): void {
-        this.fetchPageTable();
+        // this.fetchPageTable();
     }
 
     @Loading("table")
     async fetchPageTable() {
-        const response = await AdvancedTableService.title("s/waybill").catch((error) => {
-            this.setState({ table: { ...this.state.table, columnLoading: false, columnLoadError: true, columns: null } });
+        const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 10 }).catch((error) => {
+            this.setState({ table: { ...this.state.table, sourceLoading: false, sourceLoadError: true } });
+            captureError(error);
+            return Promise.reject();
         });
-        let state = {};
-        if (response) {
-            const columns = transformTitle(response.commaListConfigData);
-            state = { ...state, columnLoading: false, columnLoadError: false, columns };
-        } else {
-            // setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns: null }));
-            state = { ...state, columnLoading: false, columnLoadError: false, columns: null };
-        }
-        const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 10 });
-        this.setState({ table: { ...this.state.table, ...state, source, sourceLoading: false, sourceLoadError: false } });
+        this.setState({ table: { ...this.state.table, source, sourceLoading: false, sourceLoadError: false } });
     }
 }
 

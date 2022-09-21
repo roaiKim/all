@@ -60,8 +60,5 @@ export interface AdvancedTableSource {
         source: AdvancedTableResponse<any>;
         sourceLoading: boolean;
         sourceLoadError: boolean;
-        columns: any[];
-        columnLoading: boolean;
-        columnLoadError: boolean;
     };
 }

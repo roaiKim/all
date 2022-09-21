@@ -1,10 +1,11 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AdvancedTableService } from "@api/AdvancedTableService";
 import { transformTitle } from "./utils";
-import { useDispatch } from "react-redux";
+import { captureError } from "@core";
 
 interface ColumnsProps {
     moduleName: string;
+    rely: string;
 }
 
 export interface ViewState {
@@ -29,13 +30,15 @@ const initialState = {
 };
 
 export function useColumns(props: ColumnsProps): ColumnState {
-    const { moduleName } = props;
+    const { moduleName, rely } = props;
 
     const [state, setState] = useState<ColumnState>(initialState);
 
     async function fetchColumns() {
         const response = await AdvancedTableService.title(moduleName).catch((error) => {
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: true, columns: [] }));
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: true, columns: null }));
+            // captureError(error);
+            return Promise.reject();
         });
         if (response) {
             const columns = transformTitle(response.commaListConfigData);
@@ -47,7 +50,7 @@ export function useColumns(props: ColumnsProps): ColumnState {
 
     useEffect(() => {
         fetchColumns();
-    }, []);
+    }, [rely]);
 
     return state;
 }
