@@ -11,5 +11,3 @@ export function getToken() {
         return TOKEN ? `Bearer ${TOKEN}` : BASIC_AUTH_TOKEN;
     };
 }
-
-export const whitelistUrl = ["/api/auth/oauth/token"];

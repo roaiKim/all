@@ -22,6 +22,7 @@ class HeaderModule extends Module<RootState, "header"> {
         const { location } = this.rootState.router;
         const pathname = (location as any).pathname || "";
         const name = pathname.replace(/^\/|\/$/g, "");
+        console.log("oooo", name);
         this.pushTab(name);
     }
 

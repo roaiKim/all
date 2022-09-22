@@ -1,10 +1,13 @@
 @import "./variable";
 
 .g-theme {
-  button[class~="ant-btn"] {
-    min-width: 60px;
-    margin-left: 10px;
-    font-size: 12px;
+  button.ant-btn {
+    // &:not([class~="ant-input-search-button"]),
+    &:not([class~="ant-btn-icon-only"]) {
+      min-width: 60px;
+      margin-left: 10px;
+      font-size: 12px;
+    }
   }
 
   .ro-flex {

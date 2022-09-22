@@ -21,6 +21,13 @@ class MainModule extends Module<RootState, "main"> {
                 GolbalService.getByUserId()
                     .then((response) => {
                         this.setState({ PERMISSION_DONE: true });
+                        try {
+                            if ((this.rootState.router.location as any).pathname === "/login") {
+                                this.pushHistory("/");
+                            }
+                        } catch {
+                            //
+                        }
                         resolve(response);
                     })
                     .catch((error) => {

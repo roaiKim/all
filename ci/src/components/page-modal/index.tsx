@@ -24,7 +24,7 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
 
     const { top, right, bottom, left, panelWidth, maxPanelBodyHeight } = useContainerRect({ width, place });
     const className = typeof place === "string" ? place : "";
-    console.log("--------", panelWidth);
+
     return (
         <div className={`ro-page-drag-panel-masx ${wrapClassName} ${className}`} style={{ left, top, right, bottom }}>
             <Draggable handle=".ro-drag-header" scale={1} bounds="parent">

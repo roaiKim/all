@@ -1,10 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { APIException, NetworkConnectionException, setHistory } from "@core";
-import { ContentType, DEV_PROXY_HOST, isDevelopment, WEB_TOKEN } from "utils/function/staticEnvs";
+import { ContentType, DEV_PROXY_HOST, isDevelopment, WEB_TOKEN, whitelistUrl } from "utils/function/staticEnvs";
 import { StorageService } from "utils/StorageService";
-import { getToken, whitelistUrl } from "./config";
-import { stringify } from "querystring";
-import { push } from "connected-react-router";
+import { getToken } from "./config";
 
 export type PathParams<T extends string> = string extends T
     ? { [key: string]: string | number }
