@@ -1,11 +1,11 @@
 import { DeleteOutlined, SettingOutlined } from "@ant-design/icons";
 import { AdvancedTableResponse } from "@api/AdvancedTableService";
-import { Button, ConfigProvider, Input, Pagination, PaginationProps, Table } from "antd";
+import { Button, ConfigProvider, Input, PaginationProps, Table, TableProps } from "antd";
 import { LoadingSVG } from "components/loadingSVG";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 import { AdvancedTableSource } from "type";
 import { useElementResizeObserver } from "utils/hooks/useElementResizeObserver";
+import { transformSelected } from "./utils";
 import { v4 } from "uuid";
 import { pageEmpty } from "./empty";
 import { PageTitle } from "./header";
@@ -19,17 +19,23 @@ interface Signature {
     name: string;
     actions: any;
 }
-interface PageTableProps<T> {
+
+type RowSelection<T> = Omit<TableProps<T>["rowSelection"], "selectedRowKeys"> & { selectedRowKeys: any };
+
+interface PageTableProps<T> extends TableProps<T> {
     height?: number;
     signature: Signature;
-    tableSource: AdvancedTableSource["table"];
+    tableSource: AdvancedTableSource<T>["table"];
+    rowSelection: RowSelection<T>;
+    isNoneSelected?: boolean;
+    isNonePagination?: boolean;
 }
 
 const showTotal: PaginationProps["showTotal"] = (total) => `共 ${total} 条`;
 const defaultHeight = 165;
 
-export function PageTable<T extends object>(props: PageTableProps<T>) {
-    const { signature, tableSource, height: originHeight } = props;
+export function PageTable<T extends Record<string, any>>(props: PageTableProps<T>) {
+    const { signature, tableSource, height: originHeight, isNoneSelected, isNonePagination } = props;
     const { name, actions } = signature;
     const { source, sourceLoading, sourceLoadError } = tableSource;
     const { data, pageIndex, pageSize, total } = source || {};
@@ -39,8 +45,6 @@ export function PageTable<T extends object>(props: PageTableProps<T>) {
     const [colRely, setColRely] = useState(v4()); // 表格依赖
     const [sourceRely, setSourceRely] = useState(v4()); // 表格数据依赖
     const { width, height } = useElementResizeObserver(document.querySelector(".ro-module-body"));
-
-    const [s] = useState();
 
     const { columnLoading, columnLoadError, columns } = useColumns({
         moduleName: name,
@@ -106,6 +110,9 @@ export function PageTable<T extends object>(props: PageTableProps<T>) {
             style: { marginTop: 20 },
         });
     }
+
+    console.log("--selected--");
+
     return (
         <div className="ro-page-table" id={`ro-table-container-${containerId}`}>
             <ConfigProvider
@@ -131,7 +138,7 @@ export function PageTable<T extends object>(props: PageTableProps<T>) {
                 </div>
                 <Table
                     size="small"
-                    rowKey="id"
+                    rowKey={props.rowKey || "id"}
                     bordered
                     dataSource={data || []}
                     columns={columns}
@@ -143,26 +150,32 @@ export function PageTable<T extends object>(props: PageTableProps<T>) {
                         spinning: columnLoading || sourceLoading,
                         indicator: <LoadingSVG />,
                     }}
-                    pagination={{
-                        showSizeChanger: true,
-                        size: "small",
-                        total: Number(total) || 0,
-                        current: pageIndex,
-                        pageSize,
-                        showTotal,
-                        pageSizeOptions: [20, 50, 100, 200],
-                    }}
-                    rowSelection={{
-                        fixed: true,
-                        type: "checkbox",
-                        onChange: (selectedRowKeys: React.Key[], selectedRows) => {
-                            console.log(`selectedRowKeys: ${selectedRowKeys}`, "selectedRows: ", selectedRows);
-                        },
-                        getCheckboxProps: (record) => ({
-                            disabled: record.name === "Disabled User", // Column configuration not to be checked
-                            name: record.name,
-                        }),
-                    }}
+                    {...(!isNonePagination
+                        ? {
+                              pagination: {
+                                  showSizeChanger: true,
+                                  size: "small",
+                                  total: Number(total) || 0,
+                                  current: pageIndex,
+                                  pageSize,
+                                  showTotal,
+                                  pageSizeOptions: [20, 50, 100, 200],
+                                  ...props.pagination,
+                              },
+                          }
+                        : { pagination: false })}
+                    {...(!isNoneSelected
+                        ? {
+                              rowSelection: {
+                                  fixed: true,
+                                  type: "checkbox",
+                                  ...props.rowSelection,
+                                  ...(props.rowSelection?.selectedRowKeys
+                                      ? { selectedRowKeys: transformSelected(props.rowSelection.selectedRowKeys, props.rowKey) }
+                                      : {}),
+                              },
+                          }
+                        : {})}
                 />
             </ConfigProvider>
         </div>

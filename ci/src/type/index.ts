@@ -55,9 +55,9 @@ export interface OrderServicePaymentRequest {
     tradeType: string;
 }
 
-export interface AdvancedTableSource {
+export interface AdvancedTableSource<T = Record<string, any>> {
     table: {
-        source: AdvancedTableResponse<any>;
+        source: AdvancedTableResponse<T>;
         sourceLoading: boolean;
         sourceLoadError: boolean;
     };

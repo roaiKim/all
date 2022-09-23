@@ -26,3 +26,22 @@ export const transformTitle = (columns) => {
             };
         });
 };
+
+export const transformSelected = (originSelected, rowKey) => {
+    if (Array.isArray(originSelected) && originSelected?.length) {
+        if (originSelected.every((item) => typeof item === "object")) {
+            return originSelected.map((item, index) => {
+                if (rowKey) {
+                    if (typeof rowKey === "string") {
+                        return item[rowKey];
+                    }
+                    return rowKey(item as any, index);
+                }
+                return item["id"];
+            });
+        } else {
+            return originSelected;
+        }
+    }
+    return [];
+};

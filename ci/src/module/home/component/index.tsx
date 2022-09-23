@@ -14,9 +14,11 @@ interface HomeProps extends ReturnType<typeof mapStateToProps> {}
 function Home(props: HomeProps) {
     const [count, setCount] = useState<{ count: number; count2: number; count3: number }>({ count: 1, count2: 1, count3: 1 });
     const { view, setView } = usePageModal();
+    const [s, setS] = useState([]);
 
     const { tableSource, tableLoading } = props;
-    // console.log("ttableLoadingt", tableLoading);
+
+    console.log("s", s);
     return (
         <div className="ro-home-module">
             <Addition view={view} setView={setView} />
@@ -36,6 +38,14 @@ function Home(props: HomeProps) {
                     actions,
                 }}
                 tableSource={tableSource}
+                rowKey="transportOrderNumber"
+                rowSelection={{
+                    onChange(data: any, source: any) {
+                        setS(source);
+                    },
+                    selectedRowKeys: s,
+                }}
+                isNonePagination
             />
         </div>
     );
