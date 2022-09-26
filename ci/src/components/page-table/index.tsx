@@ -12,6 +12,7 @@ import { PageTitle } from "./header";
 import "./index.less";
 import { useColumns } from "./useColumns";
 import { useDataSource } from "./useDataSource";
+import ResizeableTitle from "./resize";
 
 const { Search } = Input;
 
@@ -149,6 +150,11 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
                     loading={{
                         spinning: columnLoading || sourceLoading,
                         indicator: <LoadingSVG />,
+                    }}
+                    components={{
+                        header: {
+                            cell: ResizeableTitle,
+                        },
                     }}
                     {...(!isNonePagination
                         ? {

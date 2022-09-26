@@ -2,6 +2,21 @@
   color: inherit;
   padding: 0 10px;
   height: 100%;
+
+  .react-resizable {
+    position: relative;
+    background-clip: padding-box;
+  }
+
+  .ro-table-header-resizable {
+    position: absolute;
+    right: -5px;
+    bottom: 0;
+    z-index: 1;
+    width: 10px;
+    height: 100%;
+    cursor: col-resize;
+  }
 }
 
 .ro-page-empty {

@@ -1,8 +1,8 @@
-export const transformTitle = (columns) => {
+export const transformTitle = (columns, handleResize) => {
     const dd = {};
     return columns
         .filter((item) => item.title)
-        .map((item) => {
+        .map((item, index) => {
             if (!dd[item.propKey]) {
                 dd[item.propKey] = 1;
             } else {
@@ -23,6 +23,10 @@ export const transformTitle = (columns) => {
                     }
                     return value || "-";
                 },
+                onHeaderCell: (column) => ({
+                    width: column.width,
+                    onResize: handleResize(index),
+                }),
             };
         });
 };

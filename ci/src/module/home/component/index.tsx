@@ -38,14 +38,12 @@ function Home(props: HomeProps) {
                     actions,
                 }}
                 tableSource={tableSource}
-                rowKey="transportOrderNumber"
                 rowSelection={{
                     onChange(data: any, source: any) {
                         setS(source);
                     },
                     selectedRowKeys: s,
                 }}
-                isNonePagination
             />
         </div>
     );
