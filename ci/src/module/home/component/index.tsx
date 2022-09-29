@@ -45,7 +45,7 @@ function Home(props: HomeProps) {
                     },
                     selectedRowKeys: s,
                 }}
-                isNonePagination
+                tableLoading={tableLoading}
             />
         </div>
     );

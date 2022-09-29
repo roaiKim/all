@@ -12,6 +12,7 @@ import { PageTitle } from "./header";
 import "./index.less";
 import { useColumns } from "./useColumns";
 import { useDataSource } from "./useDataSource";
+import { useDispatch } from "react-redux";
 
 const { Search } = Input;
 
@@ -29,17 +30,19 @@ interface PageTableProps<T> extends TableProps<T> {
     rowSelection: RowSelection<T>;
     isNoneSelected?: boolean;
     isNonePagination?: boolean;
+    tableLoading?: boolean;
 }
 
 const showTotal: PaginationProps["showTotal"] = (total) => `共 ${total} 条`;
 const defaultHeight = 165;
 
 export function PageTable<T extends Record<string, any>>(props: PageTableProps<T>) {
-    const { signature, tableSource, height: originHeight, isNoneSelected, isNonePagination } = props;
+    const { signature, tableSource, height: originHeight, isNoneSelected, isNonePagination, tableLoading } = props;
     const { name, actions } = signature;
     const { source, sourceLoading, sourceLoadError } = tableSource;
     const { data, pageIndex, pageSize, total } = source || {};
 
+    const dispatch = useDispatch();
     const containerRef = useRef({ elementRef: null, height: 0 });
     const [containerId] = useState(v4());
     const [colRely, setColRely] = useState(v4()); // 表格依赖
@@ -111,6 +114,14 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
         });
     }
 
+    function pageTableChange(pagination, filters, sorter, extra: { currentDataSource: any[]; action: "paginate" | "sort" | "filter" }) {
+        console.log("--table-", pagination, filters, sorter, extra);
+        if (extra.action === "paginate") {
+            const { current, pageSize } = pagination;
+            dispatch(actions.fetchPageTable({ pageNo: current, pageSize }));
+        }
+    }
+
     console.log("--selected--");
 
     return (
@@ -131,7 +142,15 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
                             <DeleteOutlined />
                             <a style={{ marginLeft: 5 }}>清空条件</a>
                         </div>
-                        <Search size="small" placeholder="input search text" allowClear onSearch={() => {}} style={{ width: 200, marginLeft: 10 }} />
+                        <Search
+                            size="small"
+                            placeholder="搜索"
+                            allowClear
+                            onSearch={() => {
+                                dispatch(actions.fetchPageTable());
+                            }}
+                            style={{ width: 200, marginLeft: 10 }}
+                        />
                     </div>
                     <div className="ro-grow" style={{ marginLeft: 10 }}></div>
                     <Button icon={<SettingOutlined />} size="small" />
@@ -147,9 +166,10 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
                         y: originHeight || height - defaultHeight,
                     }}
                     loading={{
-                        spinning: columnLoading || sourceLoading,
+                        spinning: columnLoading || sourceLoading || tableLoading,
                         indicator: <LoadingSVG />,
                     }}
+                    onChange={pageTableChange}
                     {...(!isNonePagination
                         ? {
                               pagination: {

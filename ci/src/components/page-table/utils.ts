@@ -1,6 +1,6 @@
 export const transformTitle = (columns) => {
     const dd = {};
-    return columns
+    const cols = columns
         .filter((item) => item.title)
         .map((item) => {
             if (!dd[item.propKey]) {
@@ -25,6 +25,8 @@ export const transformTitle = (columns) => {
                 },
             };
         });
+
+    return cols;
 };
 
 export const transformSelected = (originSelected, rowKey) => {

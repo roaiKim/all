@@ -18,8 +18,8 @@ class HomeModule extends Module<RootState, typeof moduleName> {
     }
 
     @Loading("table")
-    async fetchPageTable() {
-        const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 10 }).catch((error) => {
+    async fetchPageTable(request = {}) {
+        const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 20, ...request }).catch((error) => {
             this.setState({ table: { ...this.state.table, sourceLoading: false, sourceLoadError: true } });
             captureError(error);
             return Promise.reject();
