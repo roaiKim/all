@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "./build",
+        "module": "esnext",
+        "target": "es5",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "inlineSources": true,
+        "strict": true,
+        "exactOptionalPropertyTypes": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "lib": ["dom", "es2017"],
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "skipLibCheck": true,
+        "downlevelIteration": true,
+        "paths": {
+            "@core": ["../core"],
+            "@icon": ["../node_modules/@ant-design/icons"],
+            "@api": ["service/api"]
+        }
+    },
+    "include": ["./src", "./core"]
+}
