@@ -52,6 +52,9 @@
         "yargs": "17.2.1"
     },
     "dependencies": {
+        "@formily/antd": "^2.2.6",
+        "@formily/core": "^2.2.6",
+        "@formily/react": "^2.2.6",
         "@types/react": "^17.0.38",
         "@types/react-dom": "17.0.9",
         "@types/react-redux": "^7.1.21",
