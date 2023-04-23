@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "lib",
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "strict": true,
+    // "noImplicitAny": false,
+    // "strictNullChecks": false,
+    // "strictFunctionTypes": false,
+    // "suppressImplicitAnyIndexErrors": true,
+    "strictBindCallApply": false,
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "rootDir": ".",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "paths": {
+      "@core": ["./core"],
+      "@http": ["./http"],
+      "@api/*": ["./service/api/*"]
+    }
+  },
+  "include": ["./src", "global.d.ts"],
+  "exclude": ["./script", "./config"],
+  "compileOnSave": false
+}
