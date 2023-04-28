@@ -9,7 +9,8 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended",
         "plugin:react/recommended",
-        "prettier",
+        "plugin:rosen/recommended",
+        "prettier"
     ],
     plugins: ["@typescript-eslint", "prettier"],
     rules: {
@@ -19,6 +20,6 @@ module.exports = {
         "@typescript-eslint/no-empty-function": "off",
         "react/prop-types": "off",
         "react/sort-comp": "off",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "off"
     },
 };
