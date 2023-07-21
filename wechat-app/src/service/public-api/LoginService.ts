@@ -24,29 +24,15 @@ export interface LoginServiceLoginResponse {
 }
 
 export class LoginService {
-    @Method("POST")
     static login(request: LoginServiceLoginRequest): Promise<LoginServiceLoginResponse> {
-        return ajax.call(this.login, "POST", "/auth/oauth/token", {}, request, "FORM", {});
+        return ajax("POST", "/auth/oauth/token", request, "FORM");
     }
 
     static logout(): Promise<void> {
-        return ajax.call(this.logout, "DELETE", "/auth/token/logout", {}, {}, "FORM");
+        return ajax("DELETE", "/auth/token/logout", {}, "FORM");
     }
 
     static logoin(): Promise<void> {
-        return ajax.call(this.logoin, "DELETE", "/auth/token/logout", {}, {}, "FORM");
+        return ajax("DELETE", "/auth/token/logout", {}, "FORM");
     }
 }
-
-// export class LogoutService {
-//     @Method("POST")
-//     static login(request: LoginServiceLoginRequest): Promise<LoginServiceLoginResponse> {
-//         return ajax.call(this.login, "POST", "/auth/oauth/token", {}, request, "FORM", {});
-//     }
-
-//     @Method("POST")
-//     static logout(): Promise<void> {
-//         console.log("exception logout");
-//         return Promise.resolve();
-//     }
-// }

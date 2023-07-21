@@ -2,6 +2,13 @@ import { app } from "./app";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";
+import { Exception } from "./exception";
+
+export interface ErrorListener {
+    onError: ErrorHandler;
+}
+
+export type ErrorHandler = (error: Exception) => unknown;
 
 export interface TickIntervalDecoratorFlag {
     tickInterval?: number;

@@ -1,134 +1,96 @@
 import Taro from "@tarojs/taro";
-import { baseApi } from "./config";
+import { APIException } from "@core";
+import { ContentType, RequestMethod, getAuthorization, joinUrl, urlwhitelist } from "./static";
 
-enum CONTENT_TYPE {
-    JSON = "application/json",
-    FORM_DATA = "multipart/form-data",
-    FORM = "application/x-www-form-urlencoded",
+interface AjaxConfig {
+    headers: Record<string, any>;
+    config: Record<string, any>;
+    globalHold: boolean;
 }
 
-export type RequestMethod = "OPTIONS" | "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT";
-export const BASIC_AUTH_TOKEN = "Basic Y2xpZW50OjBhNmNkNjhmYWJhOTQzMjhhNzQzMjg2YjFjZjE0ZTkz";
+// Taro.addInterceptor(interceptor);
 
-export type PathParams<T extends string> = string extends T
-    ? { [key: string]: string | number }
-    : T extends `${infer Start}:${infer Param}/${infer Rest}`
-    ? { [k in Param | keyof PathParams<Rest>]: string | number }
-    : T extends `${infer Start}:${infer Param}`
-    ? { [k in Param]: string | number }
-    : Record<string, unknown>;
-
-// 这个是 请求接口的
 export function ajax<Request, Response, Path extends string>(
     method: RequestMethod,
     path: Path,
-    pathParams: PathParams<Path>,
     request: Request,
-    contentType: keyof typeof CONTENT_TYPE = "JSON",
-    extraConfig: Record<string, any> = {}
+    contentType: keyof typeof ContentType = "JSON",
+    ajaxConfig: Partial<AjaxConfig> = {}
 ): Promise<Response> {
-    console.log("this-", this);
-    const url = getURL(path, pathParams);
-    const fullUrl = completePath(url);
-    const { headers = {}, ...restConfig } = extraConfig || {};
-    const config = {
-        url: fullUrl,
+    const url = joinUrl(path);
+
+    const { headers = {}, config = {}, globalHold = true } = ajaxConfig || {};
+
+    const requestTask = Taro.request({
+        url: url,
         method,
         header: {
-            Authorization: getAuthorization()(),
-            ...headers,
+            Authorization: getAuthorization(),
             "Auth-Sub": "MINI_APP",
-            "content-type": CONTENT_TYPE[contentType],
+            "content-type": ContentType[contentType],
+            ...headers,
         },
-        ...restConfig,
         data: request,
-        complete: () => {},
-    };
-
-    const requestTask = Taro.request(config);
+        ...config,
+    });
 
     return requestTask.then((response) => {
-        if (path === "/auth/oauth/token") {
-            if (response.statusCode === 426) {
-                Taro.clearStorageSync();
-                setTimeout(() => {
-                    Taro.showToast({ title: "登录密码错误", icon: "error", duration: 2000 });
-                }, 0);
-            } else if (response.statusCode === 401) {
-                Taro.clearStorageSync();
-                setTimeout(() => {
-                    Taro.showToast({ title: "账号不存在", icon: "error", duration: 2000 });
-                }, 0);
-            } else {
-                return response.data;
-            }
-        } else if (path.indexOf("/client/customer-user/getOpenId/") != -1 || path.indexOf("/auth/mobile/token/social") != -1) {
-            if (response.statusCode === 401) {
-                Taro.clearStorageSync();
-                setTimeout(() => {
-                    Taro.showToast({ title: "微信登录失败", icon: "error", duration: 2000 });
-                }, 0);
-            } else {
-                return response.data;
-            }
-        } else if (response.statusCode === 401 || response?.data?.code === 401) {
-            Taro.clearStorageSync();
-            setTimeout(() => {
-                Taro.showToast({ title: "请先登录", icon: "error", duration: 2000 });
-            }, 0);
-            Taro.redirectTo({ url: "/pages/login/index" });
-        } else {
-            return response.data;
+        const { data: responseData = {}, statusCode } = response;
+        const errorMessage: string = responseData?.msg || `[No Response]`;
+        console.log("---res--", response);
+
+        // 设置全局不拦截 则交给请求函数自行 catch
+        if (!globalHold) {
+            return responseData;
         }
-    });
-}
 
-// 获取完整的地址
-export function completePath(path) {
-    if (path && (path.startsWith("http://") || path.startsWith("https://"))) {
-        return path;
-    }
-    return (getHost() || "") + path;
-}
-
-let host = "";
-
-// 获取 ip
-export const getHost = () => {
-    if (host) {
-        return host;
-    }
-    // 获取当前帐号信息
-    const accountInfo = Taro.getAccountInfoSync();
-    // env类型
-    const env = accountInfo.miniProgram.envVersion;
-
-    host = baseApi[env];
-
-    return host;
-};
-
-// 获取 授权 头
-export function getAuthorization() {
-    let TOKEN = "";
-    return () => {
-        if (TOKEN) {
-            return `Bearer ${TOKEN}`;
+        // http 状态码 非200报错
+        if (statusCode !== 200) {
+            throw new APIException(errorMessage, statusCode, url, responseData);
         }
-        TOKEN = Taro.getStorageSync("_token") || "";
-        return TOKEN ? `Bearer ${TOKEN}` : BASIC_AUTH_TOKEN;
-    };
-}
 
-// 这个是处理含有正则路由的 // "/api/user/check/:id", {id: 980} -> "/api/user/check/980"
-export function getURL(pattern: string, params?: object): string {
-    if (!params) {
-        return pattern;
-    }
-    let url = pattern;
-    Object.entries(params).forEach(([name, value]) => {
-        const encodedValue = encodeURIComponent(value.toString());
-        url = url.replace(`:${name}`, encodedValue);
+        // 接口返回的 code非200为业务报错
+        if (responseData.code !== 200) {
+            const isInWhitelist = urlwhitelist.filter((item) => url.includes(item))?.length;
+            if (isInWhitelist) {
+                return responseData;
+            }
+            throw new APIException(errorMessage, statusCode, url, responseData);
+        }
+        return responseData;
     });
-    return url;
+    // return requestTask.then((response) => {
+    //     if (path === "/auth/oauth/token") {
+    //         if (response.statusCode === 426) {
+    //             Taro.clearStorageSync();
+    //             setTimeout(() => {
+    //                 Taro.showToast({ title: "登录密码错误", icon: "error", duration: 2000 });
+    //             }, 0);
+    //         } else if (response.statusCode === 401) {
+    //             Taro.clearStorageSync();
+    //             setTimeout(() => {
+    //                 Taro.showToast({ title: "账号不存在", icon: "error", duration: 2000 });
+    //             }, 0);
+    //         } else {
+    //             return response.data;
+    //         }
+    //     } else if (path.indexOf("/client/customer-user/getOpenId/") != -1 || path.indexOf("/auth/mobile/token/social") != -1) {
+    //         if (response.statusCode === 401) {
+    //             Taro.clearStorageSync();
+    //             setTimeout(() => {
+    //                 Taro.showToast({ title: "微信登录失败", icon: "error", duration: 2000 });
+    //             }, 0);
+    //         } else {
+    //             return response.data;
+    //         }
+    //     } else if (response.statusCode === 401 || response?.data?.code === 401) {
+    //         Taro.clearStorageSync();
+    //         setTimeout(() => {
+    //             Taro.showToast({ title: "请先登录", icon: "error", duration: 2000 });
+    //         }, 0);
+    //         Taro.redirectTo({ url: "/pages/login/index" });
+    //     } else {
+    //         return response.data;
+    //     }
+    // });
 }

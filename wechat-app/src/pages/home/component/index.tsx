@@ -5,12 +5,12 @@ import Taro from "@tarojs/taro";
 
 function Main() {
     const on = () => {
-        const login = new LoginService();
-        const request = {
-            grant_type: "password",
-            username: "gongchao",
-            password: `FXhi3+aMlwbivn8EPBWrgQ==`,
-        };
+        // const login = new LoginService();
+        // const request = {
+        //     grant_type: "password",
+        //     username: "gongchao",
+        //     password: `FXhi3+aMlwbivn8EPBWrgQ==`,
+        // };
     };
 
     return (
@@ -20,7 +20,7 @@ function Main() {
                 className="btn"
                 type="default"
                 onClick={() => {
-                    on();
+                    Taro.navigateTo({ url: "/pages/login/password" });
                     // Taro.navigateTo({ url: "/pages/webview/index" });
                 }}
             >

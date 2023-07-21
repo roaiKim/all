@@ -17,9 +17,13 @@ class LoginModule extends Module<RootState, "login"> {
         const request = {
             grant_type: "password",
             username: "gongchao",
-            password: `FXhi3+aMlwbivn8EPBWrgQ==`,
+            // password: `FXhi3+aMlwbivn8EPBWrgQ==`,
+            password: `dHK1PiBQM/moZ0YnSUsViQ==`,
         };
-        const response = await LoginService.login(request);
+        const response = await LoginService.login(request).catch((error) => {
+            console.log("--LoginService.login--", error);
+            return Promise.reject("");
+        });
         console.log("LoginService.login#response", response);
     }
 }

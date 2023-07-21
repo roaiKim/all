@@ -5,5 +5,7 @@ export { createActionHandlerDecorator, Loading, Interval, Mutex, KeepState } fro
 export { showLoading, loadingAction, navigationPreventionAction } from "./reducer";
 export { register } from "./module";
 export { useLoadingStatus } from "./hooks";
+export { Exception, APIException, NetworkConnectionException, JavaScriptException } from "./exception";
 
 export type { State } from "./reducer";
+export type { ErrorListener, ErrorHandler } from "./module";

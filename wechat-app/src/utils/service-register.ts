@@ -1,6 +1,5 @@
 import { ComponentType } from "react";
-import { LogoutService } from "service/public-api/LoginService";
-import { isDevelopment } from "./staticEnvs";
+import { isDevelopment } from "./static-envs";
 
 // 这个是全局加载的功能
 const modules = require.context("service/public-api", true, /Service\.ts$/);
@@ -42,8 +41,6 @@ const allHttps = (ser) => {
     const ad = cacheServices[ser.toString()];
     console.log("ad", ad);
 };
-
-allHttps(LogoutService.logout());
 
 function getKeys<M>(module: M) {
     // Do not use Object.keys(Object.getPrototypeOf(module)), because class methods are not enumerable
