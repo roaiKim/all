@@ -1,5 +1,5 @@
 import { ErrorListener } from "@core";
-import { setupGlobalErrorHandler } from "./global-error-Handler";
+import { setupGlobalErrorHandler } from "utils/error/global-error-Handler";
 
 interface BootstrapOption {
     errorListener?: ErrorListener;

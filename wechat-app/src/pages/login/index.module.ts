@@ -22,7 +22,18 @@ class LoginModule extends Module<RootState, "login"> {
         };
         const response = await LoginService.login(request).catch((error) => {
             console.log("--LoginService.login--", error);
-            return Promise.reject("");
+            let content = "";
+            if (error.statusCode === 426) {
+                content = "登录密码错误";
+            } else if (error.statusCode === 401) {
+                content = "账号不存在";
+            }
+            Taro.showModal({
+                title: "错误",
+                content,
+                showCancel: false,
+            });
+            return Promise.reject("ignore");
         });
         console.log("LoginService.login#response", response);
     }
