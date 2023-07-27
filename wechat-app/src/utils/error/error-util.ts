@@ -53,13 +53,7 @@ export function captureError(error: unknown, action = ""): Exception {
     const errorCode = specialErrorCode(exception, action, errorStacktrace);
     console.error(`errorCode`, errorCode);
     if (errorCode) {
-        // app.logger.warn({
-        //     action,
-        //     elapsedTime: 0,
-        //     info,
-        //     errorMessage: exception.message,
-        //     errorCode,
-        // });
+        // app.logger
     } else {
         runUserErrorHandler(app.errorHandler, exception);
     }
@@ -74,7 +68,6 @@ export async function runUserErrorHandler(handler: ErrorHandler, exception: Exce
 
     try {
         errorHandlerRunning = true;
-        console.error(`exception++++++++++++++`, exception);
         await handler(exception);
     } catch (e) {
         console.warn("[framework] Fail to execute error handler", e);
@@ -100,10 +93,6 @@ function specialErrorCode(exception: Exception, action: string, stacktrace?: str
         { pattern: "the operation is insecure", errorCode: "BROWSER_LIMIT" },
         { pattern: "access is denied for this document", errorCode: "BROWSER_LIMIT" },
     ];
-
-    // if (isIEBrowser()) {
-    //     return "IE_BROWSER_ISSUE";
-    // }
 
     const matchedPattern = ignoredPatterns.find(({ pattern }) => errorMessage.includes(pattern));
     if (matchedPattern) {

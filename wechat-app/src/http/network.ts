@@ -37,7 +37,6 @@ export function ajax<Request, Response, Path extends string>(
     return requestTask.then((response) => {
         const { data: responseData = {}, statusCode } = response;
         const errorMessage: string = responseData?.msg || `[No Response]`;
-        console.log("---res--", response);
 
         // 设置全局不拦截 则交给请求函数自行 catch
         if (!globalHold) {

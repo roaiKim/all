@@ -1,6 +1,6 @@
 import { useLoadingStatus } from "@core";
 import { View } from "@tarojs/components";
-import { autoShowLoading } from "utils";
+import { autoShowLoading } from "utils/functions";
 import { PropsWithChildren, useEffect } from "react";
 
 function AppLoading(props: PropsWithChildren<any>) {
