@@ -1,7 +1,6 @@
-import { Interval, Loading, Module, register } from "@core";
+import { Loading, Module, register } from "@core";
 import Taro from "@tarojs/taro";
 import { RootState } from "type";
-import { Method } from "@http";
 import { LoginService } from "service/public-api/LoginService";
 import { State } from "./type";
 

@@ -1,4 +1,4 @@
-import { Method, ajax } from "@http";
+import { ajax } from "@http";
 
 export interface LoginServiceLoginRequest {
     grant_type: string;

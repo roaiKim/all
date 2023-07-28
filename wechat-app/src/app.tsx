@@ -1,12 +1,11 @@
 import { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import { bootstrap } from "utils/bootstrap";
-import ErrorHandler from "utils/error-listener";
 import { app } from "core/app";
 import AppLoading from "./app.loading";
 import "./app.less";
 
-bootstrap({ errorListener: new ErrorHandler() });
+bootstrap();
 
 function App(props: PropsWithChildren<any>) {
     const { children } = props;
