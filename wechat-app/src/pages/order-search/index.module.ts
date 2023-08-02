@@ -6,9 +6,9 @@ const initialLoginModule: State = {
     name: "orderSearch",
 };
 
-class HomeModule extends Module<RootState, "orderSearch"> {}
+class OrderSearchModule extends Module<RootState, "orderSearch"> {}
 
-const module = register(new HomeModule("orderSearch", initialLoginModule));
+const module = register(new OrderSearchModule("orderSearch", initialLoginModule));
 const actions = module.getActions();
 
 export { module, actions };
