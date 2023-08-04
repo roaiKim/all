@@ -4,7 +4,7 @@ const path = require("path");
 const yargs = require("yargs");
 
 const srcFolderName = "src";
-const rootStatePath = path.resolve(__dirname, `../${srcFolderName}/type/index.ts`);
+const rootStatePath = path.resolve(__dirname, `../${srcFolderName}/type/state.ts`);
 const available1stLevelModuleNames = fs.readdirSync(path.resolve(__dirname, `../${srcFolderName}/pages`)).filter(_ => _ !== "main");
 
 function getModuleName(moduleNameInArg, returnOriginName = false) {
@@ -50,7 +50,7 @@ function createModuleFolder(moduleNameInArg) {
         fs.writeFileSync(targetPath + relPath, finalContent);
     };
 
-    executeReplace("/index.ts", [moduleClassName, moduleFullName]);
+    executeReplace("/index.module.ts", [moduleClassName, moduleFullName, moduleMainComponentName]);
     executeReplace("/type.ts", [moduleOriginName, moduleMainComponentName, moduleFullName]);
     executeReplace("/component/index.tsx", [moduleClassPropsName, moduleMainComponentName, moduleFullName, moduleOriginName]);
     executeReplace("/component/index.less", [moduleOriginName]);
@@ -66,7 +66,7 @@ function updateRootState(moduleNameInArg) {
     const moduleStateName = getModulePascalName(moduleNameInArg, "State");
 
     // Use 4 spaces, instead of \t, to keep consistent with Prettier
-    const replacedRootStateFileContent = rootStateFileContent.substring(0, lastStateImportIndex+6) + `\nimport { State as ${moduleStateName} } from "module/${moduleNameInArg}/type";` + rootStateFileContent.substring(lastStateImportIndex+6, lastStateDeclarationIndex)  + `    ${moduleFullName}?: ${moduleStateName};\n    ` + rootStateFileContent.substring(lastStateDeclarationIndex);
+    const replacedRootStateFileContent = rootStateFileContent.substring(0, lastStateImportIndex+6) + `\nimport { State as ${moduleStateName} } from "pages/${moduleNameInArg}/type";` + rootStateFileContent.substring(lastStateImportIndex+6, lastStateDeclarationIndex)  + `    ${moduleFullName}?: ${moduleStateName};\n    ` + rootStateFileContent.substring(lastStateDeclarationIndex);
     fs.writeFileSync(rootStatePath, replacedRootStateFileContent);
 }
 

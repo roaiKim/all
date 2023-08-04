@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import eye from "asset/template/eye.png";
 import noeye from "asset/template/noeye.png";
 import logo from "asset/global/logo.png";
-import { actions } from "../index.module";
+import { actions as mainActions } from "pages/main/index.module";
 import "./index.less";
 
 /**
@@ -38,7 +38,7 @@ function Main() {
                 duration: 2000,
             });
         }
-        dispatch(actions.login(userName, password));
+        dispatch(mainActions.login(userName, password));
     };
 
     return (

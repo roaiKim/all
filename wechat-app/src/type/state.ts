@@ -1,4 +1,5 @@
 import { State } from "@core";
+import { State as MainState } from "pages/main/type";
 import { State as HomeState } from "pages/home/type";
 import { State as LoginState } from "pages/login/type";
 import { State as OrderSearchState } from "pages/order-search/type";
@@ -6,6 +7,7 @@ import { State as ProfileState } from "pages/profile/type";
 
 export interface RootState extends State {
     app: {
+        main: MainState;
         home: HomeState;
         login: LoginState;
         orderSearch: OrderSearchState;

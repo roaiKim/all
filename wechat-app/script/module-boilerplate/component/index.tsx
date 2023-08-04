@@ -1,11 +1,14 @@
-import "./index.less";
+import { View } from "@tarojs/components";
 import { RootState } from "type/state";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
+import "./index.less";
 
-interface {1} extends DispatchProp {}
+interface {1} extends ReturnType<typeof mapStateToProps> {
+    name: "{3}";
+}
 
 function {2}(props: {1}) {
-    return <div className="ro-{4}-module">Hello {2}</div>;
+    return <View className="ro-{4}-page"> Hello {2}</View>;
 }
 
 const mapStateToProps = (state: RootState) => ({

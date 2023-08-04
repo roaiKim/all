@@ -4,7 +4,7 @@ import { useState } from "react";
 import logo from "asset/global/logo.png";
 import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
-import { RootState } from "type";
+import { RootState } from "type/state";
 import { actions } from "../index.module";
 import "./index.less";
 
@@ -13,7 +13,6 @@ interface LoginProps {
 }
 
 function Login(props: LoginProps) {
-    const dispatch = useDispatch();
     const [check, setCheck] = useState(false);
 
     const getPhoneNumberEventDetail = (e) => {

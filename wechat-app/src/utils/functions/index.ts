@@ -1,3 +1,4 @@
+import { APIException } from "@core";
 import Taro from "@tarojs/taro";
 
 /**
@@ -33,4 +34,13 @@ export function copyToClipboard(data = "") {
             });
         },
     });
+}
+
+/**
+ * 判断是否是API异常
+ * @param error
+ * @returns
+ */
+export function isAPIException(error): boolean {
+    return error instanceof APIException;
 }
