@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { isDevelopment } from "./static-envs";
+import { isDevelopment } from "../config/static-envs";
 
 // 这个是全局加载的功能
 const modules = require.context("service/public-api", true, /Service\.ts$/);

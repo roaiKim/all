@@ -18,11 +18,22 @@ const requireIndex = require("requireindex");
 // import all rules in lib/rules
 const rules = requireIndex(__dirname + "/rules");
 
+const excludesRules = () => {
+    const runs = {};
+    Object.keys(rules).map(item => {
+        const current = rules[item];
+        if (current.run) {
+            runs[item] = current;
+        }
+    });
+    return runs;
+}
 
+const efficientRules = excludesRules();
 
 module.exports = {
   // rules是必须的
-  rules,
+  rules: efficientRules,
   // 增加configs配置
   configs: {
       // 配置了这个之后，就可以在其他项目中像下面这样使用了
@@ -30,8 +41,7 @@ module.exports = {
       recommended: {
           plugins: ['rosen'],
           rules: {
-              'rosen/api-decorator-vaildate': ['error'],
-            //   'rosen/lodash-auto-import': ['error'],
+              'rosen/no-use-taro-navigate': ['error']
           }
       }
   }

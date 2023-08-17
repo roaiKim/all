@@ -1,5 +1,5 @@
-import { ErrorListener } from "@core";
 import Taro from "@tarojs/taro";
+import { ErrorListener } from "@core";
 import { app } from "core/app";
 import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, captureError } from "./error-util";
 

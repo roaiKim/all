@@ -1,7 +1,7 @@
 import { View } from "@tarojs/components";
 import { connect } from "react-redux";
 import { RootState } from "type/state";
-import { isDevelopment } from "utils/static-envs";
+import { isDevelopment } from "config/static-envs";
 
 function Main() {
     return <View className="ro-main-page"></View>;

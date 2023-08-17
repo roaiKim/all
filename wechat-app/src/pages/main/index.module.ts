@@ -1,7 +1,11 @@
 import Taro from "@tarojs/taro";
+import { clearToken } from "http/static";
 import { Loading, Module, register } from "@core";
 import { RootState } from "type/state";
 import { LoginService } from "service/public-api/LoginService";
+import { delayToast } from "utils/functions";
+import { WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "config/static-envs";
+import { WithConfirm } from "utils/decorator/withConfirm";
 import { State } from "./type";
 
 const initialMainState: State = {
@@ -13,8 +17,10 @@ const initialMainState: State = {
 
 class MainModule extends Module<RootState, "main"> {
     onEnter(params: Record<string, any>): void | Promise<void> {
-        //
-        console.log("Main-in");
+        const accessToken = Taro.getStorageSync(WEB_TOKEN);
+        const loggedin = Taro.getStorageSync(WEB_ISLOGIN);
+        const loginInfo = Taro.getStorageSync(WEB_USER_INFO);
+        this.setState({ loggedin, accessToken, loginInfo });
     }
 
     @Loading()
@@ -40,13 +46,44 @@ class MainModule extends Module<RootState, "main"> {
             return Promise.reject("ignore");
         });
 
-        Taro.showToast({ title: "登录成功" });
         this.setState({
             loggedin: true,
             accessToken: response.access_token,
             loginInfo: response,
         });
-        Taro.setStorageSync("WEB_TOKEN", response.access_token);
+        Taro.setStorageSync(WEB_TOKEN, response.access_token);
+        Taro.setStorageSync(WEB_ISLOGIN, true);
+        Taro.setStorageSync(WEB_USER_INFO, response);
+
+        // await delayToast("登录成功");
+        Taro.showToast({
+            title: "登录成功",
+            success: () => {
+                Taro.switchTab({ url: "/pages/home/index" });
+            },
+        });
+    }
+
+    @WithConfirm("确定退出登录吗？")
+    logOutConfirm() {
+        this.exit();
+    }
+
+    async exit() {
+        await LoginService.logout();
+        await delayToast("退出成功");
+        this.clearLoginState();
+        Taro.switchTab({ url: "/pages/home/index" });
+    }
+
+    clearLoginState() {
+        this.setState({
+            accessToken: null,
+            loggedin: false,
+            loginInfo: null,
+        });
+        Taro.clearStorageSync();
+        clearToken();
     }
 }
 

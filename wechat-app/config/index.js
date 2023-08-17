@@ -20,7 +20,7 @@ const config = {
         "@api": path.resolve(__dirname, "..", "src/service/api"),
     },
     // plugins: ["fork-ts-checker-webpack-plugin"],
-    // plugins: [new ForkTsCheckerWebpackPlugin({async: true})],
+    // plugins: [[new ForkTsCheckerWebpackPlugin({async: true})]],
     defineConstants: {},
     copy: {
         patterns: [],

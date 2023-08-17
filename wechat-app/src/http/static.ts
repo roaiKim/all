@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro";
-import { WEB_TOKEN } from "utils/static-envs";
+import { WEB_TOKEN } from "config/static-envs";
 import { baseApi } from "./config";
 
 export const BASIC_AUTH_TOKEN = "Basic Y2xpZW50OjBhNmNkNjhmYWJhOTQzMjhhNzQzMjg2YjFjZjE0ZTkz";
@@ -52,4 +52,9 @@ export function getAuthorization() {
     }
     TOKEN = Taro.getStorageSync(WEB_TOKEN) || "";
     return TOKEN ? `Bearer ${TOKEN}` : BASIC_AUTH_TOKEN;
+}
+
+// 退出时 清空 TOKEN 否者下次请求 TOKEN 还是以前的
+export function clearToken() {
+    TOKEN = "";
 }

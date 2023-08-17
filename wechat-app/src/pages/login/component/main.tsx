@@ -1,7 +1,7 @@
 import { View, Checkbox, Image, CheckboxGroup, Picker, Button } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { useState } from "react";
-import logo from "asset/global/logo.png";
+import logo from "asset/img/global/logo.png";
 import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
 import { RootState } from "type/state";
@@ -17,7 +17,6 @@ function Login(props: LoginProps) {
 
     const getPhoneNumberEventDetail = (e) => {
         if (check) {
-            console.log("-e-", e);
             if (!e.detail.code) {
                 return Taro.showToast({
                     title: "微信授权失败",

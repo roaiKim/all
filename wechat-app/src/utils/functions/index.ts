@@ -1,5 +1,5 @@
-import { APIException } from "@core";
 import Taro from "@tarojs/taro";
+import { APIException } from "@core";
 
 /**
  * 自动显示/隐藏 loading
@@ -43,4 +43,11 @@ export function copyToClipboard(data = "") {
  */
 export function isAPIException(error): boolean {
     return error instanceof APIException;
+}
+
+export function delayToast(title: string, delay = 2) {
+    Taro.showToast({ title });
+    return new Promise((resolve) => {
+        setTimeout(resolve, delay * 1000);
+    });
 }

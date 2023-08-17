@@ -1,5 +1,5 @@
 import Taro from "@tarojs/taro";
-import { APIException } from "@core";
+import { APIException, NetworkConnectionException } from "@core";
 import { ContentType, RequestMethod, getAuthorization, joinUrl, urlwhitelist } from "./static";
 
 interface AjaxConfig {
@@ -45,7 +45,11 @@ export function ajax<Request, Response, Path extends string>(
 
         // http 状态码 非200报错
         if (statusCode !== 200) {
-            throw new APIException(errorMessage, statusCode, url, responseData);
+            // 服务器/网络错误
+            if (statusCode >= 500 && statusCode <= 504) {
+                throw new NetworkConnectionException(errorMessage, statusCode, path);
+            }
+            throw new APIException(errorMessage, statusCode, path, responseData);
         }
 
         // 接口返回的 code非200为业务报错
@@ -54,9 +58,13 @@ export function ajax<Request, Response, Path extends string>(
             if (isInWhitelist) {
                 return responseData;
             }
-            throw new APIException(errorMessage, statusCode, url, responseData);
+            // 服务器/网络错误
+            if (statusCode >= 500 && statusCode <= 504) {
+                throw new NetworkConnectionException(errorMessage, statusCode, path);
+            }
+            throw new APIException(errorMessage, responseData.code, path, responseData);
         }
-        return responseData;
+        return responseData.data;
     });
     // return requestTask.then((response) => {
     //     if (path === "/auth/oauth/token") {

@@ -31,8 +31,4 @@ export class LoginService {
     static logout(): Promise<void> {
         return ajax("DELETE", "/auth/token/logout", {}, "FORM");
     }
-
-    static logoin(): Promise<void> {
-        return ajax("DELETE", "/auth/token/logout", {}, "FORM");
-    }
 }

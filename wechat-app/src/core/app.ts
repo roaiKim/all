@@ -9,8 +9,6 @@ interface App {
     errorHandler: (error: Exception) => unknown;
 }
 
-export const app = createApp();
-
 function createApp(): App {
     const store: Store<State> = createStore(rootReducer(), compose(applyMiddleware(executeMethodMiddleware)));
 
@@ -20,3 +18,6 @@ function createApp(): App {
         errorHandler() {},
     };
 }
+
+export const app = createApp();
+export const roDispatch = app.store.dispatch;

@@ -9,7 +9,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended",
         "plugin:react/recommended",
-        // "plugin:rosen/recommended",
+        "plugin:rosen/recommended",
         "prettier"
     ],
     plugins: ["@typescript-eslint", "prettier"],
@@ -21,6 +21,9 @@ module.exports = {
         "react/prop-types": "off",
         "react/sort-comp": "off",
         "@typescript-eslint/no-explicit-any": "off",
-        "import/order": ["error"]
+        "import/order": ["error"],
+        "rosen/no-use-taro-navigate": ["error", {
+            path: "src/pages"
+        }]
     },
 };

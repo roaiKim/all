@@ -2,13 +2,13 @@ import { Module, register } from "@core";
 import { RootState } from "type/state";
 import { State } from "./type";
 
-const initialLoginModule: State = {
+const initialProfileState: State = {
     name: "profile",
 };
 
-class HomeModule extends Module<RootState, "profile"> {}
+class ProfileModule extends Module<RootState, "profile"> {}
 
-const module = register(new HomeModule("profile", initialLoginModule));
+const module = register(new ProfileModule("profile", initialProfileState));
 const actions = module.getActions();
 
 export { module, actions };

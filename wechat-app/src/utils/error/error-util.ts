@@ -1,6 +1,5 @@
 import { ErrorHandler, Exception, JavaScriptException } from "@core";
 import { app } from "core/app";
-// import { app } from "../app";
 
 export const LOGGER_ACTION = "@@framework/logger";
 export const VERSION_CHECK_ACTION = "@@framework/version-check";
@@ -8,11 +7,6 @@ export const GLOBAL_ERROR_ACTION = "@@framework/global";
 export const GLOBAL_PROMISE_REJECTION_ACTION = "@@framework/promise-rejection";
 
 let errorHandlerRunning = false;
-
-interface ErrorExtra {
-    actionPayload?: string; // Should be masked
-    extraStacktrace?: string;
-}
 
 export function errorToException(error: unknown): Exception {
     if (error instanceof Exception) {
@@ -51,7 +45,7 @@ export function captureError(error: unknown, action = ""): Exception {
 
     const errorStacktrace = error instanceof Error ? error.stack : undefined;
     const errorCode = specialErrorCode(exception, action, errorStacktrace);
-    console.error(`errorCode`, errorCode);
+
     if (errorCode) {
         // app.logger
     } else {
