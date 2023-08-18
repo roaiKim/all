@@ -6,6 +6,7 @@ import { LoginService } from "service/public-api/LoginService";
 import { delayToast } from "utils/functions";
 import { WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "config/static-envs";
 import { WithConfirm } from "utils/decorator/withConfirm";
+import { roPushHistory } from "utils";
 import { State } from "./type";
 
 const initialMainState: State = {
@@ -59,7 +60,7 @@ class MainModule extends Module<RootState, "main"> {
         Taro.showToast({
             title: "登录成功",
             success: () => {
-                Taro.switchTab({ url: "/pages/home/index" });
+                roPushHistory("/pages/home/index");
             },
         });
     }
@@ -73,7 +74,7 @@ class MainModule extends Module<RootState, "main"> {
         await LoginService.logout();
         await delayToast("退出成功");
         this.clearLoginState();
-        Taro.switchTab({ url: "/pages/home/index" });
+        roPushHistory("/pages/home/index");
     }
 
     clearLoginState() {

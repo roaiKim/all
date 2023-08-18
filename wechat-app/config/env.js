@@ -12,6 +12,7 @@ function buildPath() {
 }
 
 module.exports = {
+    path: resolve("/"),
     src: resolve("src"),
     core: resolve("core"),
     components: resolve("src/components"),

@@ -6,6 +6,7 @@ import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
 import { RootState } from "type/state";
 import { actions } from "pages/main/index.module";
+import { roPushHistory } from "utils";
 import "./index.less";
 
 interface ProfileProps extends ReturnType<typeof mapStateToProps> {
@@ -26,7 +27,7 @@ function Profile(props: ProfileProps) {
                     ) : (
                         <View
                             onClick={() => {
-                                Taro.navigateTo({ url: "/pages/login/index" });
+                                roPushHistory("/pages/login/index");
                             }}
                         >
                             立即登录

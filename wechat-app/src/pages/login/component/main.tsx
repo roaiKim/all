@@ -5,6 +5,7 @@ import logo from "asset/img/global/logo.png";
 import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
 import { RootState } from "type/state";
+import { roPushHistory } from "utils";
 import { actions } from "../index.module";
 import "./index.less";
 
@@ -42,7 +43,7 @@ function Login(props: LoginProps) {
                 type="primary"
                 onClick={() => {
                     if (check) {
-                        Taro.navigateTo({ url: "/pages/login/password" });
+                        roPushHistory("/pages/login/password");
                     } else {
                         Taro.showToast({
                             title: "请先阅读并同意隐私政策与服务指南",

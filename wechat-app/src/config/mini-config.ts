@@ -31,4 +31,4 @@ export default {
             },
         ],
     },
-};
+} as const;

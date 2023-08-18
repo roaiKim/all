@@ -2,6 +2,7 @@ import { Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { useState } from "react";
 import { AtButton, AtIcon, AtModal, AtModalContent } from "taro-ui";
+import { roPushHistory } from "utils";
 import "./index.less";
 
 function Main() {
@@ -25,7 +26,7 @@ function Main() {
             <AtButton
                 className="btn"
                 onClick={() => {
-                    Taro.navigateTo({ url: "/pages/webview/index" });
+                    roPushHistory("/pages/webview/index");
                 }}
             >
                 <View className="btn-text">

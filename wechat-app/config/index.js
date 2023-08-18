@@ -1,7 +1,8 @@
 const path = require("path");
-const env = require("./env");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const resolve = require("resolve");
+const ESLintPlugin = require("eslint-webpack-plugin");
+const env = require("./env");
 
 const config = {
     projectName: "wechat-app",
@@ -19,8 +20,7 @@ const config = {
         "@http": path.resolve(__dirname, "../src", "http"),
         "@api": path.resolve(__dirname, "..", "src/service/api"),
     },
-    // plugins: ["fork-ts-checker-webpack-plugin"],
-    // plugins: [[new ForkTsCheckerWebpackPlugin({async: true})]],
+    // plugins: [["eslint-webpack-plugin"]]
     defineConstants: {},
     copy: {
         patterns: [],
@@ -54,6 +54,9 @@ const config = {
         webpackChain(chain) {
             chain.resolve.modules.add(env.src);
             chain.plugin("fork-ts-checker-webpack-plugin").use(ForkTsCheckerWebpackPlugin);
+            chain
+                .plugin("eslint-webpack-plugin")
+                .use(ESLintPlugin, [{ extensions: ["js", "mjs", "jsx", "ts", "tsx"], quiet: true, cache: true, cacheLocation: env.eslintcache }]);
         },
     },
     h5: {

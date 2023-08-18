@@ -15,16 +15,16 @@ function OrderCard(props) {
         if (info.isDraft) {
             return;
         }
-        Taro.navigateTo({ url: "/pages/orderDetail/index?id=" + info.id });
+        //
     };
     const cancel = () => {
-        // dispatch(actions.cancel(info.id));
+        //
     };
     const edit = () => {
-        Taro.navigateTo({ url: "/pages/preorder/index?type=edit&id=" + info.id });
+        //
     };
     const again = () => {
-        Taro.navigateTo({ url: "/pages/preorder/index?type=again&id=" + info.id });
+        //
     };
 
     return (
@@ -108,7 +108,7 @@ function OrderCard(props) {
                         className="btn"
                         type="secondary"
                         onClick={() => {
-                            Taro.navigateTo({ url: "/pages/preorder/index?type=draft" });
+                            //
                         }}
                     >
                         <View className="btntext">修改订单</View>

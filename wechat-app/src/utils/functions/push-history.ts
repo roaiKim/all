@@ -23,6 +23,10 @@ export function roBackHistory(success?: () => void, delta = 1) {
     });
 }
 
+type HistoryPath = (typeof miniConfig)["pages"][number] | (typeof miniConfig)["tabBar"]["list"][number]["pagePath"];
+
+type VerifyPath<R> = R extends `${infer Rest}` ? `/${Rest}` : never;
+
 /**
  *
  * @param path 路径
@@ -32,35 +36,35 @@ export function roBackHistory(success?: () => void, delta = 1) {
  * @returns
  */
 export function roPushHistory(
-    path: string,
+    path: VerifyPath<HistoryPath>,
     pathParams?: Record<string, string | number>,
     config?: {
         success?: () => void;
         redirection?: boolean;
     }
 ) {
-    if (!path || !path.startsWith("/pages") || path.includes("?")) {
-        if (isDevelopment) {
-            Taro.showModal({
-                title: "跳转错误",
-                content: "路径不合法, 请以 /pages 开头, 且不允许带参数",
-                showCancel: false,
-            });
-        }
-        return;
-    }
+    // if (!path || !path.startsWith("/pages") || path.includes("?")) {
+    //     if (isDevelopment) {
+    //         Taro.showModal({
+    //             title: "跳转错误",
+    //             content: "路径不合法, 请以 /pages 开头, 且不允许带参数",
+    //             showCancel: false,
+    //         });
+    //     }
+    //     return;
+    // }
     const pathInTabBar = tabbarPaths.find((item) => `/${item}` === path);
     const pathInPage = pagePaths.find((item) => `/${item}` === path);
-    if (!pathInPage && !pathInTabBar) {
-        if (isDevelopment) {
-            Taro.showModal({
-                title: "跳转错误",
-                content: `路径(${path})不合法, 不在预设路径中`,
-                showCancel: false,
-            });
-        }
-        return;
-    }
+    // if (!pathInPage && !pathInTabBar) {
+    //     if (isDevelopment) {
+    //         Taro.showModal({
+    //             title: "跳转错误",
+    //             content: `路径(${path})不合法, 不在预设路径中`,
+    //             showCancel: false,
+    //         });
+    //     }
+    //     return;
+    // }
     if (pathInTabBar) {
         // switchTab 不允许带参数
         // 触发路由监听
