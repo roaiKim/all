@@ -3,7 +3,7 @@ import { RootState } from "type/state";
 import { State } from "./type";
 
 const initialLoginState: State = {
-    name: null,
+    name: "login",
 };
 
 class LoginModule extends Module<RootState, "login"> {

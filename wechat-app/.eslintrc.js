@@ -24,6 +24,7 @@ module.exports = {
         "import/order": ["error"],
         "rosen/no-use-taro-navigate": ["error", {
             path: "src/pages"
-        }]
+        }],
+        "@typescript-eslint/no-empty-interface": "off"
     },
 };

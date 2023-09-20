@@ -5,6 +5,7 @@ export const LOGGER_ACTION = "@@framework/logger";
 export const VERSION_CHECK_ACTION = "@@framework/version-check";
 export const GLOBAL_ERROR_ACTION = "@@framework/global";
 export const GLOBAL_PROMISE_REJECTION_ACTION = "@@framework/promise-rejection";
+export const USER_ACTION = "@@user/promise-rejection";
 
 let errorHandlerRunning = false;
 
@@ -32,7 +33,7 @@ export function errorToException(error: unknown): Exception {
 
 const ignoreErrors = ["ResizeObserver loop limit exceeded"];
 
-export function captureError(error: unknown, action = ""): Exception {
+export function captureError(error: unknown, action = USER_ACTION): Exception {
     const exception = errorToException(error);
 
     const errorMessage = exception.message;

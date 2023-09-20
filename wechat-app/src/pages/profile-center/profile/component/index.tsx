@@ -39,7 +39,14 @@ function Profile(props: ProfileProps) {
                 <View className="ro-user-line">功能管理</View>
                 <View className="ro-user-line">
                     <AtIcon size={20} value="user"></AtIcon>
-                    <View className="ro-title">个人信息</View>
+                    <View
+                        className="ro-title"
+                        onClick={() => {
+                            roPushHistory("/pages/profile-center/user/index");
+                        }}
+                    >
+                        个人信息
+                    </View>
                     <AtIcon size={18} value="chevron-right"></AtIcon>
                 </View>
                 <View className="ro-user-line">

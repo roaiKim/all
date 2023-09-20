@@ -1,5 +1,13 @@
 export default {
-    pages: ["pages/home/index", "pages/login/index", "pages/login/password", "pages/order-search/index", "pages/profile/index", "pages/webview/index"],
+    pages: [
+        "pages/home/index",
+        "pages/login/index",
+        "pages/login/password",
+        "pages/order-search/index",
+        "pages/profile-center/profile/index",
+        "pages/profile-center/user/index",
+        "pages/webview/index",
+    ],
     window: {
         backgroundTextStyle: "light",
         navigationBarBackgroundColor: "#fff",
@@ -24,7 +32,7 @@ export default {
                 selectedIconPath: "asset/img/tab-bar/searcha.png",
             },
             {
-                pagePath: "pages/profile/index",
+                pagePath: "pages/profile-center/profile/index",
                 text: "个人中心",
                 iconPath: "asset/img/tab-bar/profile.png",
                 selectedIconPath: "asset/img/tab-bar/profilea.png",

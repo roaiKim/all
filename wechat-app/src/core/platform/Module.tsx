@@ -14,6 +14,8 @@ export interface ModuleLifecycleListener {
     onTick: (() => Promise<void> | void) & TickIntervalDecoratorFlag;
     onShow: (params: Record<string, any> | undefined) => Promise<void> | void;
     onHide: (params: Record<string, any> | undefined) => Promise<void> | void;
+    needAuth?: true;
+    authAction?: () => void;
 }
 
 export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string> implements ModuleLifecycleListener {

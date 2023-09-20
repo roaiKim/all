@@ -3,7 +3,7 @@ import { RootState } from "type/state";
 import { State } from "./type";
 
 const initial{3}State: State = {
-    name: null,
+    name: "{2}",
 };
 
 class {1} extends Module<RootState, "{2}"> {}

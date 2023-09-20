@@ -10,7 +10,7 @@ import { roPushHistory } from "utils";
 import { State } from "./type";
 
 const initialMainState: State = {
-    name: null,
+    name: "main",
     accessToken: null,
     loggedin: false,
     loginInfo: null,

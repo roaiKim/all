@@ -1,6 +1,7 @@
 import { Loading, Module, register } from "@core";
 import { RootState } from "type/state";
 import { OrderService } from "service/public-api/OrderService";
+import { captureError } from "utils";
 import { State } from "./type";
 
 const initialOrderSearchState: State = {
@@ -27,6 +28,10 @@ class OrderSearchModule extends Module<RootState, "orderSearch"> {
             offset: 0,
             pageNo: 1,
             pageSize: 999,
+        }).catch((error) => {
+            this.setState({ dataSource: [] });
+            captureError(error);
+            return Promise.reject();
         });
         this.setState({
             dataSource: response.data || [],
