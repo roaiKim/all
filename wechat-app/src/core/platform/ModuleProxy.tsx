@@ -27,7 +27,6 @@ export class ModuleProxy<M extends Module<any, any>> {
             private tickCount = 0;
             private timer: NodeJS.Timeout | undefined;
             private pageInstance = getCurrentInstance();
-            private noAuth = false;
 
             constructor(props: P) {
                 super(props);
@@ -113,25 +112,6 @@ export class ModuleProxy<M extends Module<any, any>> {
             private hasOwnLifecycle = (methodName: keyof ModuleLifecycleListener): boolean => {
                 return Object.prototype.hasOwnProperty.call(modulePrototype, methodName);
             };
-
-            // 权限验证 // 废弃
-            private validateAuth() {
-                if (modulePrototype.needAuth) {
-                    try {
-                        const store = app.store.getState() as any;
-                        if (!store.app.main.loggedin) {
-                            this.noAuth = true;
-                            if (modulePrototype.authAction) {
-                                modulePrototype.authAction();
-                            }
-                        } else {
-                            this.noAuth = false;
-                        }
-                    } catch (e) {
-                        //
-                    }
-                }
-            }
         };
     }
 }

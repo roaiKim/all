@@ -1,13 +1,13 @@
 import { Module, register } from "@core";
 import { RootState } from "type/state";
-import { ValidateAuth } from "utils/decorator/validateAuth";
+import { verifiable } from "utils/decorator/verifiable";
 import { State } from "./type";
 
 const initialUserState: State = {
     name: "user",
 };
 
-@ValidateAuth
+@verifiable
 class UserModule extends Module<RootState, "user"> {}
 
 const module = register(new UserModule("user", initialUserState));

@@ -1,11 +1,15 @@
 import Taro from "@tarojs/taro";
 import miniConfig from "config/mini-config";
 import { isDevelopment } from "config/static-envs";
+import { app, roDispatch } from "core/app";
+import { actions } from "pages/main/index.module";
+import auth from "type/auth-file";
 import { roEvent } from "utils/events";
 
 const pagePaths = miniConfig.pages;
 const tabbarPaths = miniConfig.tabBar.list.map((item) => item.pagePath);
 export const HISTORY_NAVIGATE_TO = "@@HISTORY_NAVIGATE_TO";
+export const HISTORY_REDIRECT_TO = "@@HISTORY_REDIRECT_TO";
 
 /**
  *
@@ -43,6 +47,22 @@ export function roPushHistory(
         redirection?: boolean;
     }
 ) {
+    const hasAuth = validateAuth(path);
+    if (!hasAuth) {
+        Taro.showModal({
+            title: "跳转错误",
+            content: "请登录后查看",
+            showCancel: true,
+            confirmText: "登录",
+            success: (response) => {
+                if (response.confirm) {
+                    roDispatch(actions.clearLoginState());
+                    roPushHistory("/pages/login/index");
+                }
+            },
+        });
+        return;
+    }
     // if (!path || !path.startsWith("/pages") || path.includes("?")) {
     //     if (isDevelopment) {
     //         Taro.showModal({
@@ -82,7 +102,7 @@ export function roPushHistory(
         const { success, redirection } = config || {};
         if (redirection) {
             // 触发路由监听
-            roEvent.trigger(HISTORY_NAVIGATE_TO, path, pathParams);
+            roEvent.trigger(HISTORY_REDIRECT_TO, path, pathParams);
             Taro.redirectTo({
                 url,
                 success: () => {
@@ -111,4 +131,15 @@ const joinPathByParams = (path, pathParams) => {
         ?.map((item) => `${item}=${pathParams[item]}`)
         .join("&");
     return `${path}?${query}`;
+};
+
+const validateAuth = (path) => {
+    const store = app.store.getState() as any;
+    const currentModule = auth.find((item) => item.path === path);
+    if (currentModule) {
+        if (!store.app.main.loggedin) {
+            return false;
+        }
+    }
+    return true;
 };

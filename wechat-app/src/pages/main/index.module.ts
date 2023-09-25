@@ -5,7 +5,7 @@ import { RootState } from "type/state";
 import { LoginService } from "service/public-api/LoginService";
 import { delayToast } from "utils/functions";
 import { WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "config/static-envs";
-import { WithConfirm } from "utils/decorator/withConfirm";
+import { withConfirm } from "utils/decorator/withConfirm";
 import { roPushHistory } from "utils";
 import { State } from "./type";
 
@@ -65,7 +65,7 @@ class MainModule extends Module<RootState, "main"> {
         });
     }
 
-    @WithConfirm("确定退出登录吗？")
+    @withConfirm("确定退出登录吗？")
     logOutConfirm() {
         this.exit();
     }

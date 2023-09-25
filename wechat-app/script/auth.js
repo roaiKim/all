@@ -14,12 +14,16 @@ const getModuleNameByPath = (filePath) => {
             const dirfiles = fs.readdirSync(currentFile);
             if (defaultFiles.every(item => dirfiles.some(item1 => new RegExp(item).test(item1)))) {
                 const rels = fs.readFileSync(path.join(currentFile, "index.module.ts")).toString();
-                const modulesReg = new RegExp("const module = register\\(new \\w+?Module\\(\"(?<moduleName>\\w+?)\"\, initial\\w+?State\\)\\)").exec(rels);
-                const relativeIndex = path.join(currentFile, "index");
-                paths.push({
-                    name: modulesReg.groups.moduleName,
-                    path: relativeIndex.replace("src", "").replace(/\\/g, "/")
-                });
+                // const modulesReg = new RegExp("const module = register\\(new \\w+?Module\\(\"(?<moduleName>\\w+?)\"\, initial\\w+?State\\)\\)").exec(rels);
+                const modulesReg = new RegExp("@verifiable\r\nclass (?<moduleName>\\w+?) extends").exec(rels);
+                console.log("--dirfiles--", dirfiles);
+                if (modulesReg) {
+                    const relativeIndex = path.join(currentFile, "index");
+                    paths.push({
+                        name: modulesReg.groups.moduleName,
+                        path: relativeIndex.replace("src", "").replace(/\\/g, "/"),
+                    });
+                }
             }
             getModuleNameByPath(currentFile);
         }
