@@ -7,7 +7,7 @@ const initialUserState: State = {
     name: "user",
 };
 
-@verifiable
+// @verifiable
 class UserModule extends Module<RootState, "user"> {}
 
 const module = register(new UserModule("user", initialUserState));

@@ -11,7 +11,7 @@ const getModuleToPageMap = (dirPath, componentPath) => {
     const moduleFiles = dirfiles.filter((item) => new RegExp("^\\w+?\\.module\\.tsx?$").test(item));
     moduleFiles.forEach((item) => {
         const rels = fs.readFileSync(path.join(dirPath, item)).toString();
-        const modulesReg = new RegExp("@verifiable\r\nclass (?<moduleName>\\w+?) extends").exec(rels);
+        const modulesReg = new RegExp("\r\n@verifiable\r\nclass (?<moduleName>\\w+?) extends").exec(rels);
         if (modulesReg) {
             paths.push({
                 name: modulesReg.groups.moduleName,
