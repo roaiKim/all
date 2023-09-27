@@ -28,8 +28,7 @@
     "dev:jd": "npm run build:jd -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch",
     "module": "node script/module.js",
-    "auth": "node script/auth.js && node_modules/.bin/eslint src/type/auth-file.ts --fix",
-    "auth2": "node script/auth2.js && node_modules/.bin/eslint src/type/auth-file2.ts --fix",
+    "auth": "node script/auth2.js && node_modules/.bin/eslint src/type/auth-file.ts --fix",
     "ro-eslint": "node_modules/.bin/eslint src/pages/home/index.tsx --rulesdir ./eslint_rules --rule 'no-use-taro-navigate: [error, {path: src/page}]'"
   },
   "browserslist": [
