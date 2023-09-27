@@ -15,7 +15,7 @@ const getModuleToPageMap = (dirPath, componentPath) => {
         if (modulesReg) {
             paths.push({
                 name: modulesReg.groups.moduleName,
-                path: componentPath,
+                path: `/${componentPath}`,
             });
         }
     });
