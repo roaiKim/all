@@ -1,13 +1,27 @@
-import { View, Image } from "@tarojs/components";
+import { View, Image, Button } from "@tarojs/components";
 import { RootState } from "type/state";
+import { roDispatch } from "@core";
 import { connect } from "react-redux";
+import { useState } from "react";
 import { NavList } from "component/nav-list";
 import logo from "asset/img/global/logo.png";
+import { Toast } from "utils/ui/toast";
+import { roPushHistory } from "utils";
+import { AtInput, AtModal, AtModalAction, AtModalContent, AtModalHeader } from "taro-ui";
 import "./index.less";
+import { actions } from "../index.module";
 
 interface UserProps extends ReturnType<typeof mapStateToProps> {}
 
 function User(props: UserProps) {
+    const { profile } = props;
+    const [visiable, showVisiable] = useState({
+        showNumber: false,
+        showEmail: false,
+        phoneNumber: "",
+        email: "",
+    });
+
     return (
         <View className="ro-user-page">
             <NavList>
@@ -16,20 +30,96 @@ function User(props: UserProps) {
                 </NavList.NavListItem>
                 <NavList.NavListItem
                     title="电话"
-                    rightValue="17376833333"
+                    rightValue={profile?.phoneNumber}
                     onClick={() => {
-                        console.log("ddd-点击");
+                        showVisiable((prev) => ({ ...prev, showNumber: true, phoneNumber: profile?.phoneNumber }));
                     }}
                 />
-                <NavList.NavListItem title="邮箱" rightValue="123gggg@smartcomma.com" />
-                <NavList.NavListItem arrow="right" title="修改密码" />
+                <NavList.NavListItem
+                    title="邮箱"
+                    rightValue={profile?.mail}
+                    onClick={() => {
+                        showVisiable((prev) => ({ ...prev, showEmail: true, email: profile?.mail }));
+                    }}
+                />
+                <NavList.NavListItem
+                    arrow="right"
+                    title="修改密码"
+                    onClick={() => {
+                        roPushHistory("/pages/profile-center/user/addition");
+                    }}
+                />
+                <AtModal isOpened={visiable.showNumber} onClose={() => {}}>
+                    <AtModalHeader>修改电话</AtModalHeader>
+                    <AtModalContent>
+                        {visiable.showNumber && (
+                            <AtInput
+                                border={false}
+                                name="phone"
+                                type="number"
+                                placeholder="电话"
+                                value={visiable.phoneNumber}
+                                onChange={(value) => {
+                                    showVisiable((prev) => ({ ...prev, phoneNumber: `${value || ""}` }));
+                                }}
+                            />
+                        )}
+                    </AtModalContent>
+                    <AtModalAction>
+                        <Button onClick={() => showVisiable((prev) => ({ ...prev, showNumber: false, phoneNumber: "" }))}>取消</Button>
+                        <Button
+                            onClick={() => {
+                                if (/^\d{11}$/.test(visiable.phoneNumber)) {
+                                    roDispatch(actions.editUserInfo({ phoneNumber: visiable.phoneNumber }));
+                                    showVisiable((prev) => ({ ...prev, showNumber: false, phoneNumber: "" }));
+                                } else {
+                                    Toast.success("请正确输入手机号");
+                                }
+                            }}
+                        >
+                            确认保存
+                        </Button>
+                    </AtModalAction>
+                </AtModal>
+                <AtModal isOpened={visiable.showEmail} onClose={() => {}}>
+                    <AtModalHeader>修改邮箱</AtModalHeader>
+                    <AtModalContent>
+                        {visiable.showEmail && (
+                            <AtInput
+                                border={false}
+                                name="email"
+                                type="text"
+                                placeholder="邮箱"
+                                value={visiable.email}
+                                onChange={(value) => {
+                                    showVisiable((prev) => ({ ...prev, email: `${value || ""}` }));
+                                }}
+                            />
+                        )}
+                    </AtModalContent>
+                    <AtModalAction>
+                        <Button onClick={() => showVisiable((prev) => ({ ...prev, showEmail: false, email: "" }))}>取消</Button>
+                        <Button
+                            onClick={() => {
+                                if (/\w+?@\w+?\.\w+?$/.test(visiable.email)) {
+                                    roDispatch(actions.editUserInfo({ mail: visiable.email }));
+                                    showVisiable((prev) => ({ ...prev, showEmail: false, email: "" }));
+                                } else {
+                                    Toast.success("请正确输入邮箱");
+                                }
+                            }}
+                        >
+                            确认保存
+                        </Button>
+                    </AtModalAction>
+                </AtModal>
             </NavList>
         </View>
     );
 }
 
 const mapStateToProps = (state: RootState) => ({
-    //
+    profile: state.app.user?.profile,
 });
 
 export default connect(mapStateToProps)(User);

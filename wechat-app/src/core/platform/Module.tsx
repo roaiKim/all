@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 export interface ModuleLifecycleListener {
-    onEnter: (params: Record<string, any> | undefined) => Promise<void> | void;
+    onEnter: (params: Record<string, any> | undefined, pageName: string | undefined) => Promise<void> | void;
     onDestroy: (() => Promise<void> | void) & onDestroyIntervalDecoratorFlag;
     onTick: (() => Promise<void> | void) & TickIntervalDecoratorFlag;
     onShow: (params: Record<string, any> | undefined) => Promise<void> | void;
@@ -21,40 +21,45 @@ export interface ModuleLifecycleListener {
 export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string> implements ModuleLifecycleListener {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    onEnter(params: Record<string, any> | undefined): Promise<void> | void {
-        /**
-         * 组件安装 一个生命周期内只会运行一次  和 componentDidMount 一样
-         */
-    }
+    /**
+     * @description 组件安装 一个生命周期内只会运行一次  和 componentDidMount 一样
+     * @param params 跳转参数
+     * @param pageName 页面名称
+     */
+    onEnter(params: Record<string, any> | undefined, pageName: string | undefined): Promise<void> | void {}
 
-    onDestroy(): Promise<void> | void {
-        /**
-         * 组件销毁 一个生命周期内只会运行一次  和 componentWillUnMount 一样
-         */
-    }
+    /**
+     * @description 组件销毁 一个生命周期内只会运行一次  和 componentWillUnMount 一样
+     */
+    onDestroy(): Promise<void> | void {}
 
-    onTick(): Promise<void> | void {
-        /**
-         * 循环某一个 函数, 在生命周期内会一直运行 无法提前退出 直到组件销毁
-         */
-    }
+    /**
+     * @description 循环某一个 函数, 在生命周期内会一直运行 无法提前退出 直到组件销毁
+     */
+    onTick(): Promise<void> | void {}
 
-    onShow(params: Record<string, any> | undefined): Promise<void> | void {
-        /**
-         * Taro 小程序 的 componentDidShow/useDidShow
-         */
-    }
+    /**
+     * @description Taro 小程序 的 componentDidShow/useDidShow
+     * @param params 跳转参数
+     */
+    onShow(params: Record<string, any> | undefined): Promise<void> | void {}
 
-    onHide(params: Record<string, any> | undefined): Promise<void> | void {
-        /**
-         * Taro 小程序 的 componentDidHide/useDidHide
-         */
-    }
+    /**
+     * @description Taro 小程序 的 componentDidHide/useDidHide
+     * @param params 跳转参数
+     */
+    onHide(params: Record<string, any> | undefined): Promise<void> | void {}
 
+    /**
+     * @description 获取当前module的state
+     */
     get state(): Readonly<RootState["app"][ModuleName]> {
         return this.rootState.app[this.name];
     }
 
+    /**
+     * @description 获取整个项目的state
+     */
     get rootState(): Readonly<RootState> {
         return app.store.getState() as Readonly<RootState>;
     }
@@ -63,6 +68,10 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
         app.store.dispatch(navigationPreventionAction(isPrevented));
     }
 
+    /**
+     *
+     * @param stateOrUpdater 更新的内容 可以是对象 & function
+     */
     setState<K extends keyof RootState["app"][ModuleName]>(
         stateOrUpdater: ((state: RootState["app"][ModuleName]) => void) | Pick<RootState["app"][ModuleName], K> | RootState["app"][ModuleName]
     ): void {

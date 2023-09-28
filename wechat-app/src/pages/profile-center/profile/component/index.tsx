@@ -51,7 +51,14 @@ function Profile(props: ProfileProps) {
                 </View>
                 <View className="ro-user-line">
                     <AtIcon size={20} value="shopping-bag"></AtIcon>
-                    <View className="ro-title">收货地址</View>
+                    <View
+                        className="ro-title"
+                        onClick={() => {
+                            roPushHistory("/pages/profile-center/user/addition");
+                        }}
+                    >
+                        收货地址
+                    </View>
                     <AtIcon size={18} value="chevron-right"></AtIcon>
                 </View>
             </View>

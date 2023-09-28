@@ -7,6 +7,9 @@ import { setStateAction } from "../reducer";
 import { Module, ModuleLifecycleListener } from "./Module";
 
 let startupModuleName: string | null = null;
+const calcpageName = (path) => {
+    return new RegExp("(?<pageName>[a-zA-Z]+?$)").exec(path)?.groups.pageName;
+};
 
 export class ModuleProxy<M extends Module<any, any>> {
     constructor(private module: M, private actions: ActionCreators<M>) {}
@@ -36,9 +39,10 @@ export class ModuleProxy<M extends Module<any, any>> {
             }
 
             override componentDidMount() {
-                const { params } = this.pageInstance.router || {};
+                const { params, path } = this.pageInstance.router || {};
+                const pageName = calcpageName(path);
                 // this.validateAuth();
-                this.initialLifecycle(params);
+                this.initialLifecycle(params, pageName);
             }
 
             override async componentDidUpdate(prevProps: Readonly<P>) {
@@ -68,23 +72,25 @@ export class ModuleProxy<M extends Module<any, any>> {
             componentDidShow() {
                 if (this.hasOwnLifecycle("onShow")) {
                     const enterActionName = `${moduleName}/@@SHOW`;
-                    const { params } = this.pageInstance.router || {};
-                    executeAction(enterActionName, lifecycleListener.onShow.bind(lifecycleListener, params));
+                    const { params, path } = this.pageInstance.router || {};
+                    const pageName = calcpageName(path);
+                    executeAction(enterActionName, lifecycleListener.onShow.bind(lifecycleListener, params, pageName));
                 }
             }
 
             componentDidHide() {
                 if (this.hasOwnLifecycle("onHide")) {
                     const enterActionName = `${moduleName}/@@HIDE`;
-                    const { params } = this.pageInstance.router || {};
-                    executeAction(enterActionName, lifecycleListener.onHide.bind(lifecycleListener, params));
+                    const { params, path } = this.pageInstance.router || {};
+                    const pageName = calcpageName(path);
+                    executeAction(enterActionName, lifecycleListener.onHide.bind(lifecycleListener, params, pageName));
                 }
             }
 
-            async initialLifecycle(params: Record<string, any> | undefined) {
+            async initialLifecycle(params: Record<string, any> | undefined, pageName: string | undefined) {
                 const enterActionName = `${moduleName}/@@ENTER`;
 
-                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener, params));
+                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener, params, pageName));
 
                 if (this.hasOwnLifecycle("onTick")) {
                     const tickIntervalInMillisecond = (lifecycleListener.onTick.tickInterval || 5) * 1000;

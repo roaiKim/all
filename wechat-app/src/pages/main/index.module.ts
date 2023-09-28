@@ -41,7 +41,7 @@ class MainModule extends Module<RootState, "main"> {
             }
             Taro.showModal({
                 title: "错误",
-                content,
+                content: JSON.stringify(error),
                 showCancel: false,
             });
             return Promise.reject("ignore");

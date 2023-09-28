@@ -6,6 +6,7 @@ export default {
         "pages/order-search/index",
         "pages/profile-center/profile/index",
         "pages/profile-center/user/index",
+        "pages/profile-center/user/addition",
         "pages/webview/index",
     ],
     window: {
