@@ -36,7 +36,7 @@ export default class ErrorHandler implements ErrorListener {
             } else if (error.statusCode === 400) {
                 Taro.showModal({
                     title: "错误",
-                    content: `系统错误。 ${error.message}, 错误码: ${error?.statusCode || ""}`,
+                    content: `${error.message}, 错误码: ${error?.statusCode || ""}`,
                     showCancel: false,
                 });
             } else {

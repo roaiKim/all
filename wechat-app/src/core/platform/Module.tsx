@@ -1,7 +1,8 @@
 import { produce, enablePatches, enableES5 } from "immer";
-import { app } from "../app";
+import { AnyAction } from "redux";
+import { app, roDispatch } from "../app";
 import { TickIntervalDecoratorFlag, onDestroyIntervalDecoratorFlag } from "../module";
-import { navigationPreventionAction, setStateAction, State } from "../reducer";
+import { Action, navigationPreventionAction, setStateAction, State } from "../reducer";
 
 // enableES5();
 if (process.env.NODE_ENV === "development") {
@@ -12,8 +13,9 @@ export interface ModuleLifecycleListener {
     onEnter: (params: Record<string, any> | undefined, pageName: string | undefined) => Promise<void> | void;
     onDestroy: (() => Promise<void> | void) & onDestroyIntervalDecoratorFlag;
     onTick: (() => Promise<void> | void) & TickIntervalDecoratorFlag;
-    onShow: (params: Record<string, any> | undefined) => Promise<void> | void;
-    onHide: (params: Record<string, any> | undefined) => Promise<void> | void;
+    onShow: (params: Record<string, any> | undefined, pageName: string | undefined) => Promise<void> | void;
+    dispatch: (action: AnyAction) => Promise<void> | void;
+    onHide: (params: Record<string, any> | undefined, pageName: string | undefined) => Promise<void> | void;
     needAuth?: true;
     authAction?: () => void;
 }
@@ -42,13 +44,21 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
      * @description Taro 小程序 的 componentDidShow/useDidShow
      * @param params 跳转参数
      */
-    onShow(params: Record<string, any> | undefined): Promise<void> | void {}
+    onShow(params: Record<string, any> | undefined, pageName: string | undefined): Promise<void> | void {}
 
     /**
      * @description Taro 小程序 的 componentDidHide/useDidHide
      * @param params 跳转参数
      */
-    onHide(params: Record<string, any> | undefined): Promise<void> | void {}
+    onHide(params: Record<string, any> | undefined, pageName: string | undefined): Promise<void> | void {}
+
+    /**
+     *
+     * @param action actions 调用
+     */
+    dispatch(action: AnyAction): Promise<void> | void {
+        roDispatch(action);
+    }
 
     /**
      * @description 获取当前module的state

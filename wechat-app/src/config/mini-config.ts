@@ -7,6 +7,8 @@ export default {
         "pages/profile-center/profile/index",
         "pages/profile-center/user/index",
         "pages/profile-center/user/addition",
+        "pages/profile-center/address/index",
+        "pages/profile-center/address/addition",
         "pages/webview/index",
     ],
     window: {

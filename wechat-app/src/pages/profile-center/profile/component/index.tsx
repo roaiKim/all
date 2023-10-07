@@ -54,7 +54,7 @@ function Profile(props: ProfileProps) {
                     <View
                         className="ro-title"
                         onClick={() => {
-                            roPushHistory("/pages/profile-center/user/addition");
+                            roPushHistory("/pages/profile-center/address/index");
                         }}
                     >
                         收货地址

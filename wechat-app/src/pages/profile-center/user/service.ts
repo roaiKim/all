@@ -4,8 +4,19 @@ export class UserService {
     static getUser(): Promise<UserService$getUser$Response> {
         return ajax("GET", "/client/personalCenter/getPersonalInformation", null, "JSON");
     }
+
     static editProfile(request): Promise<void> {
         return ajax("PUT", "/client/personalCenter/edit", request, "JSON");
+    }
+
+    // 校验密码是否正确
+    static validatePassword(password: string): Promise<void> {
+        return ajax("POST", "/client/customer-user/checkPassword", { password }, "FORM");
+    }
+
+    // 修改密码
+    static changePassword(password): Promise<void> {
+        return ajax("PUT", "/client/customer-user/updatePassword", { password }, "FORM");
     }
 }
 

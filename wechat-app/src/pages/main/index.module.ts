@@ -7,6 +7,7 @@ import { delayToast } from "utils/functions";
 import { WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "config/static-envs";
 import { withConfirm } from "utils/decorator/withConfirm";
 import { roPushHistory } from "utils";
+import { Toast } from "utils/ui/toast";
 import { State } from "./type";
 
 const initialMainState: State = {
@@ -75,6 +76,13 @@ class MainModule extends Module<RootState, "main"> {
         await delayToast("退出成功");
         this.clearLoginState();
         roPushHistory("/pages/home/index");
+    }
+
+    async exitByPasswordChanged() {
+        await LoginService.logout();
+        await delayToast("密码修改成功, 请重新登录");
+        this.clearLoginState();
+        roPushHistory("/pages/login/index");
     }
 
     clearLoginState() {

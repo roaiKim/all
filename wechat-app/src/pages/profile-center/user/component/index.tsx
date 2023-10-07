@@ -73,7 +73,7 @@ function User(props: UserProps) {
                                     roDispatch(actions.editUserInfo({ phoneNumber: visiable.phoneNumber }));
                                     showVisiable((prev) => ({ ...prev, showNumber: false, phoneNumber: "" }));
                                 } else {
-                                    Toast.success("请正确输入手机号");
+                                    Toast.text("请正确输入手机号");
                                 }
                             }}
                         >
@@ -105,7 +105,7 @@ function User(props: UserProps) {
                                     roDispatch(actions.editUserInfo({ mail: visiable.email }));
                                     showVisiable((prev) => ({ ...prev, showEmail: false, email: "" }));
                                 } else {
-                                    Toast.success("请正确输入邮箱");
+                                    Toast.text("请正确输入邮箱");
                                 }
                             }}
                         >

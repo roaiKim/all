@@ -1,23 +1,23 @@
 import { Loading, Module, register } from "@core";
 import { RootState } from "type/state";
-import { verifiable } from "utils/decorator/verifiable";
+import { actions as mainActions } from "pages/main/index.module";
 import { Toast } from "utils/ui/toast";
+import { verifiable } from "utils/decorator/verifiable";
 import { State } from "./type";
 import { UserService } from "./service";
 
 const initialUserState: State = {
     name: "user",
     profile: null,
-    confirmPassword: false,
+    validatePassword: true,
 };
 
-// @verifiable
+@verifiable
 class UserModule extends Module<RootState, "user"> {
-    onEnter(params, pageName): void | Promise<void> {
+    onShow(params, pageName): void | Promise<void> {
         if (pageName === "index") {
             this.fetchUserInfo();
         }
-        console.log("---dd");
     }
 
     @Loading()
@@ -29,8 +29,20 @@ class UserModule extends Module<RootState, "user"> {
     @Loading()
     async editUserInfo(info) {
         await UserService.editProfile({ ...this.state.profile, ...info });
-        Toast.success();
+        Toast.text();
         this.fetchUserInfo();
+    }
+
+    @Loading()
+    async validatePassword(password) {
+        await UserService.validatePassword(password);
+        this.setState({ validatePassword: false });
+    }
+
+    @Loading()
+    async changePassword(password) {
+        await UserService.changePassword(password);
+        this.dispatch(mainActions.exitByPasswordChanged());
     }
 }
 
