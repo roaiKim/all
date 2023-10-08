@@ -15,37 +15,37 @@ function Address(props: AddressProps) {
     const { Q, P, tabKey } = props;
     return (
         <View className="ro-address-page">
-            <AtTabs
-                animated={false}
-                current={tabKey}
-                tabList={[{ title: "取件地址" }, { title: "派件地址" }]}
-                onClick={(e) => {
-                    // if (from === "pre") return;
-                    console.log("eee", e);
-                    roDispatch(actions.toggleTabkey(e));
-                }}
-            >
-                <AtTabsPane current={tabKey} index={0}>
-                    <View className="tab-box">
-                        {Q?.length > 0 ? (
-                            Q.map((item, index) => <AddressCard key={index} clickBack={() => {}} info={item}></AddressCard>)
-                        ) : (
-                            <Empty title="暂无取件地址"></Empty>
-                        )}
-                    </View>
-                </AtTabsPane>
-                <AtTabsPane current={tabKey} index={1}>
-                    <View className="tab-box">
-                        {P?.length > 0 ? (
-                            P.map((item, index) => <AddressCard key={index} clickBack={() => {}} info={item}></AddressCard>)
-                        ) : (
-                            <Empty title="暂无派件地址"></Empty>
-                        )}
-                    </View>
-                </AtTabsPane>
-            </AtTabs>
+            <View style={{ paddingBottom: 60 }}>
+                <AtTabs
+                    animated={false}
+                    current={tabKey}
+                    tabList={[{ title: "取件地址" }, { title: "派件地址" }]}
+                    onClick={(e) => {
+                        roDispatch(actions.toggleTabkey(e));
+                    }}
+                >
+                    <AtTabsPane current={tabKey} index={0}>
+                        <View className="tab-box">
+                            {Q?.length > 0 ? (
+                                Q.map((item, index) => <AddressCard key={index} address={item}></AddressCard>)
+                            ) : (
+                                <Empty title="暂无取件地址"></Empty>
+                            )}
+                        </View>
+                    </AtTabsPane>
+                    <AtTabsPane current={tabKey} index={1}>
+                        <View className="tab-box">
+                            {P?.length > 0 ? (
+                                P.map((item, index) => <AddressCard key={index} address={item}></AddressCard>)
+                            ) : (
+                                <Empty title="暂无派件地址"></Empty>
+                            )}
+                        </View>
+                    </AtTabsPane>
+                </AtTabs>
+            </View>
             <AtButton
-                className="confirm-btn bluebg"
+                className="g-btn-fixed"
                 type="primary"
                 onClick={() => {
                     roPushHistory("/pages/profile-center/address/addition");

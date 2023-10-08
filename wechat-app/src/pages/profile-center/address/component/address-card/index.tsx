@@ -1,55 +1,57 @@
 import Taro from "@tarojs/taro";
 import { View, Radio } from "@tarojs/components";
 import { AtIcon } from "taro-ui";
-import { useDispatch } from "react-redux";
+import { roDispatch } from "@core";
 import { actions } from "../../index.module";
 import "./index.less";
+import { AddressService$addAddress$Request } from "../../service";
 
-function AddressCard(props) {
-    const { info, clickBack } = props;
-    const dispatch = useDispatch();
-    const radioClick = (e) => {
-        // if (!info.defaultAddress) {
-        //     dispatch(actions.setDefault(info.id));
-        // }
+interface AddressCardProps {
+    address: AddressService$addAddress$Request;
+}
+
+function AddressCard(props: AddressCardProps) {
+    const { address } = props;
+
+    const setDefaultAddress = (e) => {
+        if (!address.defaultAddress) {
+            roDispatch(actions.setDefaultAddress(address.id));
+        }
     };
-    const toBack = () => {
-        clickBack();
-    };
+
     return (
         <View className="ro-address-card">
-            <View className="name-line" onClick={toBack}>
-                <View className="name">{info.person}</View>
-                <View className="phone">{info.phoneNumber}</View>
-                {Boolean(info.defaultAddress) && <View className="default">默认</View>}
-            </View>
-            <View className="address-line" onClick={toBack}>
-                <View className="left">
-                    {info.province + info.city + info.district}
-                    {info.street ? info.street : ""}
-                    {info.detailAddress}
+            <View
+                onClick={() => {
+                    roDispatch(actions.toEditAddressPageAction(address));
+                }}
+            >
+                <View className="name-line">
+                    <View className="name">{address.person}</View>
+                    <View className="phone">{address.phoneNumber}</View>
+                    {Boolean(address.defaultAddress) && <View className="default">默认</View>}
                 </View>
-                <View
-                    className="right"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        const str = JSON.stringify(info);
-                        // Taro.navigateTo({ url: "/pages/addAddress/index?info=" + str });
-                    }}
-                >
-                    <AtIcon size={16} color="#999" value="edit"></AtIcon>
+                <View className="address-line">
+                    <View className="left">
+                        {address.province + address.city + address.district}
+                        {address.street ? address.street : ""}
+                        {address.detailAddress}
+                    </View>
+                    <View className="right">
+                        <AtIcon size={16} color="#999" value="edit"></AtIcon>
+                    </View>
                 </View>
             </View>
             <View className="set-line">
                 <View className="left">
-                    <Radio className="radio" color="#3579ff" checked={Boolean(info.defaultAddress)} onClick={radioClick} value="1">
+                    <Radio className="radio" color="#3579ff" checked={Boolean(address.defaultAddress)} onClick={setDefaultAddress} value="1">
                         默认地址
                     </Radio>
                 </View>
                 <View
                     className="right"
                     onClick={() => {
-                        // dispatch(actions.delAddress([info.id]));
+                        roDispatch(actions.deleteAddress([address.id]));
                     }}
                 >
                     删除

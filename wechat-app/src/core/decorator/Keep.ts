@@ -6,7 +6,7 @@ type OnDestroyHandlerDecorator = (
     descriptor: TypedPropertyDescriptor<ActionHandler & onDestroyIntervalDecoratorFlag>
 ) => TypedPropertyDescriptor<ActionHandler>;
 
-export function KeepState(keep: boolean): OnDestroyHandlerDecorator {
+export function KeepState(keep = true): OnDestroyHandlerDecorator {
     return (target, propertyKey, descriptor) => {
         descriptor.value!.keep = keep;
         return descriptor;
