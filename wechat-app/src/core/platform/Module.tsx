@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
 
 export interface ModuleLifecycleListener {
     onEnter: (params: Record<string, any> | undefined, pageName: string | undefined) => Promise<void> | void;
-    onDestroy: (() => Promise<void> | void) & onDestroyIntervalDecoratorFlag;
+    onDestroy: ((pageName: string | undefined) => Promise<void> | void) & onDestroyIntervalDecoratorFlag;
     onTick: (() => Promise<void> | void) & TickIntervalDecoratorFlag;
     onShow: (params: Record<string, any> | undefined, pageName: string | undefined) => Promise<void> | void;
     dispatch: (action: AnyAction) => Promise<void> | void;
@@ -33,7 +33,7 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
     /**
      * @description 组件销毁 一个生命周期内只会运行一次  和 componentWillUnMount 一样
      */
-    onDestroy(): Promise<void> | void {}
+    onDestroy(pageName: string | undefined): Promise<void> | void {}
 
     /**
      * @description 循环某一个 函数, 在生命周期内会一直运行 无法提前退出 直到组件销毁

@@ -13,7 +13,7 @@ interface AjaxConfig {
 export function ajax<Request, Response, Path extends string>(
     method: RequestMethod,
     path: Path,
-    request: Request,
+    request: Request = undefined,
     contentType: keyof typeof ContentType = "JSON",
     ajaxConfig: Partial<AjaxConfig> = {}
 ): Promise<Response> {

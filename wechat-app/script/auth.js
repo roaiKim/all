@@ -1,38 +1,70 @@
 const fs = require("fs");
 const path = require("path");
-
-const defaultFiles = ["index.tsx?", "index.module.ts"];
+const spawn = require("./tool/index");
 
 const paths = [];
 
-const getModuleNameByPath = (filePath) => {
-    const links = fs.readdirSync(filePath);
-    links.forEach((itemPath) => {
-        const currentFile = path.join(filePath, itemPath);
-        const stats = fs.statSync(currentFile);
-        if (stats.isDirectory()) {
-            const dirfiles = fs.readdirSync(currentFile);
-            if (defaultFiles.every((item) => dirfiles.some((item1) => new RegExp(item).test(item1)))) {
-                const rels = fs.readFileSync(path.join(currentFile, "index.module.ts")).toString();
-                // const modulesReg = new RegExp("const module = register\\(new \\w+?Module\\(\"(?<moduleName>\\w+?)\"\, initial\\w+?State\\)\\)").exec(rels);
-                const modulesReg = new RegExp("@verifiable\r\nclass (?<moduleName>\\w+?) extends").exec(rels);
-                console.log("--dirfiles--", dirfiles);
-                if (modulesReg) {
-                    const relativeIndex = path.join(currentFile, "index");
-                    paths.push({
-                        name: modulesReg.groups.moduleName,
-                        path: relativeIndex.replace("src", "").replace(/\\/g, "/"),
-                    });
-                }
-            }
-            getModuleNameByPath(currentFile);
+const srcFolderName = "src";
+const fileSuffix = ["ts", "tsx", "js", "jsx"];
+
+const getModuleToPageMap = (dirPath, componentPath) => {
+    const dirfiles = fs.readdirSync(dirPath);
+    const moduleFiles = dirfiles.filter((item) => new RegExp("^\\w+?\\.module\\.tsx?$").test(item));
+    moduleFiles.forEach((item) => {
+        const rels = fs.readFileSync(path.join(dirPath, item)).toString();
+        const modulesReg = new RegExp("\r\n@verifiable\r\nclass (?<moduleName>\\w+?) extends").exec(rels);
+        if (modulesReg) {
+            paths.push({
+                name: modulesReg.groups.moduleName,
+                path: `/${componentPath}`,
+            });
         }
     });
 };
 
-const generateAuthFile = (repath) => {
-    getModuleNameByPath(path.join(repath, "pages"));
-    fs.writeFileSync(path.join(repath, "type/auth-file.ts"), `const auth = ${JSON.stringify(paths)}; \nexport default auth;\n`);
+const matchMainComponent = (pagePaths) => {
+    const ablativePath = path.join(srcFolderName, pagePaths);
+    let suffix = null;
+    for (let pageSuffix of fileSuffix) {
+        if (fs.existsSync(ablativePath + "." + pageSuffix)) {
+            suffix = pageSuffix;
+            break;
+        }
+    }
+    if (suffix) {
+        const completePath = ablativePath + "." + suffix;
+        const rels = fs.readFileSync(completePath).toString();
+        const modulesReg = new RegExp("export default module.connect\\(\\w+?\\);").exec(rels);
+        if (modulesReg) {
+            getModuleToPageMap(path.dirname(ablativePath), pagePaths);
+        }
+    }
 };
 
-generateAuthFile("src");
+const getPagePathsByConfig = () => {
+    const pages = [];
+    try {
+        const rels = fs.readFileSync(path.resolve(__dirname, "../src/config/mini-config.ts")).toString();
+        const modulesReg = new RegExp("pages: \\[(?<paths>(.|\n|\r|S)*?)\\]", "gm").exec(rels);
+        const pagePaths = modulesReg.groups.paths.replace(/\r\n\s /g, "");
+        pagePaths.split(",").forEach((item) => {
+            item.trim() && pages.push(item.trim().replace(/"/g, ""));
+        });
+    } catch (e) {
+        console.error("获取mini-config信息失败");
+    }
+    if (pages?.length) {
+        pages.forEach((item) => matchMainComponent(item));
+    }
+};
+
+const generateAuthFile = () => {
+    getPagePathsByConfig();
+    fs.writeFileSync(
+        path.join(srcFolderName, "type/auth-file.ts"),
+        `// 此文件自动生成, 禁止更改; \n\nconst auth = ${JSON.stringify(paths)}; \n\nexport default auth;\n`
+    );
+    spawn("eslint", ["src/type/auth-file.ts", "--fix"]);
+};
+
+generateAuthFile();

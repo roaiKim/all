@@ -2,9 +2,11 @@ const path = require("path");
 const chalk = require("chalk");
 const fs = require("fs-extra");
 const yargs = require("yargs");
+const spawn = require("./tool/index");
 
 const srcFolderName = "src";
 const rootStatePath = path.resolve(__dirname, `../${srcFolderName}/type/state.ts`);
+const miniConfigPath = path.resolve(__dirname, `../${srcFolderName}/config/mini-config.ts`);
 const available1stLevelModuleNames = fs.readdirSync(path.resolve(__dirname, `../${srcFolderName}/pages`)).filter((_) => _ !== "main");
 
 function getModuleName(moduleNameInArg, returnOriginName = false) {
@@ -75,6 +77,18 @@ function updateRootState(moduleNameInArg) {
     fs.writeFileSync(rootStatePath, replacedRootStateFileContent);
 }
 
+function updateMiniConfig(modulePath) {
+    const pagePath = `pages/${modulePath}/index`;
+    const miniConfigFileContent = fs.readFileSync(miniConfigPath).toString();
+    const miniConfigPagesIndex = miniConfigFileContent.indexOf("],");
+    if (miniConfigPagesIndex === -1) throw new Error("在 mini-config.ts 中未找到 pages 声明");
+
+    const replacedRootStateFileContent =
+        miniConfigFileContent.substring(0, miniConfigPagesIndex) + `"${pagePath}",` + miniConfigFileContent.substring(miniConfigPagesIndex);
+    fs.writeFileSync(miniConfigPath, replacedRootStateFileContent);
+    spawn("eslint", ["src/config/mini-config.ts", "--fix"]);
+}
+
 function generate() {
     console.info(chalk`{white.bold usage:} yarn module x/y`);
     console.info(`如果有y, x必须为 ${available1stLevelModuleNames.join("/")} 之一`);
@@ -105,6 +119,7 @@ function generate() {
 
         createModuleFolder(moduleNameInArg);
         updateRootState(moduleNameInArg);
+        updateMiniConfig(moduleNameInArg);
         console.info(chalk`{green.bold 模块 [${moduleNameInArg}] 新建成功!}`);
     } catch (e) {
         // Delete generated, if any error triggers after creating module folder

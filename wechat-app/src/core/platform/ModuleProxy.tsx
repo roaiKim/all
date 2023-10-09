@@ -52,7 +52,9 @@ export class ModuleProxy<M extends Module<any, any>> {
 
             override componentWillUnmount() {
                 if (this.hasOwnLifecycle("onDestroy")) {
-                    app.store.dispatch(actions.onDestroy());
+                    const { path } = this.pageInstance.router || {};
+                    const pageName = calcpageName(path);
+                    app.store.dispatch(actions.onDestroy(pageName));
                     // 不想清空走这个逻辑
                     if (!lifecycleListener.onDestroy.keep) {
                         app.store.dispatch(setStateAction(moduleName, initialState, `@@${moduleName}/@@reset`));

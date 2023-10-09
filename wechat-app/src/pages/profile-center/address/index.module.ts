@@ -28,15 +28,17 @@ class AddressModule extends Module<RootState, "address"> {
         }
     }
 
-    @Loading()
-    onShow(params, pageName): void | Promise<void> {
+    onShow(params: Record<string, any>, pageName: string): void | Promise<void> {
         const { tabKey } = params || {};
-        console.log("onSHow", tabKey);
         this.getAddress(tabKey || this.state.tabKey || 0);
     }
 
     @KeepState()
-    onDestroy() {}
+    onDestroy(pageName: string) {
+        if (pageName === "addition") {
+            this.setState({ analysisAddress: null });
+        }
+    }
 
     @Loading()
     async getAddress(type: number) {
