@@ -4328,8 +4328,9 @@ eslint-plugin-react@^7.8.2:
     semver "^6.3.0"
     string.prototype.matchall "^4.0.8"
 
-"eslint-plugin-rosen@file:../custom-eslint":
-  version "0.0.0"
+"eslint-plugin-rosen@file:eslint-plugin-rosen-v0.0.1.tgz":
+  version "0.0.1"
+  resolved "file:eslint-plugin-rosen-v0.0.1.tgz#22360f442f47b94b4c0c383182f380c0381f243b"
   dependencies:
     requireindex "^1.2.0"
 
