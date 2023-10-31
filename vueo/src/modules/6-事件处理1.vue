@@ -1,6 +1,8 @@
 <script setup lang="ts">
  
     import { reactive, ref, computed } from "vue";
+    import SubComs from "./6-事件处理2.vue"
+    import SubComs3 from "./6-事件处理3.vue"
 
     const count = ref(0);
     const inup = () => {
@@ -15,10 +17,20 @@
     function keyu( event: KeyboardEvent) {
         console.log(event);
     }
+
+    const subValue = ref(0);
+    const activeUpdate = (step = 1) => {
+        subValue.value = subValue.value + step;
+    }
+    const subInputValue = ref("");
+    const subInputValue1 = ref("");
+    const subInputValue2 = ref("");
+
+    const customerType = ref("");
 </script>
 
 <template>
-    <div>
+    <div @active-update="subValue++">
         <div>
             <code style="color: red">内联事件{{ count }}</code>
             <button @click="count++">click</button>
@@ -47,6 +59,19 @@
             <code style="color: red">按键修饰符 @keyup.shift.a 只有按shift建的同时按a建才触发</code>
             <input @keyup.shift.a="keyu" />
         </div>
+        <br/>
+        subValue {{ subValue }} <br/>
+        <SubComs @active-update="activeUpdate"></SubComs>
+
+        <br/> subInputValue {{ subInputValue }}
+        <SubComs v-model="subInputValue"></SubComs>
+        
+        <br/>
+        {{ subInputValue1 }} {{ subInputValue2 }}
+        <SubComs v-model:value1="subInputValue1" v-model:value2="subInputValue2"></SubComs>
+
+        <br/><br/>自定义 v-model修饰符
+        <SubComs3 v-model:customerType.capitalize="customerType"></SubComs3>
     </div>
 </template>
 

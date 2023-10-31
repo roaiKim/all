@@ -10,5 +10,14 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
+  "include": ["src", "global.d.ts"],
+  "compilerOptions": {
+    "strictFunctionTypes": false,
+    "strict": false,
+    "noImplicitAny": false,
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
+  }
 }

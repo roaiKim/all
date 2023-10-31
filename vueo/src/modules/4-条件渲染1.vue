@@ -5,7 +5,8 @@
  * 如果一个元素需要频繁显示隐藏 则用v-show，反之则v-if
  */
     import { reactive, ref, computed } from "vue";
-    
+    import ComponentRef from "../components/componentRef.vue"
+    const vf = ref(0);
     const active = ref(true);
     const toggle = () => {
         active.value = !active.value;
@@ -13,13 +14,18 @@
 </script>
 
 <template>
-    <span v-if="active">show</span>
-    <span v-else>hide</span>
-    <span v-show="active">v-show</span><!-- 仅仅 dispaly="none" -->
+    <Transition>
+        <span v-if="active">show</span>
+        <span v-else>hide</span>
+    </Transition>
+    
+    <span v-show="active">v-show{{ vf }}</span><!-- 仅仅 dispaly="none" -->
 
-
+    
     <button @click="toggle">kkk</button>
     <button @click="active = !active">jjjf</button>
+    <button @click="vf++">vf</button>
+    <ComponentRef v-if="active"></ComponentRef>
 </template>
 
 <style>
@@ -29,4 +35,15 @@
 .active {
     color: red;
 }
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 </style>
