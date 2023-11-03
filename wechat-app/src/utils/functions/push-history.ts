@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 import miniConfig from "config/mini-config";
 import { isDevelopment } from "config/static-envs";
-import { app, roDispatch } from "core/app";
+import { roApp, roDispatch } from "@core";
 import { actions } from "pages/main/index.module";
 import auth from "type/auth-file";
 import { roEvent } from "utils/events";
@@ -134,7 +134,7 @@ const joinPathByParams = (path, pathParams) => {
 };
 
 const validateAuth = (path) => {
-    const store = app.store.getState() as any;
+    const store = roApp.store.getState() as any;
     const currentModule = auth.find((item) => item.path === path);
     if (currentModule) {
         if (!store.app.main.loggedin) {

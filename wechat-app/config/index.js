@@ -16,7 +16,7 @@ const config = {
     sourceRoot: "src",
     outputRoot: "dist",
     alias: {
-        "@core": path.resolve(__dirname, "../src", "core"),
+        "@core": path.resolve(__dirname, "../node_modules", "wechat-core-app"),
         "@http": path.resolve(__dirname, "../src", "http"),
         "@api": path.resolve(__dirname, "..", "src/service/api"),
     },

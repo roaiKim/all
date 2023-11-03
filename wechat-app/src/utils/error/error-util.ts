@@ -1,5 +1,4 @@
-import { ErrorHandler, Exception, JavaScriptException } from "@core";
-import { app } from "core/app";
+import { ErrorHandler, Exception, JavaScriptException, roApp } from "@core";
 
 export const LOGGER_ACTION = "@@framework/logger";
 export const VERSION_CHECK_ACTION = "@@framework/version-check";
@@ -50,7 +49,7 @@ export function captureError(error: unknown, action = USER_ACTION): Exception {
     if (errorCode) {
         // app.logger
     } else {
-        runUserErrorHandler(app.errorHandler, exception);
+        runUserErrorHandler(roApp.errorHandler, exception);
     }
 
     return exception;

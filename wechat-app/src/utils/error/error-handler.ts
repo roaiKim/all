@@ -1,11 +1,10 @@
 import Taro from "@tarojs/taro";
-import { ErrorListener } from "@core";
-import { app } from "core/app";
+import { ErrorListener, roApp } from "@core";
 import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, captureError } from "./error-util";
 
 export function setupGlobalErrorHandler(errorListener?: ErrorListener) {
     if (errorListener) {
-        app.errorHandler = errorListener.onError.bind(errorListener);
+        roApp.errorHandler = errorListener.onError.bind(errorListener);
     }
     Taro.onUnhandledRejection((event) => {
         try {

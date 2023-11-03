@@ -8,13 +8,6 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "lib",
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "strict": true,
-    // "noImplicitAny": false,
-    // "strictNullChecks": false,
-    // "strictFunctionTypes": false,
-    // "suppressImplicitAnyIndexErrors": true,
     "strictBindCallApply": false,
     "sourceMap": true,
     "baseUrl": "./src",
@@ -26,7 +19,7 @@
       "node_modules/@types"
     ],
     "paths": {
-      "@core": ["./core"],
+      "@core": ["../node_modules/wechat-core-app"],
       "@http": ["./http"],
       "@api/*": ["./service/api/*"]
     }

@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\rosen\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add eslint-plugin-rosen
+  C:\Program Files\nodejs\node.exe C:\Users\rosen\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add wechat-core-app
 
 PATH: 
-  C:\Users\rosen\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\rosen\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Users\rosen\AppData\Local\Yarn\Data\global\node_modules\.bin;C:\Program Files (x86)\NetSarang\Xftp 7;C:\Program Files (x86)\NetSarang\Xshell 7;C:\Program Files\dotnet;%NVM_HOME%;%NVM_SYMLINK%;C:\Program Files (x86)\Tencent\微信web开发者工具\dll;C:\Program Files\nodejs;C:\Users\rosen\AppData\Local\Microsoft\WindowsApps;C:\Users\rosen\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\rosen\AppData\Local\GitHubDesktop\bin;C:\Users\rosen\Downloads\cmder;C:\Users\rosen\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\rosen\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+  C:\Users\rosen\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\rosen\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Users\rosen\AppData\Local\Yarn\Data\global\node_modules\.bin;C:\Program Files (x86)\NetSarang\Xftp 7;C:\Program Files (x86)\NetSarang\Xshell 7;C:\Program Files\dotnet;%NVM_HOME%;%NVM_SYMLINK%;C:\Program Files (x86)\Tencent\微信web开发者工具\dll;C:\Users\rosen\AppData\Local\Microsoft\WindowsApps;C:\Users\rosen\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\rosen\AppData\Local\GitHubDesktop\bin;C:\Users\rosen\Downloads\cmder;C:\Users\rosen\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\rosen\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
 
 Yarn version: 
   1.22.10
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/eslint-plugin-rosen: Not found
+  Error: https://registry.yarnpkg.com/wechat-core-app: Not found
       at Request.params.callback [as _callback] (C:\Users\rosen\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
       at Request.self.callback (C:\Users\rosen\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
       at Request.emit (events.js:400:28)
@@ -82,7 +82,8 @@ npm manifest:
       "react": "^17.0.0",
       "react-dom": "^17.0.0",
       "react-redux": "^8.0.5",
-      "taro-ui": "^3.1.0-beta.7"
+      "taro-ui": "^3.1.0-beta.7",
+      "wechat-core-app": "file:wechat-core-app-1.0.0.tgz"
     },
     "devDependencies": {
       "@babel/core": "^7.8.0",
@@ -103,7 +104,7 @@ npm manifest:
       "eslint-plugin-prettier": "^4.2.1",
       "eslint-plugin-react": "^7.8.2",
       "eslint-plugin-react-hooks": "^4.2.0",
-      "eslint-plugin-rosen": "file:eslint-plugin-rosen-0.0.1.tgz",
+      "eslint-plugin-rosen": "file:eslint-plugin-rosen-v0.0.1.tgz",
       "eslint-webpack-plugin": "2",
       "fork-ts-checker-webpack-plugin": "^6.0.0",
       "fs-extra": "^11.1.1",
@@ -4448,8 +4449,9 @@ Lockfile:
       semver "^6.3.0"
       string.prototype.matchall "^4.0.8"
   
-  "eslint-plugin-rosen@file:../custom-eslint":
-    version "0.0.0"
+  "eslint-plugin-rosen@file:eslint-plugin-rosen-v0.0.1.tgz":
+    version "0.0.1"
+    resolved "file:eslint-plugin-rosen-v0.0.1.tgz#22360f442f47b94b4c0c383182f380c0381f243b"
     dependencies:
       requireindex "^1.2.0"
   
@@ -10055,6 +10057,15 @@ Lockfile:
     version "0.1.4"
     resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.4.tgz#7f8473bc839dfd87608adb95d7eb075211578a42"
     integrity sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==
+  
+  "wechat-core-app@file:wechat-core-app-1.0.0.tgz":
+    version "1.0.0"
+    resolved "file:wechat-core-app-1.0.0.tgz#15abacc9c2db4519587fbdea4ed9ed6e4fbde752"
+    dependencies:
+      immer "^9.0.19"
+      react "^17.0.0"
+      react-dom "^17.0.0"
+      react-redux "^8.0.5"
   
   weui@^1.1.2:
     version "1.1.3"

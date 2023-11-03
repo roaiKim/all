@@ -1,4 +1,4 @@
-import { APIException } from "core/exception";
+import { APIException } from "@core";
 import { urlwhitelist } from "./static";
 
 export const interceptor = function (chain) {

@@ -5,3 +5,6 @@
 **/build
 **/dist
 **/.eslintcache
+wechat-core/lib
+wechat-core/pure
+wechat-core/**.tgz

@@ -66,38 +66,4 @@ export function ajax<Request, Response, Path extends string>(
         }
         return responseData.data;
     });
-    // return requestTask.then((response) => {
-    //     if (path === "/auth/oauth/token") {
-    //         if (response.statusCode === 426) {
-    //             Taro.clearStorageSync();
-    //             setTimeout(() => {
-    //                 Taro.showToast({ title: "登录密码错误", icon: "error", duration: 2000 });
-    //             }, 0);
-    //         } else if (response.statusCode === 401) {
-    //             Taro.clearStorageSync();
-    //             setTimeout(() => {
-    //                 Taro.showToast({ title: "账号不存在", icon: "error", duration: 2000 });
-    //             }, 0);
-    //         } else {
-    //             return response.data;
-    //         }
-    //     } else if (path.indexOf("/client/customer-user/getOpenId/") != -1 || path.indexOf("/auth/mobile/token/social") != -1) {
-    //         if (response.statusCode === 401) {
-    //             Taro.clearStorageSync();
-    //             setTimeout(() => {
-    //                 Taro.showToast({ title: "微信登录失败", icon: "error", duration: 2000 });
-    //             }, 0);
-    //         } else {
-    //             return response.data;
-    //         }
-    //     } else if (response.statusCode === 401 || response?.data?.code === 401) {
-    //         Taro.clearStorageSync();
-    //         setTimeout(() => {
-    //             Taro.showToast({ title: "请先登录", icon: "error", duration: 2000 });
-    //         }, 0);
-    //         Taro.redirectTo({ url: "/pages/login/index" });
-    //     } else {
-    //         return response.data;
-    //     }
-    // });
 }
