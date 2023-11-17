@@ -1,11 +1,11 @@
-import { View, Image, Input } from "@tarojs/components";
 import React, { useState } from "react";
-import { roDispatch } from "@core";
-import { RootState } from "type/state";
 import { connect } from "react-redux";
+import { roDispatch } from "@core";
+import { Image, Input, View } from "@tarojs/components";
 import { AtButton, AtInput } from "taro-ui";
-import { actions } from "pages/profile-center/user/index.module";
 import { Toast } from "utils/ui/toast";
+import { RootState } from "type/state";
+import { actions } from "pages/profile-center/user/index.module";
 import "./index.less";
 
 interface PhoneNumberProps extends ReturnType<typeof mapStateToProps> {}

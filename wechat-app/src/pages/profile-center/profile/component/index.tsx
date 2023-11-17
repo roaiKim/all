@@ -1,12 +1,12 @@
-import { Button, Image, View } from "@tarojs/components";
-import Taro from "@tarojs/taro";
-import logo from "asset/img/global/logo.png";
-import { AtButton, AtIcon } from "taro-ui";
 import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
+import { Button, Image, View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import { roPushHistory } from "utils";
+import { AtButton, AtIcon } from "taro-ui";
 import { RootState } from "type/state";
 import { actions } from "pages/main/index.module";
-import { roPushHistory } from "utils";
+import logo from "asset/img/global/logo.png";
 import "./index.less";
 
 interface ProfileProps extends ReturnType<typeof mapStateToProps> {

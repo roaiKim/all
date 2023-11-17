@@ -1,7 +1,7 @@
-import { produce, enablePatches, enableES5 } from "immer";
+import { enableES5, enablePatches, produce } from "immer";
 import { AnyAction } from "redux";
 import { app, roDispatch } from "../app";
-import { TickIntervalDecoratorFlag, onDestroyIntervalDecoratorFlag } from "../module";
+import { onDestroyIntervalDecoratorFlag, TickIntervalDecoratorFlag } from "../module";
 import { Action, navigationPreventionAction, setStateAction, State } from "../reducer";
 
 // enableES5();

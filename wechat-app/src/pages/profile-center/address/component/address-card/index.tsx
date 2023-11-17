@@ -1,10 +1,10 @@
-import Taro from "@tarojs/taro";
-import { View, Radio } from "@tarojs/components";
-import { AtIcon } from "taro-ui";
 import { roDispatch } from "@core";
+import { Radio, View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import { AtIcon } from "taro-ui";
 import { actions } from "../../index.module";
-import "./index.less";
 import { AddressService$addAddress$Request } from "../../service";
+import "./index.less";
 
 interface AddressCardProps {
     address: AddressService$addAddress$Request;

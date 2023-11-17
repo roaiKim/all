@@ -1,11 +1,11 @@
-import { View, Checkbox, Image, CheckboxGroup, Picker, Button } from "@tarojs/components";
-import Taro from "@tarojs/taro";
 import { useState } from "react";
-import logo from "asset/img/global/logo.png";
 import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
-import { RootState } from "type/state";
+import { Button, Checkbox, CheckboxGroup, Image, Picker, View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
 import { roPushHistory } from "utils";
+import { RootState } from "type/state";
+import logo from "asset/img/global/logo.png";
 import { actions } from "../index.module";
 import "./index.less";
 

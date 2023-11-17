@@ -1,15 +1,15 @@
-import { View, Image, Button } from "@tarojs/components";
-import { RootState } from "type/state";
-import { roDispatch } from "@core";
-import { connect } from "react-redux";
 import { useState } from "react";
-import { NavList } from "component/nav-list";
-import logo from "asset/img/global/logo.png";
-import { Toast } from "utils/ui/toast";
+import { connect } from "react-redux";
+import { roDispatch } from "@core";
+import { Button, Image, View } from "@tarojs/components";
 import { roPushHistory } from "utils";
 import { AtInput, AtModal, AtModalAction, AtModalContent, AtModalHeader } from "taro-ui";
-import "./index.less";
+import { Toast } from "utils/ui/toast";
+import { RootState } from "type/state";
+import { NavList } from "component/nav-list";
+import logo from "asset/img/global/logo.png";
 import { actions } from "../index.module";
+import "./index.less";
 
 interface UserProps extends ReturnType<typeof mapStateToProps> {}
 

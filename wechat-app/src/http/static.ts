@@ -1,6 +1,7 @@
 import Taro from "@tarojs/taro";
-import { WEB_TOKEN } from "config/static-envs";
 import { baseApi } from "./config";
+
+import { WEB_TOKEN } from "config/static-envs";
 
 export const BASIC_AUTH_TOKEN = "Basic Y2xpZW50OjBhNmNkNjhmYWJhOTQzMjhhNzQzMjg2YjFjZjE0ZTkz";
 

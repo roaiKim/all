@@ -1,6 +1,6 @@
-import Taro from "@tarojs/taro";
 import { APIException, NetworkConnectionException } from "@core";
-import { ContentType, RequestMethod, getAuthorization, joinUrl, urlwhitelist } from "./static";
+import Taro from "@tarojs/taro";
+import { ContentType, getAuthorization, joinUrl, RequestMethod, urlwhitelist } from "./static";
 
 interface AjaxConfig {
     headers: Record<string, any>;

@@ -1,11 +1,11 @@
-import { Button, View, Image, Input } from "@tarojs/components";
-import Taro from "@tarojs/taro";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Button, Image, Input, View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import { actions as mainActions } from "pages/main/index.module";
+import logo from "asset/img/global/logo.png";
 import eye from "asset/img/template/eye.png";
 import noeye from "asset/img/template/noeye.png";
-import logo from "asset/img/global/logo.png";
-import { actions as mainActions } from "pages/main/index.module";
 import "./index.less";
 
 /**

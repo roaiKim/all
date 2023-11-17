@@ -1,13 +1,13 @@
-import { View } from "@tarojs/components";
-import { RootState } from "type/state";
 import { connect } from "react-redux";
-import { AtButton, AtIcon, AtTabs, AtTabsPane } from "taro-ui";
 import { roDispatch } from "@core";
-import Empty from "component/Empty";
+import { View } from "@tarojs/components";
 import { roPushHistory } from "utils";
+import { AtButton, AtIcon, AtTabs, AtTabsPane } from "taro-ui";
+import { RootState } from "type/state";
+import Empty from "component/Empty";
 import { actions } from "pages/profile-center/address/index.module";
-import "./index.less";
 import AddressCard from "./address-card";
+import "./index.less";
 
 interface AddressProps extends ReturnType<typeof mapStateToProps> {}
 

@@ -1,10 +1,10 @@
 import { Loading, Module, register } from "@core";
+import { verifiable } from "utils/decorator/verifiable";
+import { Toast } from "utils/ui/toast";
 import { RootState } from "type/state";
 import { actions as mainActions } from "pages/main/index.module";
-import { Toast } from "utils/ui/toast";
-import { verifiable } from "utils/decorator/verifiable";
-import { State } from "./type";
 import { UserService } from "./service";
+import { State } from "./type";
 
 const initialUserState: State = {
     name: "user",
@@ -49,4 +49,4 @@ class UserModule extends Module<RootState, "user"> {
 const module = register(new UserModule("user", initialUserState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

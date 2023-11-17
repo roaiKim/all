@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { useState } from "react";
-import { AtButton, AtIcon, AtModal, AtModalContent } from "taro-ui";
 import { roPushHistory } from "utils";
+import { AtButton, AtIcon, AtModal, AtModalContent } from "taro-ui";
 import "./index.less";
 
 function Main() {

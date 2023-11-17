@@ -1,10 +1,11 @@
+import { roApp, roDispatch } from "@core";
 import Taro from "@tarojs/taro";
+import { roEvent } from "utils/events";
+import auth from "type/auth-file";
+import { actions } from "pages/main/index.module";
+
 import miniConfig from "config/mini-config";
 import { isDevelopment } from "config/static-envs";
-import { roApp, roDispatch } from "@core";
-import { actions } from "pages/main/index.module";
-import auth from "type/auth-file";
-import { roEvent } from "utils/events";
 
 const pagePaths = miniConfig.pages;
 const tabbarPaths = miniConfig.tabBar.list.map((item) => item.pagePath);

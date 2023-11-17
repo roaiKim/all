@@ -13,4 +13,4 @@ class LoginModule extends Module<RootState, "login"> {
 const module = register(new LoginModule("login", initialLoginState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

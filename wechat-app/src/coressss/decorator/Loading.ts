@@ -1,6 +1,6 @@
-import { loadingAction } from "../reducer";
-import { app } from "../app";
 import { createActionHandlerDecorator } from "./index";
+import { app } from "../app";
+import { loadingAction } from "../reducer";
 
 export function Loading(identifier = "global") {
     return createActionHandlerDecorator(async (handler) => {

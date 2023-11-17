@@ -1,4 +1,4 @@
-import { View, Image } from "@tarojs/components";
+import { Image, View } from "@tarojs/components";
 import EmptyImg from "asset/img/template/empty.png";
 import "./index.less";
 

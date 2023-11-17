@@ -1,12 +1,10 @@
+export { roDispatch } from "./app";
+export { createActionHandlerDecorator, Interval, KeepState, Loading, Mutex } from "./decorator";
+export { APIException, Exception, JavaScriptException, NetworkConnectionException } from "./exception";
+export { useLoadingStatus } from "./hooks";
+export type { ErrorHandler, ErrorListener } from "./module";
+export { register } from "./module";
 export { bootstrap } from "./platform/bootstrap";
 export { Module } from "./platform/Module";
-
-export { createActionHandlerDecorator, Loading, Interval, Mutex, KeepState } from "./decorator";
-export { showLoading, loadingAction, navigationPreventionAction } from "./reducer";
-export { register } from "./module";
-export { useLoadingStatus } from "./hooks";
-export { roDispatch } from "./app";
-export { Exception, APIException, NetworkConnectionException, JavaScriptException } from "./exception";
-
 export type { State } from "./reducer";
-export type { ErrorListener, ErrorHandler } from "./module";
+export { loadingAction, navigationPreventionAction, showLoading } from "./reducer";

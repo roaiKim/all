@@ -1,7 +1,7 @@
+import { APIException, ErrorListener, Exception, NetworkConnectionException, roDispatch } from "@core";
 import Taro from "@tarojs/taro";
-import { ErrorListener, roDispatch, APIException, Exception, NetworkConnectionException } from "@core";
-import { actions } from "pages/main/index.module";
 import { roPushHistory } from "utils";
+import { actions } from "pages/main/index.module";
 
 const createErrorMessage = (title) => {
     Taro.showToast({ title, icon: "none", duration: 3000 });

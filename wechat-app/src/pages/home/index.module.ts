@@ -11,4 +11,4 @@ class HomeModule extends Module<RootState, "home"> {}
 const module = register(new HomeModule("home", initialHomeState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

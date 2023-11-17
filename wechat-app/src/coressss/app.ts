@@ -1,7 +1,7 @@
 import { applyMiddleware, compose, legacy_createStore as createStore, Store } from "redux";
-import { ActionHandler } from "./module";
-import { rootReducer, State, executeMethodMiddleware } from "./reducer";
 import { Exception } from "./exception";
+import { ActionHandler } from "./module";
+import { executeMethodMiddleware, rootReducer, State } from "./reducer";
 
 interface App {
     readonly store: Store<State>;

@@ -1,6 +1,7 @@
-import { View } from "@tarojs/components";
 import { connect } from "react-redux";
+import { View } from "@tarojs/components";
 import { RootState } from "type/state";
+
 import { isDevelopment } from "config/static-envs";
 
 function Main() {

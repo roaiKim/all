@@ -1,10 +1,10 @@
 /* eslint-disable max-classes-per-file */
-import { getCurrentInstance } from "@tarojs/taro";
 import React from "react";
-import { app } from "../app";
-import { executeAction, ActionCreators } from "../module";
-import { setStateAction } from "../reducer";
+import { getCurrentInstance } from "@tarojs/taro";
 import { Module, ModuleLifecycleListener } from "./Module";
+import { app } from "../app";
+import { ActionCreators, executeAction } from "../module";
+import { setStateAction } from "../reducer";
 
 let startupModuleName: string | null = null;
 const calcpageName = (path) => {

@@ -1,4 +1,4 @@
-import { AddressService$Address$Response, AddressService$addAddress$Request } from "./service";
+import { AddressService$addAddress$Request, AddressService$Address$Response } from "./service";
 
 export interface State {
     name: string;

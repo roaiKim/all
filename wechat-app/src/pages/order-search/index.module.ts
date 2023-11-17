@@ -1,7 +1,7 @@
 import { Loading, Module, register } from "@core";
-import { RootState } from "type/state";
-import { OrderService } from "service/public-api/OrderService";
 import { captureError } from "utils";
+import { OrderService } from "service/public-api/OrderService";
+import { RootState } from "type/state";
 import { State } from "./type";
 
 const initialOrderSearchState: State = {
@@ -42,4 +42,4 @@ class OrderSearchModule extends Module<RootState, "orderSearch"> {
 const module = register(new OrderSearchModule("orderSearch", initialOrderSearchState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

@@ -1,14 +1,15 @@
-import Taro from "@tarojs/taro";
-import { clearToken } from "http/static";
 import { Loading, Module, register } from "@core";
-import { RootState } from "type/state";
-import { LoginService } from "service/public-api/LoginService";
-import { delayToast } from "utils/functions";
-import { WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "config/static-envs";
-import { withConfirm } from "utils/decorator/withConfirm";
+import Taro from "@tarojs/taro";
 import { roPushHistory } from "utils";
+import { withConfirm } from "utils/decorator/withConfirm";
+import { delayToast } from "utils/functions";
 import { Toast } from "utils/ui/toast";
+import { clearToken } from "http/static";
+import { LoginService } from "service/public-api/LoginService";
+import { RootState } from "type/state";
 import { State } from "./type";
+
+import { WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "config/static-envs";
 
 const initialMainState: State = {
     name: "main",
@@ -99,4 +100,4 @@ class MainModule extends Module<RootState, "main"> {
 const module = register(new MainModule("main", initialMainState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

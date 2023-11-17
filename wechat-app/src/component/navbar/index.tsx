@@ -1,6 +1,6 @@
-import Taro from "@tarojs/taro";
-import { View, Text, Image } from "@tarojs/components";
 import React, { useCallback, useEffect, useState } from "react";
+import { Image, Text, View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
 import Left from "asset/global/left.png";
 import "./index.less";
 

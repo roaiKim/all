@@ -1,16 +1,16 @@
-import { View, Image, Button, Textarea, Text, Picker } from "@tarojs/components";
-import { RootState } from "type/state";
-import { roDispatch } from "@core";
-import { connect } from "react-redux";
 import { useEffect, useState } from "react";
-import { NavList } from "component/nav-list";
-import logo from "asset/img/global/logo.png";
-import { Toast } from "utils/ui/toast";
+import { connect } from "react-redux";
+import { roDispatch } from "@core";
+import { Button, Image, Picker, Text, Textarea, View } from "@tarojs/components";
 import { roPushHistory } from "utils";
 import { AtButton, AtInput, AtSwitch } from "taro-ui";
-import "./index.less";
+import { Toast } from "utils/ui/toast";
+import { RootState } from "type/state";
+import { NavList } from "component/nav-list";
+import logo from "asset/img/global/logo.png";
 import { actions } from "../index.module";
 import { AddressService$addAddress$Request } from "../service";
+import "./index.less";
 
 interface AdditionProps extends ReturnType<typeof mapStateToProps> {}
 

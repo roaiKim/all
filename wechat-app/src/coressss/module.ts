@@ -1,8 +1,8 @@
 import { app } from "./app";
+import { Exception } from "./exception";
 import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";
-import { Exception } from "./exception";
 
 export interface ErrorListener {
     onError: ErrorHandler;

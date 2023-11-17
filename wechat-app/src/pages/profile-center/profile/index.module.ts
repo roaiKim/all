@@ -11,4 +11,4 @@ class ProfileModule extends Module<RootState, "profile"> {}
 const module = register(new ProfileModule("profile", initialProfileState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

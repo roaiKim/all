@@ -1,11 +1,11 @@
-import Taro from "@tarojs/taro";
-import { View, Image } from "@tarojs/components";
-import { AtIcon, AtButton } from "taro-ui";
-import { copyToClipboard } from "utils/functions";
 import { useDispatch } from "react-redux";
+import { Image, View } from "@tarojs/components";
+import Taro from "@tarojs/taro";
+import { AtButton, AtIcon } from "taro-ui";
+import { copyToClipboard } from "utils/functions";
 import { actions } from "pages/order-search/index.module";
-import "./index.less";
 import { RenderTitle } from "./render-title";
+import "./index.less";
 
 function OrderCard(props) {
     const { info } = props;

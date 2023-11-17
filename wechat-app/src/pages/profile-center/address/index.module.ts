@@ -1,11 +1,11 @@
 import { KeepState, Loading, Module, register } from "@core";
-import { RootState } from "type/state";
-import { verifiable } from "utils/decorator/verifiable";
-import { Toast } from "utils/ui/toast";
 import { roBackHistory, roPushHistory } from "utils";
+import { verifiable } from "utils/decorator/verifiable";
 import { withConfirm } from "utils/decorator/withConfirm";
-import { State } from "./type";
+import { Toast } from "utils/ui/toast";
+import { RootState } from "type/state";
 import { AddressService, AddressService$addAddress$Request } from "./service";
+import { State } from "./type";
 
 const initialAddressState: State = {
     name: "address",
@@ -175,4 +175,4 @@ class AddressModule extends Module<RootState, "address"> {
 const module = register(new AddressModule("address", initialAddressState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

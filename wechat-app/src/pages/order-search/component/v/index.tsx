@@ -1,7 +1,7 @@
-import Taro from "@tarojs/taro";
-import { View } from "@tarojs/components";
 import React, { Component } from "react";
+import { View } from "@tarojs/components";
 import VirtualList from "@tarojs/components/virtual-list";
+import Taro from "@tarojs/taro";
 
 const Row = function H({ id, index, data }) {
     return (
