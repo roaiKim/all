@@ -30,7 +30,8 @@
     "module": "node script/module.js",
     "auth": "node script/auth.js",
     "format": "eslint \"src/**/*.{js,ts,tsx}\" --config .eslintrc.js --fix",
-    "ro-eslint": "node_modules/.bin/eslint src/pages/home/index.tsx --rulesdir ./eslint_rules --rule 'no-use-taro-navigate: [error, {path: src/page}]'"
+    "ro-eslint": "node_modules/.bin/eslint src/pages/home/index.tsx --rulesdir ./eslint_rules --rule 'no-use-taro-navigate: [error, {path: src/page}]'",
+    "eslint-verify": "eslint \"src/**/*.{js,ts,tsx}\" --config .eslintrc.js"
   },
   "browserslist": [
     "last 3 versions",

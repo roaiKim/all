@@ -1,3 +1,5 @@
+import ProxyConfig from "@proxy-config";
+
 /**
  * 转换菜单 dev
  * @param menus
@@ -70,4 +72,8 @@ export function debounce(handler: (...args: any[]) => any, delay: number, immdia
         isInvoke = false;
     };
     return _debounce;
+}
+
+export function ProxyConfigDataSource() {
+    return Object.entries(ProxyConfig).map(([value, label]) => ({ value, label }));
 }

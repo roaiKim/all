@@ -21,6 +21,9 @@ const proxy = (origin = {}) => {
                 changeOrigin: true,
                 headers: {
                     Connection: "keep-alive",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*",
+                    "Access-Control-Allow-Methods": "*",
                 },
             })
     );
@@ -30,24 +33,31 @@ const proxy = (origin = {}) => {
 module.exports = {
     devServer: {
         port: 10010,
+        allowedHosts: "all",
         historyApiFallback: true,
         compress: true,
         // https: true,
         open: true,
-        // client: {
-        //     overlay: {
-        //         errors: true,
-        //         warnings: false,
-        //     },
-        // },
-        proxy: proxy({
-            "/default-proxy": {
-                target: "http://cccc.smartcomma.com",
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: { [`^/default-proxy`]: "" },
+        client: {
+            overlay: {
+                errors: true,
+                warnings: false,
             },
-        })
+        },
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "*",
+        },
+        proxy: proxy(),
+        //     {
+        //     "/default-proxy": {
+        //         target: "http://uat.cccc58.com",
+        //         secure: false,
+        //         changeOrigin: true,
+        //         pathRewrite: { [`^/default-proxy`]: "" },
+        //     },
+        // }
     },
     mode: "development",
     entry: {
@@ -63,8 +73,10 @@ module.exports = {
         modules: [env.src, "node_modules"],
         alias: {
             "@core": env.core,
+            "@http": "http",
             "@icon": "@ant-design/icons",
             "@api": "service/api",
+            "@proxy-config": env.ProxyConfig,
         },
     },
     optimization: {

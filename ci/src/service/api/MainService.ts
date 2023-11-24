@@ -1,4 +1,4 @@
-import { ajax } from "network";
+import { ajax } from "@http";
 import { CompanyInfoResponse } from "type";
 
 export class MainService {

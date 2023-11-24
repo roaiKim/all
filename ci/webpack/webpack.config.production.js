@@ -30,8 +30,10 @@ module.exports = {
         modules: [env.src, env.core, "node_modules"],
         alias: {
             "@core": env.core,
+            "@http": "http",
             "@icon": "@ant-design/icons",
             "@api": "service/api",
+            "@proxy-config": env.ProxyConfig,
         },
     },
     optimization: {

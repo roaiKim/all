@@ -1,4 +1,4 @@
-import { ajax } from "network";
+import { ajax } from "http";
 import { ContentType } from "utils/function/staticEnvs";
 
 export interface PasswordRequest {

@@ -15,9 +15,6 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "resolveJsonModule": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "paths": {
       "@core": ["../node_modules/wechat-core-app"],
       "@http": ["./http"],

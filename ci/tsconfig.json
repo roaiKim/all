@@ -17,12 +17,15 @@
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "suppressImplicitAnyIndexErrors": true,
+        "resolveJsonModule": true,
         "skipLibCheck": true,
         "downlevelIteration": true,
         "paths": {
             "@core": ["../core"],
+            "@http": ["./http"],
             "@icon": ["../node_modules/@ant-design/icons"],
-            "@api/*": ["./service/api/*"]
+            "@api/*": ["./service/api/*"],
+            "@proxy-config": ["../webpack/development.proxy.json"]
         }
     },
     "include": ["./src", "./core"],

@@ -1,4 +1,4 @@
-import { ajax } from "network";
+import { ajax } from "@http";
 
 export class AdvancedTableService {
     static title(moduleName: string): Promise<TableServicResponse> {

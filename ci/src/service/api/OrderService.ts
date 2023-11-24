@@ -1,6 +1,5 @@
-import { ajax } from "network";
+import { ajax } from "@http";
 import { OrderServicePaymentRequest, PageDataLimitResponse, PageRecordsLimitResponse } from "type";
-import { ContentType } from "utils/function/staticEnvs";
 
 export class OrderService {
     static getCarType(): Promise<PageRecordsLimitResponse> {

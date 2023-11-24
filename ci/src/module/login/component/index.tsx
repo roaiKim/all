@@ -7,7 +7,11 @@ import { CompanyInfoResponse } from "type";
 import { object, string } from "yup";
 import { StorageService } from "utils/StorageService";
 import { decrypted, encrypted } from "utils/function/crypto";
-import { LOGIN_REMEMBER_USERNAME, LOGIN_REMEMBER_PASSWORD } from "utils/function/staticEnvs";
+// import { LOGIN_REMEMBER_USERNAME, LOGIN_REMEMBER_PASSWORD } from "utils/function/staticEnvs";
+import { isDevelopment, LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
+import { Select } from "antd";
+import { ProxyConfigDataSource } from "utils/function";
+import { ProxySelector } from "components/proxy-selector";
 
 interface LoginProps extends DispatchProp {
     companyInfo: CompanyInfoResponse | null;
@@ -77,6 +81,7 @@ function Login(props: LoginProps) {
                     登录
                 </button>
             </div>
+            <ProxySelector />
         </div>
     );
 }

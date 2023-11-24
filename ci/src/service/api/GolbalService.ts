@@ -1,4 +1,4 @@
-import { ajax } from "network";
+import { ajax } from "@http";
 
 export class GolbalService {
     static getDictionary(code: string): Promise<Record<string, any>[]> {

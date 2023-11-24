@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { APIException, NetworkConnectionException, setHistory } from "@core";
-import { ContentType, DEV_PROXY_HOST, isDevelopment, WEB_TOKEN, whitelistUrl } from "utils/function/staticEnvs";
+// import { ContentType, DEV_PROXY_HOST, isDevelopment, WEB_TOKEN, whitelistUrl } from "utils/function/staticEnvs";
 import { StorageService } from "utils/StorageService";
 import { getToken } from "./config";
+import { ContentType, whitelistUrl } from "./static-type";
+import { DEV_PROXY_HOST, WEB_TOKEN, isDevelopment } from "config/static-envs";
 
 export type PathParams<T extends string> = string extends T
     ? { [key: string]: string | number }
@@ -123,7 +125,7 @@ export function uri<Request>(path: string, request: Request): string {
 export function urlParams(pattern: string, params?: object): string {
     if (!params) {
         if (isDevelopment) {
-            return StorageService.get(DEV_PROXY_HOST, "/default-proxy") + pattern;
+            return StorageService.get(DEV_PROXY_HOST) + pattern;
         }
         return pattern;
     }
@@ -133,7 +135,7 @@ export function urlParams(pattern: string, params?: object): string {
         url = url.replace(":" + name, encodedValue);
     });
     if (isDevelopment) {
-        return StorageService.get(DEV_PROXY_HOST, "/default-proxy") + url;
+        return StorageService.get(DEV_PROXY_HOST) + url;
     }
     return url;
 }

@@ -1,7 +1,7 @@
-import { ajax } from "network";
+import { ajax } from "@http";
+import { ContentType } from "http/static-type";
 import { stringify } from "querystring";
 import { AuthTokenRequest, AuthTokenResponse } from "type";
-import { ContentType } from "utils/function/staticEnvs";
 
 export class LoginService {
     static login(request: AuthTokenRequest): Promise<AuthTokenResponse> {

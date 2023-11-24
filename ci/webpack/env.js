@@ -17,6 +17,7 @@ module.exports = {
     components: resolve("src/components"),
     build: buildPath(),
     tsConfig: resolve("tsconfig.json"),
+    ProxyConfig: resolve("webpack/development.proxy.json"),
     nodeMoules: resolve("node_modules"),
     eslintcache: resolve("node_modules/.cache/.eslintcache"),
 };
