@@ -1,6 +1,6 @@
 import React from "react";
-import { DEV_PROXY_HOST, isDevelopment } from "config/static-envs";
 import { Select } from "antd";
+import { DEV_PROXY_HOST, isDevelopment } from "config/static-envs";
 import { ProxyConfigDataSource } from "utils/function";
 import { StorageService } from "utils/StorageService";
 

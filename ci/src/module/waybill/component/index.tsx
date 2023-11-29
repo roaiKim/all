@@ -1,6 +1,6 @@
-import "./index.less";
-import { RootState } from "type/state";
 import { connect, DispatchProp } from "react-redux";
+import { RootState } from "type/state";
+import "./index.less";
 
 interface WaybillProps extends DispatchProp {}
 

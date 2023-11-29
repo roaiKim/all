@@ -1,6 +1,6 @@
-import { NetworkConnectionException } from "../Exception";
-import { app } from "../app";
 import { createActionHandlerDecorator } from "./index";
+import { app } from "../app";
+import { NetworkConnectionException } from "../Exception";
 
 export function RetryOnNetworkConnectionError(retryIntervalSecond: number = 3, timesBlock: number = 5) {
     return createActionHandlerDecorator(async function (handler) {

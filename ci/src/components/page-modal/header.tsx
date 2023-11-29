@@ -1,6 +1,6 @@
-import { Tag } from "antd";
-import moment from "moment";
 import React, { PropsWithChildren } from "react";
+import { Tag } from "antd";
+import dayjs from "dayjs";
 
 interface StatusTag {
     key: number | string;
@@ -45,7 +45,7 @@ export function PageModalHeader(props: PropsWithChildren<PageModalHeaderProps>) 
                             if (value < 100) {
                                 labelValue = tagValue ? <Tag color={color || "#108ee9"}>{tagValue}</Tag> : null;
                             } else {
-                                labelValue = moment(value).format("YYYY-MM-DD HH:mm:ss");
+                                labelValue = dayjs(value).format("YYYY-MM-DD HH:mm:ss");
                             }
                         }
                         return labelValue ? (

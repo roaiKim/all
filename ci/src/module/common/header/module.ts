@@ -1,6 +1,8 @@
-import { Module, register } from "@core";
+import { Module, register, roPushHistory } from "@core";
+import { WEB_USERNAME } from "config/static-envs";
 import { RootState } from "type/state";
 import { cache } from "utils/function/loadComponent";
+import { StorageService } from "utils/StorageService";
 import { HeaderTab } from "./type";
 
 const initialState = {
@@ -23,8 +25,13 @@ class HeaderModule extends Module<RootState, "header"> {
         const pathname = (location as any).pathname || "";
         const name = pathname.replace(/^\/|\/$/g, "");
         console.log("oooo", name);
+        console.log("StorageService.get<string>(WEB_USERNAME)", StorageService.get<string>(WEB_USERNAME));
         this.pushTab(name);
     }
+
+    // onLocationMatched(routeParam: object, location: Record<string, any>): void {
+    //     //
+    // }
 
     pushTab(keyPath: string) {
         const { headerTabs, activeTabName } = this.state;
@@ -98,11 +105,11 @@ class HeaderModule extends Module<RootState, "header"> {
     }
 
     pushHistoryByActiveKey(activePath: string): void {
-        this.pushHistory(activePath);
+        roPushHistory(activePath);
     }
 }
 
 const module = register(new HeaderModule("header", initialState));
 const actions = module.getActions();
 
-export { module, actions };
+export { actions, module };

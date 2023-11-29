@@ -1,8 +1,7 @@
-import { push, replace } from "connected-react-router";
-import { Location } from "history";
-import { produce, enablePatches, enableES5 } from "immer";
 import { RouteComponentProps } from "react-router";
-import { roDispatch, setHistory } from "../actions";
+import { Location } from "history";
+import { enablePatches, produce } from "immer";
+import { roDispatch } from "../actions";
 import { app } from "../app";
 import { Logger } from "../logger";
 import { TickIntervalDecoratorFlag } from "../module";
@@ -13,24 +12,20 @@ if (process.env.NODE_ENV === "development") {
     enablePatches();
 }
 
-export interface ModuleLifecycleListener<RouteParam extends object = object, HistoryState extends object = object> {
+export interface ModuleLifecycleListener<RouteParam extends object = object> {
     onEnter: (parms: RouteComponentProps["match"]["params"], location: RouteComponentProps["location"]) => void | Promise<void>;
     onDestroy: () => void | Promise<void>;
-    onLocationMatched: (routeParameters: RouteParam, location: Location<Readonly<HistoryState> | undefined>) => void | Promise<void>;
+    onLocationMatched: (routeParameters: RouteParam, location: RouteComponentProps["location"]) => void | Promise<void>;
     onTick: (() => void | Promise<void>) & TickIntervalDecoratorFlag;
     dispatch: (actionFunction: (...args: any[]) => Action<any>) => void | Promise<void>;
 }
 
-export class Module<
-    RootState extends State,
-    ModuleName extends keyof RootState["app"] & string,
-    RouteParam extends object = object,
-    HistoryState extends object = object
-> implements ModuleLifecycleListener<RouteParam, HistoryState>
+export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string, RouteParam extends object = object>
+    implements ModuleLifecycleListener<RouteParam>
 {
     constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
 
-    onEnter(parms: RouteComponentProps["match"]["params"], location: Location) {
+    onEnter(parms: RouteComponentProps["match"]["params"], location: RouteComponentProps["location"]) {
         /**
          * Called when the attached component is initially mounted.
          */
@@ -42,7 +37,7 @@ export class Module<
          */
     }
 
-    onLocationMatched(routeParam: RouteParam, location: Location<Readonly<HistoryState> | undefined>) {
+    onLocationMatched(routeParam: RouteParam, location: RouteComponentProps["location"]) {
         /**
          * Called when the attached component is a React-Route component and its Route location matches
          * It is called each time the location changes, as long as it still matches
@@ -58,7 +53,7 @@ export class Module<
     }
 
     dispatch(action: (...args: any[]) => Action<any>) {
-        roDispatch(action);
+        roDispatch(action as any);
     }
 
     get state(): Readonly<RootState["app"][ModuleName]> {
@@ -107,14 +102,14 @@ export class Module<
         }
     }
 
-    pushHistory(url: string): void;
-    pushHistory(url: string, stateMode: "keep-state"): void;
-    pushHistory<T extends object>(url: string, state: T): void; // Recommended explicitly pass the generic type
-    pushHistory(state: HistoryState): void;
+    // pushHistory(url: string): void;
+    // pushHistory(url: string, stateMode: "keep-state"): void;
+    // pushHistory<T extends object>(url: string, state: T): void; // Recommended explicitly pass the generic type
+    // pushHistory(state: HistoryState): void;
 
-    pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state") {
-        setHistory(urlOrState, state);
-    }
+    // pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state") {
+    //     setHistory(urlOrState, state);
+    // }
 
     // protected setHistory(urlOrState: HistoryState | string, usePush = true) {
     //     if (typeof urlOrState === "string") {

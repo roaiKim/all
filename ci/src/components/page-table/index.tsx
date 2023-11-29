@@ -1,18 +1,17 @@
-import { DeleteOutlined, SettingOutlined } from "@ant-design/icons";
-import { AdvancedTableResponse } from "@api/AdvancedTableService";
-import { Button, ConfigProvider, Input, PaginationProps, Table, TableProps } from "antd";
-import { LoadingSVG } from "components/loadingSVG";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Button, ConfigProvider, Input, PaginationProps, Table, TableProps } from "antd";
 import { AdvancedTableSource } from "type";
-import { useElementResizeObserver } from "utils/hooks/useElementResizeObserver";
-import { transformSelected } from "./utils";
 import { v4 } from "uuid";
+import { DeleteOutlined, SettingOutlined } from "@ant-design/icons";
+import { LoadingSVG } from "components/loadingSVG";
+import { useElementResizeObserver } from "utils/hooks/useElementResizeObserver";
 import { pageEmpty } from "./empty";
 import { PageTitle } from "./header";
-import "./index.less";
 import { useColumns } from "./useColumns";
 import { useDataSource } from "./useDataSource";
-import { useDispatch } from "react-redux";
+import { transformSelected } from "./utils";
+import "./index.less";
 
 const { Search } = Input;
 
@@ -121,8 +120,6 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
             dispatch(actions.fetchPageTable({ pageNo: current, pageSize }));
         }
     }
-
-    console.log("--selected--");
 
     return (
         <div className="ro-page-table" id={`ro-table-container-${containerId}`}>

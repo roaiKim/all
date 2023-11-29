@@ -1,5 +1,4 @@
-import { ajax } from "http";
-import { ContentType } from "utils/function/staticEnvs";
+import { ajax } from "@http";
 
 export interface PasswordRequest {
     oldPassword: string;
@@ -71,63 +70,7 @@ export interface PositionColumns {
 }
 
 export class UserService {
-    static getCustomerDetail(request): Promise<any> {
-        return ajax("GET", "/api/common/customerBasicInformation/detail", {}, request);
-    }
-
-    static getUserDetailByUserId(id): Promise<Record<string, any>> {
-        return ajax("GET", "/api/common/customerUserManagement/detail", {}, { id });
-    }
-
-    static password(id: string, request: PasswordRequest): Promise<Record<string, any>> {
-        return ajax("POST", "/api/common/h5customerUser/password/update/:id", { id }, request, {
-            contentType: ContentType.FORM,
-        } as any);
-    }
-
-    static invoice(id: string): Promise<InvoiceResponse[]> {
-        return ajax("GET", "/api/common/h5customerUser/invoiceTitle/:id", { id });
-    }
-
-    static address(request: any): Promise<AddressInfo> {
-        return ajax("POST", "/api/common/h5CustomerAddress/customerAddressList", {}, request, {
-            contentType: ContentType.FORM,
-        } as any);
-    }
-
-    static addInvoice(request: AddInvoiceRequest): Promise<Record<string, any>> {
-        return ajax("POST", "/api/common/h5customerUser/invoiceTitle/save", {}, request);
-    }
-
-    static updateInvoice(request: AddInvoiceRequest): Promise<Record<string, any>> {
-        return ajax("POST", "/api/common/h5customerUser/invoiceTitle/update", {}, request);
-    }
-
-    static deteleInvoice(ids: string[]): Promise<Record<string, any>> {
-        return ajax("POST", "/api/common/h5customerUser/invoiceTitle/delete", {}, ids);
-    }
-
-    static deteleAddress(id: string): Promise<Record<string, any>> {
-        return ajax("DELETE", "/api/common/h5CustomerAddress/remove", {}, { id }, { contentType: ContentType.FORM } as any);
-    }
-
-    static getAllProvinces(): Promise<CityRecord[]> {
-        return ajax("GET", "/api/common/district/getAllProvinces", {});
-    }
-
-    static getCity(id: string): Promise<CityRecord[]> {
-        return ajax("GET", "/api/common/district/getCitiesByProvinceCode/:id", { id });
-    }
-
-    static getDistrict(id: string): Promise<CityRecord[]> {
-        return ajax("GET", "/api/common/district/getAreasByCityCode/:id", { id });
-    }
-
-    static getStreet(id: string): Promise<CityRecord[]> {
-        return ajax("GET", "/api/common/district/getStreetsByAreaCode/:id", { id });
-    }
-
-    static addAddress(request: AddAddress): Promise<Record<string, any>> {
-        return ajax("POST", "/api/common/h5CustomerAddress/saveCustomerAddress", {}, request);
+    static getPermissionByUserId() {
+        return ajax("GET", "/api/admin/account/dataPermissionTree/getByUserId");
     }
 }

@@ -1,17 +1,14 @@
-import "./index.less";
-import { RootState } from "type/state";
-import { connect, DispatchProp, useDispatch } from "react-redux";
+import { connect, DispatchProp } from "react-redux";
+import { roPushHistory } from "@core";
 import { Button } from "antd";
-import { actions as HeaderAction } from "module/common/header/module";
-import { setHistory } from "@core";
+import { RootState } from "type/state";
+import "./index.less";
 
 interface ProjectProps extends DispatchProp {}
 
 function Project(props: ProjectProps) {
-    const dispath = useDispatch();
     const link = () => {
-        setHistory("/waybill", { orderId: "1551864590885830658" });
-        // dispath(HeaderAction.pushTab("project"));
+        roPushHistory("/waybill", { orderId: "1551864590885830658" });
     };
 
     return (

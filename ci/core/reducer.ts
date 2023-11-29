@@ -1,6 +1,6 @@
-import { connectRouter, RouterState } from "connected-react-router";
 import { History } from "history";
 import { Action as ReduxAction, combineReducers, Reducer } from "redux";
+import { connectRouter, RouterState } from "connected-react-router";
 import { app } from "./app";
 
 // Redux State

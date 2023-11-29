@@ -1,13 +1,13 @@
-import { HeaderComponent, HeaderTab } from "module/common/header/type";
-import { MenuComponent } from "module/common/menus/type";
-import { cacheModules, cache } from "utils/function/loadComponent";
+import { connect, DispatchProp } from "react-redux";
+import { showLoading } from "@core";
+import { useLocation, useParams } from "react-router-dom";
 import { DevelopingModule, GlobalMask } from "components/common";
-import { connect, DispatchProp, useDispatch } from "react-redux";
-import { RootState } from "type/state";
-import "./index.less";
-import { Route, showLoading } from "@core";
-import { Switch, useLocation, useParams } from "react-router-dom";
+import { HeaderComponent } from "module/common/header/type";
 import { actions } from "module/common/main";
+import { MenuComponent } from "module/common/menus/type";
+import { RootState } from "type/state";
+import { cache } from "utils/function/loadComponent";
+import "./index.less";
 
 interface BodyContainerProps extends DispatchProp, ReturnType<typeof mapStateToProps> {
     PERMISSION_DONE: boolean;
@@ -22,9 +22,9 @@ function BodyContainer(props: BodyContainerProps) {
     let title = null;
     let permissionError = false;
     if (PERMISSION_DONE === null || PERMISSION_LOADING) {
-        title = "权限数据加载中请稍后...";
+        title = "数据加载中请稍后...";
     } else if (PERMISSION_DONE === false && !PERMISSION_LOADING) {
-        title = <div style={{ color: "red" }}>权限数据加载失败，请稍后重试</div>;
+        title = <div style={{ color: "red" }}>数据加载失败，请稍后重试</div>;
         permissionError = true;
     } else if (globalLoading) {
         title = "Loading...";

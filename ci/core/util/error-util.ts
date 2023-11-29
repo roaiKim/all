@@ -1,13 +1,13 @@
+import { isIEBrowser } from "./navigator-util";
+import { app } from "../app";
 import { Exception, JavaScriptException } from "../Exception";
 import { ErrorHandler } from "../module";
-import { app } from "../app";
-import { isIEBrowser } from "./navigator-util";
-import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, sendEventLogs } from "../platform/bootstrap";
+import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION } from "../platform/bootstrap";
 
 let errorHandlerRunning = false;
 
 interface ErrorExtra {
-    actionPayload?: string; // Should be masked
+    actionPayload?: string; // masked
     extraStacktrace?: string;
 }
 
@@ -35,7 +35,7 @@ export function errorToException(error: unknown): Exception {
 
 const ignoreErrors = ["ResizeObserver loop limit exceeded"];
 
-export function captureError(error: unknown, action: string = ""): Exception {
+export function captureError(error: unknown, action: string = "", extra: ErrorExtra = {}): Exception {
     const exception = errorToException(error);
 
     const errorMessage = exception.message;

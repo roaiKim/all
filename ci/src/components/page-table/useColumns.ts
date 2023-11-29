@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AdvancedTableService } from "@api/AdvancedTableService";
 import { transformTitle } from "./utils";
-import { captureError } from "@core";
 
 interface ColumnsProps {
     moduleName: string;

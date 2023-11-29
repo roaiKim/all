@@ -1,5 +1,5 @@
-import { PageModalPlace } from "components/page-modal";
 import { useEffect, useRef, useState } from "react";
+import { PageModalPlace } from "components/page-modal";
 
 interface SlideWidthProps {
     width?: number;

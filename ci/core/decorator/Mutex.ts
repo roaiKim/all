@@ -1,5 +1,5 @@
-import { app } from "../app";
 import { createActionHandlerDecorator } from "./index";
+import { app } from "../app";
 
 export function Mutex() {
     let lockTime: number | null = null;

@@ -1,9 +1,9 @@
 import { Module, register } from "@core";
-import Main from "./component";
-import { RootState } from "type/state";
 import { MainService } from "service/api/MainService";
+import { RootState } from "type/state";
 import { transformMeuns } from "utils/function";
 import { StorageService } from "utils/StorageService";
+import Main from "./component";
 import { COLLAPSED } from "./type";
 
 const initialState = {

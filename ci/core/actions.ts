@@ -1,8 +1,8 @@
+import { Action } from "redux";
 import { push } from "connected-react-router";
 import { app } from "./app";
-import { Action } from "./reducer";
 
-export const setHistory = (urlOrState: Record<string, any> | string, state?: object | "keep-state") => {
+export const roPushHistory = (urlOrState: Record<string, any> | string, state?: object | "keep-state") => {
     if (typeof urlOrState === "string") {
         const url: string = urlOrState;
         if (state) {

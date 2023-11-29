@@ -1,23 +1,24 @@
-import { APIException, ErrorListener, Exception, NetworkConnectionException, setHistory } from "@core";
+import { APIException, ErrorListener, Exception, NetworkConnectionException, roDispatch, roPushHistory } from "@core";
 import { message } from "antd";
-import { isProduntion } from "utils/function/staticEnvs";
-
-const createErrorMessage = message.error;
+import { actions as MainActions } from "module/common/main";
 
 export default class ErrorHandler implements ErrorListener {
     onError(error: Exception) {
         if (error instanceof APIException) {
             if (error.statusCode === 401 || error.statusCode === 403) {
-                createErrorMessage({ title: "发生错误", content: error.message });
+                message.error(`未登录或登录已过期, 请重新登录。错误码: ${error.statusCode}`);
+                roDispatch(() => MainActions.logout());
+                roPushHistory("/login", { request: true });
             } else if (error.statusCode === 404) {
-                setHistory("/");
+                message.error(`资源不存在, 请确认。 ${error.requestURL}, 错误码: ${error.statusCode}`);
+                //
             } else if (error.statusCode === 400) {
-                createErrorMessage({ title: "发生错误", content: error.message });
+                message.error(`${error.message}, 错误码: ${error.statusCode}`);
             } else {
-                createErrorMessage(isProduntion ? "发生网络错误，请稍后重试" : error.message);
+                message.error(`${error.message}, 错误码: ${error.statusCode}`);
             }
         } else if (error instanceof NetworkConnectionException) {
-            createErrorMessage("网络连接超时，请稍后重试");
+            message.error(`${error.message}, ${error.originalErrorMessage}`);
         } else {
             // const errorMessage = isProduntion ? "发生错误，请稍后重试" : error.message;
             // createErrorMessage(errorMessage);

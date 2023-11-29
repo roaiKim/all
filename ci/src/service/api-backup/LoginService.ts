@@ -1,6 +1,6 @@
+import { ajax } from "@http";
 import { stringify } from "querystring";
 import { AuthTokenRequest, AuthTokenResponse } from "type";
-import { ajax } from "@http";
 
 export class LoginService {
     static login(request: AuthTokenRequest): Promise<AuthTokenResponse> {
@@ -9,6 +9,6 @@ export class LoginService {
     }
 
     static logout(): Promise<AuthTokenResponse> {
-        return ajax("DELETE", "/api/auth/token/logout", null);
+        return ajax("DELETE", "/api/auth/token/logout", {});
     }
 }

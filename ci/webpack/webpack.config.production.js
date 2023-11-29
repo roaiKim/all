@@ -1,7 +1,7 @@
 /* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
 
 const env = require("./env");
+const path = require("path");
 const webpack = require("webpack");
 const HTMLPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -9,10 +9,10 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const TerserWebpackPlugin = require("terser-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const TSImportPlugin = require("ts-import-plugin");
 const autoprefixer = require("autoprefixer");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
+const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpackPlugin");
 
 module.exports = {
     mode: "production",
@@ -84,9 +84,6 @@ module.exports = {
                 options: {
                     configFile: env.tsConfig,
                     transpileOnly: true,
-                    // getCustomTransformers: () => ({
-                    //     before: [TSImportPlugin({ libraryName: "antd", libraryDirectory: "es", style: true })],
-                    // }),
                 },
             },
             {
@@ -142,6 +139,36 @@ module.exports = {
         new BundleAnalyzerPlugin({
             analyzerMode: "static", // 生成 HTML 的方式
             openAnalyzer: false,
+        }),
+        new ForkTsCheckerWebpackPlugin({
+            async: false,
+            typescript: {
+                typescriptPath: path.resolve(env.nodeMoules, "typescript"),
+                configOverwrite: {
+                    compilerOptions: {
+                        noEmit: true,
+                        incremental: true,
+                        tsBuildInfoFile: env.appTsBuildInfoFile,
+                    },
+                },
+                context: env.appPath,
+                diagnosticOptions: {
+                    syntactic: true,
+                },
+                mode: "write-references",
+            },
+            issue: {
+                include: [{ file: "../**/src/**/*.{ts,tsx}" }, { file: "**/src/**/*.{ts,tsx}" }],
+                exclude: [
+                    { file: "**/src/**/__tests__/**" },
+                    { file: "**/src/**/?(*.){spec|test}.*" },
+                    { file: "**/src/setupProxy.*" },
+                    { file: "**/src/setupTests.*" },
+                ],
+            },
+            logger: {
+                infrastructure: "silent",
+            },
         }),
         new ESLintPlugin({
             extensions: ["js", "mjs", "jsx", "ts", "tsx"],

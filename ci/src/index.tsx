@@ -1,8 +1,8 @@
-import { MainComponent } from "module/common/main";
 import { bootstrap } from "@core";
-import "asset/less/index.less";
 import ErrorHandler from "errorListener";
 import locationListener from "locationListener";
+import { MainComponent } from "module/common/main";
+import "asset/less/index.less";
 
 bootstrap({
     componentType: MainComponent,

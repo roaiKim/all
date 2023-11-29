@@ -1,12 +1,9 @@
 import { captureError, Loading, Module, register } from "@core";
-import Home from "./component";
-import { RootState } from "type/state";
-import { moduleName, State } from "./type";
-import { StorageService } from "utils/StorageService";
-import { OrderService } from "service/api/OrderService";
 import { AdvancedTableService } from "@api/AdvancedTableService";
+import { RootState } from "type/state";
 import { initialTableSource } from "utils/function";
-import { transformTitle } from "components/page-table/utils";
+import Home from "./component";
+import { moduleName } from "./type";
 
 const initialState = {
     ...initialTableSource(),

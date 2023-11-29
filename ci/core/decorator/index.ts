@@ -1,7 +1,6 @@
 import { ActionHandler } from "../module";
 import { Module } from "../platform/Module";
 import { State } from "../reducer";
-
 export { Interval } from "./Interval";
 export { Loading } from "./Loading";
 export { Mutex } from "./Mutex";

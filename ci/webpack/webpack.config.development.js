@@ -1,7 +1,7 @@
 /* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
 
 const env = require("./env");
+const path = require("path");
 const webpack = require("webpack");
 const HTMLPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -10,6 +10,7 @@ const ReactRefreshTypeScript = require("react-refresh-typescript");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
 const developmentProxy = require("./development.proxy.json");
+const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpackPlugin");
 
 const proxy = (origin = {}) => {
     const envs = {};
@@ -136,9 +137,41 @@ module.exports = {
             favicon: `${env.src}/favicon.ico`,
         }),
         new CleanWebpackPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProgressPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
+        new ForkTsCheckerWebpackPlugin({
+            async: true,
+            typescript: {
+                typescriptPath: path.resolve(env.nodeMoules, "typescript"),
+                configOverwrite: {
+                    compilerOptions: {
+                        noEmit: true,
+                        incremental: true,
+                        tsBuildInfoFile: env.appTsBuildInfoFile,
+                    },
+                },
+                context: env.appPath,
+                diagnosticOptions: {
+                    syntactic: true,
+                },
+                mode: "write-references",
+            },
+            issue: {
+                include: [{ file: "../**/src/**/*.{ts,tsx}" }, { file: "**/src/**/*.{ts,tsx}" }],
+                exclude: [
+                    { file: "**/src/**/__tests__/**" },
+                    { file: "**/src/**/?(*.){spec|test}.*" },
+                    { file: "**/src/setupProxy.*" },
+                    { file: "**/src/setupTests.*" },
+                ],
+            },
+            logger: {
+                infrastructure: "silent",
+            },
+        }),
         new ESLintPlugin({
             extensions: ["js", "mjs", "jsx", "ts", "tsx"],
+            failOnError: true,
             quiet: true,
             cache: true,
             cacheLocation: env.eslintcache,

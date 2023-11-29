@@ -1,17 +1,17 @@
-import { ConnectedRouter } from "connected-react-router";
-import { Location } from "history";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { app } from "../app";
+import { Location } from "history";
+import { ConnectedRouter } from "connected-react-router";
 import { NavigationGuard } from "./NavigationGuard";
-import { LoggerConfig } from "../logger";
-import { ErrorListener } from "../module";
-import { ErrorBoundary } from "../util/ErrorBoundary";
+import { app } from "../app";
 // import { ajax } from "../util/network";
 import { APIException } from "../Exception";
-import { isIEBrowser } from "../util/navigator-util";
+import { LoggerConfig } from "../logger";
+import { ErrorListener } from "../module";
 import { captureError, errorToException } from "../util/error-util";
+import { ErrorBoundary } from "../util/ErrorBoundary";
+import { isIEBrowser } from "../util/navigator-util";
 
 interface BrowserConfig {
     onIE?: () => void;

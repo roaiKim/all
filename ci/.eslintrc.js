@@ -1,4 +1,5 @@
 const prettier = require("./prettier.json");
+const pictureFormat = "png|jpge?|svg|gif|webp";
 
 module.exports = {
     parser: "@typescript-eslint/parser",
@@ -10,7 +11,7 @@ module.exports = {
         "plugin:react/recommended",
         "prettier",
     ],
-    plugins: ["@typescript-eslint", "prettier"],
+    plugins: ["@typescript-eslint", "prettier", "simple-import-sort"],
     parserOptions: {
         ecmaVersion: 2018,
         sourceType: "module",
@@ -54,10 +55,35 @@ module.exports = {
                 },
             },
         ],
+        "simple-import-sort/exports": "error",
+        "simple-import-sort/imports": ["error", {
+            "groups": [
+                [
+                    "^react",
+                    "^react-\\w+?$",
+                    "^@core",
+                    "^\\w+?$",
+                    "^[a-zA-Z-]+?$",
+                    "^@",
+                    "^config",
+                    "^http",
+                    "^component",
+                    "^module",
+                    "^utils",
+                    "^service",
+                    "^type",
+                    "^[^.]+?$",
+                    `.(${pictureFormat})$`,
+                    "^asset",
+                    "\\.\\/",
+                    "\\.\\.\\/",
+                    ".less"
+                ]
+            ]
+        }],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-unused-vars": "warn",
         "@typescript-eslint/no-use-before-define": ["error", "nofunc"],
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/no-empty-function": "off",

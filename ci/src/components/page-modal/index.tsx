@@ -1,8 +1,9 @@
-import { SetView, ViewState } from "utils/hooks/usePageModal";
-import Draggable from "react-draggable";
 import { PropsWithChildren, ReactNode } from "react";
+import Draggable from "react-draggable";
 import { CloseOutlined } from "@icon";
 import { useContainerRect } from "utils/hooks/useContainerRect";
+import { SetView, ViewState } from "utils/hooks/usePageModal";
+import CloseImg from "asset/images/global/close.png";
 import { PageModalHeader } from "./header";
 import "./index.less";
 

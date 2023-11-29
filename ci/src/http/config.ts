@@ -1,4 +1,4 @@
-import { BASIC_AUTH_TOKEN, WEB_TOKEN } from "utils/function/staticEnvs";
+import { BASIC_AUTH_TOKEN, WEB_TOKEN } from "config/static-envs";
 import { StorageService } from "utils/StorageService";
 
 export function getToken() {

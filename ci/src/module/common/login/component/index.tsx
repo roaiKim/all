@@ -1,21 +1,20 @@
 import React, { useState } from "react";
-import "./index.less";
-import { RootState } from "type/state";
 import { connect, DispatchProp } from "react-redux";
-import { actions } from "module/login";
+import { showLoading } from "@core";
+import { Select } from "antd";
 import { CompanyInfoResponse } from "type";
 import { object, string } from "yup";
-import { StorageService } from "utils/StorageService";
-import { decrypted, encrypted } from "utils/function/crypto";
-// import { LOGIN_REMEMBER_USERNAME, LOGIN_REMEMBER_PASSWORD } from "utils/function/staticEnvs";
-import { isDevelopment, LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
-import { Select } from "antd";
-import { ProxyConfigDataSource } from "utils/function";
 import { ProxySelector } from "components/proxy-selector";
+// import { LOGIN_REMEMBER_USERNAME, LOGIN_REMEMBER_PASSWORD } from "utils/function/staticEnvs";
+import { DEV_PROXY_HOST, isDevelopment, LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
+import { actions } from "module/common/login";
+import { RootState } from "type/state";
+import { ProxyConfigDataSource } from "utils/function";
+import { decrypted, encrypted } from "utils/function/crypto";
+import { StorageService } from "utils/StorageService";
+import "./index.less";
 
-interface LoginProps extends DispatchProp {
-    companyInfo: CompanyInfoResponse | null;
-}
+interface LoginProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
 interface LoginState {
     username: string;
@@ -23,7 +22,7 @@ interface LoginState {
 }
 
 function Login(props: LoginProps) {
-    const { companyInfo } = props;
+    const { companyInfo, loginLoading } = props;
     const { logo } = companyInfo || {};
 
     const [state, setState] = useState<LoginState>(() => {
@@ -77,7 +76,7 @@ function Login(props: LoginProps) {
                         onChange({ password: event.target.value });
                     }}
                 ></input>
-                <button style={{ cursor: "pointer" }} onClick={onSubmit}>
+                <button disabled={loginLoading} style={{ cursor: "pointer" }} onClick={onSubmit}>
                     登录
                 </button>
             </div>
@@ -88,6 +87,7 @@ function Login(props: LoginProps) {
 
 const mapStateToProps = (state: RootState) => ({
     companyInfo: state.app.login.companyInfo,
+    loginLoading: showLoading(state, "login-loading"),
 });
 
 export default connect(mapStateToProps)(Login);

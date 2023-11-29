@@ -1,6 +1,6 @@
-import React from "react";
-import { Exception } from "../Exception";
+import React, { PropsWithChildren } from "react";
 import { captureError } from "./error-util";
+import { Exception } from "../Exception";
 
 interface Props {
     render: (exception: Exception) => React.ReactElement | null;
@@ -10,7 +10,7 @@ interface State {
     exception: Exception | null;
 }
 
-export class ErrorBoundary extends React.PureComponent<Props, State> {
+export class ErrorBoundary extends React.PureComponent<PropsWithChildren<Props>, State> {
     static displayName = "ErrorBoundary";
     static defaultProps: Pick<Props, "render"> = { render: () => null };
 

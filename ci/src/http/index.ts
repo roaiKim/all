@@ -1,141 +1,143 @@
+import { APIException, NetworkConnectionException } from "@core";
 import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
-import { APIException, NetworkConnectionException, setHistory } from "@core";
+import { DEV_PROXY_HOST, isDevelopment, WEB_TOKEN } from "config/static-envs";
 // import { ContentType, DEV_PROXY_HOST, isDevelopment, WEB_TOKEN, whitelistUrl } from "utils/function/staticEnvs";
 import { StorageService } from "utils/StorageService";
 import { getToken } from "./config";
 import { ContentType, whitelistUrl } from "./static-type";
-import { DEV_PROXY_HOST, WEB_TOKEN, isDevelopment } from "config/static-envs";
 
-export type PathParams<T extends string> = string extends T
-    ? { [key: string]: string | number }
-    : T extends `${infer Start}:${infer Param}/${infer Rest}`
-    ? { [k in Param | keyof PathParams<Rest>]: string | number }
-    : T extends `${infer Start}:${infer Param}`
-    ? { [k in Param]: string | number }
-    : {};
+export { ajax } from "./network";
 
-export interface APIErrorResponse {
-    code: number;
-    data: string;
-    msg: string;
-    success: boolean;
-}
+// export type PathParams<T extends string> = string extends T
+//     ? { [key: string]: string | number }
+//     : T extends `${infer Start}:${infer Param}/${infer Rest}`
+//     ? { [k in Param | keyof PathParams<Rest>]: string | number }
+//     : T extends `${infer Start}:${infer Param}`
+//     ? { [k in Param]: string | number }
+//     : {};
 
-axios.defaults.transformResponse = (data, headers) => {
-    const contentType = headers?.["content-type"];
-    if (contentType?.startsWith("application/json")) {
-        return JSON.parse(data);
-    }
-    return data;
-};
+// export interface APIErrorResponse {
+//     code: number;
+//     data: string;
+//     msg: string;
+//     success: boolean;
+// }
 
-axios.interceptors.response.use(
-    (response: any) => {
-        return new Promise((resolve, reject) => {
-            const serviceData = response.data || {};
-            if (serviceData.success && serviceData?.code === 200) {
-                return resolve(serviceData.data);
-            }
-            const url = response.config?.url || "";
-            const white = whitelistUrl.some((item) => url.includes(item));
-            if (white) {
-                return resolve(serviceData);
-            }
+// axios.defaults.transformResponse = (data, headers) => {
+//     const contentType = headers?.["content-type"];
+//     if (contentType?.startsWith("application/json")) {
+//         return JSON.parse(data);
+//     }
+//     return data;
+// };
 
-            const errorMessage = `请求失败: code=${serviceData?.code || ""} ${serviceData?.msg || ""}`;
-            reject(serviceData);
+// axios.interceptors.response.use(
+//     (response: any) => {
+//         return new Promise((resolve, reject) => {
+//             const serviceData = response.data || {};
+//             if (serviceData.success && serviceData?.code === 200) {
+//                 return resolve(serviceData.data);
+//             }
+//             const url = response.config?.url || "";
+//             const white = whitelistUrl.some((item) => url.includes(item));
+//             if (white) {
+//                 return resolve(serviceData);
+//             }
 
-            throw new APIException(errorMessage, serviceData?.code, response.config?.url, serviceData, "0", serviceData?.code);
-        });
-    },
-    (e) => {
-        if (axios.isAxiosError(e)) {
-            const error = e as AxiosError<APIErrorResponse | undefined>;
-            const requestURL = error.config.url || "-";
-            if (error.response) {
-                const responseData = error.response.data;
-                const errorCode = responseData?.code || null;
-                if (error.response.status === 502 || error.response.status === 504) {
-                    throw new NetworkConnectionException(`网络错误: (${error.response.status})`, requestURL, error.message);
-                } else if (error.response.status === 401) {
-                    StorageService.set(WEB_TOKEN, null);
-                    const isLoginPage = location.href.includes("login"); // 是登录页
-                    const isLoginAction = requestURL.includes("auth/oauth/token");
-                    const errorMessage: string = isLoginPage && isLoginAction ? "账号或密码错误" : "未登录或登录过期, 请重新登录";
-                    if (!isLoginPage) {
-                        setHistory("/login");
-                    }
-                    throw new APIException(errorMessage, error.response.status, requestURL, responseData, "0", errorCode);
-                } else {
-                    const errorMessage: string = responseData?.msg || `[No Response]`;
-                    throw new APIException(errorMessage, error.response.status, requestURL, responseData, "0", errorCode);
-                }
-            } else {
-                throw new NetworkConnectionException(`连接失败: ${requestURL}`, requestURL, error.message);
-            }
-        } else {
-            throw new NetworkConnectionException(`未知的网络错误:`, `[No URL]`, e.toString());
-        }
-    }
-);
+//             const errorMessage = `请求失败: code=${serviceData?.code || ""} ${serviceData?.msg || ""}`;
+//             reject(serviceData);
 
-interface RequestConfig extends AxiosRequestConfig {
-    contentType?: ContentType;
-    headers?: Record<string, any>;
-    errorPermit?: boolean; // 错误是否全局处理,当发生错误时,会尝试全局处理错误, 如果你的错误需要自己处理, 传 false
-}
+//             throw new APIException(errorMessage, serviceData?.code, response.config?.url, serviceData, "0", serviceData?.code);
+//         });
+//     },
+//     (e) => {
+//         if (axios.isAxiosError(e)) {
+//             const error = e as AxiosError<APIErrorResponse | undefined>;
+//             const requestURL = error.config.url || "-";
+//             if (error.response) {
+//                 const responseData = error.response.data;
+//                 const errorCode = responseData?.code || null;
+//                 if (error.response.status === 502 || error.response.status === 504) {
+//                     throw new NetworkConnectionException(`网络错误: (${error.response.status})`, requestURL, error.message);
+//                 } else if (error.response.status === 401) {
+//                     StorageService.set(WEB_TOKEN, null);
+//                     const isLoginPage = location.href.includes("login"); // 是登录页
+//                     const isLoginAction = requestURL.includes("auth/oauth/token");
+//                     const errorMessage: string = isLoginPage && isLoginAction ? "账号或密码错误" : "未登录或登录过期, 请重新登录";
+//                     if (!isLoginPage) {
+//                         setHistory("/login");
+//                     }
+//                     throw new APIException(errorMessage, error.response.status, requestURL, responseData, "0", errorCode);
+//                 } else {
+//                     const errorMessage: string = responseData?.msg || `[No Response]`;
+//                     throw new APIException(errorMessage, error.response.status, requestURL, responseData, "0", errorCode);
+//                 }
+//             } else {
+//                 throw new NetworkConnectionException(`连接失败: ${requestURL}`, requestURL, error.message);
+//             }
+//         } else {
+//             throw new NetworkConnectionException(`未知的网络错误:`, `[No URL]`, e.toString());
+//         }
+//     }
+// );
 
-export async function ajax<Response, Path extends string>(
-    method: Method,
-    path: Path,
-    pathParams?: PathParams<Path>,
-    request?: any,
-    extraConfig?: RequestConfig
-): Promise<Response> {
-    const fullURL = urlParams(path, pathParams);
-    const { contentType, errorPermit, headers = {}, ...restAxios } = extraConfig || {};
+// interface RequestConfig extends AxiosRequestConfig {
+//     contentType?: ContentType;
+//     headers?: Record<string, any>;
+//     errorPermit?: boolean; // 错误是否全局处理,当发生错误时,会尝试全局处理错误, 如果你的错误需要自己处理, 传 false
+// }
 
-    const requestConfig: any = {
-        restAxios,
-        errorPermit,
-        method,
-        url: fullURL,
-    };
-    if (method === "GET" || method === "DELETE") {
-        requestConfig.params = request;
-    } else if (method === "POST" || method === "PUT" || method === "PATCH") {
-        requestConfig.data = request; //contentType && contentType === ContentType.FORM ? stringify(request) : request;
-    }
+// export async function ajax<Response, Path extends string>(
+//     method: Method,
+//     path: Path,
+//     pathParams?: PathParams<Path>,
+//     request?: any,
+//     extraConfig?: RequestConfig
+// ): Promise<Response> {
+//     const fullURL = urlParams(path, pathParams);
+//     const { contentType, errorPermit, headers = {}, ...restAxios } = extraConfig || {};
 
-    requestConfig.headers = {
-        "Content-Type": contentType || ContentType.JSON,
-        "Auth-Sub": "user",
-        Authorization: getToken()(),
-        ...headers,
-    };
+//     const requestConfig: any = {
+//         restAxios,
+//         errorPermit,
+//         method,
+//         url: fullURL,
+//     };
+//     if (method === "GET" || method === "DELETE") {
+//         requestConfig.params = request;
+//     } else if (method === "POST" || method === "PUT" || method === "PATCH") {
+//         requestConfig.data = request; //contentType && contentType === ContentType.FORM ? stringify(request) : request;
+//     }
 
-    return axios.request(requestConfig);
-}
+//     requestConfig.headers = {
+//         "Content-Type": contentType || ContentType.JSON,
+//         "Auth-Sub": "user",
+//         Authorization: getToken()(),
+//         ...headers,
+//     };
 
-export function uri<Request>(path: string, request: Request): string {
-    const config: AxiosRequestConfig = { method: "GET", url: path, params: request };
-    return axios.getUri(config);
-}
+//     return axios.request(requestConfig);
+// }
 
-export function urlParams(pattern: string, params?: object): string {
-    if (!params) {
-        if (isDevelopment) {
-            return StorageService.get(DEV_PROXY_HOST) + pattern;
-        }
-        return pattern;
-    }
-    let url = pattern;
-    Object.entries(params).forEach(([name, value]) => {
-        const encodedValue = encodeURIComponent(value.toString());
-        url = url.replace(":" + name, encodedValue);
-    });
-    if (isDevelopment) {
-        return StorageService.get(DEV_PROXY_HOST) + url;
-    }
-    return url;
-}
+// export function uri<Request>(path: string, request: Request): string {
+//     const config: AxiosRequestConfig = { method: "GET", url: path, params: request };
+//     return axios.getUri(config);
+// }
+
+// export function urlParams(pattern: string, params?: object): string {
+//     if (!params) {
+//         if (isDevelopment) {
+//             return StorageService.get(DEV_PROXY_HOST) + pattern;
+//         }
+//         return pattern;
+//     }
+//     let url = pattern;
+//     Object.entries(params).forEach(([name, value]) => {
+//         const encodedValue = encodeURIComponent(value.toString());
+//         url = url.replace(":" + name, encodedValue);
+//     });
+//     if (isDevelopment) {
+//         return StorageService.get(DEV_PROXY_HOST) + url;
+//     }
+//     return url;
+// }

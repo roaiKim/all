@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { RootState } from "type/state";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
+import { showLoading } from "@core";
+import { Button } from "antd";
 import { PageTable } from "components/page-table";
+import { actions } from "module/home";
+import { RootState } from "type/state";
 import { usePageModal } from "utils/hooks/usePageModal";
 import Addition from "./addition";
-import { Button } from "antd";
-import { actions } from "module/home";
 import "./index.less";
-import { showLoading } from "@core";
 
 interface HomeProps extends ReturnType<typeof mapStateToProps> {}
 
@@ -18,7 +18,6 @@ function Home(props: HomeProps) {
 
     const { tableSource, tableLoading } = props;
 
-    console.log("s", s);
     return (
         <div className="ro-home-module">
             <Addition view={view} setView={setView} />
@@ -34,7 +33,7 @@ function Home(props: HomeProps) {
             </PageTable.header>
             <PageTable
                 signature={{
-                    name: "s/waybill",
+                    name: "s/waybillkkk",
                     actions,
                 }}
                 tableSource={tableSource}

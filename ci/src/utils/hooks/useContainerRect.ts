@@ -1,5 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
 import { PageModalPlace } from "components/page-modal";
-import { useEffect, useMemo, useRef, useState } from "react";
 import { debounce } from "utils/function";
 
 interface ContainerRectProps {

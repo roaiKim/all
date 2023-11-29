@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { isDevelopment } from "./staticEnvs";
+import { isDevelopment } from "config/static-envs";
 // 这个是全局加载的功能
 // @ts-ignore webpack 提供的功能 ts 暂时无法识别
 const modules = require.context("module/", true, /type\.ts$/);

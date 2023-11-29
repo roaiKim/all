@@ -1,10 +1,10 @@
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { Menu } from "antd";
 import { connect, DispatchProp } from "react-redux";
-import { RootState } from "type/state";
+import { roPushHistory } from "@core";
+import { Menu } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { actions } from "module/common/menus";
+import { RootState } from "type/state";
 import { State } from "../type";
-import { setHistory } from "@core";
 import "./index.less";
 
 interface MeunComponentProps extends DispatchProp {
@@ -22,7 +22,7 @@ function MeunComponent(props: MeunComponentProps) {
                 <Menu
                     selectedKeys={[activeName || "home"]}
                     onClick={({ key }) => {
-                        setHistory(key);
+                        roPushHistory(key);
                     }}
                     items={menus || []}
                     mode="inline"

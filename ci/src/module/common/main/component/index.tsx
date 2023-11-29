@@ -1,10 +1,10 @@
-import "./index.less";
-import { Switch, useLocation, useParams } from "react-router-dom";
-import { Route, showLoading } from "@core";
-import BodyContainer from "./main";
-import { LoginComponent } from "module/login/type";
 import { connect, DispatchProp } from "react-redux";
+import { Route, showLoading } from "@core";
+import { Switch } from "react-router-dom";
+import { LoginComponent } from "module/common/login/type";
 import { RootState } from "type/state";
+import BodyContainer from "./main";
+import "./index.less";
 
 interface MainProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 

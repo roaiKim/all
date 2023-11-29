@@ -1,5 +1,5 @@
-import { CloseOutlined } from "@icon";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
+import { CloseOutlined } from "@icon";
 import { HeaderTab } from "module/common/header/type";
 
 interface HeaderTabProps {
@@ -9,9 +9,9 @@ interface HeaderTabProps {
     onClose: () => void;
 }
 
-export const SortableItem = SortableElement((props: HeaderTabProps) => {
+export const SortableItem = SortableElement<HeaderTabProps>((props: HeaderTabProps) => {
     const { data, isActive, onClick, onClose } = props;
-    const { label, key, noClosed } = data;
+    const { label, noClosed } = data;
     return (
         <div title={`${label}`} className={`ro-header-tab-item-g ro-flex ${isActive ? "active" : ""}`}>
             <div className="ro-tab-trapezoid" onClick={onClick}></div>
@@ -30,7 +30,7 @@ interface SortableTabsProps {
     onClose: (tab: HeaderTab) => void;
 }
 
-export const SortableTabs = SortableContainer((props: SortableTabsProps) => {
+export const SortableTabs = SortableContainer<SortableTabsProps>((props: SortableTabsProps) => {
     const { tabs, onClick, activeKey, onClose } = props;
     return (
         <div className="ro-header-tabs ro-flex ro-col-center">

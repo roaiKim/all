@@ -1,25 +1,70 @@
-import { arrayMoveImmutable } from "array-move";
-import React, { useState } from "react";
-import { actions } from "module/common/header/module";
-import { SortableTabs } from "./HeaderTab";
-import logoimg from "asset/images/global/logoimg.png";
+import React from "react";
 import { connect, DispatchProp } from "react-redux";
+import { Dropdown } from "antd";
+import { arrayMoveImmutable } from "array-move";
+import { DownOutlined, EditOutlined, InfoCircleOutlined, PoweroffOutlined, RightOutlined } from "@ant-design/icons";
+import { WEB_USERNAME } from "config/static-envs";
+import { actions } from "module/common/header/module";
+import { actions as MainActions } from "module/common/main";
 import { RootState } from "type/state";
-import { State } from "../type";
+import { StorageService } from "utils/StorageService";
+import logoimg from "asset/images/global/logoimg.png";
+import { SortableTabs } from "./HeaderTab";
 import "./index.less";
 
-interface HeaderProps extends DispatchProp {
-    headerTabs: State["headerTabs"];
-    activeTabName: string;
-}
+interface HeaderProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
+
+const headerOperate = [
+    {
+        label: <div>admin</div>,
+        key: "0",
+    },
+    {
+        type: "divider",
+        key: "1",
+    },
+    {
+        icon: <EditOutlined />,
+        label: (
+            <div>
+                个人资料
+                <RightOutlined />
+            </div>
+        ),
+        key: "3",
+    },
+    {
+        icon: <InfoCircleOutlined />,
+        label: <div>关于</div>,
+        key: "4",
+    },
+    {
+        icon: <InfoCircleOutlined />,
+        label: <div>开发环境</div>,
+        key: "5",
+    },
+    {
+        icon: <PoweroffOutlined />,
+        label: <div>注销</div>,
+        key: "6",
+    },
+];
 
 function Header(props: HeaderProps) {
-    const { headerTabs, activeTabName, dispatch } = props;
+    const { headerTabs, activeTabName, dispatch, userName } = props;
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
         if (oldIndex === newIndex || newIndex === 0) return;
         const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
         dispatch(actions.sortHeaderTabs(tabs));
+    };
+
+    const operateClick = ({ key }) => {
+        // console.log("--item", item);
+        // 注销
+        if (key === "6") {
+            dispatch(MainActions.logoutWithConfirm());
+        }
     };
 
     return (
@@ -46,7 +91,14 @@ function Header(props: HeaderProps) {
                     dispatch(actions.closeTabByKey(key));
                 }}
             />
-            <div className="ro-header-operate"></div>
+            <div className="ro-header-operate">
+                <Dropdown menu={{ items: headerOperate, onClick: operateClick }}>
+                    <a onClick={(e) => e.preventDefault()}>
+                        {userName}
+                        <DownOutlined />
+                    </a>
+                </Dropdown>
+            </div>
         </header>
     );
 }
@@ -55,6 +107,7 @@ const mapStateToProps = (state: RootState) => {
     return {
         headerTabs: state.app.header.headerTabs,
         activeTabName: state.app.header.activeTabName,
+        userName: StorageService.get<string>(WEB_USERNAME),
     };
 };
 

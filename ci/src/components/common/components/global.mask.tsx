@@ -1,5 +1,5 @@
-import { LoadingSVG } from "components/loadingSVG";
 import React, { PropsWithChildren } from "react";
+import { LoadingSVG } from "components/loadingSVG";
 
 interface Props {
     title?: string | React.ReactNode;

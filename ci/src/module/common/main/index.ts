@@ -1,7 +1,13 @@
-import { captureError, Loading, Module, register, RetryOnNetworkConnectionError } from "@core";
-import Main from "./component";
-import { RootState } from "type/state";
+import { Loading, Module, register, roPushHistory } from "@core";
+import { LoginService } from "@api/LoginService";
+import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
+import { clearToken } from "http/static-type";
 import { GolbalService } from "service/api/GolbalService";
+import { RootState } from "type/state";
+import { WithConfirm } from "utils/decorator/withConfirm";
+import { clearLocalStorageWhenLogout } from "utils/function";
+import { StorageService } from "utils/StorageService";
+import Main from "./component";
 
 const initialState = {
     PERMISSION_DONE: null,
@@ -9,39 +15,51 @@ const initialState = {
 
 class MainModule extends Module<RootState, "main"> {
     async onEnter(parms: {}, location: Location) {
-        this.fetchPermission();
-        console.log("----onEnter-main---");
+        const isLogin = StorageService.get(WEB_ISLOGIN);
+        const webToken = StorageService.get(WEB_TOKEN);
+        if (isDevelopment) {
+            const proxyHost = StorageService.get(DEV_PROXY_HOST);
+            if (!proxyHost) {
+                clearLocalStorageWhenLogout();
+                roPushHistory("/login");
+                return;
+            }
+        }
+        if (webToken && isLogin) {
+            this.fetchPermission();
+        } else {
+            this.logout();
+        }
+        console.log("-=Main-onEnter=-", parms, location);
+    }
+
+    onLocationMatched(routeParam: object, location: Record<string, any>): void {
+        console.log("-=Main-onLocationMatched=-", routeParam, location);
     }
 
     // @RetryOnNetworkConnectionError()
     @Loading("PERMISSION")
     async fetchPermission() {
-        const permission = await new Promise((resolve, reject) => {
-            setTimeout(() => {
-                GolbalService.getByUserId()
-                    .then((response) => {
-                        this.setState({ PERMISSION_DONE: true });
-                        try {
-                            if ((this.rootState.router.location as any).pathname === "/login") {
-                                this.pushHistory("/");
-                            }
-                        } catch {
-                            //
-                        }
-                        resolve(response);
-                    })
-                    .catch((error) => {
-                        this.setState({ PERMISSION_DONE: false });
-                        reject(error);
-                        // captureError(error);
-                    });
-            }, 1000);
-        });
-        // console.log("--permission--");
+        await GolbalService.getByUserId();
+        this.setState({ PERMISSION_DONE: true });
+        const { location } = this.rootState.router;
+        const pathname = (location as any).pathname || "";
+        // 如果在 登录页 需要需要跳转到首页
+        if (pathname === "/login") {
+            roPushHistory("/");
+        }
+    }
 
-        // const permission = await GolbalService.getByUserId();
-        // this.setState({ PERMISSION_DONE: true });
-        // console.log("--permission--");
+    @WithConfirm("确定退出吗")
+    async logoutWithConfirm() {
+        this.logout();
+    }
+
+    async logout() {
+        await LoginService.logout();
+        clearLocalStorageWhenLogout();
+        clearToken();
+        roPushHistory("/login");
     }
 
     calcPageHeight() {

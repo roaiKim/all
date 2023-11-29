@@ -1,6 +1,6 @@
 import { roDispatch } from "@core";
+import { ignoreName } from "http/static-type";
 import { actions } from "module/common/header/module";
-import { ignoreName } from "utils/function/staticEnvs";
 
 export default function locationListener(location) {
     const { pathname } = location || {};

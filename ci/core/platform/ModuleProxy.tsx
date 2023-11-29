@@ -1,11 +1,11 @@
 /* eslint-disable max-classes-per-file */
 import React from "react";
-import { app } from "../app";
-import { executeAction, ActionCreators, ActionHandler } from "../module";
-import { setStateAction, navigationPreventionAction } from "../reducer";
-import { Module, ModuleLifecycleListener } from "./Module";
 import { RouteComponentProps } from "react-router";
 import { Location } from "history";
+import { Module, ModuleLifecycleListener } from "./Module";
+import { app } from "../app";
+import { ActionCreators, ActionHandler, executeAction } from "../module";
+import { navigationPreventionAction } from "../reducer";
 
 let startupModuleName: string | null = null;
 

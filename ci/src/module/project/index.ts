@@ -1,7 +1,7 @@
-import { Loading, Module, register } from "@core";
+import { Module, register } from "@core";
 import { RootState } from "type/state";
 import Main from "./component";
-import { State, moduleName } from "./type";
+import { moduleName, State } from "./type";
 
 const initialState: State = {};
 

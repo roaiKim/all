@@ -1,5 +1,4 @@
 /* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
 
 const path = require("path");
 
@@ -12,6 +11,7 @@ function buildPath() {
 }
 
 module.exports = {
+    appPath: resolve(""),
     src: resolve("src"),
     core: resolve("core"),
     components: resolve("src/components"),
@@ -20,4 +20,5 @@ module.exports = {
     ProxyConfig: resolve("webpack/development.proxy.json"),
     nodeMoules: resolve("node_modules"),
     eslintcache: resolve("node_modules/.cache/.eslintcache"),
+    appTsBuildInfoFile: resolve("node_modules/.cache/tsconfig.tsbuildinfo"),
 };

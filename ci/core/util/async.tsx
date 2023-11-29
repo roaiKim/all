@@ -1,7 +1,7 @@
 import React from "react";
+import { captureError } from "./error-util";
 import { app } from "../app";
 import { loadingAction } from "../reducer";
-import { captureError } from "./error-util";
 
 export type ReactComponentKeyOf<T> = { [P in keyof T]: T[P] extends React.ComponentType<any> ? P : never }[keyof T];
 

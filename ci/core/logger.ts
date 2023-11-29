@@ -1,7 +1,7 @@
-import { loggerContext } from "./platform/logger-context";
-import { errorToException } from "./util/error-util";
 import { app } from "./app";
 import { APIException, Exception, JavaScriptException, NetworkConnectionException } from "./Exception";
+import { loggerContext } from "./platform/logger-context";
+import { errorToException } from "./util/error-util";
 
 interface Log {
     date: Date;
