@@ -1,4 +1,4 @@
-import { Loading, Module, register, roPushHistory } from "@core";
+import { captureError, Loading, Module, register, roPushHistory } from "@core";
 import { LoginService } from "@api/LoginService";
 import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
 import { clearToken } from "http/static-type";
@@ -30,17 +30,12 @@ class MainModule extends Module<RootState, "main"> {
         } else {
             this.logout();
         }
-        console.log("-=Main-onEnter=-", parms, location);
-    }
-
-    onLocationMatched(routeParam: object, location: Record<string, any>): void {
-        console.log("-=Main-onLocationMatched=-", routeParam, location);
     }
 
     // @RetryOnNetworkConnectionError()
     @Loading("PERMISSION")
     async fetchPermission() {
-        await GolbalService.getByUserId();
+        await GolbalService.getByUserId().catch((error) => (this.setState({ PERMISSION_DONE: false }), captureError(error)));
         this.setState({ PERMISSION_DONE: true });
         const { location } = this.rootState.router;
         const pathname = (location as any).pathname || "";

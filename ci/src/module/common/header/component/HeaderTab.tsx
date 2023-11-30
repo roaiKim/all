@@ -9,6 +9,10 @@ interface HeaderTabProps {
     onClose: () => void;
 }
 
+const UnfinishedModule = () => {
+    return <span style={{ color: "red" }}>开发中...</span>;
+};
+
 export const SortableItem = SortableElement<HeaderTabProps>((props: HeaderTabProps) => {
     const { data, isActive, onClick, onClose } = props;
     const { label, noClosed } = data;

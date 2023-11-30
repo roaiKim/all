@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig, Method } from "axios";
 import { DEV_PROXY_HOST, isDevelopment, WEB_TOKEN } from "config/static-envs";
 // import { ContentType, DEV_PROXY_HOST, isDevelopment, WEB_TOKEN, whitelistUrl } from "utils/function/staticEnvs";
 import { StorageService } from "utils/StorageService";
-import { getToken } from "./config";
+// import { getToken } from "./config";
 import { ContentType, whitelistUrl } from "./static-type";
 
 export { ajax } from "./network";

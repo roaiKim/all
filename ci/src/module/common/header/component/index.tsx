@@ -4,7 +4,7 @@ import { Dropdown } from "antd";
 import { arrayMoveImmutable } from "array-move";
 import { DownOutlined, EditOutlined, InfoCircleOutlined, PoweroffOutlined, RightOutlined } from "@ant-design/icons";
 import { WEB_USERNAME } from "config/static-envs";
-import { actions } from "module/common/header/module";
+import { actions } from "module/common/header/index";
 import { actions as MainActions } from "module/common/main";
 import { RootState } from "type/state";
 import { StorageService } from "utils/StorageService";

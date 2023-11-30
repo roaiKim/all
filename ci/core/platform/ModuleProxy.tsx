@@ -57,7 +57,7 @@ export class ModuleProxy<M extends Module<any, any>> {
                     this.hasOwnLifecycle("onLocationMatched")
                 ) {
                     const actionName = `${moduleName}/@@LOCATION_MATCHED`;
-                    const startTime = Date.now();
+                    // const startTime = Date.now();
                     await executeAction(
                         actionName,
                         lifecycleListener.onLocationMatched.bind(lifecycleListener) as ActionHandler,
@@ -89,13 +89,13 @@ export class ModuleProxy<M extends Module<any, any>> {
                 const props = this.props as RouteComponentProps & P & { hidden: boolean };
 
                 const enterActionName = `${moduleName}/@@ENTER`;
-                const startTime = Date.now();
-                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props?.match, props.location);
+                // const startTime = Date.now();
+                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props?.match, props?.location);
 
                 if (this.hasOwnLifecycle("onLocationMatched")) {
                     if ("match" in props && "location" in props && "hidden" in props) {
                         const initialRenderActionName = `${moduleName}/@@LOCATION_MATCHED`;
-                        const startTime = Date.now();
+                        // const startTime = Date.now();
                         await executeAction(
                             initialRenderActionName,
                             lifecycleListener.onLocationMatched.bind(lifecycleListener) as ActionHandler,

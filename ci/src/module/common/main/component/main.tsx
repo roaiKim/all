@@ -1,5 +1,6 @@
+import { useEffect } from "react";
 import { connect, DispatchProp } from "react-redux";
-import { showLoading } from "@core";
+import { roDispatch, showLoading } from "@core";
 import { useLocation, useParams } from "react-router-dom";
 import { DevelopingModule, GlobalMask } from "components/common";
 import { HeaderComponent } from "module/common/header/type";
@@ -13,8 +14,12 @@ interface BodyContainerProps extends DispatchProp, ReturnType<typeof mapStateToP
     PERMISSION_DONE: boolean;
 }
 
+const refreshWhenError = () => {
+    roDispatch(() => actions.fetchPermission());
+};
+
 function BodyContainer(props: BodyContainerProps) {
-    const { tabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING, dispatch } = props;
+    const { tabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING } = props;
 
     const location = useLocation();
     const params = useParams();
@@ -30,14 +35,10 @@ function BodyContainer(props: BodyContainerProps) {
         title = "Loading...";
     }
 
-    const reFetchByError = () => {
-        dispatch(actions.fetchPermission());
-    };
-
     return (
         <GlobalMask
             loading={!PERMISSION_DONE || globalLoading}
-            refresh={permissionError ? reFetchByError : undefined}
+            refresh={permissionError ? refreshWhenError : undefined}
             loadingRender={PERMISSION_DONE}
             title={title}
         >
@@ -59,7 +60,7 @@ function BodyContainer(props: BodyContainerProps) {
                                     </div>
                                 );
                             }
-                            return <DevelopingModule key={key} hidden={hidden} />;
+                            return <DevelopingModule ns={key} key={key} hidden={hidden} />;
                         })}
                     </main>
                 </div>
@@ -79,3 +80,9 @@ const mapStateToProps = (state: RootState) => {
 };
 
 export default connect(mapStateToProps)(BodyContainer);
+
+/* 
+PERMISSION_DONE; 权限数据加载是否成功
+
+PERMISSION_LOADING;  // 权限数据是否完成
+ */

@@ -9,7 +9,6 @@ export enum ContentType {
 
 export type RequestMethod = "OPTIONS" | "GET" | "HEAD" | "POST" | "PUT" | "DELETE" | "TRACE" | "CONNECT" | "PATCH";
 
-export const ignoreName = ["login"];
 export const whitelistUrl = ["/api/auth/oauth/token"];
 
 let host = "";

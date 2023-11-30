@@ -21,7 +21,7 @@ export function GlobalMask(props: PropsWithChildren<Props>) {
                             {title}
                             {refresh && (
                                 <p onClick={refresh} className="ro-a-action">
-                                    刷新
+                                    重试
                                 </p>
                             )}
                         </div>

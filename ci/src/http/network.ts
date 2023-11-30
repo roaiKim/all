@@ -59,8 +59,12 @@ export async function ajax<Request, Response, Path extends string>(
 
 axiosInstance.interceptors.response.use(
     (response: any) => {
-        console.log("-interceptors-success", response);
+        console.log("-interceptors-response-success-", response);
         return new Promise((resolve, reject) => {
+            const globalHold = (response.config as any).globalHold; // 自定义 config globalHold
+            if (!globalHold) {
+                return response;
+            }
             const serviceData = response.data || {};
             if (serviceData.success && serviceData?.code === 200) {
                 return resolve(serviceData.data);
@@ -79,6 +83,7 @@ axiosInstance.interceptors.response.use(
     },
     (error) => {
         if (axios.isAxiosError(error)) {
+            console.log("-interceptors-response-error-", error.response);
             const typedError = error as AxiosError<APIErrorResponse | undefined> & { globalHold: boolean };
             const requestURL = typedError.config.url || "-";
             const globalHold = (typedError.config as any).globalHold; // 自定义 config globalHold
