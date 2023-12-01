@@ -92,7 +92,8 @@ class HeaderModule extends Module<RootState, "header"> {
                 const { key } = tabs[tabs.length - 1] || {};
                 active = key;
             }
-            this.setState({ headerTabs: tabs, activeTabName: active });
+            this.setState({ headerTabs: tabs });
+            this.pushHistoryByActiveKey(active);
             return;
         }
         const tabs = headerTabs.filter((item) => item.key !== tabKey);
