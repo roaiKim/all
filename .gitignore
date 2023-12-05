@@ -4,6 +4,7 @@
 **/node_modules
 **/build
 **/dist
+**/z-files
 **/.eslintcache
 wechat-core/lib
 wechat-core/pure

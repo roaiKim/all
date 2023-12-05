@@ -1,6 +1,5 @@
 import { OrderServicePaymentRequest, PageDataLimitResponse, PageRecordsLimitResponse } from "type";
 import { ajax } from "@http";
-import { ContentType } from "http/static-type";
 
 export class OrderService {
     static getCarType(): Promise<PageRecordsLimitResponse> {
@@ -16,7 +15,7 @@ export class OrderService {
     }
 
     static payment(request: OrderServicePaymentRequest): Promise<any> {
-        return ajax("POST", `/api/tms/cashOrder/order`, request, { contentType: ContentType.FORM } as any);
+        return ajax("POST", `/api/tms/cashOrder/order`, request, "FORM");
     }
 
     static sendInvoice(id: string, invoiceTitleId: string): Promise<any> {

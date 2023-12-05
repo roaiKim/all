@@ -24,10 +24,9 @@
             "@core": ["../core"],
             "@http": ["./http"],
             "@icon": ["../node_modules/@ant-design/icons"],
-            "@api/*": ["./service/api/*"],
-            "@proxy-config": ["../webpack/development.proxy.json"]
+            "@api/*": ["./service/api/*"]
         }
     },
     "include": ["./src", "./core"],
-    "exclude": ["./webpack/**/*"]
+    "exclude": ["./webpack/**/*", "./z-files"]
 }

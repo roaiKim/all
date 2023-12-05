@@ -3,14 +3,40 @@
 const env = require("./env");
 const path = require("path");
 const webpack = require("webpack");
+const fs = require("fs");
 const HTMLPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const ReactRefreshTypeScript = require("react-refresh-typescript");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
-const developmentProxy = require("./development.proxy.json");
+const developmentProxy = require("../src/config/development.proxy.json");
 const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpackPlugin");
+
+const wr = (proxyRes, req, res) => {
+    // console.log("req.url", req.url);
+    // if (req.url.includes("getByUserId")) console.log("res", res);
+    // fs.writeFileSync(path.join(__dirname, "../", "z-files", `${req.url.replace(/\//g, "")}.ts`), req);
+    // console.log("--==--", req.url);
+    if (req.url.includes("getByUserId")) {
+        // proxyRes.setHeader("Auth-Sub", "foobar");
+        // const body = [];
+        // proxyRes.on("data", function (chunk) {
+        //     // body.push(chunk);
+        //     // console.log("res from proxied server:", chunk);
+        // });
+        // proxyRes.on("end", function () {
+        //     // body = Buffer.concat(body).toString();
+        //     console.log("res from proxied server:", res.data);
+        //     res.end("my response to cli");
+        // });
+        res.end("my response to cli");
+        // console.log("res from proxied server:proxyRes", Object.keys(proxyRes));
+        // console.log("res from proxied server:res", Object.keys(res));
+        // console.log("res from proxied server:req", Object.keys(req));
+        // fs.writeFileSync(path.join(__dirname, "../", "z-files", `keys.ts`), `export const proxyResKeys = ${JSON.stringify(Object.keys(proxyRes))};\nexport const resKeys = ${JSON.stringify(Object.keys(res))};\nexport const reqKeys = ${JSON.stringify(Object.keys(req))};\n`);
+    }
+};
 
 const proxy = (origin = {}) => {
     const envs = {};
@@ -26,6 +52,18 @@ const proxy = (origin = {}) => {
                     "Access-Control-Allow-Headers": "*",
                     "Access-Control-Allow-Methods": "*",
                 },
+                // selfHandleResponse: true,
+                // onProxyReq: (proxyReq, req, res) => {
+                //     console.log(1111111);
+                //     // wr(proxyReq, req, res);
+                // },
+                // onError: (err, req, res) => {
+                //     console.log(3333333);
+                // },
+                // onProxyRes: (proxyRes, req, res) => {
+                //     console.log(2222222);
+                //     wr(proxyRes, req, res);
+                // },
             })
     );
     return Object.assign({}, envs, origin);
@@ -38,7 +76,9 @@ module.exports = {
         historyApiFallback: true,
         compress: true,
         // https: true,
-        open: true,
+        open: {
+            app: process.platform === "win32" ? "chrome" : "Google Chrome",
+        },
         client: {
             overlay: {
                 errors: true,
@@ -51,14 +91,19 @@ module.exports = {
             "Access-Control-Allow-Methods": "*",
         },
         proxy: proxy(),
-        //     {
-        //     "/default-proxy": {
+        // proxy: {
+        //     "/comma-cimc-uat": {
         //         target: "http://uat.cccc58.com",
-        //         secure: false,
+        //         pathRewrite: { [`^/comma-cimc-uat`]: "" },
         //         changeOrigin: true,
-        //         pathRewrite: { [`^/default-proxy`]: "" },
+        //         headers: {
+        //             Connection: "keep-alive",
+        //             "Access-Control-Allow-Origin": "*",
+        //             "Access-Control-Allow-Headers": "*",
+        //             "Access-Control-Allow-Methods": "*",
+        //         },
         //     },
-        // }
+        // },
     },
     mode: "development",
     entry: {
@@ -77,7 +122,7 @@ module.exports = {
             "@http": "http",
             "@icon": "@ant-design/icons",
             "@api": "service/api",
-            "@proxy-config": env.ProxyConfig,
+            // "@proxy-config": env.ProxyConfig,
         },
     },
     optimization: {

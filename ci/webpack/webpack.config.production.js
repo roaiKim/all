@@ -33,7 +33,7 @@ module.exports = {
             "@http": "http",
             "@icon": "@ant-design/icons",
             "@api": "service/api",
-            "@proxy-config": env.ProxyConfig,
+            // "@proxy-config": env.ProxyConfig,
         },
     },
     optimization: {

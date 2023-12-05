@@ -16,23 +16,6 @@ const initialState = {
 };
 
 class LoginModule extends Module<RootState, "login"> {
-    async onEnter(parms: Record<string, any>, location) {
-        // const isLogin = StorageService.get("h5_isLogin");
-        // const token = StorageService.get(WEB_TOKEN);
-        // const refreshToken = StorageService.get("h5_refreshToken");
-        // const userName = StorageService.get("h5_userName");
-        // if (isLogin && token && refreshToken && userName) {
-        //     this.pushHistory("/");
-        // } else {
-        //     const response = await MainService.getCompanyInfo();
-        //     this.setState({ companyInfo: response });
-        // }
-
-        if (!location?.state?.request) {
-            //
-        }
-    }
-
     @Loading("login-loading")
     async login(username: string, password: string) {
         const request = {
@@ -44,10 +27,10 @@ class LoginModule extends Module<RootState, "login"> {
             imgCode: "0000",
         };
         const response = await LoginService.login(request).catch((error) => {
-            let content = error?.originalErrorMessage || "";
-            if (error.statusCode === 426 || error.statusCode === 401) {
-                content = "账号或密码错误";
-            }
+            let content = error?.originalErrorMessage || error?.message || "";
+            // if (error.statusCode === 426 || error.statusCode === 401) {
+            //     content = "账号或密码错误";
+            // }
             if (isDevelopment) {
                 const proxyHost = StorageService.get(DEV_PROXY_HOST);
                 if (!proxyHost) {

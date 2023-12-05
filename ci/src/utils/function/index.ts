@@ -1,4 +1,4 @@
-import ProxyConfig from "@proxy-config";
+import ProxyConfig from "config/development.proxy.json";
 import {
     LOGIN_REMEMBER_PASSWORD,
     LOGIN_REMEMBER_USERNAME,
@@ -94,7 +94,7 @@ export function debounce(handler: (...args: any[]) => any, delay: number, immdia
  * @returns {value, label}[]
  */
 export function ProxyConfigDataSource() {
-    return Object.entries(ProxyConfig).map(([value, label]) => ({ value, label }));
+    return Object.entries(ProxyConfig).map(([value, label]) => ({ value, label: `${value}(${label})` }));
 }
 
 export function setLocalStorageWhenLogined(response, username, password) {

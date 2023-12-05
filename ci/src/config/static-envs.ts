@@ -5,7 +5,7 @@ export const noProduntion = process.env.NODE_ENV !== "production";
 
 export const BASIC_AUTH_TOKEN = "Basic Y29tbWE6Y29tbWE=";
 
-const APP_NAME = "RO_MAIN_APP";
+const APP_NAME = "RO_APP";
 
 export const DEV_PROXY_HOST = "DEVELOPMENT_NETWORK_PROXY";
 export const WEB_TOKEN = `${APP_NAME}_TOKEN`;

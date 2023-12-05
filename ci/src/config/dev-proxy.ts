@@ -1,4 +1,0 @@
-export default {
-    "comma-cimc-uat": "http://uat.cccc58.com",
-    "comma-sino-uat": "https://huaren.smartcomma.com",
-};

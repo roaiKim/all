@@ -1,7 +1,7 @@
 import { captureError, Loading, Module, register, roPushHistory } from "@core";
 import { LoginService } from "@api/LoginService";
+import { clearToken } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
-import { clearToken } from "http/static-type";
 import { GolbalService } from "service/api/GolbalService";
 import { RootState } from "type/state";
 import { WithConfirm } from "utils/decorator/withConfirm";
@@ -14,7 +14,7 @@ const initialState = {
 };
 
 class MainModule extends Module<RootState, "main"> {
-    async onEnter(parms: {}, location: Location) {
+    async onEnter() {
         const isLogin = StorageService.get(WEB_ISLOGIN);
         const webToken = StorageService.get(WEB_TOKEN);
         if (isDevelopment) {

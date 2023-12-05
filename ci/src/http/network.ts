@@ -1,6 +1,7 @@
 import { APIException, NetworkConnectionException } from "@core";
 import axios, { AxiosError } from "axios";
-import { ContentType, getAuthorization, joinUrl, RequestMethod, whitelistUrl } from "./static-type";
+import { ContentType, RequestMethod, whitelistUrl } from "./config";
+import { getAuthorization, joinUrl } from "./tools";
 
 export interface APIErrorResponse {
     code: number;
@@ -59,7 +60,7 @@ export async function ajax<Request, Response, Path extends string>(
 
 axiosInstance.interceptors.response.use(
     (response: any) => {
-        console.log("-interceptors-response-success-", response);
+        // console.log("-interceptors-response-success-", response);
         return new Promise((resolve, reject) => {
             const globalHold = (response.config as any).globalHold; // 自定义 config globalHold
             if (!globalHold) {
@@ -83,7 +84,7 @@ axiosInstance.interceptors.response.use(
     },
     (error) => {
         if (axios.isAxiosError(error)) {
-            console.log("-interceptors-response-error-", error.response);
+            // console.log("-interceptors-response-error-", error.response);
             const typedError = error as AxiosError<APIErrorResponse | undefined> & { globalHold: boolean };
             const requestURL = typedError.config.url || "-";
             const globalHold = (typedError.config as any).globalHold; // 自定义 config globalHold
