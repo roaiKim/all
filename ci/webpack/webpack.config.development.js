@@ -181,7 +181,6 @@ module.exports = {
             template: `${env.src}/index.html`,
             favicon: `${env.src}/favicon.ico`,
         }),
-        new CleanWebpackPlugin(),
         new webpack.ProgressPlugin(),
         // new webpack.HotModuleReplacementPlugin(),
         new ForkTsCheckerWebpackPlugin({
