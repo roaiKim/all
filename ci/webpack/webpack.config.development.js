@@ -200,6 +200,7 @@ module.exports = {
                 },
                 mode: "write-references",
             },
+            formatter: "codeframe",
             issue: {
                 include: [{ file: "../**/src/**/*.{ts,tsx}" }, { file: "**/src/**/*.{ts,tsx}" }],
                 exclude: [

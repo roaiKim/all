@@ -1,12 +1,12 @@
 import { Module, register, roPushHistory } from "@core";
 import { WEB_USERNAME } from "config/static-envs";
 import { RootState } from "type/state";
-import { cache } from "utils/function/loadComponent";
+import { modulesCache } from "utils/function/loadComponent";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
 import { HeaderTab } from "./type";
 
-const initialState = {
+const initialHeaderState = {
     userName: null,
     prevPathname: null,
     activeTabName: "home",
@@ -36,7 +36,7 @@ class HeaderModule extends Module<RootState, "header"> {
         const { headerTabs, activeTabName } = this.state;
         if (!keyPath || keyPath === activeTabName) return;
 
-        const cacheModule = cache[keyPath];
+        const cacheModule = modulesCache[keyPath];
         const currentTabIndex = headerTabs.findIndex((item) => item.key === activeTabName);
         const hasTab = headerTabs.find((item) => item.key === keyPath);
 
@@ -60,7 +60,7 @@ class HeaderModule extends Module<RootState, "header"> {
                 const tabKey = keyPath;
                 const newTab = {
                     key: tabKey,
-                    label: "开发中...",
+                    label: "404-nofound",
                     type: "page",
                 };
                 newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
@@ -109,6 +109,6 @@ class HeaderModule extends Module<RootState, "header"> {
     }
 }
 
-const module = register(new HeaderModule("header", initialState));
+const module = register(new HeaderModule("header", initialHeaderState));
 export const actions = module.getActions();
 export const MainComponent = module.connect(Main);

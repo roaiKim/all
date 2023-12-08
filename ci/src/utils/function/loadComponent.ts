@@ -5,16 +5,6 @@ import { isDevelopment } from "config/static-envs";
 const modules = require.context("module/", true, /type\.ts$/);
 const modulesId: string[] = modules.keys().filter((item: string) => item.startsWith("module"));
 
-export declare interface ModuleStatement {
-    name: string;
-    path: string;
-    title: string;
-    icon?: string;
-    disabled?: boolean;
-    order?: number;
-    component: ComponentType<any>;
-}
-
 export const cacheModules = modulesId
     .map((id) => ({
         moduleId: id,
@@ -29,22 +19,28 @@ interface Cache {
     module: ModuleStatement;
 }
 
-const cache: Record<string, Cache> = {};
+const modulesCache: Record<string, Cache> = {};
+
+const pathToModules = {};
 
 modulesId.forEach((id) => {
     const statement: ModuleStatement = modules(id).statement;
     if (statement) {
-        const { name } = statement;
+        const { name, path } = statement;
         if (isDevelopment) {
-            if (/^\/|\/$/g.test(name || "")) {
-                throw new Error(`模块名(${name})不合法, 不能以/开头和结尾`);
+            // 只能 小写 最多包含一个 - 的字母串 // 例如 rosen, rosen-one
+            if (!/^[a-z]+?-?[a-z]+?$/.test(name || "")) {
+                throw new Error(`模块名(${name})不合法, 名称只能小写最多中间包含一个中划线(-)的字母组合`);
             }
         }
-        if (cache[name]) {
-            const { moduleId } = cache[name];
+        if (path) {
+            pathToModules[path] = name;
+        }
+        if (modulesCache[name]) {
+            const { moduleId } = modulesCache[name];
             throw new Error(`模块名(${name})重复, 重复路径为${id}、${moduleId}`);
         } else {
-            cache[name] = {
+            modulesCache[name] = {
                 moduleId: id,
                 module: statement,
             };
@@ -52,4 +48,4 @@ modulesId.forEach((id) => {
     }
 });
 
-export { cache };
+export { modulesCache, pathToModules };

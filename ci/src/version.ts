@@ -8,6 +8,6 @@ export const MINOR = 0;
 export const PATCH = 1;
 
 // 打包时间
-export const BUILD_DATE = 202311281804;
+export const BUILD_DATE = 202312071744;
 
 export default `${MAJOR}.${MINOR}.${PATCH}`;

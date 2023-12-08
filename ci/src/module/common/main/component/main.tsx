@@ -1,16 +1,15 @@
-import { useEffect } from "react";
 import { connect, DispatchProp } from "react-redux";
 import { roDispatch, showLoading } from "@core";
-import { useLocation, useParams } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { DevelopingModule, GlobalMask } from "components/common";
 import { HeaderComponent } from "module/common/header/type";
 import { actions } from "module/common/main";
 import { MenuComponent } from "module/common/menus/type";
 import { RootState } from "type/state";
-import { cache } from "utils/function/loadComponent";
+import { modulesCache, pathToModules } from "utils/function/loadComponent";
 import "./index.less";
 
-interface BodyContainerProps extends DispatchProp, ReturnType<typeof mapStateToProps> {
+interface BodyContainerProps extends DispatchProp, RouteComponentProps<any>, ReturnType<typeof mapStateToProps> {
     PERMISSION_DONE: boolean;
 }
 
@@ -18,11 +17,10 @@ const refreshWhenError = () => {
     roDispatch(() => actions.fetchPermission());
 };
 
-function BodyContainer(props: BodyContainerProps) {
-    const { tabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING } = props;
+console.log("cache", modulesCache);
 
-    const location = useLocation();
-    const params = useParams();
+function BodyContainer(props: BodyContainerProps) {
+    const { headerTabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING, location, match } = props;
 
     let title = null;
     let permissionError = false;
@@ -34,12 +32,12 @@ function BodyContainer(props: BodyContainerProps) {
     } else if (globalLoading) {
         title = "Loading...";
     }
-
+    console.log("---pathToModules--", pathToModules);
     return (
         <GlobalMask
             loading={!PERMISSION_DONE || globalLoading}
             refresh={permissionError ? refreshWhenError : undefined}
-            loadingRender={PERMISSION_DONE}
+            initialized={PERMISSION_DONE}
             title={title}
         >
             <div className="ro-body-container">
@@ -47,16 +45,16 @@ function BodyContainer(props: BodyContainerProps) {
                 <div className="ro-main-body">
                     <MenuComponent />
                     <main className="ro-module-body">
-                        {tabs?.map((item) => {
+                        {headerTabs?.map((item) => {
                             const { key } = item;
-                            const module = cache[key];
+                            const module = modulesCache[key];
                             const hidden = activeTabName !== key;
                             if (module) {
                                 const { component } = module.module || {};
                                 const MainComponent = component;
                                 return (
                                     <div key={key} className={`ro-g-container-module ${hidden ? "" : "active-module"}`}>
-                                        <MainComponent location={location} match={params} hidden={activeTabName !== key} />
+                                        <MainComponent location={location} match={match?.params} hidden={activeTabName !== key} />
                                     </div>
                                 );
                             }
@@ -71,7 +69,7 @@ function BodyContainer(props: BodyContainerProps) {
 
 const mapStateToProps = (state: RootState) => {
     return {
-        tabs: state.app.header?.headerTabs,
+        headerTabs: state.app.header?.headerTabs,
         activeTabName: state.app.header?.activeTabName,
         globalLoading: showLoading(state),
         PERMISSION_LOADING: showLoading(state, "PERMISSION"),

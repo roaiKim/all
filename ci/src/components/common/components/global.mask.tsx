@@ -5,12 +5,12 @@ interface Props {
     title?: string | React.ReactNode;
     loading?: boolean;
     backgroundColor?: string;
-    loadingRender?: boolean; // loading时 是否渲染 children
+    initialized?: boolean; // loading时 是否渲染 children
     refresh?: () => void;
 }
 
 export function GlobalMask(props: PropsWithChildren<Props>) {
-    const { title, loading, children, backgroundColor = "#fff", loadingRender = false, refresh } = props;
+    const { title, loading, children, backgroundColor = "#fff", initialized, refresh } = props;
 
     return (
         <React.Fragment>
@@ -28,7 +28,8 @@ export function GlobalMask(props: PropsWithChildren<Props>) {
                     </LoadingSVG>
                 </div>
             </div>
-            {loading ? (loadingRender ? children : null) : children}
+            {/* {loading ? (loadingRender ? children : null) : children} */}
+            {initialized ? children : null}
         </React.Fragment>
     );
 }

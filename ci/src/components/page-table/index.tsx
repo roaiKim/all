@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Button, ConfigProvider, Input, PaginationProps, Table, TableProps } from "antd";
-import { AdvancedTableSource } from "type";
 import { v4 } from "uuid";
+import { AdvancedTableSource } from "type/api.type";
 import { DeleteOutlined, SettingOutlined } from "@ant-design/icons";
 import { LoadingSVG } from "components/loadingSVG";
 import { useElementResizeObserver } from "utils/hooks/useElementResizeObserver";

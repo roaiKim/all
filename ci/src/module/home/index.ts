@@ -1,15 +1,17 @@
 import { captureError, Loading, Module, register } from "@core";
+import { ToLowerCamelCase } from "type";
 import { AdvancedTableService } from "@api/AdvancedTableService";
 import { RootState } from "type/state";
+import { toLowerCamelCase } from "utils/business";
 import { initialTableSource } from "utils/function";
 import Home from "./component";
 import { moduleName } from "./type";
 
-const initialState = {
+const initialHomeState = {
     ...initialTableSource(),
 };
 
-class HomeModule extends Module<RootState, typeof moduleName> {
+class HomeModule extends Module<RootState, ToLowerCamelCase<typeof moduleName>> {
     onEnter(parms: {}, location: Location): void {
         // this.fetchPageTable();
     }
@@ -25,6 +27,6 @@ class HomeModule extends Module<RootState, typeof moduleName> {
     }
 }
 
-const module = register(new HomeModule(moduleName, initialState));
+const module = register(new HomeModule(toLowerCamelCase(moduleName), initialHomeState));
 export const actions = module.getActions();
 export const MainComponent = module.connect(Home);

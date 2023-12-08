@@ -1,5 +1,4 @@
 import { async } from "@core";
-import { ModuleStatement } from "utils/function/loadComponent";
 
 export const moduleName = "waybill";
 
@@ -9,7 +8,7 @@ export const MainComponent = async(() => import(/* webpackChunkName: "waybill" *
 
 export const statement: ModuleStatement = {
     name: moduleName,
-    path: "/waybill",
+    path: "s/waybill",
     title: "运单管理",
     order: 1,
     component: MainComponent,

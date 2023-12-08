@@ -5,12 +5,12 @@ import { DEV_PROXY_HOST, isDevelopment } from "config/static-envs";
 import { actions as MainActions } from "module/common/main";
 import { LoginService } from "service/api/LoginService";
 import { RootState } from "type/state";
-import { setLocalStorageWhenLogined } from "utils/function";
+import { setLocalStorageWhenLogined } from "utils/framework";
 import { encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 import Login from "./component";
 
-const initialState = {
+const initialLoginState = {
     companyInfo: null,
     userInfo: null,
 };
@@ -49,6 +49,6 @@ class LoginModule extends Module<RootState, "login"> {
     }
 }
 
-const module = register(new LoginModule("login", initialState));
+const module = register(new LoginModule("login", initialLoginState));
 export const actions = module.getActions();
 export const MainComponent = module.connect(Login);

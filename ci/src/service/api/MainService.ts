@@ -1,4 +1,4 @@
-import { CompanyInfoResponse } from "type";
+import { CompanyInfoResponse } from "type/api.type";
 import { ajax } from "@http";
 
 export class MainService {

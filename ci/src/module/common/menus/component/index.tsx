@@ -4,6 +4,7 @@ import { Menu } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { actions } from "module/common/menus";
 import { RootState } from "type/state";
+import { pathToModules } from "utils/function/loadComponent";
 import { State } from "../type";
 import "./index.less";
 
@@ -22,7 +23,7 @@ function MeunComponent(props: MeunComponentProps) {
                 <Menu
                     selectedKeys={[activeName || "home"]}
                     onClick={({ key }) => {
-                        roPushHistory(key);
+                        roPushHistory(pathToModules[key] || "no-found");
                     }}
                     items={menus || []}
                     mode="inline"
@@ -42,7 +43,8 @@ function MeunComponent(props: MeunComponentProps) {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    menus: state.app.menus.menus,
+    // menus: state.app.menus.menus,
+    menus: state.app.main?.navPermission,
     collapsed: state.app.menus.collapsed,
     activeName: state.app.header.activeTabName,
 });

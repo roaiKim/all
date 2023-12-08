@@ -4,13 +4,16 @@ import { clearToken } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
 import { GolbalService } from "service/api/GolbalService";
 import { RootState } from "type/state";
+import { getPagePermission, transformMeuns } from "utils/business/permission";
 import { WithConfirm } from "utils/decorator/withConfirm";
-import { clearLocalStorageWhenLogout } from "utils/function";
+import { clearLocalStorageWhenLogout } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
 
-const initialState = {
+const initialMainState = {
     PERMISSION_DONE: null,
+    navPermission: null,
+    pagePermission: null,
 };
 
 class MainModule extends Module<RootState, "main"> {
@@ -35,8 +38,15 @@ class MainModule extends Module<RootState, "main"> {
     // @RetryOnNetworkConnectionError()
     @Loading("PERMISSION")
     async fetchPermission() {
-        await GolbalService.getByUserId().catch((error) => (this.setState({ PERMISSION_DONE: false }), captureError(error)));
-        this.setState({ PERMISSION_DONE: true });
+        const permission = await GolbalService.getByUserId().catch(
+            (error) => (this.setState({ PERMISSION_DONE: false }), captureError(error), Promise.reject(""))
+        );
+        const navPermission = transformMeuns(permission);
+        this.setState({
+            PERMISSION_DONE: true,
+            navPermission,
+            pagePermission: getPagePermission(),
+        });
         const { location } = this.rootState.router;
         const pathname = (location as any).pathname || "";
         // 如果在 登录页 需要需要跳转到首页
@@ -69,6 +79,6 @@ class MainModule extends Module<RootState, "main"> {
     }
 }
 
-const module = register(new MainModule("main", initialState));
+const module = register(new MainModule("main", initialMainState));
 export const actions = module.getActions();
 export const MainComponent = module.connect(Main);

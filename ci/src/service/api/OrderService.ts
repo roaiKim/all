@@ -1,4 +1,4 @@
-import { OrderServicePaymentRequest, PageDataLimitResponse, PageRecordsLimitResponse } from "type";
+import { OrderServicePaymentRequest, PageDataLimitResponse, PageRecordsLimitResponse } from "type/api.type";
 import { ajax } from "@http";
 
 export class OrderService {

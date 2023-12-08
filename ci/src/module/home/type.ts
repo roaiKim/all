@@ -1,7 +1,5 @@
 import { async } from "@core";
-import { AdvancedTableSource } from "type";
-import { AdvancedTableResponse } from "@api/AdvancedTableService";
-import { ModuleStatement } from "utils/function/loadComponent";
+import { AdvancedTableSource } from "type/api.type";
 
 export const moduleName = "home";
 

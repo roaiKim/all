@@ -1,6 +1,6 @@
 import { ajax } from "@http";
 import { stringify } from "querystring";
-import { AuthTokenRequest, AuthTokenResponse } from "type";
+import { AuthTokenRequest, AuthTokenResponse } from "type/api.type";
 
 export class LoginService {
     static login(request: AuthTokenRequest): Promise<AuthTokenResponse> {

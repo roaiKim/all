@@ -2,7 +2,7 @@ import React from "react";
 import { Select } from "antd";
 import { setHost } from "@http";
 import { DEV_PROXY_HOST, isDevelopment } from "config/static-envs";
-import { ProxyConfigDataSource } from "utils/function";
+import { ProxyConfigDataSource } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 
 export function ProxySelector() {

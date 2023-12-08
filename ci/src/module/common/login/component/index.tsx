@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { connect, DispatchProp } from "react-redux";
 import { showLoading } from "@core";
-import { Select } from "antd";
-import { CompanyInfoResponse } from "type";
 import { object, string } from "yup";
 import { ProxySelector } from "components/proxy-selector";
 // import { LOGIN_REMEMBER_USERNAME, LOGIN_REMEMBER_PASSWORD } from "utils/function/staticEnvs";
-import { DEV_PROXY_HOST, isDevelopment, LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
+import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
 import { actions } from "module/common/login";
 import { RootState } from "type/state";
-import { ProxyConfigDataSource } from "utils/function";
 import { decrypted, encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 import "./index.less";

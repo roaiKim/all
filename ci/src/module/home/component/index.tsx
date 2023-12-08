@@ -31,7 +31,7 @@ function Home(props: HomeProps) {
                     改名{count.count}-{count.count2}-{count.count3}
                 </Button>
             </PageTable.header>
-            <PageTable
+            {/* <PageTable
                 signature={{
                     name: "s/waybillkkk",
                     actions,
@@ -45,7 +45,7 @@ function Home(props: HomeProps) {
                     selectedRowKeys: s,
                 }}
                 tableLoading={tableLoading}
-            />
+            /> */}
         </div>
     );
 }

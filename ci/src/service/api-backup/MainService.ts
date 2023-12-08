@@ -1,5 +1,5 @@
 import { ajax } from "@http";
-import { CompanyInfoResponse } from "type";
+import { CompanyInfoResponse } from "type/api.type";
 
 export class MainService {
     static getCompanyInfo(): Promise<CompanyInfoResponse> {

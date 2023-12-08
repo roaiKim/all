@@ -1,5 +1,5 @@
 import { async } from "@core";
-import { AuthTokenResponse, CompanyInfoResponse } from "type";
+import { AuthTokenResponse, CompanyInfoResponse } from "type/api.type";
 
 export interface State {
     companyInfo: CompanyInfoResponse | null;

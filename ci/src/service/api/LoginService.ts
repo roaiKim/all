@@ -1,5 +1,5 @@
 import { stringify } from "querystring";
-import { AuthTokenRequest, AuthTokenResponse } from "type";
+import { AuthTokenRequest, AuthTokenResponse } from "type/api.type";
 import { ajax } from "@http";
 
 export class LoginService {

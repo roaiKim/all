@@ -1,5 +1,5 @@
 import { ajax } from "@http";
-import { OrderServicePaymentRequest, PageDataLimitResponse, PageRecordsLimitResponse } from "type";
+import { OrderServicePaymentRequest, PageDataLimitResponse, PageRecordsLimitResponse } from "type/api.type";
 
 export class OrderService {
     static getCarType(): Promise<PageRecordsLimitResponse> {
