@@ -1,18 +1,24 @@
 import { ComponentType } from "react";
 import { isDevelopment } from "config/static-envs";
+import { HeaderTabType } from "module/common/header/type";
 // 这个是全局加载的功能
 // @ts-ignore webpack 提供的功能 ts 暂时无法识别
 const modules = require.context("module/", true, /type\.ts$/);
 const modulesId: string[] = modules.keys().filter((item: string) => item.startsWith("module"));
 
-export const cacheModules = modulesId
-    .map((id) => ({
-        moduleId: id,
-        module: modules(id).statement as ModuleStatement,
-    }))
-    .filter((item) => !!item.module)
-    .filter((item) => !item.module.disabled)
-    .sort((prev, next) => (prev.module.order || 9) - (next.module.order || 10));
+// 加载 默认的tabs
+// @ts-ignore webpack 提供的功能 ts 暂时无法识别
+const deafaultTabsModules = require.context("config/", true, /dev-tabs.ts$/);
+const deafaultTabIds = deafaultTabsModules.keys().filter((item: string) => item.startsWith("config"));
+
+// export const cacheModules = modulesId
+//     .map((id) => ({
+//         moduleId: id,
+//         module: modules(id).statement as ModuleStatement,
+//     }))
+//     .filter((item) => !!item.module)
+//     .filter((item) => !item.module.disabled)
+//     .sort((prev, next) => (prev.module.order || 9) - (next.module.order || 10));
 
 interface Cache {
     moduleId: string;
@@ -21,7 +27,10 @@ interface Cache {
 
 const modulesCache: Record<string, Cache> = {};
 
-const pathToModules = {};
+// 模块path转模块name
+const pathToName = {};
+// 模块name转模块path
+const nameToPath = {};
 
 modulesId.forEach((id) => {
     const statement: ModuleStatement = modules(id).statement;
@@ -34,7 +43,8 @@ modulesId.forEach((id) => {
             }
         }
         if (path) {
-            pathToModules[path] = name;
+            pathToName[path] = name;
+            nameToPath[name] = path;
         }
         if (modulesCache[name]) {
             const { moduleId } = modulesCache[name];
@@ -48,4 +58,20 @@ modulesId.forEach((id) => {
     }
 });
 
-export { modulesCache, pathToModules };
+// 开发环境默认的tabs
+const deafaultTabPaths = deafaultTabIds.map((id) => deafaultTabsModules(id).default);
+const deafaultTabs = deafaultTabPaths
+    .map((item) => {
+        if (modulesCache[item] && isDevelopment) {
+            const { module } = modulesCache[item];
+            return {
+                key: module.name,
+                label: module.title,
+                type: HeaderTabType.A,
+                noClosed: true,
+            };
+        }
+    })
+    .filter(Boolean);
+
+export { deafaultTabs, modulesCache, nameToPath, pathToName };

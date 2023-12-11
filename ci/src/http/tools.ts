@@ -21,7 +21,8 @@ export function joinUrl(path) {
     if (path && (path.startsWith("http://") || path.startsWith("https://"))) {
         return path;
     }
-    return (host || getHost() || "") + path;
+    // return (host || getHost() || "") + path;
+    return `/${host || getHost() || ""}${path}`;
 }
 
 // 获取 授权 头

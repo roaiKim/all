@@ -1,10 +1,10 @@
 import { Module, register, roPushHistory } from "@core";
 import { WEB_USERNAME } from "config/static-envs";
 import { RootState } from "type/state";
-import { modulesCache } from "utils/function/loadComponent";
+import { deafaultTabs, modulesCache, nameToPath } from "utils/function/loadComponent";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
-import { HeaderTab } from "./type";
+import { HeaderTab, HeaderTabType } from "./type";
 
 const initialHeaderState = {
     userName: null,
@@ -14,9 +14,10 @@ const initialHeaderState = {
         {
             key: "home",
             label: "首页",
-            type: "page",
+            type: HeaderTabType.A,
             noClosed: true,
         },
+        ...(deafaultTabs || []),
     ],
 };
 
@@ -42,15 +43,19 @@ class HeaderModule extends Module<RootState, "header"> {
 
         let activeKey = activeTabName;
         const newTabs = [...headerTabs];
+        // 有本地模块
         if (cacheModule) {
             const { module } = cacheModule;
             const { name, title } = module;
             activeKey = name;
+            const { pagePermission } = this.rootState.app.main || {};
+            const hasPermission = pagePermission[nameToPath[name] || name];
+            const type = hasPermission ? HeaderTabType.A : HeaderTabType.B;
             if (!hasTab) {
                 const newTab = {
                     key: name,
                     label: title,
-                    type: "page",
+                    type,
                 };
                 newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
             }
@@ -58,10 +63,12 @@ class HeaderModule extends Module<RootState, "header"> {
             activeKey = keyPath;
             if (!hasTab) {
                 const tabKey = keyPath;
+                const { pagePermission } = this.rootState.app.main || {};
+                const pageName = pagePermission[tabKey]?.name;
                 const newTab = {
                     key: tabKey,
-                    label: "404-nofound",
-                    type: "page",
+                    label: pageName || "404-nofound",
+                    type: pageName ? HeaderTabType.C : HeaderTabType.D,
                 };
                 newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
             }
@@ -78,26 +85,34 @@ class HeaderModule extends Module<RootState, "header"> {
         }
     }
 
-    closeTabByKey(tabKey: string) {
+    closeTabByKey(tabKey: string, activeKey?: string) {
         const { headerTabs, activeTabName } = this.state;
         // 如果关闭的是当前活跃的tab
         if (tabKey === activeTabName) {
-            const currentTabIndex = headerTabs.findIndex((item) => item.key === tabKey);
-            const nextTab = currentTabIndex > -1 ? headerTabs[currentTabIndex + 1] : null;
             let active = "home";
             const tabs = headerTabs.filter((item) => item.key !== tabKey);
-            if (nextTab) {
-                active = nextTab.key;
+            if (activeKey) {
+                active = activeKey;
             } else {
-                const { key } = tabs[tabs.length - 1] || {};
-                active = key;
+                const currentTabIndex = headerTabs.findIndex((item) => item.key === tabKey);
+                const nextTab = currentTabIndex > -1 ? headerTabs[currentTabIndex + 1] : null;
+                if (nextTab) {
+                    active = nextTab.key;
+                } else {
+                    const { key } = tabs[tabs.length - 1] || {};
+                    active = key;
+                }
             }
+
             this.setState({ headerTabs: tabs });
             this.pushHistoryByActiveKey(active);
             return;
         }
         const tabs = headerTabs.filter((item) => item.key !== tabKey);
         this.setState({ headerTabs: tabs });
+        if (activeKey) {
+            this.pushHistoryByActiveKey(activeKey);
+        }
     }
 
     sortHeaderTabs(headerTabs: HeaderTab[]) {

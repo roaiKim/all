@@ -2,11 +2,11 @@ import { connect, DispatchProp } from "react-redux";
 import { roDispatch, showLoading } from "@core";
 import { RouteComponentProps } from "react-router-dom";
 import { DevelopingModule, GlobalMask } from "components/common";
-import { HeaderComponent } from "module/common/header/type";
+import { HeaderComponent, HeaderTabType } from "module/common/header/type";
 import { actions } from "module/common/main";
 import { MenuComponent } from "module/common/menus/type";
 import { RootState } from "type/state";
-import { modulesCache, pathToModules } from "utils/function/loadComponent";
+import { modulesCache, nameToPath, pathToName } from "utils/function/loadComponent";
 import "./index.less";
 
 interface BodyContainerProps extends DispatchProp, RouteComponentProps<any>, ReturnType<typeof mapStateToProps> {
@@ -17,10 +17,8 @@ const refreshWhenError = () => {
     roDispatch(() => actions.fetchPermission());
 };
 
-console.log("cache", modulesCache);
-
 function BodyContainer(props: BodyContainerProps) {
-    const { headerTabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING, location, match } = props;
+    const { headerTabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING, location, match, module } = props;
 
     let title = null;
     let permissionError = false;
@@ -32,7 +30,7 @@ function BodyContainer(props: BodyContainerProps) {
     } else if (globalLoading) {
         title = "Loading...";
     }
-    console.log("---pathToModules--", pathToModules);
+    console.log("--module--+", module);
     return (
         <GlobalMask
             loading={!PERMISSION_DONE || globalLoading}
@@ -46,10 +44,10 @@ function BodyContainer(props: BodyContainerProps) {
                     <MenuComponent />
                     <main className="ro-module-body">
                         {headerTabs?.map((item) => {
-                            const { key } = item;
+                            const { key, type, label } = item;
                             const module = modulesCache[key];
                             const hidden = activeTabName !== key;
-                            if (module) {
+                            if (type === HeaderTabType.A && module) {
                                 const { component } = module.module || {};
                                 const MainComponent = component;
                                 return (
@@ -58,7 +56,7 @@ function BodyContainer(props: BodyContainerProps) {
                                     </div>
                                 );
                             }
-                            return <DevelopingModule ns={key} key={key} hidden={hidden} />;
+                            return <DevelopingModule tabItem={item} key={key} hidden={hidden} />;
                         })}
                     </main>
                 </div>
@@ -73,6 +71,7 @@ const mapStateToProps = (state: RootState) => {
         activeTabName: state.app.header?.activeTabName,
         globalLoading: showLoading(state),
         PERMISSION_LOADING: showLoading(state, "PERMISSION"),
+        module: showLoading(state, "module"),
         PERMISSION_DONE: state.app.main.PERMISSION_DONE,
     };
 };

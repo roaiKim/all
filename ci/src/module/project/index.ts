@@ -5,7 +5,7 @@ import { toLowerCamelCase } from "utils/business";
 import Main from "./component";
 import { moduleName, State } from "./type";
 
-const initialProjectState: State = {};
+const initialProjectState = {};
 
 class ProjectModule extends Module<RootState, ToLowerCamelCase<typeof moduleName>> {
     async onEnter(params, location) {

@@ -4,7 +4,8 @@ import { app } from "./app";
 
 export const roPushHistory = (urlOrState: Record<string, any> | string, state?: object | "keep-state") => {
     if (typeof urlOrState === "string") {
-        const url: string = urlOrState;
+        // 只能相对于根路径进行跳转
+        const url: string = urlOrState.startsWith("/") ? urlOrState : `/${urlOrState}`;
         if (state) {
             app.store.dispatch(push(url, state === "keep-state" ? app.browserHistory.location.state : state));
         } else {

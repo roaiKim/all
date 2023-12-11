@@ -9,3 +9,4 @@
 wechat-core/lib
 wechat-core/pure
 wechat-core/**.tgz
+**/src/config/dev-tabs.ts

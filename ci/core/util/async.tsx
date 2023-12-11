@@ -27,6 +27,8 @@ export function async<T, K extends ReactComponentKeyOf<T>>(
     { LoadingComponent, loadingIdentifier, ErrorComponent }: AsyncOptions = {}
 ): T[K] {
     return class AsyncWrapperComponent extends React.PureComponent<{}, WrapperComponentState> {
+        private timeOut = null;
+
         constructor(props: {}) {
             super(props);
             this.state = { Component: null, error: null };
@@ -36,16 +38,27 @@ export function async<T, K extends ReactComponentKeyOf<T>>(
             this.loadComponent();
         }
 
+        moduleLoading() {
+            // 延迟200ms
+            this.timeOut = setTimeout(() => {
+                app.store.dispatch(loadingAction(true, loadingIdentifier));
+            }, 200);
+        }
+
         loadComponent = async () => {
             try {
                 this.setState({ error: null });
                 app.store.dispatch(loadingAction(true, loadingIdentifier));
+                // this.moduleLoading();
                 const moduleExports = await resolve();
                 this.setState({ Component: moduleExports[component] as any });
             } catch (e) {
                 captureError(e, "@@framework/async-import");
                 this.setState({ error: e });
             } finally {
+                if (this.timeOut) {
+                    clearTimeout(this.timeOut);
+                }
                 app.store.dispatch(loadingAction(false, loadingIdentifier));
             }
         };

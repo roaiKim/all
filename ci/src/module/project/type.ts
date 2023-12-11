@@ -8,7 +8,7 @@ export const MainComponent = async(() => import(/* webpackChunkName: "project" *
 
 export const statement: ModuleStatement = {
     name: moduleName,
-    path: "ty/project",
+    path: "",
     title: "项目管理",
     order: 1,
     component: MainComponent,
