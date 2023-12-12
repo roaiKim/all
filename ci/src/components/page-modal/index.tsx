@@ -2,16 +2,14 @@ import { PropsWithChildren, ReactNode } from "react";
 import Draggable from "react-draggable";
 import { CloseOutlined } from "@icon";
 import { useContainerRect } from "utils/hooks/useContainerRect";
-import { SetView, ViewState } from "utils/hooks/usePageModal";
+import { PageModalState } from "utils/hooks/usePageModal";
 import CloseImg from "asset/images/global/close.png";
 import { PageModalHeader } from "./header";
 import "./index.less";
 
 export type PageModalPlace = "global" | "default" | Element;
 
-interface ViewModalProps {
-    view: ViewState;
-    setView: SetView;
+interface ViewModalProps extends PageModalState {
     title: string | ReactNode;
     width?: number;
     place?: PageModalPlace;
@@ -19,9 +17,9 @@ interface ViewModalProps {
 }
 
 export function PageModal(props: PropsWithChildren<ViewModalProps>) {
-    const { view, setView, width, title, children, place = "default", wrapClassName = "" } = props;
-    const { show } = view;
-    if (!show) return null;
+    const { pageModalState, width, title, children, place = "default", wrapClassName = "" } = props;
+    const { open, setViewState } = pageModalState;
+    if (!open) return null;
 
     const { top, right, bottom, left, panelWidth, maxPanelBodyHeight } = useContainerRect({ width, place });
     const className = typeof place === "string" ? place : "";
@@ -32,7 +30,7 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
                 <div className="ro-drag-container" style={{ width: panelWidth }}>
                     <div className="ro-drag-header">
                         <div className="ro-drag-header-title">{title}</div>
-                        <CloseOutlined onClick={() => setView({ show: false })} />
+                        <CloseOutlined onClick={() => setViewState({ open: false })} />
                     </div>
                     <div className="ro-drag-body" style={{ maxHeight: maxPanelBodyHeight }}>
                         <div>{children}</div>

@@ -13,15 +13,15 @@ interface HomeProps extends ReturnType<typeof mapStateToProps> {}
 
 function Home(props: HomeProps) {
     const [count, setCount] = useState<{ count: number; count2: number; count3: number }>({ count: 1, count2: 1, count3: 1 });
-    const { view, setView } = usePageModal();
+    const pageModalState = usePageModal();
     const [s, setS] = useState([]);
 
     const { tableSource, tableLoading } = props;
 
     return (
         <div className="ro-home-module">
-            <Addition view={view} setView={setView} />
-            <PageTable.header title="运单管理" view={view} setView={setView}>
+            <Addition pageModalState={pageModalState} />
+            <PageTable.header title="运单管理" pageModalState={pageModalState}>
                 <Button
                     size="small"
                     onClick={() => {

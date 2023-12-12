@@ -1,13 +1,10 @@
 import { Button } from "antd";
 import { ModalCard } from "components/modal-card";
 import { PageModal } from "components/page-modal";
-import { SetView, ViewState } from "utils/hooks/usePageModal";
+import { PageModalState } from "utils/hooks/usePageModal";
 import { STATUS_TAG } from "../type";
 
-interface AdditionProps {
-    view: ViewState;
-    setView: SetView;
-}
+interface AdditionProps extends PageModalState {}
 
 // registerValidateLocale({
 //     "zh-CN": {
@@ -16,7 +13,7 @@ interface AdditionProps {
 // });
 
 export default function (props: AdditionProps) {
-    const { view, setView } = props;
+    const { pageModalState } = props;
     // const form = useMemo(
     //     () =>
     //         createForm({
@@ -40,7 +37,7 @@ export default function (props: AdditionProps) {
 
     return (
         <div>
-            <PageModal view={view} setView={setView} width={1100} title={"运单管理"}>
+            <PageModal pageModalState={pageModalState} width={1100} title={"运单管理"}>
                 <PageModal.header statusTag={STATUS_TAG} baseInfo={baseInfo}></PageModal.header>
                 <ModalCard>
                     <ModalCard.Header title="基本信息">

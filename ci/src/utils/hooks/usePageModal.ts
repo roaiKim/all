@@ -1,40 +1,45 @@
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
-interface PageModalProps {
-    name?: string;
-}
-
 export interface ViewState {
-    show: boolean;
+    open: boolean;
     loading: boolean;
-    initial: boolean;
+    initialized: boolean;
     readonly: boolean;
 }
 
-export type SetView = Dispatch<SetStateAction<Partial<ViewState>>>;
+export type SetViewState = Dispatch<SetStateAction<Partial<ViewState>>>;
 
-interface PageModalAction {
-    view: ViewState;
-    setView: SetView;
+interface PageModalProps extends ViewState {}
+
+interface PageModalAction extends ViewState {
+    viewState: ViewState;
+    setViewState: SetViewState;
+    viewStateModal: [ViewState, SetViewState];
 }
 
-const initialViewState = () => ({
-    show: false,
+export interface PageModalState {
+    pageModalState: PageModalAction;
+}
+
+const initialViewState = (props?: Partial<ViewState>) => ({
+    open: false,
     loading: false,
-    initial: false,
+    initialized: false,
     readonly: false,
+    ...(props || {}),
 });
 
-export function usePageModal(props?: PageModalProps): PageModalAction {
-    const { name } = props || {};
-    const [view, setView] = useState<ViewState>(initialViewState());
+export function usePageModal(props?: PageModalProps): PageModalState["pageModalState"] {
+    const [state, setState] = useState<ViewState>(initialViewState(props));
 
-    const viewState = useCallback((views) => {
-        setView((prevView) => ({ ...prevView, ...views }));
+    const setViewState = useCallback((views) => {
+        setState((prevView) => ({ ...prevView, ...views }));
     }, []);
 
     return {
-        view,
-        setView: viewState,
+        ...state,
+        viewState: state,
+        setViewState,
+        viewStateModal: [state, setViewState],
     };
 }

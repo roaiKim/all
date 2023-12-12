@@ -1,15 +1,13 @@
 import { PropsWithChildren } from "react";
 import { Button } from "antd";
-import { SetView, ViewState } from "utils/hooks/usePageModal";
+import { PageModalState } from "utils/hooks/usePageModal";
 
-interface PageTitleProps {
+interface PageTitleProps extends PageModalState {
     title?: string;
-    view: ViewState;
-    setView: SetView;
 }
 
 export function PageTitle(props: PropsWithChildren<PageTitleProps>) {
-    const { title, setView, children } = props;
+    const { title, pageModalState, children } = props;
     return (
         <div className="ro-page-header">
             <div>{title}</div>
@@ -19,7 +17,7 @@ export function PageTitle(props: PropsWithChildren<PageTitleProps>) {
                     size="small"
                     type="primary"
                     onClick={() => {
-                        setView({ show: true });
+                        pageModalState.setViewState({ open: true });
                     }}
                 >
                     新增
