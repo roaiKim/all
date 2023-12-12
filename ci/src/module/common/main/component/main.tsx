@@ -18,7 +18,7 @@ const refreshWhenError = () => {
 };
 
 function BodyContainer(props: BodyContainerProps) {
-    const { headerTabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING, location, match, module } = props;
+    const { headerTabs, activeTabName, globalLoading, PERMISSION_DONE, PERMISSION_LOADING, location, match } = props;
 
     let title = null;
     let permissionError = false;
@@ -30,7 +30,7 @@ function BodyContainer(props: BodyContainerProps) {
     } else if (globalLoading) {
         title = "Loading...";
     }
-    console.log("--module--+", module);
+
     return (
         <GlobalMask
             loading={!PERMISSION_DONE || globalLoading}
@@ -71,7 +71,6 @@ const mapStateToProps = (state: RootState) => {
         activeTabName: state.app.header?.activeTabName,
         globalLoading: showLoading(state),
         PERMISSION_LOADING: showLoading(state, "PERMISSION"),
-        module: showLoading(state, "module"),
         PERMISSION_DONE: state.app.main.PERMISSION_DONE,
     };
 };
