@@ -29,7 +29,7 @@ const initialViewState = (props?: Partial<ViewState>) => ({
     ...(props || {}),
 });
 
-export function usePageModal(props?: PageModalProps): PageModalState["pageModalState"] {
+export function usePageModal(props?: PageModalProps): PageModalAction {
     const [state, setState] = useState<ViewState>(initialViewState(props));
 
     const setViewState = useCallback((views) => {

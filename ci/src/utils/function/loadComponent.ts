@@ -59,7 +59,7 @@ modulesId.forEach((id) => {
 });
 
 // 开发环境默认的tabs
-const deafaultTabPaths = deafaultTabIds.map((id) => deafaultTabsModules(id).default);
+const deafaultTabPaths = deafaultTabIds.map((id) => deafaultTabsModules(id).default)?.[0] || [];
 const deafaultTabs = deafaultTabPaths
     .map((item) => {
         if (modulesCache[item] && isDevelopment) {
@@ -68,7 +68,7 @@ const deafaultTabs = deafaultTabPaths
                 key: module.name,
                 label: module.title,
                 type: HeaderTabType.A,
-                noClosed: true,
+                noClosed: false,
             };
         }
     })

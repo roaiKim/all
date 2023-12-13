@@ -6,7 +6,7 @@ export class AdvancedTableService {
         return ajax("POST", "/api/common/comma-list-config/advanced-unique-get", request);
     }
 
-    static table(request: AdvancedTableRequest): Promise<AdvancedTableResponse<any>> {
+    static table(request: PageTableRequest): Promise<PageTableResponse<any>> {
         return ajax("POST", "/api/tms/transportOrder/advanced-page");
     }
 }
@@ -41,7 +41,7 @@ export interface Orders {
     ascending: boolean;
 }
 
-export interface AdvancedTableRequest {
+export interface PageTableRequest {
     offset?: number;
     limit?: number;
     pageNo: number;
@@ -51,7 +51,7 @@ export interface AdvancedTableRequest {
     orders?: Orders[];
 }
 
-export interface AdvancedTableResponse<T> {
+export interface PageTableResponse<T> {
     pageIndex: number;
     pageSize: number;
     total: string;

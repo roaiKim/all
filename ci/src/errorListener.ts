@@ -1,4 +1,4 @@
-import { APIException, ErrorListener, Exception, NetworkConnectionException, roDispatch, roPushHistory } from "@core";
+import { APIException, ErrorListener, Exception, NetworkConnectionException, roDispatchAction, roPushHistory } from "@core";
 import { message } from "antd";
 import { actions as MainActions } from "module/common/main";
 
@@ -7,7 +7,7 @@ export default class ErrorHandler implements ErrorListener {
         if (error instanceof APIException) {
             if (error.statusCode === 401 || error.statusCode === 403) {
                 message.error(`未登录或登录已过期, 请重新登录。错误码: ${error.statusCode}`);
-                roDispatch(() => MainActions.logout());
+                roDispatchAction(MainActions.logout());
                 roPushHistory("/login", { request: true });
             } else if (error.statusCode === 404) {
                 message.error(`资源不存在, 请确认。 ${error.requestURL}, 错误码: ${error.statusCode}`);

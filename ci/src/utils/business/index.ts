@@ -11,3 +11,13 @@ export function toLowerCamelCase<P extends string>(moduleName: P): ToLowerCamelC
         .map((_, index) => (index > 0 ? _.substring(0, 1).toUpperCase() + _.slice(1) : _))
         .join("") as ToLowerCamelCase<P>;
 }
+
+/**
+ * 组合table信息
+ */
+export function combineTable(prevTable, source) {
+    return {
+        ...prevTable,
+        source,
+    };
+}

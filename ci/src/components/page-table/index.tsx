@@ -25,7 +25,7 @@ type RowSelection<T> = Omit<TableProps<T>["rowSelection"], "selectedRowKeys"> & 
 interface PageTableProps<T> extends TableProps<T> {
     height?: number;
     signature: Signature;
-    tableSource: AdvancedTableSource<T>["table"];
+    tableSource: AdvancedTableSource<T>;
     rowSelection: RowSelection<T>;
     isNoneSelected?: boolean;
     isNonePagination?: boolean;

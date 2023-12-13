@@ -18,7 +18,11 @@ export const roPushHistory = (urlOrState: Record<string, any> | string, state?: 
     }
 };
 
-export function roDispatch(action: (...args: any[]) => Action<any>) {
+export function roDispatchFunction(action: (...args: any[]) => Action<any>) {
     if (typeof action !== "function") throw new Error("this.dispatch 的参数必须为 Function");
     app.store.dispatch(action());
+}
+
+export function roDispatchAction(action: Action<any>) {
+    app.store.dispatch(action);
 }

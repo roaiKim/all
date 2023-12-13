@@ -7,3 +7,14 @@ export type ToLowerCamelCase<P extends string> = P extends `${infer A}-${infer B
         ? `${C}`
         : never
     : never;
+
+// interface addition {
+//     addition:
+// }
+/**
+ * 页面主弹窗 message
+ */
+export interface AdditionMessage<T> {
+    addition?: T;
+    additionReadonly?: boolean;
+}

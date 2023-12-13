@@ -1,7 +1,8 @@
 import { RouteComponentProps } from "react-router";
 import { Location } from "history";
 import { enablePatches, produce } from "immer";
-import { roDispatch } from "../actions";
+import { RootState } from "type/state";
+import { roDispatchFunction } from "../actions";
 import { app } from "../app";
 import { Logger } from "../logger";
 import { TickIntervalDecoratorFlag } from "../module";
@@ -18,6 +19,7 @@ export interface ModuleLifecycleListener<RouteParam extends object = object> {
     onLocationMatched: (routeParameters: RouteParam, location: RouteComponentProps["location"]) => void | Promise<void>;
     onTick: (() => void | Promise<void>) & TickIntervalDecoratorFlag;
     dispatch: (actionFunction: (...args: any[]) => Action<any>) => void | Promise<void>;
+    setNavigationPrevented: (isPrevented: boolean) => void;
 }
 
 export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string, RouteParam extends object = object>
@@ -47,13 +49,13 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
     onTick(): void | Promise<void> {
         /**
          * Called periodically during the lifecycle of attached component
-         * Usually used together with @Interval decorator, to specify the period (in second)
+         * Usually used together with @interval decorator, to specify the period (in second)
          * Attention: The next tick will not be triggered, until the current tick has finished
          */
     }
 
     dispatch(action: (...args: any[]) => Action<any>) {
-        roDispatch(action as any);
+        roDispatchFunction(action as any);
     }
 
     get state(): Readonly<RootState["app"][ModuleName]> {

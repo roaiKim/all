@@ -3,7 +3,9 @@ import { AdvancedTableSource } from "type/api.type";
 
 export const moduleName = "home";
 
-export interface State extends AdvancedTableSource {}
+export interface State {
+    table: AdvancedTableSource<any>;
+}
 
 export const MainComponent = async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent");
 

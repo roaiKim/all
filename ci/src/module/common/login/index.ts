@@ -1,10 +1,11 @@
-import { Loading, Module, register, roPushHistory } from "@core";
+import { Module, register, roPushHistory } from "@core";
 import { message } from "antd";
 import { v4 } from "uuid";
 import { DEV_PROXY_HOST, isDevelopment } from "config/static-envs";
 import { actions as MainActions } from "module/common/main";
 import { LoginService } from "service/api/LoginService";
 import { RootState } from "type/state";
+import { loading } from "utils/decorator";
 import { setLocalStorageWhenLogined } from "utils/framework";
 import { encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
@@ -16,7 +17,7 @@ const initialLoginState = {
 };
 
 class LoginModule extends Module<RootState, "login"> {
-    @Loading("login-loading")
+    @loading("login-loading")
     async login(username: string, password: string) {
         const request = {
             grant_type: "password",

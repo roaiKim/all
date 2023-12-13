@@ -8,7 +8,7 @@ interface ProjectProps extends DispatchProp {}
 
 function Project(props: ProjectProps) {
     const link = () => {
-        roPushHistory("/waybill", { orderId: "1551864590885830658" });
+        roPushHistory("/waybill", { id: "1551864590885830658" });
     };
 
     return (

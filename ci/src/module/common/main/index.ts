@@ -1,11 +1,11 @@
-import { captureError, Loading, Module, register, roPushHistory } from "@core";
+import { captureError, Module, register, roPushHistory } from "@core";
 import { LoginService } from "@api/LoginService";
 import { clearToken } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
 import { GolbalService } from "service/api/GolbalService";
 import { RootState } from "type/state";
 import { getPagePermission, transformMeuns } from "utils/business/permission";
-import { WithConfirm } from "utils/decorator/withConfirm";
+import { confirm, loading } from "utils/decorator";
 import { clearLocalStorageWhenLogout } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
@@ -36,7 +36,7 @@ class MainModule extends Module<RootState, "main"> {
     }
 
     // @RetryOnNetworkConnectionError()
-    @Loading("PERMISSION")
+    @loading("PERMISSION")
     async fetchPermission() {
         const permission = await GolbalService.getByUserId().catch(
             (error) => (this.setState({ PERMISSION_DONE: false }), captureError(error), Promise.reject(""))
@@ -55,7 +55,7 @@ class MainModule extends Module<RootState, "main"> {
         }
     }
 
-    @WithConfirm("确定退出吗")
+    @confirm("确定退出吗")
     async logoutWithConfirm() {
         this.logout();
     }

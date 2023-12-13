@@ -1,4 +1,4 @@
-import { AdvancedTableResponse, AdvancedTableService } from "@api/AdvancedTableService";
+import { AdvancedTableService, PageTableResponse } from "@api/AdvancedTableService";
 
 export interface PageLimitResponse<T> {
     list: T[];
@@ -55,10 +55,8 @@ export interface OrderServicePaymentRequest {
     tradeType: string;
 }
 
-export interface AdvancedTableSource<T = Record<string, any>> {
-    table: {
-        source: AdvancedTableResponse<T>;
-        sourceLoading: boolean;
-        sourceLoadError: boolean;
-    };
+export interface AdvancedTableSource<T> {
+    source: PageTableResponse<T>;
+    sourceLoading?: boolean;
+    sourceLoadError: boolean;
 }

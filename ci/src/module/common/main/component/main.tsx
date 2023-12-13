@@ -1,12 +1,12 @@
 import { connect, DispatchProp } from "react-redux";
-import { roDispatch, showLoading } from "@core";
+import { roDispatchAction, showLoading } from "@core";
 import { RouteComponentProps } from "react-router-dom";
 import { DevelopingModule, GlobalMask } from "components/common";
 import { HeaderComponent, HeaderTabType } from "module/common/header/type";
 import { actions } from "module/common/main";
 import { MenuComponent } from "module/common/menus/type";
 import { RootState } from "type/state";
-import { modulesCache, nameToPath, pathToName } from "utils/function/loadComponent";
+import { modulesCache } from "utils/function/loadComponent";
 import "./index.less";
 
 interface BodyContainerProps extends DispatchProp, RouteComponentProps<any>, ReturnType<typeof mapStateToProps> {
@@ -14,7 +14,7 @@ interface BodyContainerProps extends DispatchProp, RouteComponentProps<any>, Ret
 }
 
 const refreshWhenError = () => {
-    roDispatch(() => actions.fetchPermission());
+    roDispatchAction(actions.fetchPermission());
 };
 
 function BodyContainer(props: BodyContainerProps) {

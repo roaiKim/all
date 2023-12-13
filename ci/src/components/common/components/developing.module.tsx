@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { roDispatch, roPushHistory } from "@core";
+import { roDispatchAction, roPushHistory } from "@core";
 import { actions } from "module/common/header";
 import { HeaderTab, HeaderTabType } from "module/common/header/type";
 
@@ -12,7 +12,7 @@ function NoFoundModule(props) {
         const time = ms - 1;
         if (time < 0) {
             timer.current && clearInterval(timer.current);
-            roDispatch(() => actions.closeTabByKey(keyPath, "/home"));
+            roDispatchAction(actions.closeTabByKey(keyPath, "/home"));
         } else {
             timer.current = setTimeout(() => {
                 setMs(time);
@@ -33,7 +33,7 @@ function NoFoundModule(props) {
             页面不存在, {ms}秒后
             <a
                 onClick={() => {
-                    roDispatch(() => actions.closeTabByKey(keyPath, "/home"));
+                    roDispatchAction(actions.closeTabByKey(keyPath, "/home"));
                 }}
                 style={{ color: "#1677ff", cursor: "pointer" }}
             >
@@ -56,7 +56,7 @@ export function DevelopingModule(props: { tabItem: HeaderTab; hidden: boolean })
                         {label} 暂无权限
                         <a
                             onClick={() => {
-                                roDispatch(() => actions.closeTabByKey(key, "/home"));
+                                roDispatchAction(actions.closeTabByKey(key, "/home"));
                             }}
                             style={{ color: "#1677ff", cursor: "pointer" }}
                         >

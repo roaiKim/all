@@ -1,14 +1,15 @@
-import { captureError, Loading, Module, register } from "@core";
+import { captureError, Module, register } from "@core";
 import { ToLowerCamelCase } from "type";
 import { AdvancedTableService } from "@api/AdvancedTableService";
 import { RootState } from "type/state";
 import { toLowerCamelCase } from "utils/business";
+import { loading } from "utils/decorator";
 import { initialTableSource } from "utils/function";
 import Home from "./component";
 import { moduleName } from "./type";
 
 const initialHomeState = {
-    ...initialTableSource(),
+    table: initialTableSource(),
 };
 
 class HomeModule extends Module<RootState, ToLowerCamelCase<typeof moduleName>> {
@@ -16,7 +17,7 @@ class HomeModule extends Module<RootState, ToLowerCamelCase<typeof moduleName>> 
         // this.fetchPageTable();
     }
 
-    @Loading("table")
+    @loading("table")
     async fetchPageTable(request = {}) {
         const source = await AdvancedTableService.table({ pageNo: 1, pageSize: 20, ...request }).catch((error) => {
             this.setState({ table: { ...this.state.table, sourceLoading: false, sourceLoadError: true } });
