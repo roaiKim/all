@@ -13,6 +13,8 @@ function locationsAreEqual(a: Location, b: Location) {
     return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash && a.key === b.key && a.state === b.state;
 }
 
+export const ModuleNameContext = React.createContext(null);
+
 export class ModuleProxy<M extends Module<any, any>> {
     constructor(private module: M, private actions: ActionCreators<M>) {}
 
@@ -127,7 +129,11 @@ export class ModuleProxy<M extends Module<any, any>> {
             }
 
             override render() {
-                return <ComponentType {...this.props} />;
+                return (
+                    <ModuleNameContext.Provider value={moduleName}>
+                        <ComponentType {...this.props} />
+                    </ModuleNameContext.Provider>
+                );
             }
 
             private hasOwnLifecycle = (methodName: keyof ModuleLifecycleListener): boolean => {

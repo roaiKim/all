@@ -1,3 +1,5 @@
+import { PageTableRequest } from "@api/AdvancedTableService";
+
 export const transformTitle = (columns) => {
     const dd = {};
     const cols = columns

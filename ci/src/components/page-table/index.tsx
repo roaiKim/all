@@ -38,7 +38,7 @@ const defaultHeight = 165;
 export function PageTable<T extends Record<string, any>>(props: PageTableProps<T>) {
     const { signature, tableSource, height: originHeight, isNoneSelected, isNonePagination, tableLoading } = props;
     const { name, actions } = signature;
-    const { source, sourceLoading, sourceLoadError } = tableSource;
+    const { source, sourceLoadError } = tableSource;
     const { data, pageIndex, pageSize, total } = source || {};
 
     const dispatch = useDispatch();
@@ -163,7 +163,7 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
                         y: originHeight || height - defaultHeight,
                     }}
                     loading={{
-                        spinning: columnLoading || sourceLoading || tableLoading,
+                        spinning: columnLoading || tableLoading,
                         indicator: <LoadingSVG />,
                     }}
                     onChange={pageTableChange}

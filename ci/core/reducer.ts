@@ -53,8 +53,16 @@ interface LoadingActionPayload {
     show: boolean;
 }
 
-export const LOADING_ACTION = "@@framework/loading";
+// Redux Action: Loading (to update state.loading)
+interface PageLoadingActionPayload {
+    identifier: string;
+    type: 0 | 1 | 2; // 0 正在不在loading, 1在loading 3loading 错误
+}
 
+/**
+ * 普通的 loading
+ */
+export const LOADING_ACTION = "@@framework/loading";
 export function loadingAction(show: boolean, identifier: string = "global"): Action<LoadingActionPayload> {
     return {
         type: LOADING_ACTION,
@@ -62,13 +70,30 @@ export function loadingAction(show: boolean, identifier: string = "global"): Act
     };
 }
 
-function loadingReducer(state: LoadingState = {}, action: Action<LoadingActionPayload>): LoadingState {
+/**
+ * @description 用于 page 的loading
+ */
+export const PAGE_LOADING_ACTION = "@@framework/page-loading";
+export function pageLoadingAction(type: PageLoadingActionPayload["type"], identifier: string = "global"): Action<PageLoadingActionPayload> {
+    return {
+        type: PAGE_LOADING_ACTION,
+        payload: { identifier, type },
+    };
+}
+
+function loadingReducer(state: LoadingState = {}, action: Action<LoadingActionPayload | PageLoadingActionPayload>): LoadingState {
     if (action.type === LOADING_ACTION) {
         const payload = action.payload as LoadingActionPayload;
         const count = state[payload.identifier] || 0;
         return {
             ...state,
             [payload.identifier]: count + (payload.show ? 1 : -1),
+        };
+    } else if (action.type === PAGE_LOADING_ACTION) {
+        const payload = action.payload as PageLoadingActionPayload;
+        return {
+            ...state,
+            [payload.identifier]: payload.type,
         };
     }
     return state;

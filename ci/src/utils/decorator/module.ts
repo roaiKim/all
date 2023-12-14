@@ -1,4 +1,4 @@
-import { createActionHandlerDecorator, loadingAction, NetworkConnectionException, roDispatchAction } from "@core";
+import { createActionHandlerDecorator, loadingAction, NetworkConnectionException, pageLoadingAction, roDispatchAction } from "@core";
 import { createPromisedConfirmation } from "./asyncActionHandler";
 
 // 这里的装饰器只能用于 module 中的方法
@@ -15,6 +15,56 @@ export function loading(identifier = "global") {
             await handler();
         } finally {
             roDispatchAction(loadingAction(false, identifier));
+        }
+    });
+}
+
+/**
+ * @description page loading
+ * @param identifier page loading的标识 用于区分不同的 page loading, 取值时 showPageLoading 的第二个参数
+ * @returns
+ */
+export function pageLoading(pageTable = "main") {
+    return createActionHandlerDecorator(async (handler, that) => {
+        const name = that.name || "page";
+        const identifier = `${name}-${pageTable}-page-loading`;
+        let success = true;
+        try {
+            roDispatchAction(pageLoadingAction(1, identifier));
+            await handler();
+        } catch (e) {
+            success = false;
+            roDispatchAction(pageLoadingAction(2, identifier));
+            throw e;
+        } finally {
+            if (success) {
+                roDispatchAction(pageLoadingAction(0, identifier));
+            }
+        }
+    });
+}
+
+/**
+ * @description addition loading
+ * @param identifier addition loading的标识 用于区分不同的 addition loading, 取值时 showAdditionLoading 的第二个参数
+ * @returns
+ */
+export function additionLoading(pageTable = "main") {
+    return createActionHandlerDecorator(async (handler, that) => {
+        const name = that.name || "page";
+        const identifier = `${name}-${pageTable}-addition-loading`;
+        let success = true;
+        try {
+            roDispatchAction(pageLoadingAction(1, identifier));
+            await handler();
+        } catch (e) {
+            success = false;
+            roDispatchAction(pageLoadingAction(2, identifier));
+            throw e;
+        } finally {
+            if (success) {
+                roDispatchAction(pageLoadingAction(0, identifier));
+            }
         }
     });
 }

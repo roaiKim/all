@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { connect, DispatchProp } from "react-redux";
 import { Button } from "antd";
 import { PageTable } from "components/page-table";
 import { RootState } from "type/state";
+import { useModuleName } from "utils/hooks/useModuleName";
 import { usePageModal } from "utils/hooks/usePageModal";
 import Addition from "./addition";
 import "./index.less";
@@ -11,6 +12,8 @@ interface WaybillProps extends DispatchProp, ReturnType<typeof mapStateToProps> 
 
 function Waybill(props: WaybillProps) {
     const pageModalState = usePageModal();
+    const moduleName = useModuleName();
+    console.log("moduleName", moduleName);
 
     return (
         <div className="ro-waybill-module">

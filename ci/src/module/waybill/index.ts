@@ -2,46 +2,37 @@ import { Module, register } from "@core";
 import { ToLowerCamelCase } from "type";
 import { PageTableRequest } from "@api/AdvancedTableService";
 import { RootState } from "type/state";
-import { combineTable, toLowerCamelCase } from "utils/business";
-import { loading } from "utils/decorator";
-import { initialTableSource } from "utils/function";
+import { combineAddition, combineTable, defaultPageTableRequest, initialTableSource, toLowerCamelCase } from "utils/business";
+import { additionLoading, loading, pageLoading } from "utils/decorator";
 import Main from "./component";
-import { WaybillService } from "./server";
+import { WaybillService } from "./service";
 import { moduleName, State } from "./type";
 
 const initialWaybillState: State = {
     table: initialTableSource(),
+    addition: null,
 };
 
 class WaybillModule extends Module<RootState, ToLowerCamelCase<typeof moduleName>> {
     onLocationMatched(routeParam: object, location): void {
         console.log("-onLocationMatched-waybill-", routeParam, location);
-        // 需要打开详情的情况
         if (location.state?.id) {
-            //
+            const { id, readonly } = location.state;
+            // this.addition(id, readonly);
             this.pageTable();
         }
     }
 
-    //
-    @loading(moduleName)
-    async pageTable(request?: PageTableRequest) {
-        const response = await WaybillService.pageTable({
-            offset: 0,
-            limit: 20,
-            pageNo: 1,
-            pageSize: 20,
-            selectColumns: ["*"],
-            conditionBodies: [],
-            orders: [{ orderBy: "createTime", ascending: false }],
-            ...request,
-        });
+    @pageLoading()
+    async pageTable(request?: Partial<PageTableRequest>) {
+        const response = await WaybillService.pageTable(defaultPageTableRequest(request));
         this.setState({ table: combineTable(this.state.table, response) });
     }
 
-    @loading("addition")
-    addition() {
-        //
+    @additionLoading()
+    async addition(id: string, readonly = true) {
+        const response = await WaybillService.addition(id);
+        this.setState({ addition: combineAddition(this.state.addition, response, { additionReadonly: readonly }) });
     }
 }
 

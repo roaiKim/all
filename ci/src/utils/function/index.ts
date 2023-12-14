@@ -1,21 +1,4 @@
 /**
- * 初始化 表格数据
- * @returns
- */
-export function initialTableSource() {
-    return {
-        source: {
-            data: [],
-            pageIndex: 1,
-            pageSize: 20,
-            total: "0",
-        },
-        sourceLoading: true,
-        sourceLoadError: false,
-    };
-}
-
-/**
  * 防抖函数
  * @param handle
  * @param delay

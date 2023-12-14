@@ -57,6 +57,27 @@ export interface OrderServicePaymentRequest {
 
 export interface AdvancedTableSource<T> {
     source: PageTableResponse<T>;
-    sourceLoading?: boolean;
     sourceLoadError: boolean;
 }
+
+/**
+ * 默认的 创建者信息
+ */
+export interface ResponseDefaultCreatorAddition {
+    createUserName?: string;
+    createUserId?: string;
+    createTime?: number;
+    updateTime?: number;
+    updateUserId?: string;
+    updateUserName?: string;
+}
+
+/**
+ * code name JSON 信息
+ */
+export interface CodeNameJSON {
+    code: string;
+    name: string;
+}
+
+export type NumberToTrueOrFalse = 0 | 1;
