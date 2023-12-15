@@ -11,13 +11,13 @@ import "./index.less";
 interface WaybillProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
 function Waybill(props: WaybillProps) {
-    const pageModalState = usePageModal();
+    const { addition } = props;
+    const pageModalState = usePageModal({ open: addition.additionOpen, readonly: addition.additionReadonly });
     const moduleName = useModuleName();
-    console.log("moduleName", moduleName);
 
     return (
         <div className="ro-waybill-module">
-            <Addition pageModalState={pageModalState} />
+            <Addition addition={addition} pageModalState={pageModalState} />
             <PageTable.header title="运单管理" pageModalState={pageModalState}>
                 <Button
                     size="small"
@@ -32,6 +32,9 @@ function Waybill(props: WaybillProps) {
     );
 }
 
-const mapStateToProps = (state: RootState) => ({});
+const mapStateToProps = (state: RootState) => ({
+    table: state.app.waybill.table,
+    addition: state.app.waybill.addition,
+});
 
 export default connect(mapStateToProps)(Waybill);

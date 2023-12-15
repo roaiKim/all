@@ -6,20 +6,20 @@ import { combineAddition, combineTable, defaultPageTableRequest, initialTableSou
 import { additionLoading, loading, pageLoading } from "utils/decorator";
 import Main from "./component";
 import { WaybillService } from "./service";
-import { moduleName, State } from "./type";
+import { moduleName, State, WaybillService$addition$response } from "./type";
 
 const initialWaybillState: State = {
     table: initialTableSource(),
-    addition: null,
+    addition: {},
 };
 
 class WaybillModule extends Module<RootState, ToLowerCamelCase<typeof moduleName>> {
     onLocationMatched(routeParam: object, location): void {
-        console.log("-onLocationMatched-waybill-", routeParam, location);
+        // console.log("-onLocationMatched-waybill-", routeParam, location);
         if (location.state?.id) {
             const { id, readonly } = location.state;
             // this.addition(id, readonly);
-            this.pageTable();
+            // this.pageTable();
         }
     }
 
@@ -32,7 +32,12 @@ class WaybillModule extends Module<RootState, ToLowerCamelCase<typeof moduleName
     @additionLoading()
     async addition(id: string, readonly = true) {
         const response = await WaybillService.addition(id);
-        this.setState({ addition: combineAddition(this.state.addition, response, { additionReadonly: readonly }) });
+        // this.setState({ addition: combineAddition(this.state.addition, response, { additionReadonly: readonly, additionOpen: true }) });
+        this.toggleAddition(true, response, readonly);
+    }
+
+    toggleAddition(open: boolean, addition: WaybillService$addition$response = null, readonly: boolean = true) {
+        this.setState({ addition: combineAddition(this.state.addition, addition, { additionOpen: open, additionReadonly: readonly }) });
     }
 }
 

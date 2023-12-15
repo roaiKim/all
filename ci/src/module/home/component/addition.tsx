@@ -37,7 +37,7 @@ export default function (props: AdditionProps) {
 
     return (
         <div>
-            <PageModal pageModalState={pageModalState} width={1100} title={"运单管理"}>
+            <PageModal open={pageModalState.open} close={() => {}} width={1100} title={"运单管理"}>
                 <PageModal.header statusTag={STATUS_TAG} baseInfo={baseInfo}></PageModal.header>
                 <ModalCard>
                     <ModalCard.Header title="基本信息">

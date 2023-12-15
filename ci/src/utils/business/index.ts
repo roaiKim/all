@@ -49,7 +49,7 @@ export function combineTable<T>(
 /**
  * @description 组合 详情 信息
  */
-export function combineAddition<T>(prevTable: AdditionMessage<T>, addition: T, ment?: Omit<AdditionMessage<T>, "addition">): AdditionMessage<T> {
+export function combineAddition<T>(prevTable: AdditionMessage<T>, addition: T | null, ment?: Omit<AdditionMessage<T>, "addition">): AdditionMessage<T> {
     return {
         ...prevTable,
         addition,

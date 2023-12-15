@@ -17,4 +17,5 @@ export type ToLowerCamelCase<P extends string> = P extends `${infer A}-${infer B
 export interface AdditionMessage<T> {
     addition?: T;
     additionReadonly?: boolean;
+    additionOpen?: boolean;
 }

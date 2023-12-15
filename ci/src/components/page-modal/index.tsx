@@ -9,7 +9,9 @@ import "./index.less";
 
 export type PageModalPlace = "global" | "default" | Element;
 
-interface ViewModalProps extends PageModalState {
+interface ViewModalProps {
+    open: boolean;
+    close: (open: boolean) => void;
     title: string | ReactNode;
     width?: number;
     place?: PageModalPlace;
@@ -17,8 +19,8 @@ interface ViewModalProps extends PageModalState {
 }
 
 export function PageModal(props: PropsWithChildren<ViewModalProps>) {
-    const { pageModalState, width, title, children, place = "default", wrapClassName = "" } = props;
-    const { open, setViewState } = pageModalState;
+    const { open, close, width, title, children, place = "default", wrapClassName = "" } = props;
+
     if (!open) return null;
 
     const { top, right, bottom, left, panelWidth, maxPanelBodyHeight } = useContainerRect({ width, place });
@@ -30,7 +32,7 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
                 <div className="ro-drag-container" style={{ width: panelWidth }}>
                     <div className="ro-drag-header">
                         <div className="ro-drag-header-title">{title}</div>
-                        <CloseOutlined onClick={() => setViewState({ open: false })} />
+                        <CloseOutlined onClick={() => close(false)} />
                     </div>
                     <div className="ro-drag-body" style={{ maxHeight: maxPanelBodyHeight }}>
                         <div>{children}</div>

@@ -1,4 +1,5 @@
 import { Module, register, roPushHistory } from "@core";
+import dayjs from "dayjs";
 import { WEB_USERNAME } from "config/static-envs";
 import { RootState } from "type/state";
 import { deafaultTabs, modulesCache, nameToPath } from "utils/function/loadComponent";
@@ -26,7 +27,9 @@ class HeaderModule extends Module<RootState, "header"> {
         const { location } = this.rootState.router;
         const pathname = (location as any).pathname || "";
         const name = pathname.replace(/^\/|\/$/g, "");
-        this.pushTab(name);
+        // this.pushTab(name);
+        console.log("Header-onEnter", dayjs().format("YYYY-MM-DD HH:mm:ss"));
+        this.pushHistoryByActiveKey(name);
     }
 
     // onLocationMatched(routeParam: object, location: Record<string, any>): void {
@@ -80,7 +83,7 @@ class HeaderModule extends Module<RootState, "header"> {
     toggleActiveKey(activeKey: string) {
         const { activeTabName } = this.state;
         if (activeKey !== activeTabName) {
-            this.setState({ activeTabName: activeKey });
+            // this.setState({ activeTabName: activeKey });
             this.pushHistoryByActiveKey(activeKey);
         }
     }

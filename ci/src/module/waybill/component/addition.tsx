@@ -1,32 +1,18 @@
 import { Button } from "antd";
+import { AdditionMessage } from "type";
 import { ModalCard } from "components/modal-card";
 import { PageModal } from "components/page-modal";
 import { STATUS_TAG } from "module/home/type";
 import { PageModalState } from "utils/hooks/usePageModal";
+import { WaybillService$addition$response } from "../type";
 
-interface AdditionProps extends PageModalState {}
-
-// registerValidateLocale({
-//     "zh-CN": {
-//         required: "この項目は必須です",
-//     },
-// });
+interface AdditionProps extends PageModalState {
+    addition: AdditionMessage<WaybillService$addition$response>;
+}
 
 export default function (props: AdditionProps) {
-    const { pageModalState } = props;
-    // const form = useMemo(
-    //     () =>
-    //         createForm({
-    //             effects() {
-    //                 onFieldReact("projectId", (field: FieldType) => {
-    //                     const { clientId, projectId } = form.values;
-    //                     console.log("---effect--");
-    //                     field.setValue((state) => (state.value = null));
-    //                 });
-    //             },
-    //         }),
-    //     []
-    // );
+    const { pageModalState, addition } = props;
+    const { additionOpen } = addition || {};
     const baseInfo = {
         status: 3,
         createTime: 1658745167000,
@@ -35,9 +21,18 @@ export default function (props: AdditionProps) {
         updateUserName: "罗森2",
     };
 
+    console.log("==pageModalState==", pageModalState);
+
     return (
         <div>
-            <PageModal pageModalState={pageModalState} width={1100} title={"运单管理"}>
+            <PageModal
+                open={pageModalState.open}
+                close={() => {
+                    pageModalState.setViewState({ open: false });
+                }}
+                width={1100}
+                title={"运单管理"}
+            >
                 <PageModal.header statusTag={STATUS_TAG} baseInfo={baseInfo}></PageModal.header>
                 <ModalCard>
                     <ModalCard.Header title="基本信息">

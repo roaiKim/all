@@ -10,11 +10,15 @@ const initialProjectState = {};
 class ProjectModule extends Module<RootState, ToLowerCamelCase<typeof moduleName>> {
     async onEnter(params, location) {
         //
-        console.log("-onEnter-project-", params, location);
+        // console.log("-onEnter-project-", params, location);
     }
 
     onLocationMatched(routeParam: object, location): void {
-        console.log("-onLocationMatched-project-", routeParam, location);
+        // console.log("-onLocationMatched-project-", routeParam, location);
+    }
+
+    push() {
+        this.setNavigationPrevented(true);
     }
 }
 

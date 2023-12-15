@@ -35,9 +35,9 @@ export const GLOBAL_PROMISE_REJECTION_ACTION = "@@framework/promise-rejection";
 export function bootstrap(option: BootstrapOption): void {
     // detectIEBrowser(option.browserConfig?.onIE);
     setupGlobalErrorHandler(option.errorListener);
-    setupAppExitListener(option.loggerConfig?.serverURL);
+    // setupAppExitListener(option.loggerConfig?.serverURL);
     setupLocationChangeListener(option.browserConfig?.onLocationChange);
-    runBackgroundLoop(option.loggerConfig);
+    // runBackgroundLoop(option.loggerConfig);
     renderRoot(
         option.componentType,
         option.rootContainer || injectRootContainer(),
@@ -122,7 +122,7 @@ function renderRoot(EntryComponent: React.ComponentType, rootContainer: HTMLElem
     ReactDOM.render(
         <Provider store={app.store}>
             <ConnectedRouter history={app.browserHistory}>
-                <NavigationGuard message={navigationPreventionMessage} />
+                {/* <NavigationGuard message={navigationPreventionMessage} /> */}
                 <ErrorBoundary>
                     <EntryComponent />
                 </ErrorBoundary>
