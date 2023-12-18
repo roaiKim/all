@@ -1,1 +1,2 @@
-export { additionLoading, confirm, interval, loading, mutex, pageLoading, retryOnNetworkConnectionError } from "./module";
+export { confirm } from "./confirm";
+export { additionLoading, interval, loading, mutex, pageLoading, retryOnNetworkConnectionError } from "@core";

@@ -4,7 +4,7 @@ import { Action, State } from "./reducer";
 
 type DeferLiteralArrayCheck<T> = T extends Array<string | number | boolean | null | undefined> ? T : never;
 
-export function useLoadingStatus(identifier: string = "global"): boolean {
+export function useLoading(identifier: string = "global"): boolean {
     return useSelector((state: State) => state.loading[identifier] > 0);
 }
 

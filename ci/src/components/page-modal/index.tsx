@@ -26,13 +26,19 @@ export function PageModal(props: PropsWithChildren<ViewModalProps>) {
     const { top, right, bottom, left, panelWidth, maxPanelBodyHeight } = useContainerRect({ width, place });
     const className = typeof place === "string" ? place : "";
 
+    console.log("rect", top, right, bottom, left);
     return (
         <div className={`ro-page-drag-panel-masx ${wrapClassName} ${className}`} style={{ left, top, right, bottom }}>
             <Draggable handle=".ro-drag-header" scale={1} bounds="parent">
                 <div className="ro-drag-container" style={{ width: panelWidth }}>
                     <div className="ro-drag-header">
                         <div className="ro-drag-header-title">{title}</div>
-                        <CloseOutlined onClick={() => close(false)} />
+                        <CloseOutlined
+                            onClick={(event) => {
+                                event.isPropagationStopped();
+                                close(false);
+                            }}
+                        />
                     </div>
                     <div className="ro-drag-body" style={{ maxHeight: maxPanelBodyHeight }}>
                         <div>{children}</div>

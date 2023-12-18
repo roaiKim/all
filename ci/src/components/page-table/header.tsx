@@ -7,7 +7,7 @@ interface PageTitleProps extends PageModalState {
 }
 
 export function PageTitle(props: PropsWithChildren<PageTitleProps>) {
-    const { title, pageModalState, children } = props;
+    const { title, modalState, children } = props;
     return (
         <div className="ro-page-header">
             <div>{title}</div>
@@ -17,7 +17,7 @@ export function PageTitle(props: PropsWithChildren<PageTitleProps>) {
                     size="small"
                     type="primary"
                     onClick={() => {
-                        pageModalState.setViewState({ open: true });
+                        modalState.setViewState({ open: true });
                     }}
                 >
                     新增

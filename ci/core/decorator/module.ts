@@ -1,7 +1,10 @@
-import { createActionHandlerDecorator, loadingAction, NetworkConnectionException, pageLoadingAction, roDispatchAction } from "@core";
-import { createPromisedConfirmation } from "./asyncActionHandler";
-
 // 这里的装饰器只能用于 module 中的方法
+
+import { app } from "../app";
+import { NetworkConnectionException } from "../Exception";
+import { loadingAction, pageLoadingAction } from "../reducer";
+
+import { createActionHandlerDecorator } from ".";
 
 /**
  * @description loading
@@ -11,10 +14,10 @@ import { createPromisedConfirmation } from "./asyncActionHandler";
 export function loading(identifier = "global") {
     return createActionHandlerDecorator(async (handler) => {
         try {
-            roDispatchAction(loadingAction(true, identifier));
+            app.store.dispatch(loadingAction(true, identifier));
             await handler();
         } finally {
-            roDispatchAction(loadingAction(false, identifier));
+            app.store.dispatch(loadingAction(false, identifier));
         }
     });
 }
@@ -30,15 +33,15 @@ export function pageLoading(pageTable = "main") {
         const identifier = `${name}-${pageTable}-page-loading`;
         let success = true;
         try {
-            roDispatchAction(pageLoadingAction(1, identifier));
+            app.store.dispatch(pageLoadingAction(1, identifier));
             await handler();
         } catch (e) {
             success = false;
-            roDispatchAction(pageLoadingAction(2, identifier));
+            app.store.dispatch(pageLoadingAction(2, identifier));
             throw e;
         } finally {
             if (success) {
-                roDispatchAction(pageLoadingAction(0, identifier));
+                app.store.dispatch(pageLoadingAction(0, identifier));
             }
         }
     });
@@ -49,36 +52,22 @@ export function pageLoading(pageTable = "main") {
  * @param identifier addition loading的标识 用于区分不同的 addition loading, 取值时 showAdditionLoading 的第二个参数
  * @returns
  */
-export function additionLoading(pageTable = "main") {
+export function additionLoading(pageModal = "main") {
     return createActionHandlerDecorator(async (handler, that) => {
         const name = that.name || "page";
-        const identifier = `${name}-${pageTable}-addition-loading`;
+        const identifier = `${name}-${pageModal}-addition-loading`;
         let success = true;
         try {
-            roDispatchAction(pageLoadingAction(1, identifier));
+            app.store.dispatch(pageLoadingAction(1, identifier));
             await handler();
         } catch (e) {
             success = false;
-            roDispatchAction(pageLoadingAction(2, identifier));
+            app.store.dispatch(pageLoadingAction(2, identifier));
             throw e;
         } finally {
             if (success) {
-                roDispatchAction(pageLoadingAction(0, identifier));
+                app.store.dispatch(pageLoadingAction(0, identifier));
             }
-        }
-    });
-}
-
-/**
- * @description 二次确认
- * @param text 显示文本
- * @returns null
- */
-export function confirm(text: string) {
-    return createActionHandlerDecorator(async (hander) => {
-        const result = await createPromisedConfirmation(text);
-        if (result === "ok") {
-            hander();
         }
     });
 }

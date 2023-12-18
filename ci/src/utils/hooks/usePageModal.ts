@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
+import { useAdditionLoading, usePageLoading } from "./useLoading";
 
 export interface ViewState {
     open: boolean;
@@ -18,7 +19,7 @@ interface PageModalAction extends ViewState {
 }
 
 export interface PageModalState {
-    pageModalState: PageModalAction;
+    modalState: PageModalAction;
 }
 
 const initialViewState = (props?: Partial<ViewState>) => ({
@@ -44,6 +45,31 @@ function calcState(open, loading, initialized, readonly) {
         state["readonly"] = readonly;
     }
     return state;
+}
+
+export function usePageMainModal(props?: Partial<PageModalProps>, pageModal?: string): PageModalAction {
+    const [state, setState] = useState<ViewState>(initialViewState(props));
+    const loading = useAdditionLoading(pageModal);
+
+    const setViewState = useCallback((views) => {
+        setState((prevView) => ({ ...prevView, ...views }));
+    }, []);
+
+    useEffect(() => {
+        const state = calcState(props?.open, props?.loading, props?.initialized, props?.readonly);
+        setViewState(state);
+    }, [props?.open, props?.loading, props?.initialized, props?.readonly]);
+
+    useEffect(() => {
+        setViewState({ loading });
+    }, [loading]);
+
+    return {
+        ...state,
+        viewState: state,
+        setViewState,
+        viewStateModal: [state, setViewState],
+    };
 }
 
 export function usePageModal(props?: Partial<PageModalProps>): PageModalAction {

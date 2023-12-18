@@ -11,8 +11,8 @@ interface AdditionProps extends PageModalState {
 }
 
 export default function (props: AdditionProps) {
-    const { pageModalState, addition } = props;
-    const { additionOpen } = addition || {};
+    const { modalState } = props;
+
     const baseInfo = {
         status: 3,
         createTime: 1658745167000,
@@ -21,14 +21,14 @@ export default function (props: AdditionProps) {
         updateUserName: "罗森2",
     };
 
-    console.log("==pageModalState==", pageModalState);
+    console.log("==pageModalState==", modalState.loading);
 
     return (
         <div>
             <PageModal
-                open={pageModalState.open}
+                open={modalState.open}
                 close={() => {
-                    pageModalState.setViewState({ open: false });
+                    modalState.setViewState({ open: false });
                 }}
                 width={1100}
                 title={"运单管理"}

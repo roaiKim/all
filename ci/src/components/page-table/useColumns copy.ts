@@ -17,28 +17,14 @@ export interface ViewState {
 export type SetView = Dispatch<SetStateAction<Partial<ViewState>>>;
 
 interface ColumnState {
-    /**
-     * 加载中
-     */
     columnLoading: boolean;
-    /**
-     * 是否加载错误
-     */
-    columnError: boolean;
-    /**
-     * 是否加载完成
-     */
-    columnInitialed: boolean;
-    /**
-     * 列
-     */
+    columnLoadError: boolean;
     columns: any[];
 }
 
 const initialState = {
     columnLoading: true,
-    columnError: false,
-    columnInitialed: false,
+    columnLoadError: false,
     columns: [],
 };
 
@@ -49,16 +35,16 @@ export function useColumns(props: ColumnsProps): ColumnState {
 
     async function fetchColumns() {
         const response = await AdvancedTableService.title(moduleName).catch((error) => {
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnError: true, columnInitialed: true, columns: null }));
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: true, columns: null }));
             // captureError(error);
             return Promise.reject();
         });
-
+        console.log("--res", response);
         if (response) {
             const columns = transformTitle(response.commaListConfigData);
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns }));
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns }));
         } else {
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns: null }));
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns: null }));
         }
     }
 

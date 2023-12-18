@@ -10,8 +10,8 @@ interface ProjectProps extends DispatchProp {}
 
 function Project(props: ProjectProps) {
     const link = () => {
-        // roPushHistory("/waybill", { id: "1551864590885830658" });
-        props.dispatch(actions.push());
+        roPushHistory("/waybill", { id: "1551864590885830658", readonly: false });
+        // props.dispatch(actions.push());
     };
 
     return (

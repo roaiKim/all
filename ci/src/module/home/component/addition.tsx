@@ -13,7 +13,7 @@ interface AdditionProps extends PageModalState {}
 // });
 
 export default function (props: AdditionProps) {
-    const { pageModalState } = props;
+    const { modalState } = props;
     // const form = useMemo(
     //     () =>
     //         createForm({
@@ -37,7 +37,7 @@ export default function (props: AdditionProps) {
 
     return (
         <div>
-            <PageModal open={pageModalState.open} close={() => {}} width={1100} title={"运单管理"}>
+            <PageModal open={modalState.open} close={() => {}} width={1100} title={"运单管理"}>
                 <PageModal.header statusTag={STATUS_TAG} baseInfo={baseInfo}></PageModal.header>
                 <ModalCard>
                     <ModalCard.Header title="基本信息">

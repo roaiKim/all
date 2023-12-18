@@ -1,3 +1,5 @@
+import { ViewState } from "utils/hooks/usePageModal";
+
 export type ToLowerCamelCase<P extends string> = P extends `${infer A}-${infer B}`
     ? A extends `${Uncapitalize<A>}`
         ? `${A}${Capitalize<B>}`
@@ -14,8 +16,6 @@ export type ToLowerCamelCase<P extends string> = P extends `${infer A}-${infer B
 /**
  * 页面主弹窗 message
  */
-export interface AdditionMessage<T> {
+export interface AdditionMessage<T> extends Partial<ViewState> {
     addition?: T;
-    additionReadonly?: boolean;
-    additionOpen?: boolean;
 }

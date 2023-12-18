@@ -21,8 +21,14 @@ interface ContainerRect {
 
 const baseWidthRate = 0.8;
 const maxWidthRate = 0.95;
+const maxHeightRate = 0.95;
 const pagemodalHeaderHegiht = 46;
 
+/**
+ * @description 计算矩形相对于值的
+ * @param param0
+ * @returns
+ */
 const calcRect = ({ container, originWidth }) => {
     const { top, right, bottom, left, width, height } = container.getBoundingClientRect();
 
@@ -30,7 +36,7 @@ const calcRect = ({ container, originWidth }) => {
     const { width: bodyWidth, height: bodyHeight } = body.getBoundingClientRect();
 
     const panelWidth = originWidth ? (originWidth > width ? width * maxWidthRate : originWidth) : width * baseWidthRate;
-    const maxPanelBodyHeight = (height - pagemodalHeaderHegiht) * maxWidthRate;
+    const maxPanelBodyHeight = (height - pagemodalHeaderHegiht) * maxHeightRate;
 
     return {
         top,
@@ -50,7 +56,7 @@ const calcRect = ({ container, originWidth }) => {
  * @returns
  */
 export function useContainerRect(props?: ContainerRectProps): ContainerRect {
-    const { width: originWidth, place, frequency = 0 } = props || {};
+    const { width: originWidth, place, frequency = 80 } = props || {};
 
     const container = useMemo(() => {
         let element = undefined;

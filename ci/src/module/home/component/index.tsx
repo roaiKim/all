@@ -20,8 +20,8 @@ function Home(props: HomeProps) {
 
     return (
         <div className="ro-home-module">
-            <Addition pageModalState={pageModalState} />
-            <PageTable.header title="运单管理" pageModalState={pageModalState}>
+            <Addition modalState={pageModalState} />
+            <PageTable.header title="运单管理" modalState={pageModalState}>
                 <Button
                     size="small"
                     onClick={() => {

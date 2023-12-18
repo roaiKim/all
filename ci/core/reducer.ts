@@ -136,6 +136,18 @@ export function showLoading(state: State, identifier: string = "global") {
     return state.loading[identifier] > 0;
 }
 
+// Helper function, to determine if show loading
+export function showPageLoading(name: string, pageTable: string) {
+    const identifier = `${name}-${pageTable}-page-loading`;
+    return app.store.getState().loading[identifier] > 0;
+}
+
+// Helper function, to determine if show loading
+export function showAdditionLoading(name: string, pageModal: string) {
+    const identifier = `${name}-${pageModal}-addition-loading`;
+    return app.store.getState().loading[identifier] > 0;
+}
+
 export const executeMethodMiddleware = () => (next: any) => (action: Action<any>) => {
     const result = next(action);
     const handler = app.actionHandlers[action.type];
