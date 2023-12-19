@@ -6,6 +6,7 @@ import { RootState } from "type/state";
 import { usePageMainModal, usePageModal } from "utils/hooks/usePageModal";
 import Addition from "./addition";
 import Export from "./export";
+import { WaybillColumns } from "../service";
 import "./index.less";
 
 import { actions } from "..";
@@ -31,7 +32,7 @@ function Waybill(props: WaybillProps) {
                     改名
                 </Button>
             </PageTable.header>
-            <PageTable action={actions.pageTable} tableSource={table.source} rowKey="transportOrderNumber" />
+            <PageTable action={actions.pageTable} tableSource={table} colService={WaybillColumns} />
         </div>
     );
 }

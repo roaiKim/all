@@ -26,8 +26,6 @@ export function initialTableSource() {
             pageSize: 20,
             total: "0",
         },
-        sourceLoading: true,
-        sourceLoadError: false,
     };
 }
 

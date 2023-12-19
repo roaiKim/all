@@ -49,3 +49,7 @@ export const transformSelected = (originSelected, rowKey) => {
     }
     return [];
 };
+
+function calcColService(colService = {}) {
+    console.log("--colService--", colService);
+}

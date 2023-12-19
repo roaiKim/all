@@ -1,10 +1,12 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AdvancedTableService } from "@api/AdvancedTableService";
+import { ColumnsService } from "./type";
 import { transformTitle } from "./utils";
 
 interface ColumnsProps {
     moduleName: string;
     dependent: string;
+    colService: typeof ColumnsService;
 }
 
 export interface ViewState {
@@ -43,7 +45,7 @@ const initialState = {
 };
 
 export function useColumns(props: ColumnsProps): ColumnState {
-    const { moduleName, dependent } = props;
+    const { moduleName, dependent, colService } = props;
 
     const [state, setState] = useState<ColumnState>(initialState);
 

@@ -1,5 +1,6 @@
 import { PageTableRequest, PageTableResponse } from "@api/AdvancedTableService";
 import { ajax } from "@http";
+import { customer } from "utils/decorator/columns-service";
 import { WaybillService$addition$response } from "./type";
 
 export class WaybillService {
@@ -20,4 +21,18 @@ export class WaybillService {
     static addition(id: string): Promise<WaybillService$addition$response> {
         return ajax("GET", `/api/common/transportLimitation/detail/${id}`);
     }
+}
+
+export class WaybillColumns {
+    @customer("线路编号", 160)
+    static carryNumber() {}
+
+    @customer("运输方式", 110)
+    static transportMethodName() {}
+
+    @customer("运输模式", 110)
+    static businessMethodName() {}
+
+    @customer("路线状态", 110)
+    static activeStatus() {}
 }

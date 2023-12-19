@@ -9,9 +9,12 @@ import { Spinning } from "components/common/components/loading";
 import { LoadingSVG } from "components/loadingSVG";
 import { nameToPath } from "utils/function/loadComponent";
 import { useElementResizeObserver } from "utils/hooks/useElementResizeObserver";
+import { usePageLoading } from "utils/hooks/useLoading";
 import { useModuleName } from "utils/hooks/useModuleName";
 import { pageEmpty } from "./empty";
 import { PageTitle } from "./header";
+import { RenderEmpty } from "./render-empty";
+import { ColumnsService } from "./type";
 import { useColumns } from "./useColumns";
 import { useDataSource } from "./useDataSource";
 import { transformSelected } from "./utils";
@@ -24,17 +27,57 @@ interface Signature {
     actions: any;
 }
 
-type RowSelection<T> = Omit<TableProps<T>["rowSelection"], "selectedRowKeys"> & { selectedRowKeys: any };
+// type RowSelection<T> = Omit<TableProps<T>["rowSelection"], "selectedRowKeys"> & { selectedRowKeys: any };
+// interface AntTableProps<T> {
+//     rowSelection: TableProps<T>["rowSelection"];
+//     pagination: TableProps<T>["pagination"];
+// }
 
-interface PageTableProps<T> extends TableProps<T> {
-    action: (request?: Partial<any>) => Action<[request?: Partial<any>]>;
+type OverrideAntdPertity = "columns";
+
+type ExcludeAntTableProps<T> = Omit<TableProps<T>, OverrideAntdPertity>;
+
+interface PageTableProps<T> extends ExcludeAntTableProps<TableProps<T>> {
+    /**
+     * 列渲染参数
+     */
+    colService: typeof ColumnsService;
+    /**
+     *
+     * @param request 表格的高级查询 自动获取
+     * @returns
+     */
+    action?: (request?: Partial<any>) => Action<[request?: Partial<any>]>;
+    /**
+     * 用于表头请求的code
+     */
+    tableCode?: string;
+    /**
+     * 表格的高度
+     * 如果无值
+     * 1. 如果 page 会自动计算
+     * 2. 非 page 会有默认值
+     */
     height?: number;
     // signature: Signature;
-    tableSource: any; // AdvancedTableSource<T>;
-    rowSelection?: RowSelection<T>;
+    tableSource: AdvancedTableSource<T>;
+    /**
+     * 是否是高级表格
+     */
+    advanced?: boolean;
+    /**
+     * 是否在主页面中 该值会影响计算表格的高度
+     */
+    page?: boolean;
+    /**
+     * 是否显示表格的选择框
+     */
     isNoneSelect?: boolean;
+    /**
+     * 是否显示分页
+     */
     isNonePagination?: boolean;
-    tableLoading?: boolean;
+    loading?: boolean;
 }
 
 const showTotal: PaginationProps["showTotal"] = (total) => `共 ${total} 条`;
@@ -46,24 +89,65 @@ const defaultHeight = 165;
  * @returns
  */
 export function PageTable<T extends Record<string, any>>(props: PageTableProps<T>) {
-    const { tableSource, height: originHeight, isNoneSelect, isNonePagination, tableLoading } = props;
-    // const { name, actions } = signature;
-    const { source, sourceLoadError } = tableSource;
+    const {
+        tableSource,
+        height: originHeight,
+        isNoneSelect,
+        isNonePagination,
+        loading,
+        action,
+        tableCode,
+        rowSelection,
+        page,
+        colService,
+        pagination,
+        ...restProps
+    } = props;
+
+    const { source } = tableSource;
     const { data, pageIndex, pageSize, total } = source || {};
 
     const dispatch = useDispatch();
     const containerRef = useRef({ elementRef: null, height: 0 });
     const [containerId] = useState(v4());
-    const [colRely, setColRely] = useState(v4()); // 表格依赖
-    const [sourceRely, setSourceRely] = useState(v4()); // 表格数据依赖
-    const { width, height } = useElementResizeObserver(document.querySelector(".ro-module-body"));
 
+    /**
+     * 依赖集合
+     */
+    const [dependent, setDependent] = useState({
+        colunmDependent: "", // 表头 依赖
+        sourceDependent: "", // 表格数据 依赖
+    });
+
+    /**
+     * 获取表格是否loading，只有传action且page=true有效
+     */
+    const tableLoading = usePageLoading();
+
+    // const { width, height } = useElementResizeObserver(document.querySelector(".ro-module-body"));
+
+    /**
+     * 模块的 moduleName
+     */
     const moduleName = useModuleName();
 
+    /**
+     * 获取表头
+     */
     const { columnLoading, columnError, columnInitialed, columns } = useColumns({
-        moduleName: nameToPath[moduleName] || moduleName,
-        dependent: colRely,
+        moduleName: tableCode || nameToPath[moduleName] || moduleName,
+        dependent: dependent.colunmDependent,
+        colService,
     });
+
+    /**
+     * 拉取数据
+     */
+    useEffect(() => {
+        if (columnInitialed && action) {
+            dispatch(action());
+        }
+    }, [columnInitialed, dependent.sourceDependent]);
 
     // useDataSource({
     //     fetch: actions.fetchPageTable,
@@ -71,37 +155,37 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
     // });
 
     const updateColAndSource = (type: "col" | "source") => {
-        if (type === "col") {
-            setColRely(v4());
-        } else if (type === "source") {
-            setSourceRely(v4());
-        }
+        // if (type === "col") {
+        //     setColRely(v4());
+        // } else if (type === "source") {
+        //     setSourceRely(v4());
+        // }
     };
 
     // 高度控制
-    useEffect(() => {
-        try {
-            if (!containerRef.current.elementRef) {
-                containerRef.current.elementRef = document.querySelector(`#ro-table-container-${containerId} .ant-table-body`);
-            }
-            const container: any = containerRef.current.elementRef;
-            if (!container) return;
+    // useEffect(() => {
+    //     try {
+    //         if (!containerRef.current.elementRef) {
+    //             containerRef.current.elementRef = document.querySelector(`#ro-table-container-${containerId} .ant-table-body`);
+    //         }
+    //         const container: any = containerRef.current.elementRef;
+    //         if (!container) return;
 
-            // const containerHeight = Number((container.style.height || "").replace("px", ""));
-            if (!originHeight) {
-                const h = height - defaultHeight;
-                if (h === containerRef.current.height) return;
-                container.style.height = `${h}px`;
-                containerRef.current.height = h;
-            } else {
-                if (containerRef.current.height === originHeight) return;
-                container.style.height = `${originHeight}px`;
-                containerRef.current.height = originHeight;
-            }
-        } catch (e) {
-            console.error("设置table高度失败 table-id:" + containerId, e);
-        }
-    }, [height, data]);
+    //         // const containerHeight = Number((container.style.height || "").replace("px", ""));
+    //         if (!originHeight) {
+    //             const h = height - defaultHeight;
+    //             if (h === containerRef.current.height) return;
+    //             container.style.height = `${h}px`;
+    //             containerRef.current.height = h;
+    //         } else {
+    //             if (containerRef.current.height === originHeight) return;
+    //             container.style.height = `${originHeight}px`;
+    //             containerRef.current.height = originHeight;
+    //         }
+    //     } catch (e) {
+    //         console.error("设置table高度失败 table-id:" + containerId, e);
+    //     }
+    // }, [height, data]);
 
     function pageTableChange(pagination, filters, sorter, extra: { currentDataSource: any[]; action: "paginate" | "sort" | "filter" }) {
         console.log("--table-", pagination, filters, sorter, extra);
@@ -111,6 +195,9 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
         }
     }
 
+    /**
+     * 表头加载失败
+     */
     if (columnInitialed && !columnError && !columns) {
         return pageEmpty({
             error: true,
@@ -133,81 +220,84 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
     }
 
     return (
-        <div className="ro-page-table" id={`ro-table-container-${containerId}`}>
+        <div className="ro-table-container" id={`ro-table-container-${containerId}`}>
             <ConfigProvider
-                renderEmpty={() =>
-                    pageEmpty({
-                        error: sourceLoadError,
-                        handler: () => {
-                            updateColAndSource("source");
-                        },
-                    })
-                }
+                // 无数据渲染
+                renderEmpty={() => <RenderEmpty />}
             >
-                <Spinning loading={false} initialized>
-                    <div className="ro-page-table-title ro-flex ro-col-center">
-                        <div className="ro-flex ro-col-center" style={{ height: 34 }}>
-                            <div>
-                                <DeleteOutlined />
-                                <a style={{ marginLeft: 5 }}>清空条件</a>
-                            </div>
-                            <Search
-                                size="small"
-                                placeholder="搜索"
-                                allowClear
-                                onSearch={() => {
-                                    // dispatch(actions.fetchPageTable());
-                                }}
-                                style={{ width: 200, marginLeft: 10 }}
-                            />
+                <div className="ro-page-table-title ro-flex ro-col-center">
+                    <div className="ro-flex ro-col-center" style={{ height: 34 }}>
+                        <div>
+                            <DeleteOutlined />
+                            <a style={{ marginLeft: 5 }}>清空条件</a>
                         </div>
-                        <div className="ro-grow" style={{ marginLeft: 10 }}></div>
-                        <Button icon={<SettingOutlined />} size="small" />
+                        <Search
+                            size="small"
+                            placeholder="搜索"
+                            allowClear
+                            onSearch={() => {
+                                // dispatch(actions.fetchPageTable());
+                            }}
+                            style={{ width: 200, marginLeft: 10 }}
+                        />
                     </div>
+                    <div className="ro-grow" style={{ marginLeft: 10 }}></div>
+                    <Button icon={<SettingOutlined />} size="small" />
+                </div>
 
-                    <Table
-                        size="small"
-                        rowKey={props.rowKey || "id"}
-                        bordered
-                        dataSource={data || []}
-                        columns={columns}
-                        scroll={{
-                            x: width,
-                            y: originHeight || height - defaultHeight,
-                        }}
-                        // loading={{
-                        //     spinning: columnLoading || tableLoading,
-                        //     indicator: <LoadingSVG />,
-                        // }}
-                        onChange={pageTableChange}
-                        {...(!isNonePagination
-                            ? {
-                                  pagination: {
-                                      showSizeChanger: true,
-                                      size: "small",
-                                      total: Number(total) || 0,
-                                      current: pageIndex,
-                                      pageSize,
-                                      showTotal,
-                                      pageSizeOptions: [20, 50, 100, 200],
-                                      ...props.pagination,
-                                  },
-                              }
-                            : { pagination: false })}
-                        {...(!isNoneSelect
-                            ? {
-                                  rowSelection: {
-                                      fixed: true,
-                                      type: "checkbox",
-                                      ...props.rowSelection,
-                                      ...(props.rowSelection?.selectedRowKeys
-                                          ? { selectedRowKeys: transformSelected(props.rowSelection.selectedRowKeys, props.rowKey) }
-                                          : {}),
-                                  },
-                              }
-                            : {})}
-                    />
-                </Spinning>
+                <Table
+                    // 表格的
+                    style={{ maxWidth: "100%", overflow: "hidden", ...({ "--ro-table-container-height": `600px` } as any) }}
+                    className={`${data?.length ? "" : "ro-table-no-content"}`}
+                    size="small"
+                    rowKey="id"
+                    bordered
+                    dataSource={data || []}
+                    columns={columns}
+                    /**
+                     * 解决高度问题
+                     */
+                    scroll={{
+                        x: "100%",
+                        y: "var(--ro-table-container-height)", //originHeight || height - defaultHeight,
+                    }}
+                    loading={{
+                        spinning: columnLoading || tableLoading,
+                        indicator: <LoadingSVG />,
+                    }}
+                    onChange={pageTableChange}
+                    /**
+                     * 分页
+                     */
+                    {...(!isNonePagination
+                        ? {
+                              pagination: {
+                                  showSizeChanger: true,
+                                  size: "small",
+                                  total: Number(total) || 0,
+                                  current: pageIndex,
+                                  pageSize,
+                                  showTotal,
+                                  pageSizeOptions: [20, 50, 100, 200],
+                                  ...(pagination || {}),
+                              },
+                          }
+                        : { pagination: false })}
+                    /**
+                     * 选择数据
+                     */
+                    {...(!isNoneSelect
+                        ? {
+                              rowSelection: {
+                                  fixed: true,
+                                  type: "checkbox",
+                                  ...(rowSelection || {}),
+                                  ...(rowSelection?.selectedRowKeys ? { selectedRowKeys: transformSelected(rowSelection.selectedRowKeys, props.rowKey) } : {}),
+                              },
+                          }
+                        : {})}
+                    {...restProps}
+                />
             </ConfigProvider>
         </div>
     );

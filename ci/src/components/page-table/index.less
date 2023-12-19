@@ -1,7 +1,30 @@
-.ro-page-table {
+.ro-table-container {
   color: inherit;
   padding: 0 10px;
-  height: calc(100vh - 46px - 40px);
+  position: relative;
+  // height: calc(100vh - 46px - 40px);
+
+  .ant-table-body {
+    min-height: var(--ro-table-container-height);
+    border-block-end: 1px solid #f0f0f0;
+    border-inline-end: 1px solid #f0f0f0;
+  }
+
+  .ro-table-no-content {
+    .ant-table-body {
+      overflow: hidden !important;
+    }
+
+    .ant-table-placeholder {
+      .ant-table-cell {
+        border-bottom: none;
+      }
+    }
+  }
+
+  .ant-spin-spinning {
+    max-height: unset !important;
+  }
 }
 
 .ro-page-empty {

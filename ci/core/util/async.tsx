@@ -24,7 +24,7 @@ interface WrapperComponentState {
 export function async<T, K extends ReactComponentKeyOf<T>>(
     resolve: () => Promise<T>,
     component: K,
-    { LoadingComponent, loadingIdentifier, ErrorComponent }: AsyncOptions = {}
+    { LoadingComponent, loadingIdentifier = "pageloading", ErrorComponent }: AsyncOptions = {}
 ): T[K] {
     return class AsyncWrapperComponent extends React.PureComponent<{}, WrapperComponentState> {
         private timeOut = null;

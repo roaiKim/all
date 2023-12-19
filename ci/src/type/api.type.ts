@@ -57,7 +57,6 @@ export interface OrderServicePaymentRequest {
 
 export interface AdvancedTableSource<T> {
     source: PageTableResponse<T>;
-    sourceLoadError?: boolean;
 }
 
 /**
