@@ -11,7 +11,10 @@ function NoFoundModule(props) {
     const autoSkipHome = () => {
         const time = ms - 1;
         if (time < 0) {
-            timer.current && clearInterval(timer.current);
+            if (timer.current) {
+                clearInterval(timer.current);
+                timer.current === null;
+            }
             roDispatchAction(actions.closeTabByKey(keyPath, "/home"));
         } else {
             timer.current = setTimeout(() => {
@@ -24,7 +27,10 @@ function NoFoundModule(props) {
     useEffect(() => {
         autoSkipHome();
         return () => {
-            timer.current && clearInterval(timer.current);
+            if (timer.current) {
+                clearInterval(timer.current);
+                timer.current === null;
+            }
         };
     }, [ms]);
 
