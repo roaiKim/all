@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AdvancedTableService } from "@api/AdvancedTableService";
 import { ColumnsService } from "./type";
-import { transformTitle } from "./utils";
+import { renderTableTitle } from "./utils";
 
 interface ColumnsProps {
     moduleName: string;
@@ -57,8 +57,8 @@ export function useColumns(props: ColumnsProps): ColumnState {
         });
 
         if (response) {
-            const columns = transformTitle(response.commaListConfigData);
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns }));
+            const { cols, colProtitys } = renderTableTitle(response.commaListConfigData, colService);
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns: colProtitys }));
         } else {
             setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns: null }));
         }

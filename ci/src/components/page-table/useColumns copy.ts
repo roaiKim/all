@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AdvancedTableService } from "@api/AdvancedTableService";
-import { transformTitle } from "./utils";
+import { renderTableTitle } from "./utils";
 
 interface ColumnsProps {
     moduleName: string;
@@ -40,12 +40,12 @@ export function useColumns(props: ColumnsProps): ColumnState {
             return Promise.reject();
         });
         console.log("--res", response);
-        if (response) {
-            const columns = transformTitle(response.commaListConfigData);
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns }));
-        } else {
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns: null }));
-        }
+        // if (response) {
+        //     const columns = renderTableTitle(response.commaListConfigData, {});
+        //     setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns }));
+        // } else {
+        //     setState((prevState) => ({ ...prevState, columnLoading: false, columnLoadError: false, columns: null }));
+        // }
     }
 
     useEffect(() => {
