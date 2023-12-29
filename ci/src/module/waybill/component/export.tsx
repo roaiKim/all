@@ -11,8 +11,6 @@ interface ExportProps extends PageModalState {}
 export default function (props: ExportProps) {
     const { modalState } = props;
 
-    console.log("==ExportState==", modalState.loading);
-
     return (
         <div>
             <PageModal

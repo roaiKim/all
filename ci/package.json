@@ -60,7 +60,7 @@
         "@types/react-redux": "^7.1.21",
         "@types/react-router": "5.1.17",
         "@types/react-router-dom": "5.3.1",
-        "antd": "^5.11.5",
+        "antd": "^5.12.5",
         "array-move": "^4.0.0",
         "axios": "0.23.0",
         "classnames": "2.3.1",

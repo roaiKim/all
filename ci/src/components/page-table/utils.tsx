@@ -2,11 +2,26 @@ import dayjs from "dayjs";
 import { PageTableRequest } from "@api/AdvancedTableService";
 import { ColumnsService, RenderColumnType } from "./type";
 
-export const renderTableTitle = (columns, service: typeof ColumnsService) => {
-    const originCol = columns.reduce((prev, next) => ((prev[next.propKey] = next), prev), {});
+export const renderTableTitle = (columnOrigin, service: typeof ColumnsService, isNoneOrder: boolean, startOrder: number) => {
+    const originCol = columnOrigin.reduce((prev, next) => ((prev[next.propKey] = next), prev), {});
 
-    const cols = [];
-    const colProtitys = [];
+    const columns = [];
+    const columnsConfig = [];
+
+    if (!isNoneOrder) {
+        columns.push({
+            align: "center",
+            dataIndex: "",
+            key: "",
+            title: "序号",
+            width: 50,
+            fixed: "left",
+            render(text, record, index) {
+                return startOrder + index + 1;
+            },
+        });
+    }
+
     for (const propertyName in service) {
         const propertys: any = {};
         for (const t in service[propertyName]) {
@@ -39,12 +54,27 @@ export const renderTableTitle = (columns, service: typeof ColumnsService) => {
             },
         };
 
-        cols.push({
+        columns.push(renderProperty);
+
+        columnsConfig.push({
             propertys,
             propertyName,
             origin: originCol[propertyName] || null,
         });
-        colProtitys.push(renderProperty);
+    }
+
+    if (!isNoneOrder) {
+        columns.push({
+            align: "center",
+            dataIndex: "",
+            key: "",
+            title: "操作",
+            width: 120,
+            fixed: "right",
+            render(text, record, index) {
+                return "操作" + index;
+            },
+        });
     }
     // const cols = columns
     //     .filter((item) => item.title)
@@ -72,7 +102,7 @@ export const renderTableTitle = (columns, service: typeof ColumnsService) => {
     //         };
     //     });
 
-    return { cols, colProtitys };
+    return { columns, columnsConfig };
 };
 
 export const transformSelected = (originSelected, rowKey) => {

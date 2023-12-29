@@ -7,6 +7,9 @@ interface ColumnsProps {
     moduleName: string;
     dependent: string;
     colService: typeof ColumnsService;
+    isNoneOrder: boolean;
+    pageIndex?: number;
+    pageSize?: number;
 }
 
 export interface ViewState {
@@ -45,7 +48,7 @@ const initialState = {
 };
 
 export function useColumns(props: ColumnsProps): ColumnState {
-    const { moduleName, dependent, colService } = props;
+    const { moduleName, dependent, colService, isNoneOrder, pageIndex, pageSize } = props;
 
     const [state, setState] = useState<ColumnState>(initialState);
 
@@ -57,8 +60,8 @@ export function useColumns(props: ColumnsProps): ColumnState {
         });
 
         if (response) {
-            const { cols, colProtitys } = renderTableTitle(response.commaListConfigData, colService);
-            setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns: colProtitys }));
+            const { columns, columnsConfig } = renderTableTitle(response.commaListConfigData, colService, isNoneOrder, (pageIndex - 1 || 0) * (pageSize || 20));
+            setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns }));
         } else {
             setState((prevState) => ({ ...prevState, columnLoading: false, columnError: false, columnInitialed: true, columns: null }));
         }

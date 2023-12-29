@@ -21,8 +21,6 @@ export default function (props: AdditionProps) {
         updateUserName: "罗森2",
     };
 
-    console.log("==pageModalState==", modalState.loading);
-
     return (
         <div>
             <PageModal

@@ -8,4 +8,34 @@
       overflow-y: auto !important;
     }
   }
+
+  /** 表格偶数行变色问题 **/
+  .ant-table-tbody {
+    tr:nth-child(even) {
+      background-color: #f7f7f7;
+
+      td[class~="ant-table-cell-fix-left"],
+      td[class~="ant-table-cell-fix-right"] {
+        background-color: #f7f7f7;
+
+        &:hover {
+          background-color: #eaf4fe;
+        }
+      }
+
+      &:has(:hover) {
+        td[class~="ant-table-cell-fix-left"],
+        td[class~="ant-table-cell-fix-right"] {
+          background-color: #eaf4fe;
+        }
+      }
+    }
+  }
+
+  /** 表头原色设置 **/
+  .ant-table-thead {
+    th {
+      background-image: linear-gradient(#fff, #f0f0f0) !important;
+    }
+  }
 }

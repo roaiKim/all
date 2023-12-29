@@ -30,7 +30,7 @@ function BodyContainer(props: BodyContainerProps) {
     } else if (globalLoading) {
         title = "Loading...";
     }
-    console.log("--globalLoading--", globalLoading);
+
     return (
         <GlobalMask
             loading={!PERMISSION_DONE || globalLoading}

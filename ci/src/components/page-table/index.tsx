@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Action } from "@core";
-import { Button, ConfigProvider, Input, PaginationProps, Table, TableProps } from "antd";
+import { Button, ConfigProvider, Input, Pagination, PaginationProps, Table, TableProps } from "antd";
 import { v4 } from "uuid";
 import { AdvancedTableSource } from "type/api.type";
 import { DeleteOutlined, SettingOutlined } from "@ant-design/icons";
@@ -33,11 +33,15 @@ interface Signature {
 //     pagination: TableProps<T>["pagination"];
 // }
 
-type OverrideAntdPertity = "columns";
+type OverrideAntdPertity = "columns" | "pagination";
 
 type ExcludeAntTableProps<T> = Omit<TableProps<T>, OverrideAntdPertity>;
 
 interface PageTableProps<T> extends ExcludeAntTableProps<TableProps<T>> {
+    /**
+     * 是否是普通表格 (普通表格没有高级查询，列设置及搜索)
+     */
+    static?: boolean;
     /**
      * 列渲染参数
      */
@@ -59,7 +63,9 @@ interface PageTableProps<T> extends ExcludeAntTableProps<TableProps<T>> {
      * 2. 非 page 会有默认值
      */
     height?: number;
-    // signature: Signature;
+    /**
+     * 列表数据
+     */
     tableSource: AdvancedTableSource<T>;
     /**
      * 是否是高级表格
@@ -77,7 +83,18 @@ interface PageTableProps<T> extends ExcludeAntTableProps<TableProps<T>> {
      * 是否显示分页
      */
     isNonePagination?: boolean;
+    /**
+     * 是否显示序号
+     */
+    isNoneOrder?: boolean;
+    /**
+     * loading
+     */
     loading?: boolean;
+    /**
+     * 分页器左边 DOM
+     */
+    paginationBefore?: React.ReactNode;
 }
 
 const showTotal: PaginationProps["showTotal"] = (total) => `共 ${total} 条`;
@@ -100,13 +117,13 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
         rowSelection,
         page,
         colService,
-        pagination,
+        isNoneOrder,
+        paginationBefore,
         ...restProps
     } = props;
 
     const { source } = tableSource;
     const { data, pageIndex, pageSize, total } = source || {};
-
     const dispatch = useDispatch();
     const containerRef = useRef({ elementRef: null, height: 0 });
     const [containerId] = useState(v4());
@@ -138,6 +155,9 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
         moduleName: tableCode || nameToPath[moduleName] || moduleName,
         dependent: dependent.colunmDependent,
         colService,
+        isNoneOrder,
+        pageIndex,
+        pageSize,
     });
 
     /**
@@ -247,7 +267,7 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
 
                 <Table
                     // 表格的
-                    style={{ maxWidth: "100%", overflow: "hidden", ...({ "--ro-table-container-height": `600px` } as any) }}
+                    style={{ maxWidth: "100%", overflow: "hidden", ...({ "--ro-table-container-height": `500px` } as any) }}
                     className={`${data?.length ? "" : "ro-table-no-content"}`}
                     size="small"
                     rowKey="id"
@@ -258,7 +278,7 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
                      * 解决高度问题
                      */
                     scroll={{
-                        x: "100%",
+                        // x: "100%",
                         y: "var(--ro-table-container-height)", //originHeight || height - defaultHeight,
                     }}
                     loading={{
@@ -266,23 +286,24 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
                         indicator: <LoadingSVG />,
                     }}
                     onChange={pageTableChange}
+                    pagination={false}
                     /**
                      * 分页
                      */
-                    {...(!isNonePagination
-                        ? {
-                              pagination: {
-                                  showSizeChanger: true,
-                                  size: "small",
-                                  total: Number(total) || 0,
-                                  current: pageIndex,
-                                  pageSize,
-                                  showTotal,
-                                  pageSizeOptions: [20, 50, 100, 200],
-                                  ...(pagination || {}),
-                              },
-                          }
-                        : { pagination: false })}
+                    // {...(!isNonePagination
+                    //     ? {
+                    //           pagination: {
+                    //               showSizeChanger: true,
+                    //               size: "small",
+                    //               total: Number(total) || 0,
+                    //               current: pageIndex,
+                    //               pageSize,
+                    //               showTotal,
+                    //               pageSizeOptions: [20, 50, 100, 200],
+                    //               ...(pagination || {}),
+                    //           },
+                    //       }
+                    //     : { pagination: false })}
                     /**
                      * 选择数据
                      */
@@ -298,6 +319,24 @@ export function PageTable<T extends Record<string, any>>(props: PageTableProps<T
                         : {})}
                     {...restProps}
                 />
+                <div style={{ display: "flex", alignItems: "center", height: 39 }}>
+                    <div style={{ flexGrow: 1 }}>{paginationBefore || null}</div>
+                    <div style={{ marginRight: 15 }}>已勾选 2 项</div>
+                    {!isNonePagination && (
+                        <Pagination
+                            size="small"
+                            total={Number(total) || 0}
+                            pageSize={pageSize}
+                            current={pageIndex}
+                            showSizeChanger
+                            pageSizeOptions={[20, 50, 100, 200]}
+                            showTotal={showTotal}
+                            onChange={(page, pageSize) => {
+                                dispatch(action({ pageSize, pageNo: page }));
+                            }}
+                        />
+                    )}
+                </div>
             </ConfigProvider>
         </div>
     );

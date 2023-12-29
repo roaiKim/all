@@ -20,7 +20,6 @@ class WaybillModule extends Module<RootState, ToLowerCamelCase<typeof moduleName
         if (location.state?.id) {
             const { id, readonly } = location.state;
             this.addition(id, readonly);
-            // this.pageTable();
         }
     }
 
@@ -33,7 +32,6 @@ class WaybillModule extends Module<RootState, ToLowerCamelCase<typeof moduleName
     @additionLoading()
     async addition(id: string, readonly = true) {
         const response = await WaybillService.addition(id);
-        // this.setState({ addition: combineAddition(this.state.addition, response, { additionReadonly: readonly, additionOpen: true }) });
         this.toggleAddition(response, { readonly, open: true, initialized: true });
     }
 
