@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { showLoading } from "@core";
 import { Button } from "antd";
+import produce from "immer";
 import { PageTable } from "components/page-table";
 import { actions } from "module/home";
 import { RootState } from "type/state";
@@ -14,10 +15,10 @@ interface HomeProps extends ReturnType<typeof mapStateToProps> {}
 function Home(props: HomeProps) {
     const [count, setCount] = useState<{ count: number; count2: number; count3: number }>({ count: 1, count2: 1, count3: 1 });
     const pageModalState = usePageModal();
-    const [s, setS] = useState([]);
+    const [values, setTimes] = useState({ times: 1 });
 
     const { tableSource, tableLoading } = props;
-
+    console.log("update-times", values.times);
     return (
         <div className="ro-home-module">
             <Addition modalState={pageModalState} />
@@ -30,7 +31,24 @@ function Home(props: HomeProps) {
                 >
                     改名{count.count}-{count.count2}-{count.count3}
                 </Button>
+                <Button
+                    size="small"
+                    onClick={() => {
+                        // setTimes((prev) => ({ ...prev, times: 1 }));
+                        values.times += 1;
+                        setTimes(values);
+                        // setTimes(
+                        //     produce(values, (draft) => {
+                        //         draft.times += 1;
+                        //     })
+                        // );
+                    }}
+                >
+                    times{values.times}
+                </Button>
             </PageTable.header>
+
+            {values.times}
             {/* <PageTable
                 signature={{
                     name: "s/waybillkkk",
