@@ -13,7 +13,7 @@ function buildPath() {
 module.exports = {
     appPath: resolve(""),
     src: resolve("src"),
-    core: resolve("core"),
+    core: resolve("node_modules/app-core"),
     components: resolve("src/components"),
     build: buildPath(),
     tsConfig: resolve("tsconfig.json"),

@@ -16,12 +16,11 @@
         "lib": ["dom", "es2019"],
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
-        "suppressImplicitAnyIndexErrors": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "downlevelIteration": true,
         "paths": {
-            "@core": ["../core"],
+            "@core": ["../node_modules/app-core"],
             "@http": ["./http"],
             "@icon": ["../node_modules/@ant-design/icons"],
             "@api/*": ["./service/api/*"]

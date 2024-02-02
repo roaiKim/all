@@ -1,0 +1,10 @@
+webpack/**
+babel.config.js
+config/**
+.eslintrc.js
+dist/**
+node_modules
+script/**
+env.js
+webpack.config.production.js
+# eslint_rules

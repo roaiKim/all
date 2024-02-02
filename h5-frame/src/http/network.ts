@@ -33,12 +33,12 @@ export async function ajax<Request, Response, Path extends string>(
     contentType: keyof typeof ContentType = "JSON",
     ajaxConfig: Partial<AjaxConfig> = {}
 ): Promise<Response> {
-    const fullURL = joinUrl(path);
+    // const fullURL = joinUrl(path);
     const { headers = {}, config = {}, globalHold = true } = ajaxConfig || {};
 
     const requestConfig: any = {
         method,
-        url: fullURL,
+        url: path,
         headers: {
             "Content-Type": ContentType[contentType],
             Authorization: getAuthorization(),

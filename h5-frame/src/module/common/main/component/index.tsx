@@ -1,17 +1,18 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { connect, DispatchProp } from "react-redux";
 import { roPushHistory, Route, showLoading } from "@core";
-import { Button, TabBar } from "antd-mobile";
+import { TabBar } from "antd-mobile";
 import { Switch } from "react-router-dom";
 import { RootState } from "type/state";
 import { modules } from "utils/function/loadComponent";
 import { MenuIcon } from "utils/MenuIcon";
-import BodyContainer from "./main";
 import "./index.less";
 
 interface MainProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
 function Main(props: MainProps) {
+    const { pagesLoading } = props;
+
     const tabBars = useMemo(() => {
         return modules?.filter((item) => item.bar);
     }, [modules]);
@@ -20,7 +21,6 @@ function Main(props: MainProps) {
         <div className="ro-app-container">
             <div className="ro-page-container">
                 <Switch>
-                    {/* <Route path="/login" component={LoginComponent} /> */}
                     {modules.map((module) => (
                         <Route key={module.name} path={module.path} component={module.component} />
                     ))}
@@ -46,8 +46,7 @@ function Main(props: MainProps) {
 
 const mapStateToProps = (state: RootState) => {
     return {
-        globalLoading: showLoading(state), // 全局loading
-        PERMISSION_DONE: state.app.main.PERMISSION_DONE,
+        pagesLoading: showLoading(state, "main"), // 全局loading
     };
 };
 

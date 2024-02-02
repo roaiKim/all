@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "outDir": "lib",
+    "module": "esnext",
+    "target": "es5",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "removeComments": false,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
+    "jsx": "react",
+    "lib": ["dom", "esnext"],
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    // "strict": true,
+    "downlevelIteration": true,
+    "declaration": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ], 
+  },
+  "files":["src/index.ts"]
+}

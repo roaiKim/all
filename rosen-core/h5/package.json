@@ -1,0 +1,61 @@
+{
+    "name": "wechat-core-app",
+    "version": "1.0.3",
+    "main": "lib/index.js",
+    "module": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "license": "MIT",
+    "files": [
+        "lib"
+    ],
+    "scripts": {
+        "build:tsc": "tsc -p ./tsconfig.json",
+        "build": "webpack --config ./webpack.config.production.js",
+        "pure": "tsc --declaration false --target esnext --sourceMap false --outDir pure --jsx Preserve --useDefineForClassFields true -p ./tsconfig.json"
+    },
+    "devDependencies": {
+        "@types/react": "^17.0.2",
+        "@types/react-dom": "^18.0.11",
+        "@types/redux": "^3.6.0",
+        "@types/webpack-env": "^1.13.6",
+        "@typescript-eslint/eslint-plugin": "^5.20.0",
+        "@typescript-eslint/parser": "^5.20.0",
+        "eslint": "^8.12.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-import": "^2.12.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "eslint-plugin-react": "^7.8.2",
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "prettier": "^2.8.5",
+        "stylelint": "^14.4.0",
+        "clean-webpack-plugin": "^4.0.0",
+        "tslib": "^2.2.0",
+        "typescript": "^4.1.0",
+        "webpack": "^5.60.0",
+        "webpack-bundle-analyzer": "^4.5.0",
+        "react-dev-utils": "^12.0.1",
+        "webpack-cli": "^4.9.1",
+        "eslint-webpack-plugin": "^3.1.1",
+        "autoprefixer": "^10.4.0",
+        "optimize-css-assets-webpack-plugin": "^6.0.1",
+        "mini-css-extract-plugin": "^2.4.4",
+        "html-webpack-plugin": "^5.5.0"
+        
+    },
+    "dependencies": {
+        "@types/react-redux": "7.1.19",
+        "@types/react-router-dom": "5.3.1",
+        "connected-react-router": "6.9.1",
+        "react": "^17.0.0",
+        "react-dom": "^17.0.0",
+        "react-redux": "^8.0.5",
+        "react-router-dom": "5.3.0",
+        "redux": "4.1.1",
+        "tslib": "^2.2.0"
+    },
+    "resolutions": {
+        "@types/react": "^17.0.0",
+        "@types/react-dom": "^17.0.0",
+        "tslib": "^2.2.0"
+    }
+}
