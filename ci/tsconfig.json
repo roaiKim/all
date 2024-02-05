@@ -16,6 +16,7 @@
         "lib": ["dom", "es2019"],
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
+        "ignoreDeprecations": "5.0",
         "suppressImplicitAnyIndexErrors": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,

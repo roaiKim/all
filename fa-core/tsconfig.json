@@ -16,6 +16,7 @@
         "lib": ["dom", "es2017"],
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
+        "ignoreDeprecations": "5.0",
         "suppressImplicitAnyIndexErrors": true,
         "skipLibCheck": true,
         "downlevelIteration": true,
