@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "lib",
+    "strictBindCallApply": false,
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "rootDir": ".",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@core": ["../node_modules/wechat-core-app"],
+      "@http": ["./http"],
+      "@api/*": ["./service/api/*"]
+    }
+  },
+  "include": ["./src", "global.d.ts"],
+  "exclude": ["./script", "./config"],
+  "compileOnSave": false
+}
