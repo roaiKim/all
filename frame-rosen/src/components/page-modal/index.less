@@ -1,0 +1,73 @@
+.ro-page-drag-panel-masx {
+  right: 0;
+  bottom: 0;
+  background: rgb(0 0 0 / 30%);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+
+  &.global {
+    top: 0;
+    left: 0;
+  }
+
+  &.default {
+    top: 46px;
+    left: 200px;
+  }
+
+  .ro-drag-container {
+    max-height: 95%;
+    min-width: 60%;
+  }
+
+  .ro-drag-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    background: #313131;
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 1px 6px rgb(0 0 0 / 22%), 0 1px 4px rgb(0 0 0 / 22%);
+    cursor: move;
+
+    .ro-drag-header-title {
+      margin-left: 10px;
+    }
+
+    > span {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      justify-content: center;
+      cursor: pointer;
+
+      &:hover {
+        background: rgb(255 255 255 / 10%);
+      }
+    }
+  }
+
+  .ro-drag-body {
+    overflow-y: auto;
+
+    .ro-modal-title {
+      display: flex;
+      background-color: #fff;
+      min-height: 35px;
+      padding: 5px 5px 5px 10px;
+      align-items: center;
+      flex-flow: wrap;
+
+      > div {
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+      }
+    }
+  }
+}

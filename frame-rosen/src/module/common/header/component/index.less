@@ -1,0 +1,134 @@
+@import "~asset/less/variable";
+
+.ro-header-module {
+  height: 46px;
+  z-index: 120;
+  position: relative;
+  color: rgb(0 0 0 / 85%);
+  line-height: 46px;
+  background: #191919;
+  user-select: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #3d3d3d;
+    left: 0;
+    bottom: 0;
+    z-index: 99999;
+  }
+
+  .ro-header-logo {
+    padding-left: 20px;
+    width: 200px;
+    height: 100%;
+    color: #ccc;
+    box-sizing: border-box;
+
+    img {
+      max-width: 80px;
+      margin-right: 10px;
+      max-height: 80%;
+      vertical-align: middle;
+    }
+  }
+
+  .ro-header-tabs {
+    color: rgb(255 255 255 / 90%);
+    flex-grow: 1;
+  }
+
+  .ro-header-operate {
+    margin-right: 35px;
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+.ro-header-tab-item-g {
+  width: 140px;
+  height: 38px;
+  perspective: 20px;
+  position: relative;
+  color: rgb(255 255 255 / 36%);
+  font-size: 12px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 8px;
+  padding-left: 20px;
+  padding-right: 30px;
+  transition: color 200ms;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  &.active {
+    color: hsl(0deg 0% 100% / 90%);
+    z-index: 9999;
+
+    .ro-tab-trapezoid {
+      background-color: #3d3d3d;
+    }
+  }
+
+  &:hover {
+    color: rgb(255 255 255 / 90%);
+  }
+
+  &:not(:first-child) {
+    margin-left: -20px;
+  }
+
+  .ro-tab-trapezoid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 1px;
+    left: 0;
+    background-color: #282828;
+    border-radius: 8px 8px 0 0;
+    transform: rotateX(10deg);
+    transform-origin: 50% 100%;
+    box-shadow: 0 0 2px 3px rgb(0 0 0 / 20%);
+
+    &:hover {
+      background-color: #2f2f2f;
+    }
+  }
+
+  .ro-tab-title {
+    position: relative;
+    z-index: 99;
+    height: 16px;
+    line-height: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .anticon {
+    position: absolute;
+    right: 14px;
+    color: rgb(255 255 255 / 50%);
+    z-index: 100;
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+    margin-right: 2px;
+    border-radius: 2px;
+
+    &:hover {
+      color: #9d9b9b;
+      cursor: pointer;
+      background-color: #646262;
+    }
+  }
+}
+
+.ro-header-tab-help-sort {
+  z-index: 9998 !important;
+}
