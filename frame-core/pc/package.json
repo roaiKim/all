@@ -1,0 +1,42 @@
+{
+  "name": "frame-rosen",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "node script/build.js",
+    "format": "prettier --write \"{src,test,script,config}/**/*.{js,ts,tsx,json}\" --config \"./prettier.json\""
+  },
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-redux": "^7.0.0",
+    "@types/react-router-dom": "^5.0.0",
+    "axios": "^1.6.7",
+    "immer": "^10.0.3",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-redux": "^7.0.0",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
+    "redux": "^4.2.0",
+    "redux-first-history": "^5.2.0",
+    "tslib": "^2.6.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "fs-extra": "^11.2.0",
+    "prettier": "^3.1.0",
+    "typescript": "^4.8.0",
+    "yargs": "^17.7.2"
+  }
+}

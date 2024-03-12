@@ -1,7 +1,7 @@
 import { isIEBrowser } from "./navigator-util";
 import { app } from "../app";
 import { Exception, JavaScriptException } from "../Exception";
-import { ErrorHandler } from "../module";
+import { type ErrorHandler } from "../module";
 import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION } from "../platform/bootstrap";
 
 let errorHandlerRunning = false;
@@ -34,6 +34,7 @@ export function errorToException(error: unknown): Exception {
 }
 
 export function captureError(error: unknown, action: string = "", extra: ErrorExtra = {}): Exception {
+    // @ts-ignore
     if (process.env.NODE_ENV === "development") {
         console.error(`[framework] Error captured from [${action}]`, error);
     }
@@ -93,7 +94,10 @@ function specialErrorCode(exception: Exception, action: string, stacktrace?: str
         { pattern: "huawei", errorCode: "VENDOR" },
         // Browser sandbox issues
         { pattern: "the operation is insecure", errorCode: "BROWSER_LIMIT" },
-        { pattern: "access is denied for this document", errorCode: "BROWSER_LIMIT" },
+        {
+            pattern: "access is denied for this document",
+            errorCode: "BROWSER_LIMIT",
+        },
     ];
 
     if (isIEBrowser()) {

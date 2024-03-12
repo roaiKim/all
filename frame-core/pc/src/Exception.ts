@@ -20,13 +20,20 @@ export class APIException extends Exception {
 }
 
 export class NetworkConnectionException extends Exception {
-    constructor(message: string, public requestURL: string, public originalErrorMessage: string = "") {
+    constructor(
+        message: string,
+        public requestURL: string,
+        public originalErrorMessage: string = ""
+    ) {
         super(message);
     }
 }
 
 export class JavaScriptException extends Exception {
-    constructor(message: string, public originalError: any) {
+    constructor(
+        message: string,
+        public originalError: any
+    ) {
         super(message);
     }
 }

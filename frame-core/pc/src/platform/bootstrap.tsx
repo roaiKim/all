@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
-import { Location } from "history";
+import { type Location } from "history";
 import { NavigationGuard } from "./NavigationGuard";
 import { app } from "../app";
 import { APIException } from "../Exception";
-import { LoggerConfig } from "../logger";
-import { ErrorListener } from "../module";
+import { type LoggerConfig } from "../logger";
+import { type ErrorListener } from "../module";
 import { captureError, errorToException } from "../util/error-util";
 import { ErrorBoundary } from "../util/ErrorBoundary";
 
@@ -93,7 +93,7 @@ function renderRoot(EntryComponent: React.ComponentType, rootContainer: HTMLElem
     ReactDOM.render(
         <Provider store={app.store}>
             <Router history={app.browserHistory}>
-                {/* <NavigationGuard message={navigationPreventionMessage} /> */}
+                <NavigationGuard message={navigationPreventionMessage} />
                 <ErrorBoundary>
                     <EntryComponent />
                 </ErrorBoundary>
@@ -143,7 +143,7 @@ async function runBackgroundLoop(loggerConfig?: LoggerConfig) {
     let timer = null;
     if (loggerConfig) {
         while (true) {
-            await new Promise((resolve, reject) => {
+            await new Promise((resolve) => {
                 timer = setTimeout(resolve, (loggerConfig.frequencyInSecond || 20) * 1000);
             });
             await sendEventLogs();

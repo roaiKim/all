@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "lib",
+        "composite": true,
+        "declarationMap": true,
+        "moduleResolution": "node",
+        "jsx": "react",
+        "lib": ["DOM", "ES2020"],
+        "target": "es5",
+        "module": "esnext",
+        "sourceMap": true,
+        "inlineSources": true,
+        "declaration": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "exactOptionalPropertyTypes": false,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "noImplicitOverride": true,
+        "downlevelIteration": true
+    },
+    "include": ["src"]
+}

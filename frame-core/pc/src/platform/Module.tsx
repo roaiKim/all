@@ -1,12 +1,13 @@
-import { RouteComponentProps } from "react-router";
+import { type RouteComponentProps } from "react-router";
 import { enablePatches, produce } from "immer";
 import { roDispatchFunction } from "../actions";
 import { app } from "../app";
-import { Logger } from "../logger";
-import { TickIntervalDecoratorFlag } from "../module";
-import { Action, navigationPreventionAction, setStateAction, State } from "../reducer";
+import { type Logger } from "../logger";
+import { type TickIntervalDecoratorFlag } from "../module";
+import { type Action, navigationPreventionAction, setStateAction, type State } from "../reducer";
 
 // enableES5();
+// @ts-ignore
 if (process.env.NODE_ENV === "development") {
     enablePatches();
 }
@@ -23,32 +24,32 @@ export interface ModuleLifecycleListener<RouteParam extends object = object> {
 export class Module<RootState extends State, ModuleName extends keyof RootState["app"] & string, RouteParam extends object = object>
     implements ModuleLifecycleListener<RouteParam>
 {
-    constructor(readonly name: ModuleName, readonly initialState: RootState["app"][ModuleName]) {}
+    constructor(
+        readonly name: ModuleName,
+        readonly initialState: RootState["app"][ModuleName]
+    ) {}
 
     onEnter(parms: RouteComponentProps["match"]["params"], location: RouteComponentProps["location"]) {
         /**
-         * Called when the attached component is initially mounted.
+         * mounted.
          */
     }
 
     onDestroy() {
         /**
-         * Called when the attached component is going to unmount
+         * unmount
          */
     }
 
     onLocationMatched(routeParam: RouteParam, location: RouteComponentProps["location"]) {
         /**
-         * Called when the attached component is a React-Route component and its Route location matches
-         * It is called each time the location changes, as long as it still matches
+         * location changes
          */
     }
 
     onTick(): void | Promise<void> {
         /**
-         * Called periodically during the lifecycle of attached component
-         * Usually used together with @interval decorator, to specify the period (in second)
-         * Attention: The next tick will not be triggered, until the current tick has finished
+         * 周期性请求 可用 @interval 指定间隔
          */
     }
 
@@ -82,9 +83,10 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
             const newState = produce<Readonly<RootState["app"][ModuleName]>, RootState["app"][ModuleName]>(
                 originalState,
                 (draftState) => {
-                    // Wrap into a void function, in case updater() might return anything
+                    // void function
                     updater(draftState);
                 },
+                // @ts-ignore
                 process.env.NODE_ENV === "development"
                     ? (patches) => {
                           // No need to read "op", in will only be "replace"
@@ -98,7 +100,7 @@ export class Module<RootState extends State, ModuleName extends keyof RootState[
             }
         } else {
             const partialState = stateOrUpdater as object;
-            this.setState((state) => Object.assign(state, partialState));
+            this.setState((state: object) => Object.assign(state, partialState));
         }
     }
 }

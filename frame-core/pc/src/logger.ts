@@ -124,7 +124,13 @@ export class LoggerImpl implements Logger {
             errorCode = "JAVASCRIPT_ERROR";
         }
 
-        this.createLog(isWarning ? "WARN" : "ERROR", { action, errorCode, errorMessage: exception.message, info, elapsedTime: 0 });
+        this.createLog(isWarning ? "WARN" : "ERROR", {
+            action,
+            errorCode,
+            errorMessage: exception.message,
+            info,
+            elapsedTime: 0,
+        });
     }
 
     collect(maxSize: number = 0): ReadonlyArray<Log> {

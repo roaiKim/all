@@ -1,4 +1,4 @@
-import { Action } from "redux";
+import { type Action } from "redux";
 import { push } from "redux-first-history";
 import { app } from "./app";
 

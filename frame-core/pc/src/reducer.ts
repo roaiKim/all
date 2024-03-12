@@ -1,5 +1,5 @@
-import { Action as ReduxAction, combineReducers, Reducer } from "redux";
-import { RouterState } from "redux-first-history";
+import { type Action as ReduxAction, combineReducers, type Reducer } from "redux";
+import { type RouterState } from "redux-first-history";
 import { app } from "./app";
 
 // Redux State

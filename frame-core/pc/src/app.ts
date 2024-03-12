@@ -1,9 +1,9 @@
-import { createBrowserHistory, History } from "history";
-import { applyMiddleware, compose, createStore, Store, StoreEnhancer } from "redux";
+import { createBrowserHistory, type History } from "history";
+import { applyMiddleware, compose, createStore, type Store, type StoreEnhancer } from "redux";
 import { createReduxHistoryContext } from "redux-first-history";
-import { Logger, LoggerConfig, LoggerImpl } from "./logger";
-import { ActionHandler, ErrorHandler } from "./module";
-import { executeMethodMiddleware, LOADING_ACTION, rootReducer, State } from "./reducer";
+import { type Logger, type LoggerConfig, LoggerImpl } from "./logger";
+import { type ActionHandler, type ErrorHandler } from "./module";
+import { executeMethodMiddleware, LOADING_ACTION, rootReducer, type State } from "./reducer";
 
 declare const window: any;
 
@@ -21,6 +21,7 @@ export const logger: Logger = app.logger;
 
 function composeWithDevTools(enhancer: StoreEnhancer): StoreEnhancer {
     let composeEnhancers = compose;
+    // @ts-ignore
     if (process.env.NODE_ENV === "development") {
         const extension = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
         if (extension) {
