@@ -1,7 +1,9 @@
 {
-  "name": "frame-rosen",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "ro-core-pc",
+  "version": "1.0.1",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "license": "MIT",
   "scripts": {
     "build": "node script/build.js",

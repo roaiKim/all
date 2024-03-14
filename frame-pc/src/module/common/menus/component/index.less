@@ -1,0 +1,40 @@
+@import "~asset/less/variable";
+
+.ro-meuns-module {
+  color: inherit;
+  width: 80px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 12%);
+  position: relative;
+  flex-shrink: 0;
+  flex-grow: 0;
+
+  &.collapsed {
+    width: 200px;
+  }
+
+  .ro-meuns-container {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    min-width: 80px;
+    max-height: calc(100% - 48px);
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  .ro-meuns-collapsed {
+    height: 48px;
+    border-top: 1px solid #e1e1e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

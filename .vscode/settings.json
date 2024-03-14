@@ -4,5 +4,6 @@
         "source.fixAll.stylelint": "explicit"
     },
     "stylelint.packageManager": "yarn",
-    "stylelint.configFile": "ci/stylelint.json"
+    "stylelint.configFile": "ci/stylelint.json",
+    "typescript.tsdk": "./frame-pc/node_modules/typescript/lib"
 }

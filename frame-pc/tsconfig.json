@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "./build",
+        "moduleResolution": "node",
+        "jsx": "react-jsx",
+        "lib": ["DOM", "ES2020"],
+        "target": "es5",
+        "module": "esnext",
+        "sourceMap": true,
+        "inlineSources": true,
+        "strict": false,
+        "strictNullChecks": false,
+        "exactOptionalPropertyTypes": false,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "downlevelIteration": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "paths": {
+            "@core": ["../node_modules/core-app-pc"],
+            "@http": ["./http"],
+            "@icon": ["../node_modules/@ant-design/icons"],
+            "@api/*": ["./service/api/*"]
+        }
+    },
+    "include": ["src"]
+}

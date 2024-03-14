@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { showLoading } from "@core";
 import { Button } from "antd";
@@ -19,6 +19,17 @@ function Home(props: HomeProps) {
 
     const { tableSource, tableLoading } = props;
     console.log("update-times", values.times);
+    useEffect(() => {
+        setCount((prev) => ({ ...prev, count: prev.count + 1 }));
+    }, [values.times]);
+
+    useEffect(() => {
+        setCount((prev) => ({ ...prev, count: prev.count + 2 }));
+    }, [values.times]);
+
+    useEffect(() => {
+        setCount((prev) => ({ ...prev, count2: prev.count2 + 3 }));
+    }, [values.times]);
     return (
         <div className="ro-home-module">
             <Addition modalState={pageModalState} />
@@ -26,7 +37,11 @@ function Home(props: HomeProps) {
                 <Button
                     size="small"
                     onClick={() => {
-                        setCount((prev) => ({ ...prev, count: prev.count + 1 }));
+                        // setCount((prev) => ({ ...prev, count: prev.count + 1 }));
+                        // setCount((prev) => ({ ...prev, count2: prev.count2 + 1 }));
+                        // setTimes((prev) => ({ ...prev, times: prev.times + 1 }));
+                        setTimes((prev) => ({ ...prev, times: prev.times + 1 }));
+                        setTimes((prev) => ({ ...prev, times: prev.times + 1 }));
                     }}
                 >
                     改名{count.count}-{count.count2}-{count.count3}
