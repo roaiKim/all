@@ -1,6 +1,6 @@
 import { connect, DispatchProp } from "react-redux";
 import { roPushHistory } from "@core";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import { RootState } from "type/state";
 import "./index.less";
 
@@ -19,6 +19,11 @@ function Project(props: ProjectProps) {
             <div style={{ height: 100 }}>
                 Hello Project
                 <Button onClick={link}>跳转运单</Button>
+                <Input
+                    onChange={(e) => {
+                        console.log(e.target.value);
+                    }}
+                ></Input>
             </div>
         </div>
     );

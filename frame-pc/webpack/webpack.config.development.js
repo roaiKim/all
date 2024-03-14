@@ -7,7 +7,7 @@ const fs = require("fs");
 const HTMLPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
-// const ReactRefreshTypeScript = require("react-refresh-typescript");
+const ReactRefreshTypeScript = require("react-refresh-typescript");
 const ESLintPlugin = require("eslint-webpack-plugin");
 // const antdLessVars = require("../src/asset/theme/antd-less-vars.json");
 const developmentProxy = require("../src/config/development.proxy.json");
@@ -140,9 +140,9 @@ module.exports = {
                     // getCustomTransformers: () => ({
                     //     before: [TSImportPlugin({ libraryName: "antd", libraryDirectory: "es", style: true })],
                     // }),
-                    // getCustomTransformers: () => ({
-                    //     before: [ReactRefreshTypeScript()],
-                    // }),
+                    getCustomTransformers: () => ({
+                        before: [ReactRefreshTypeScript()],
+                    }),
                 },
             },
             {
