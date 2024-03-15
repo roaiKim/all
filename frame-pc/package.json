@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "antd": "^5.15.2",
+    "array-move": "^4.0.0",
     "core-app-pc": "file:tgz/ro-core-pc-v1.0.1.tgz",
     "querystring": "^0.2.1",
-    "react-draggable": "^4.4.6"
+    "react-draggable": "^4.4.6",
+    "react-sortable-hoc": "^2.0.0"
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect, DispatchProp } from "react-redux";
 import { Dropdown } from "antd";
-// import { arrayMoveImmutable } from "array-move";
+import { arrayMoveImmutable } from "array-move";
 import { DownOutlined, EditOutlined, InfoCircleOutlined, PoweroffOutlined, RightOutlined } from "@ant-design/icons";
 import { WEB_USERNAME } from "config/static-envs";
 import { actions } from "module/common/header/index";
@@ -9,55 +9,55 @@ import { actions as MainActions } from "module/common/main";
 import { RootState } from "type/state";
 import { StorageService } from "utils/StorageService";
 import logoimg from "asset/images/global/logoimg.png";
-// import { SortableTabs } from "./HeaderTab";
+import { SortableTabs } from "./HeaderTab";
 import "./index.less";
 
 interface HeaderProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
-// const headerOperate = [
-//     {
-//         label: <div>admin</div>,
-//         key: "0",
-//     },
-//     {
-//         type: "divider",
-//         key: "1",
-//     },
-//     {
-//         icon: <EditOutlined />,
-//         label: (
-//             <div>
-//                 个人资料
-//                 <RightOutlined />
-//             </div>
-//         ),
-//         key: "3",
-//     },
-//     {
-//         icon: <InfoCircleOutlined />,
-//         label: <div>关于</div>,
-//         key: "4",
-//     },
-//     {
-//         icon: <InfoCircleOutlined />,
-//         label: <div>开发环境</div>,
-//         key: "5",
-//     },
-//     {
-//         icon: <PoweroffOutlined />,
-//         label: <div>注销</div>,
-//         key: "6",
-//     },
-// ];
+const headerOperate = [
+    {
+        label: <div>admin</div>,
+        key: "0",
+    },
+    {
+        type: "divider",
+        key: "1",
+    },
+    {
+        icon: <EditOutlined />,
+        label: (
+            <div>
+                个人资料
+                <RightOutlined />
+            </div>
+        ),
+        key: "3",
+    },
+    {
+        icon: <InfoCircleOutlined />,
+        label: <div>关于</div>,
+        key: "4",
+    },
+    {
+        icon: <InfoCircleOutlined />,
+        label: <div>开发环境</div>,
+        key: "5",
+    },
+    {
+        icon: <PoweroffOutlined />,
+        label: <div>注销</div>,
+        key: "6",
+    },
+];
 
 function Header(props: HeaderProps) {
     const { headerTabs, activeTabName, dispatch, userName } = props;
 
-    // const onSortEnd = ({ oldIndex, newIndex }) => {
-    //     if (oldIndex === newIndex || newIndex === 0) return;
-    //     const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
-    //     dispatch(actions.sortHeaderTabs(tabs));
-    // };
+    const onSortEnd = ({ oldIndex, newIndex }) => {
+        if (oldIndex === newIndex || newIndex === 0) return;
+        const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
+        dispatch(actions.sortHeaderTabs(tabs));
+    };
 
     const operateClick = ({ key }) => {
         // console.log("--item", item);
@@ -73,7 +73,7 @@ function Header(props: HeaderProps) {
                 <img alt="logo" src={logoimg} />
                 <div className="text-overflow-ellipsis">中集冷云综合服务平台</div>
             </div>
-            {/* <SortableTabs
+            <SortableTabs
                 axis="x"
                 lockAxis="x"
                 lockOffset="0%"
@@ -98,7 +98,7 @@ function Header(props: HeaderProps) {
                         <DownOutlined />
                     </a>
                 </Dropdown>
-            </div> */}
+            </div>
         </header>
     );
 }
