@@ -36,7 +36,6 @@ export async function ajax<Request, Response, Path extends string>(
 ): Promise<Response> {
     const fullURL = joinUrl(path);
     const { headers = {}, config = {}, globalHold = true } = ajaxConfig || {};
-
     const requestConfig: any = {
         method,
         url: fullURL,

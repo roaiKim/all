@@ -1,5 +1,4 @@
 import { async } from "@core";
-import { ModuleStatement } from "utils/function/loadComponent";
 
 export const moduleName = "{3}";
 

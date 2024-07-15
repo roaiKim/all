@@ -1,17 +1,45 @@
 import { ACTIVE_STATUS, BOOLEAN_STATUS } from "type";
 import { PageTableRequest, PageTableResponse } from "@api/AdvancedTableService";
 import { ajax } from "@http";
+import { ViewType } from "http/config";
 import { CUSTOMER, DATE, OPTION, STRING, WIDTH } from "utils/decorator/columns-service";
+import { Api, GlobalHold, HttpContentType, Method, StaticAssemble, TestDecorator, TestPOSTDecorator } from "utils/decorator/test";
 import { WaybillService$addition$response } from "./type";
 
-export class WaybillService {
+class RequestApi {
+    @TestDecorator()
+    static fetch(...args) {
+        console.log("----args", this);
+        console.log("--RequestApi--tt", args);
+    }
+}
+
+export class WaybillService extends RequestApi {
     /**
      * @description 页面表格 pageTable 最好命名统一
      * @param request 高级查询参数
      * @returns 高级查询返回值
      */
-    static pageTable(request: PageTableRequest): Promise<PageTableResponse<WaybillService$addition$response>> {
-        return ajax("POST", `/api/common/transportLimitation/advanced-page`, request);
+    // @TestPOSTDecorator()
+    // @TestDecorator()
+    static pageTables(request: PageTableRequest): Promise<PageTableResponse<WaybillService$addition$response>> {
+        return ajax("POST", `/api/tms/transferInfo/advanced-page`, request);
+    }
+
+    // @TestPOSTDecorator()
+    // @TestDecorator()
+    // static pageTable(request: PageTableRequest): any {
+    //     this.ajax("POST", `/api/tms/transferInfo/advanced-page`, request);
+    // }
+
+    @GlobalHold
+    @HttpContentType("JSON")
+    @Method("POST", "获取表格")
+    @Api("POST", "获取表格", ViewType.page)
+    @TestDecorator()
+    static pageTable(request: PageTableRequest): any {
+        console.log("--args-------");
+        return ajax("POST", `/api/tms/transferInfo/advanced-page`, request);
     }
 
     /**

@@ -1,0 +1,128 @@
+.ro-curtomer-table-component {
+  height: 700px;
+  width: 1600px;
+  overflow: auto;
+  margin-top: 30px;
+
+  .ro-ct-head {
+    display: flex;
+
+    > div {
+      flex-shrink: 0;
+      flex-grow: 0;
+      padding: 8px;
+      font-weight: bold;
+      font-size: 12px;
+      background-image: linear-gradient(#fff, #f0f0f0) !important;
+      border: 1px solid #f0f0f0;
+    }
+  }
+
+  .ro-ct-body {
+    font-size: 12px;
+    color: rgb(0 0 0 / 65%);
+    user-select: none;
+
+    .ro-ct-row {
+      display: flex;
+      height: 35px;
+      position: relative;
+    }
+  }
+
+  .ro-ct-cell {
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 8px;
+    border: 1px solid #f0f0f0;
+
+    &.ro-cell-editable {
+      padding: 6px 8px;
+      background-color: #fff !important;
+      border-color: #4f5dff;
+
+      input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+      }
+    }
+
+    &.ro-cell-left-sticky {
+      position: sticky;
+      left: 0;
+      background: #fff;
+      z-index: 10000;
+    }
+
+    &.ro-cell-right-sticky {
+      position: sticky;
+      right: 0;
+      background: #fff;
+      z-index: 10000;
+    }
+
+    &.content-flex-position {
+      position: relative;
+    }
+
+    &.content-flex-right-position {
+      .ro-span-content {
+        left: -40px;
+        right: unset;
+      }
+
+      .ro-cancel-content {
+        left: -65px;
+        right: unset;
+      }
+    }
+
+    &.is-void {
+      visibility: hidden;
+    }
+
+    &.is-cover {
+      position: relative;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+    }
+
+    &.is-selected-cell {
+      background-color: #ebf1ff;
+      border-color: #4f5dff;
+      z-index: 9999;
+    }
+
+    .ro-menu-content {
+      z-index: 99999;
+      display: none;
+      position: absolute;
+      // top: 0;
+      bottom: 0;
+      padding: 8px;
+      border: 1px solid #ccc;
+      // background-color: #fff;
+      color: #4f5dff;
+      cursor: pointer;
+      background-color: #fff;
+      background-clip: padding-box;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+    }
+
+    .ro-cc-block {
+      display: block;
+    }
+
+    .ro-span-content {
+      right: -40px;
+    }
+
+    .ro-cancel-content {
+      right: -65px;
+    }
+  }
+}

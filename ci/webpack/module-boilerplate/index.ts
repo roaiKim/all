@@ -1,4 +1,4 @@
-import { Loading, Module, register } from "@core";
+import { Module, register } from "@core";
 import { RootState } from "type/state";
 import Main from "./component";
 import { State, moduleName } from "./type";
@@ -6,7 +6,7 @@ import { State, moduleName } from "./type";
 const initialState: State = {};
 
 class {1} extends Module<RootState, typeof moduleName> {
-    @Loading()
+    @loading()
     async onEnter(params, location) {
         //
     }

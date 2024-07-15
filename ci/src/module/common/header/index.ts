@@ -1,6 +1,6 @@
 import { Module, register, roPushHistory } from "@core";
 import dayjs from "dayjs";
-import { WEB_USERNAME } from "config/static-envs";
+import { isDevelopment, WEB_USERNAME } from "config/static-envs";
 import { RootState } from "type/state";
 import { deafaultTabs, modulesCache, nameToPath } from "utils/function/loadComponent";
 import { StorageService } from "utils/StorageService";
@@ -52,7 +52,7 @@ class HeaderModule extends Module<RootState, "header"> {
             const { name, title } = module;
             activeKey = name;
             const { pagePermission } = this.rootState.app.main || {};
-            const hasPermission = pagePermission[nameToPath[name] || name];
+            const hasPermission = isDevelopment ? true : pagePermission[nameToPath[name] || name];
             const type = hasPermission ? HeaderTabType.A : HeaderTabType.B;
             if (!hasTab) {
                 const newTab = {
