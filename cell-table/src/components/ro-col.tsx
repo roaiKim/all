@@ -76,7 +76,7 @@ export function RoCol(props: RoRowProps) {
             setActionCell({ ...defaultActionCell });
         }
     }, [selectedColPosioton]);
-    console.log("--actionCell--", actionCell);
+
     return (
         <div className={className} style={{ width: column.width }}>
             {dataSource.map((item, rowIndex) => (

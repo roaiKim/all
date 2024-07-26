@@ -203,7 +203,6 @@ export function CellTable(props: CellTableProps) {
         }
     };
 
-    console.log("op-spanCells-po", spanCells);
     return (
         <div className="ro-curtomer-table-component">
             <ColumnsContext.Provider value={columns}>

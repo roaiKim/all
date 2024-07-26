@@ -1,9 +1,9 @@
 {
-    "name": "cell-tables",
-    "version": "0.0.1",
+    "name": "cell-table",
+    "version": "0.0.3",
     "main": "lib/index.js",
-    "module": "lib/src/index.js",
-    "types": "lib/src/index.d.ts",
+    "module": "lib/index.js",
+    "types": "lib/index.d.ts",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -11,16 +11,10 @@
     },
     "scripts": {
         "start": "webpack serve --config ./webpack/webpack.config.development.js",
-        "build": "webpack --config ./webpack/webpack.config.production.js",
         "tsc": "tsc -p ./tsconfig.json",
         "prebuild:tsc": "rimraf ./lib",
-        "format": "yarn prettier-format & yarn stylelint-format",
-        "prettier-format": "prettier --config prettier.json --write \"{core,src,test,script,config}/**/*.{js,ts,tsx,json}\"",
-        "stylelint-format": "stylelint --config stylelint.json \"src/**/*.less\" --fix",
-        "generate-version": "node webpack/version/index.js",
-        "verify": "yarn eslint-verify & yarn stylelint-verify",
-        "eslint-verify": "eslint \"{core,src,test,script,config}/**/*.{js,ts,tsx}\" --config .eslintrc.js",
-        "stylelint-verify": "stylelint --config stylelint.json \"src/**/*.less\""
+        "build": "webpack --config ./webpack/webpack.config.production.js",
+        "build1": "node script/build.js"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
@@ -90,7 +84,5 @@
     "engines": {
         "node": ">=13"
     },
-    "files": [
-        "lib/src"
-    ]
+    "files": ["lib/**"]
 }

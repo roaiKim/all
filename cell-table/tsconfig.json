@@ -22,6 +22,6 @@
         "downlevelIteration": true,
         "declaration": true,
     },
-    "include": ["src"],
+    "include": ["src", "src/component/cell-table.less"],
     "exclude": ["./webpack/**/*"]
 }
