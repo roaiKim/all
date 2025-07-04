@@ -125,10 +125,10 @@ module.exports = {
     },
     plugins: [
         new ReactRefreshWebpackPlugin({ overlay: false }),
-        new HTMLPlugin({
-            template: `${env.src}/index.html`,
-            favicon: `${env.src}/favicon.ico`,
-        }),
+        // new HTMLPlugin({
+        //     template: `${env.src}/index.html`,
+        //     favicon: `${env.src}/favicon.ico`,
+        // }),
         new webpack.ProgressPlugin(),
         // new webpack.HotModuleReplacementPlugin(),
         new ForkTsCheckerWebpackPlugin({

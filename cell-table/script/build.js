@@ -55,7 +55,17 @@ function compile() {
 function distribute() {
     console.info(chalk`{green.bold [task]} {white.bold distribute}`);
     // fs.mkdirsSync("build/dist/lib");
-    fs.copySync("src/components/cell-table.less", "lib/components/cell-table.less", { dereference: true });
+    // fs.copySync("src/components/cell-table.less", "lib/components/cell-table.less", { dereference: true });
+    fs.readdir("src", { recursive: true }).then((paths) => {
+        console.log(paths);
+        const less = paths.filter((item) => item.endsWith(".less"));
+        console.log(less);
+        if (less?.length) {
+            for (const path of less) {
+                fs.copySync(`src/${path}`, `lib/${path}`, { dereference: true });
+            }
+        }
+    });
 }
 
 function build() {

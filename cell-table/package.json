@@ -14,7 +14,7 @@
         "tsc": "tsc -p ./tsconfig.json",
         "prebuild:tsc": "rimraf ./lib",
         "build": "webpack --config ./webpack/webpack.config.production.js",
-        "build1": "node script/build.js"
+        "rosen": "node script/build.js"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",

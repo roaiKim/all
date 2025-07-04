@@ -1,0 +1,45 @@
+.g-theme {
+  button.ant-btn {
+    // &:not([class~="ant-input-search-button"]),
+    &:not([class~="ant-btn-icon-only"]) {
+      min-width: 60px;
+      // margin-left: 10px;
+      font-size: 12px;
+    }
+  }
+
+  .ro-flex {
+    display: flex;
+
+    &.ro-row-bewteen {
+      justify-content: space-between;
+    }
+
+    &.ro-row-center {
+      justify-content: center;
+    }
+
+    &.ro-col-center {
+      align-items: center;
+    }
+
+    &.ro-center {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ro-grow {
+      flex-grow: 1;
+    }
+
+    &.ro-height-100 {
+      height: 100%;
+    }
+  }
+
+  .text-overflow-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
