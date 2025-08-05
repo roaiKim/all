@@ -1,0 +1,46 @@
+@import "~asset/less/variable";
+
+.ro-main-body {
+  height: calc(100vh - 46px);
+  display: flex;
+
+  > main {
+    flex-grow: 1;
+    background-color: #f0f2f5;
+    border-radius: 5px;
+    padding: 5px 5px 0;
+  }
+}
+
+.ro-module-body {
+  overflow: hidden;
+
+  > div[class*="-container-module"] {
+    height: 100%;
+    display: none;
+    background: #fff;
+
+    &.active-module {
+      display: block;
+      overflow-y: auto;
+    }
+
+    > div {
+      height: 100%;
+      overflow: auto;
+    }
+  }
+}
+
+.ro-main-container {
+  height: 100vh;
+}
+
+.ro-permission-error-mask {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  text-align: center;
+}

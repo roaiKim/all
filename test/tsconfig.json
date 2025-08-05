@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "outDir": "./build",
+        "module": "esnext",
+        "target": "es5",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "inlineSources": true,
+        "strict": false,
+        "exactOptionalPropertyTypes": false,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "importHelpers": true,
+        "jsx": "react-jsx",
+        "lib": ["dom", "es2019"],
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "downlevelIteration": true,
+        "paths": {
+            "@core": ["../core"],
+            "@http": ["./http"],
+            "@icon": ["../node_modules/@ant-design/icons"],
+            "@api/*": ["./service/api/*"]
+        }
+    },
+    "include": ["./src", "./core"],
+    "exclude": ["./webpack/**/*", "./z-files"]
+}
