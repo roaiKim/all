@@ -1,14 +1,12 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit",
-        "source.fixAll.stylelint": "explicit"
-    },
-    "stylelint.packageManager": "yarn",
-    "typescript.tsdk": "./frame-pc/node_modules/typescript/lib",
-    "stylelint.validate": [
-        "css",
-        "postcss",
-        "less"
-    ],
-    "stylelint.configFile": "./ci/stylelint.json",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "stylelint.packageManager": "yarn",
+  "typescript.tsdk": "./frame-pc/node_modules/typescript/lib",
+  "stylelint.validate": ["css", "postcss", "less"],
+  "stylelint.configFile": "./ci/stylelint.json",
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // "editor.formatOnSave": true
 }

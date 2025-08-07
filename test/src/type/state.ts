@@ -8,6 +8,7 @@ import { State as HeaderState } from "module/common/header/type";
 import { State as MenuState } from "module/common/menus/type";
 import { State as ProjectState } from "module/project/type";
 import { State as WaybillState } from "module/waybill/type";
+import { State as EchartsState } from "module/echarts/type";
 
 export interface RootState extends State {
     app: {
@@ -18,5 +19,6 @@ export interface RootState extends State {
         menus: MenuState;
         project?: ProjectState;
         waybill?: WaybillState;
+        echarts?: EchartsState;
     };
 }

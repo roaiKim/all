@@ -10,14 +10,14 @@ import { HeaderTab, HeaderTabType } from "./type";
 const initialHeaderState = {
     userName: null,
     prevPathname: null,
-    activeTabName: "home",
+    activeTabName: deafaultTabs[0]?.key,
     headerTabs: [
-        {
-            key: "home",
-            label: "首页",
-            type: HeaderTabType.A,
-            noClosed: true,
-        },
+        // {
+        //     key: "home",
+        //     label: "首页",
+        //     type: HeaderTabType.A,
+        //     noClosed: true,
+        // },
         ...(deafaultTabs || []),
     ],
 };
