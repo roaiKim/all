@@ -80,6 +80,27 @@ const TitleConfig: EchartsTreeState[] = [
                 description: "主标题文字字体的风格。",
                 descendant: [],
             },
+            {
+                sort: 1,
+                id: "fontStyleType",
+                name: "fontStyleType",
+                nodeType: "string",
+                isLeaf: false,
+                level: 3,
+                description: "1主标题文字字体的风格。",
+                descendant: [
+                    {
+                        sort: 1,
+                        id: "fontStyleType1",
+                        name: "fontStyleType1",
+                        nodeType: "string",
+                        isLeaf: true,
+                        level: 4,
+                        description: "2主标题文字字体的风格。",
+                        descendant: [],
+                    },
+                ],
+            },
         ],
     },
 ];
