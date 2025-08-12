@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { connect, DispatchProp } from "react-redux";
 import { roPushHistory } from "@core";
 import { Button, Input, Tabs } from "antd";
@@ -12,6 +12,8 @@ import { actions } from "..";
 
 interface ProjectProps extends DispatchProp {}
 
+export const expandPathContext = createContext<any>({});
+
 function Project(props: ProjectProps) {
     const link = () => {
         roPushHistory("/waybill", { id: "1551864590885830658", readonly: false });
@@ -24,22 +26,45 @@ function Project(props: ProjectProps) {
         // echarts.init(document.getElementById("main")).setOption({});
     }, []);
 
+    const [expandPath, setExpandPath] = useState([]);
+    const calcPath = (path) => {
+        if (expandPath.includes(path)) {
+            const tui = expandPath.filter((item) => item !== path).filter((item) => !item.includes(path));
+            setExpandPath(tui);
+        } else {
+            const pathArray = path.split(".");
+            const p = [];
+            for (let i = 2; i <= pathArray.length; i++) {
+                p.push(pathArray.slice(0, i).join("."));
+            }
+            setExpandPath(p);
+        }
+    };
+
     return (
         <div className="ro-echarts-module">
-            <div>
-                <Tabs
-                    tabPosition="left"
-                    defaultActiveKey="title"
-                    items={echartsTreeState.map((item) => ({
-                        label: `${item.name}`,
-                        key: `${item.id}`,
-                        children: <ContainerRender parentkey="" field={item} />,
-                    }))}
-                    onChange={() => {
-                        //
-                    }}
-                />
-            </div>
+            <expandPathContext.Provider
+                value={{
+                    expandPath,
+                    setExpandPath,
+                    calcPath,
+                }}
+            >
+                <div>
+                    <Tabs
+                        tabPosition="left"
+                        defaultActiveKey="title"
+                        items={echartsTreeState.map((item) => ({
+                            label: `${item.name}`,
+                            key: `${item.id}`,
+                            children: <ContainerRender parentkey="" field={item} />,
+                        }))}
+                        onChange={() => {
+                            //
+                        }}
+                    />
+                </div>
+            </expandPathContext.Provider>
         </div>
     );
 }

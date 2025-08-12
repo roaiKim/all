@@ -6,23 +6,25 @@
     position: relative;
     // width: 180px;
     // height: 90px;
-    width: 280px;
+    width: 380px;
     margin: 5px;
     padding: 5px;
     border: 1px solid #ccc;
+    border-radius: 6px;
 
     // .ec-container-desc {
-
+    //   border-radius: 6px;
     // }
   }
 
   .ec-children-box {
     position: relative;
-    height: 90px;
-    width: 260px;
+    height: 160px;
+    width: 360px;
     margin: 5px;
     padding: 5px;
     border: 1px solid #ccc;
+    border-radius: 6px;
 
     .ec-children-desc {
       position: absolute;
@@ -31,6 +33,34 @@
       margin: 5px;
       padding: 5px;
       border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+  }
+
+  .ec-description {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  .ec-fold {
+    // width: 0;
+    // height: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    // transform: translateY(-50%);
+    transform: translate(25%, -50%);
+    border: 15px solid transparent;
+    border-left-color: #999;
+    cursor: pointer;
+    transform-origin: 25% 50%;
+    border-radius: 10px;
+
+    &.is-fold {
+      border-left-color: red;
+      transform: translate(25%, -50%) rotate(90deg);
     }
   }
 }

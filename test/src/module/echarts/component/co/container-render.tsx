@@ -1,6 +1,8 @@
-import { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useContext, useMemo, useState } from "react";
 import classNames from "classnames";
 import { EchartsTreeState } from "../config";
+
+import { expandPathContext } from "..";
 
 interface ContainerRenderProps {
     field: EchartsTreeState;
@@ -22,32 +24,44 @@ export function OnlyRender(props: PropsWithChildren<OnlyRenderProps>) {
 export function ContainerRender(props: ContainerRenderProps) {
     const { field, parentkey } = props;
     const { descendant = [], level, id } = field;
-    const cyclicKey = useMemo(() => {
-        return [parentkey, id].filter(Boolean).join(".");
-    }, [parentkey, id]);
+    const { expandPath = [], calcPath } = useContext(expandPathContext);
+    const isTopLevel = level === 1;
+    const cyclicKey = useMemo(() => [parentkey, id].filter(Boolean).join("."), [parentkey, id]);
 
     const [containerClass, childrenClass] = useMemo(() => {
         return [
-            classNames({ "ec-container-box": level == 1, "ec-children-box": level > 1 }),
+            classNames({ "ec-container-box": level == 1, "ec-children-box": level > 1, [`level-${level}`]: true }),
             classNames({ "ec-container-desc": level == 1, "ec-children-desc": level > 1 }),
         ];
     }, [level]);
 
-    console.log("---cyclicKey---", cyclicKey);
+    const isFold = expandPath.includes(cyclicKey);
+
+    // console.log("---cyclicKey---", cyclicKey);
+    // console.log("---expandPath---", expandPath, cyclicKey, expandPath.includes(cyclicKey));
+    console.log("---expandPath---", isFold);
     return (
-        <div className={containerClass}>
+        <div style={{ borderColor: isFold ? "red" : "#ccc" }} className={containerClass}>
             <span>{field.name}</span>
-            <span>{field.description}</span>
-            <OnlyRender condition={!!descendant?.length}>
-                <div className={childrenClass}>
+            <p className="ec-description">{field.description?.slice(0, 15)}</p>
+            <OnlyRender condition={!!descendant?.length && (isFold || isTopLevel)}>
+                <div className={childrenClass} style={{ borderColor: "inherit" }}>
                     <OnlyRender condition={level > 1}>
                         <span>{field.name}</span>
-                        <span>{field.description}</span>
+                        <p className="ec-description">{field.description?.slice(0, 15)}</p>
                     </OnlyRender>
                     {descendant?.map((item) => (
                         <ContainerRender parentkey={cyclicKey} key={item.id} field={item} />
                     ))}
                 </div>
+            </OnlyRender>
+            <OnlyRender condition={!!descendant?.length && level > 1}>
+                <div
+                    className={classNames("ec-fold", { "is-fold": isFold })}
+                    onClick={() => {
+                        calcPath(cyclicKey);
+                    }}
+                ></div>
             </OnlyRender>
         </div>
     );
