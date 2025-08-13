@@ -1,5 +1,6 @@
-import LegendConfig from "./legendConfig";
-import TitleConfig from "./titleConfig";
+import GridConfig from "./grid";
+import LegendConfig from "./legend";
+import TitleConfig from "./title";
 
 export enum EchartsNodeType {
     null = "null",
@@ -19,10 +20,11 @@ export interface EchartsTreeState {
     parentPath?: string[];
     sort: number;
 
-    value?: "";
-    defaultValue?: "";
+    value?: any;
+    defaultValue?: string;
     descendant?: EchartsTreeState[];
-    description?: string;
+    shortDescroption?: string;
+    description?: string[];
     options?: Record<string, string>[];
     propTypes?: string[];
 }
@@ -55,7 +57,7 @@ const echartsTreeState: EchartsTreeState[] = [
         nodeType: "null",
         isLeaf: false,
         level: 1,
-        descendant: [],
+        descendant: GridConfig,
         parentPath: ["grid"],
     },
     {

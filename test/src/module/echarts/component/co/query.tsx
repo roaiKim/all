@@ -5,31 +5,36 @@ function getEle() {
 
     const state = {};
 
+    function removeSign(name = "", regular) {
+        return name.replaceAll(regular, "");
+    }
+
     function filter(element, level, treeState, index) {
         const pathParent = element.querySelector(`.path-parent`);
         const pathParentValue = pathParent.querySelectorAll(`.path-parent a`);
         const pathValue = Array.from(pathParentValue).map((item) => item.innerText?.replaceAll(".", ""));
         const base = element.querySelector(`.path-base`)?.innerText;
-        const defaultValue = element.querySelector(`.default-value span`)?.innerText;
+        const defaultValue = element.querySelector(`span.default-value`)?.innerText;
         const propTypesEle = element.querySelector(`.prop-types`);
         const propTypes = Array.from(propTypesEle.querySelectorAll(`span`))
             .map((item) => item.innerText)
             .filter(Boolean)
             .map((item) => item.toLocaleLowerCase());
-        const description = element.querySelector(`.item-description > p`)?.innerText;
-
         const des = element.querySelector(`.item-description`);
-        const de = des.querySelectorAll(`li`);
+        const description = Array.from(des.querySelectorAll(`p`)).map((item) => item.innerText);
+        const shortDescroption = element.querySelector(`.item-description > p`)?.innerText;
+        const ul = des.querySelector(`ul`);
+        const li = ul?.querySelectorAll(`li`) || [];
         const options = [];
 
-        Array.from(de).forEach((item) => {
-            const v = item.querySelector("p")?.innerText;
-            const d = item.querySelector(".codespan")?.innerText;
+        Array.from(li).forEach((item) => {
+            const desc = item.querySelector("p")?.innerText || item?.innerText;
+            const key = item.querySelector(".codespan")?.innerText;
 
-            if (v || d) {
+            if (desc || key) {
                 options.push({
-                    key: v,
-                    des: d,
+                    key: removeSign(key, /[= ']/g),
+                    des: removeSign(desc, /[= ']/g),
                 });
             }
         });
@@ -41,15 +46,14 @@ function getEle() {
         current["parentPath"] = pathValue;
         current["id"] = base;
         current["name"] = base;
-        current["defaultValue"] = defaultValue;
-        current["description"] = description;
+        current["defaultValue"] = removeSign(defaultValue, /[= ']/g);
+        current["shortDescroption"] = shortDescroption;
+        if (shortDescroption !== description?.[0] || description?.length > 1) {
+            current["description"] = description;
+        }
         current["options"] = options;
         current["propTypes"] = propTypes;
         current["descendant"] = [];
-
-        treeState[base] = {
-            ...current,
-        };
 
         const descendant = {};
 
@@ -68,6 +72,11 @@ function getEle() {
         } else {
             current["isLeaf"] = true;
         }
+
+        treeState[base] = {
+            ...current,
+        };
+
         return current;
     }
     const config = [];

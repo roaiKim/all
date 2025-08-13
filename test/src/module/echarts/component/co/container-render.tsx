@@ -1,5 +1,7 @@
 import { PropsWithChildren, useContext, useMemo, useState } from "react";
+import { Tag, Tooltip } from "antd";
 import classNames from "classnames";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 import { EchartsTreeState } from "../config";
 
 import { expandPathContext } from "..";
@@ -19,6 +21,29 @@ export function OnlyRender(props: PropsWithChildren<OnlyRenderProps>) {
         return null;
     }
     return <>{children}</>;
+}
+
+export function DescriptView(props: Pick<EchartsTreeState, "shortDescroption" | "description">) {
+    const { shortDescroption, description } = props;
+    if (!description?.length) {
+        return <p className="ec-description">{shortDescroption}</p>;
+    }
+    return (
+        <Tooltip
+            placement="topLeft"
+            title={
+                <div>
+                    {description?.map((item) => (
+                        <p key={item} className="ec-description">
+                            {item}
+                        </p>
+                    ))}
+                </div>
+            }
+        >
+            <p className="ec-description">{shortDescroption}</p>
+        </Tooltip>
+    );
 }
 
 export function ContainerRender(props: ContainerRenderProps) {
@@ -42,13 +67,18 @@ export function ContainerRender(props: ContainerRenderProps) {
     console.log("---expandPath---", isFold);
     return (
         <div style={{ borderColor: isFold ? "red" : "#ccc" }} className={containerClass}>
-            <span>{field.name}</span>
-            <p className="ec-description">{field.description?.slice(0, 15)}</p>
+            <span>
+                <Tag style={{ fontSize: 14, padding: 5, borderRadius: 5 }} color="purple">
+                    {field.name}
+                </Tag>
+            </span>
+            <DescriptView description={field.description} shortDescroption={field.shortDescroption} />
             <OnlyRender condition={!!descendant?.length && (isFold || isTopLevel)}>
                 <div className={childrenClass} style={{ borderColor: "inherit" }}>
                     <OnlyRender condition={level > 1}>
-                        <span>{field.name}</span>
-                        <p className="ec-description">{field.description?.slice(0, 15)}</p>
+                        <Tag style={{ fontSize: 14, padding: 5, borderRadius: 5 }} color="purple">
+                            {field.name}
+                        </Tag>
                     </OnlyRender>
                     {descendant?.map((item) => (
                         <ContainerRender parentkey={cyclicKey} key={item.id} field={item} />
@@ -56,12 +86,19 @@ export function ContainerRender(props: ContainerRenderProps) {
                 </div>
             </OnlyRender>
             <OnlyRender condition={!!descendant?.length && level > 1}>
-                <div
-                    className={classNames("ec-fold", { "is-fold": isFold })}
-                    onClick={() => {
-                        calcPath(cyclicKey);
-                    }}
-                ></div>
+                <div>
+                    <div
+                        className={classNames("ec-fold", { "is-fold": isFold })}
+                        onClick={() => {
+                            calcPath(cyclicKey);
+                        }}
+                    ></div>
+                    <OnlyRender condition={isFold}>
+                        <div className="ec-arrow-container">
+                            <div className="ec-arrow-right" title="向右箭头"></div>
+                        </div>
+                    </OnlyRender>
+                </div>
             </OnlyRender>
         </div>
     );
