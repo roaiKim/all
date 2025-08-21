@@ -4,7 +4,7 @@ import { roPushHistory } from "@core";
 import { Button, Input, Tabs } from "antd";
 import * as echarts from "echarts";
 import { RootState } from "type/state";
-import { ContainerRender } from "./co/container-render";
+import { Main } from "./co";
 import echartsTreeState from "./config";
 import "./index.less";
 
@@ -57,7 +57,7 @@ function Project(props: ProjectProps) {
                         items={echartsTreeState.map((item) => ({
                             label: `${item.name}`,
                             key: `${item.id}`,
-                            children: <ContainerRender parentkey="" field={item} />,
+                            children: <Main parentkey="" field={item} />,
                         }))}
                         onChange={() => {
                             //

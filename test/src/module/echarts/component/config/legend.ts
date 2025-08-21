@@ -22,6 +22,7 @@ const legendConfig: EchartsTreeState[] = [
         ],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -65,6 +66,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -79,6 +81,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -97,6 +100,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -115,6 +119,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -129,6 +134,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -147,6 +153,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -161,6 +168,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -175,6 +183,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -207,6 +216,7 @@ const legendConfig: EchartsTreeState[] = [
         ],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -248,6 +258,7 @@ const legendConfig: EchartsTreeState[] = [
         ],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -266,8 +277,9 @@ const legendConfig: EchartsTreeState[] = [
             "coord 的具体格式定义，取决于每个坐标系，并且，和 chart.convertToPixel 的第二个参数相同。",
         ],
         options: [],
-        propTypes: ["array", "string"],
+        propTypes: ["array", "number", "string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -282,6 +294,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -296,6 +309,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -310,6 +324,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -324,6 +339,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -347,6 +363,7 @@ const legendConfig: EchartsTreeState[] = [
         ],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -378,6 +395,7 @@ const legendConfig: EchartsTreeState[] = [
         ],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -392,6 +410,9 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number", "array"],
         descendant: [],
+        example: [
+            "// 设置内边距为 5\npadding: 5\n// 设置上下的内边距为 5，左右的内边距为 10\npadding: [5, 10]\n// 分别设置四个方向的内边距\npadding: [\n    5,  // 上\n    10, // 右\n    5,  // 下\n    10, // 左\n]\n",
+        ],
         isLeaf: true,
     },
     {
@@ -459,6 +480,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["color"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -518,6 +540,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number", "array"],
                 descendant: [],
+                example: ["{\n\nborderType: [5, 10],\n\nborderDashOffset: 5\n}\n"],
                 isLeaf: true,
             },
             {
@@ -536,6 +559,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -563,6 +587,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -596,6 +621,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -615,6 +641,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -629,6 +656,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: ["{\n    shadowColor: 'rgba(0, 0, 0, 0.5)',\n    shadowBlur: 10\n}\n"],
                 isLeaf: true,
             },
             {
@@ -695,6 +723,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["object"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
         ],
@@ -726,6 +755,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["color"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -771,6 +801,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number", "array"],
                 descendant: [],
+                example: ["{\n\ntype: [5, 10],\n\ndashOffset: 5\n}\n"],
                 isLeaf: true,
             },
             {
@@ -789,6 +820,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -816,6 +848,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -849,6 +882,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -868,6 +902,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -882,6 +917,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: ["{\n    shadowColor: 'rgba(0, 0, 0, 0.5)',\n    shadowBlur: 10\n}\n"],
                 isLeaf: true,
             },
             {
@@ -990,6 +1026,9 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "function"],
         descendant: [],
+        example: [
+            "// 使用字符串模板，模板变量为图例名称 {name}\nformatter: 'Legend {name}'\n// 使用回调函数\nformatter: function (name) {\n    return 'Legend ' + name;\n}\n",
+        ],
         isLeaf: true,
     },
     {
@@ -1007,6 +1046,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "boolean"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1051,6 +1091,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number", "string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1065,6 +1106,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["object"],
         descendant: [],
+        example: ["selected: {\n    // 选中'系列1'\n    '系列1': true,\n    // 不选中'系列2'\n    '系列2': false\n}\n"],
         isLeaf: true,
     },
     {
@@ -1116,6 +1158,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -1151,6 +1194,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -1165,6 +1209,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -1192,6 +1237,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [
+                    "{\n    lineHeight: 56,\n    rich: {\n        a: {\n            // 没有设置 `lineHeight`，则 `lineHeight` 为 56\n        }\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -1211,6 +1259,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["string", "object"],
                 descendant: [],
+                example: [
+                    "backgroundColor: {\n    image: 'xxx/xxx.png'\n    // 这里可以是图片的 URL，\n    // 或者图片的 dataURI，\n    // 或者 HTMLImageElement 对象，\n    // 或者 HTMLCanvasElement 对象。\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -1269,6 +1320,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number", "array"],
                 descendant: [],
+                example: ["{\n\nborderType: [5, 10],\n\nborderDashOffset: 5\n}\n"],
                 isLeaf: true,
             },
             {
@@ -1287,6 +1339,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -1327,6 +1380,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["number", "array"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -1463,6 +1517,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number", "array"],
                 descendant: [],
+                example: ["{\n\ntextBorderType: [5, 10],\n\ntextBorderDashOffset: 5\n}\n"],
                 isLeaf: true,
             },
             {
@@ -1481,6 +1536,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -1586,6 +1642,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["object"],
                 descendant: [],
+                example: [
+                    "label: {\n    // 在文本中，可以对部分文本采用 rich 中定义样式。\n    // 这里需要在文本中使用标记符号：\n    // `{styleName|text content text content}` 标记样式名。\n    // 注意，换行仍是使用 '\\n'。\n    formatter: [\n        '{a|这段文本采用样式a}',\n        '{b|这段文本采用样式b}这段用默认样式{x|这段用样式x}'\n    ].join('\\n'),\n\n    rich: {\n        a: {\n            color: 'red',\n            lineHeight: 10\n        },\n        b: {\n            backgroundColor: {\n                image: 'xxx/xxx.jpg'\n            },\n            height: 40\n        },\n        x: {\n            fontSize: 18,\n            fontFamily: 'Microsoft YaHei',\n            borderColor: '#449933',\n            borderRadius: 4\n        },\n        ...\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -1605,6 +1664,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["boolean"],
                 descendant: [],
+                example: [
+                    "option = {\n    richInheritPlainLabel: false, // In most cases, this is enough.\n    xxx1: {\n        // Can also set it here to only control this label.\n        label: {\n            richInheritPlainLabel: false,\n            rich: {/* ... */},\n        }\n    },\n    xxx2: {\n        textStyle: {\n            richInheritPlainLabel: false,\n            rich: {/* ... */},\n        }\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
         ],
@@ -1644,6 +1706,11 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string"],
         descendant: [],
+        example: [
+            "'image://http://example.website/a/b.png'\n",
+            "'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7'\n",
+            "'path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z'\n",
+        ],
         isLeaf: true,
     },
     {
@@ -1664,6 +1731,9 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["array"],
         descendant: [],
+        example: [
+            "data: [{\n    name: '系列1',\n    // 强制设置图形为圆。\n    icon: 'circle',\n    // 设置文本为红色\n    textStyle: {\n        color: 'red'\n    }\n}]\n",
+        ],
         isLeaf: true,
     },
     {
@@ -1681,6 +1751,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["color"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1738,6 +1809,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: ["{\n    shadowColor: 'rgba(0, 0, 0, 0.5)',\n    shadowBlur: 10\n}\n"],
         isLeaf: true,
     },
     {
@@ -1752,6 +1824,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["color"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1766,6 +1839,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1780,6 +1854,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1800,6 +1875,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1814,6 +1890,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1828,6 +1905,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1851,6 +1929,7 @@ const legendConfig: EchartsTreeState[] = [
         ],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1870,6 +1949,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string", "function"],
         descendant: [],
+        example: ["{\n    current: number\n    total: number\n}\n"],
         isLeaf: true,
     },
     {
@@ -1906,6 +1986,11 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["array"],
                 descendant: [],
+                example: [
+                    "'image://http://example.website/a/b.png'\n",
+                    "'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7'\n",
+                    "'path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z'\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -1930,9 +2015,15 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["array"],
                 descendant: [],
+                example: [
+                    "'image://http://example.website/a/b.png'\n",
+                    "'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7'\n",
+                    "'path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z'\n",
+                ],
                 isLeaf: true,
             },
         ],
+        example: [],
         isLeaf: false,
     },
     {
@@ -1947,6 +2038,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1961,6 +2053,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -1979,6 +2072,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number", "array"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -2031,6 +2125,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2066,6 +2161,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2080,6 +2176,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2107,6 +2204,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [
+                    "{\n    lineHeight: 56,\n    rich: {\n        a: {\n            // 没有设置 `lineHeight`，则 `lineHeight` 为 56\n        }\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -2191,6 +2291,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number", "array"],
                 descendant: [],
+                example: ["{\n\ntextBorderType: [5, 10],\n\ntextBorderDashOffset: 5\n}\n"],
                 isLeaf: true,
             },
             {
@@ -2209,6 +2310,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2303,6 +2405,7 @@ const legendConfig: EchartsTreeState[] = [
                 isLeaf: true,
             },
         ],
+        example: [],
         isLeaf: false,
     },
     {
@@ -2352,6 +2455,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["object"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
         ],
@@ -2373,6 +2477,9 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["boolean", "array"],
         descendant: [],
+        example: [
+            "selector: [\n    {\n        // 全选\n        type: 'all',\n        // 可以是任意你喜欢的标题\n        title: '全选'\n    },\n    {\n        // 反选\n        type: 'inverse',\n        // 可以是任意你喜欢的标题\n        title: '反选'\n    }\n]\n\n// 或\nselector: true\n\n// 或\nselector: ['all', 'inverse']\n",
+        ],
         isLeaf: true,
     },
     {
@@ -2425,6 +2532,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2452,6 +2560,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["color"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2479,6 +2588,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2514,6 +2624,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2528,6 +2639,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["string"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2568,6 +2680,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: ["{\n    align: right,\n    rich: {\n        a: {\n            // 没有设置 `align`，则 `align` 为 right\n        }\n    }\n}\n"],
                 isLeaf: true,
             },
             {
@@ -2595,6 +2708,9 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string"],
                 descendant: [],
+                example: [
+                    "{\n    verticalAlign: bottom,\n    rich: {\n        a: {\n            // 没有设置 `verticalAlign`，则 `verticalAlign` 为 bottom\n        }\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -2609,6 +2725,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [
+                    "{\n    lineHeight: 56,\n    rich: {\n        a: {\n            // 没有设置 `lineHeight`，则 `lineHeight` 为 56\n        }\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -2629,6 +2748,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["string", "object"],
                 descendant: [],
+                example: [
+                    "backgroundColor: {\n    image: 'xxx/xxx.png'\n    // 这里可以是图片的 URL，\n    // 或者图片的 dataURI，\n    // 或者 HTMLImageElement 对象，\n    // 或者 HTMLCanvasElement 对象。\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -2643,6 +2765,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["color"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2688,6 +2811,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number", "array"],
                 descendant: [],
+                example: ["{\n\nborderType: [5, 10],\n\nborderDashOffset: 5\n}\n"],
                 isLeaf: true,
             },
             {
@@ -2706,6 +2830,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2746,6 +2871,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["number", "array"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2838,6 +2964,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["color"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -2883,6 +3010,7 @@ const legendConfig: EchartsTreeState[] = [
                 ],
                 propTypes: ["string", "number", "array"],
                 descendant: [],
+                example: ["{\n\ntextBorderType: [5, 10],\n\ntextBorderDashOffset: 5\n}\n"],
                 isLeaf: true,
             },
             {
@@ -2901,6 +3029,7 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["number"],
                 descendant: [],
+                example: [],
                 isLeaf: true,
             },
             {
@@ -3006,6 +3135,9 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["object"],
                 descendant: [],
+                example: [
+                    "label: {\n    // 在文本中，可以对部分文本采用 rich 中定义样式。\n    // 这里需要在文本中使用标记符号：\n    // `{styleName|text content text content}` 标记样式名。\n    // 注意，换行仍是使用 '\\n'。\n    formatter: [\n        '{a|这段文本采用样式a}',\n        '{b|这段文本采用样式b}这段用默认样式{x|这段用样式x}'\n    ].join('\\n'),\n\n    rich: {\n        a: {\n            color: 'red',\n            lineHeight: 10\n        },\n        b: {\n            backgroundColor: {\n                image: 'xxx/xxx.jpg'\n            },\n            height: 40\n        },\n        x: {\n            fontSize: 18,\n            fontFamily: 'Microsoft YaHei',\n            borderColor: '#449933',\n            borderRadius: 4\n        },\n        ...\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
             {
@@ -3025,9 +3157,13 @@ const legendConfig: EchartsTreeState[] = [
                 options: [],
                 propTypes: ["boolean"],
                 descendant: [],
+                example: [
+                    "option = {\n    richInheritPlainLabel: false, // In most cases, this is enough.\n    xxx1: {\n        // Can also set it here to only control this label.\n        label: {\n            richInheritPlainLabel: false,\n            rich: {/* ... */},\n        }\n    },\n    xxx2: {\n        textStyle: {\n            richInheritPlainLabel: false,\n            rich: {/* ... */},\n        }\n    }\n}\n",
+                ],
                 isLeaf: true,
             },
         ],
+        example: [],
         isLeaf: false,
     },
     {
@@ -3046,6 +3182,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["string"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -3060,6 +3197,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -3074,6 +3212,7 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["number"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
     {
@@ -3088,8 +3227,8 @@ const legendConfig: EchartsTreeState[] = [
         options: [],
         propTypes: ["boolean"],
         descendant: [],
+        example: [],
         isLeaf: true,
     },
 ];
-
 export default legendConfig;

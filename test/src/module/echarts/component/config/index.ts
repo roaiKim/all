@@ -9,6 +9,9 @@ export enum EchartsNodeType {
     boolean = "boolean",
     function = "function",
     options = "options",
+    color = "color",
+    array = "array",
+    object = "array",
 }
 
 export interface EchartsTreeState {
@@ -24,9 +27,10 @@ export interface EchartsTreeState {
     defaultValue?: string;
     descendant?: EchartsTreeState[];
     shortDescroption?: string;
+    example?: string[];
     description?: string[];
     options?: Record<string, string>[];
-    propTypes?: string[];
+    propTypes?: (keyof typeof EchartsNodeType)[];
 }
 
 const echartsTreeState: EchartsTreeState[] = [

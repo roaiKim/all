@@ -20,7 +20,8 @@
         "verify": "yarn eslint-verify & yarn stylelint-verify",
         "eslint-verify": "eslint \"{core,src,test,script,config}/**/*.{js,ts,tsx}\" --config .eslintrc.js",
         "stylelint-verify": "stylelint --config stylelint.json \"src/**/*.less\"",
-        "module": "node webpack/module.js"
+        "module": "node webpack/module.js",
+        "fetch": "node src/module/echarts/component/script/fetch.js"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
@@ -66,6 +67,7 @@
         "antd": "^5.12.5",
         "array-move": "^4.0.0",
         "axios": "0.23.0",
+        "cheerio": "^1.1.2",
         "classnames": "2.3.1",
         "connected-react-router": "6.9.1",
         "core-js": "3.18.3",

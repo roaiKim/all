@@ -31,7 +31,7 @@ function getEle() {
             const desc = item.querySelector("p")?.innerText || item?.innerText;
             const key = item.querySelector(".codespan")?.innerText;
 
-            if (desc || key) {
+            if (key) {
                 options.push({
                     key: removeSign(key, /[= ']/g),
                     des: removeSign(desc, /[= ']/g),
@@ -56,6 +56,13 @@ function getEle() {
         current["descendant"] = [];
 
         const descendant = {};
+
+        if (current["description"]?.length > 0) {
+            const example = Array.from(des.querySelectorAll(`pre`))
+                .map((item) => item.innerText)
+                .filter(Boolean);
+            current["example"] = example;
+        }
 
         const children = element.querySelector(`.children`);
         if (children) {
