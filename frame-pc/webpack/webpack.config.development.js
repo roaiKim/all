@@ -40,39 +40,37 @@ const wr = (proxyRes, req, res) => {
 
 const proxy = (origin = {}) => {
     const envs = [];
-    Object.entries(developmentProxy).forEach(
-        ([key, value]) => {
-            // (envs[`/${key}`] = {
-            //     pathRewrite: { [`^/${key}`]: "" },
-            //     target: value,
-            //     changeOrigin: true,
-            //     headers: {
-            //         Connection: "keep-alive",
-            //         "Access-Control-Allow-Origin": "*",
-            //         "Access-Control-Allow-Headers": "*",
-            //         "Access-Control-Allow-Methods": "*",
-            //     },
-            //     // selfHandleResponse: true,
-            //     // onProxyReq: (proxyReq, req, res) => {
-            //     //     console.log(1111111);
-            //     //     // wr(proxyReq, req, res);
-            //     // },
-            //     // onError: (err, req, res) => {
-            //     //     console.log(3333333);
-            //     // },
-            //     // onProxyRes: (proxyRes, req, res) => {
-            //     //     console.log(2222222);
-            //     //     wr(proxyRes, req, res);
-            //     // },
-            // });
-            envs.push({
-                context: [`/${key}`],
-                target: value,
-                changeOrigin: true,
-                pathRewrite: { [`^/${key}`]: "" }
-            });
-        }
-    );
+    Object.entries(developmentProxy).forEach(([key, value]) => {
+        // (envs[`/${key}`] = {
+        //     pathRewrite: { [`^/${key}`]: "" },
+        //     target: value,
+        //     changeOrigin: true,
+        //     headers: {
+        //         Connection: "keep-alive",
+        //         "Access-Control-Allow-Origin": "*",
+        //         "Access-Control-Allow-Headers": "*",
+        //         "Access-Control-Allow-Methods": "*",
+        //     },
+        //     // selfHandleResponse: true,
+        //     // onProxyReq: (proxyReq, req, res) => {
+        //     //     console.log(1111111);
+        //     //     // wr(proxyReq, req, res);
+        //     // },
+        //     // onError: (err, req, res) => {
+        //     //     console.log(3333333);
+        //     // },
+        //     // onProxyRes: (proxyRes, req, res) => {
+        //     //     console.log(2222222);
+        //     //     wr(proxyRes, req, res);
+        //     // },
+        // });
+        envs.push({
+            context: [`/${key}`],
+            target: value,
+            changeOrigin: true,
+            pathRewrite: { [`^/${key}`]: "" },
+        });
+    });
     return envs;
     // return Object.assign({}, envs, origin);
 };
@@ -87,18 +85,18 @@ module.exports = {
         open: {
             app: process.platform === "win32" ? "chrome" : "Google Chrome",
         },
-        client: {
-            overlay: {
-                errors: true,
-                warnings: false,
-            },
-        },
+        // client: {
+        //     overlay: {
+        //         errors: true,
+        //         warnings: false,
+        //     },
+        // },
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "*",
             "Access-Control-Allow-Methods": "*",
         },
-        proxy: proxy()
+        proxy: proxy(),
     },
     mode: "development",
     entry: {

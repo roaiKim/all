@@ -1,4 +1,27 @@
 {
+  "eslint.workingDirectories": [
+    "babel",
+    "cell-table",
+    "custom-eslint",
+    "form-ily",
+    "frame-mobile",
+    "frame-rosen",
+    "nest",
+    "swaggerToTypescript",
+    "test",
+    "vueo",
+    "wechat-core",
+    "nbase_webpack",
+    "ci",
+    "fa-core",
+    "frame-core",
+    "frame-pc",
+    "frame-wechat",
+    "rosen-core",
+    "template",
+    "vue-core-app",
+    "wechat-app",
+],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"

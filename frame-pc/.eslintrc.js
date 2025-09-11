@@ -14,14 +14,14 @@ module.exports = {
     ],
     plugins: ["@typescript-eslint", "prettier", "simple-import-sort"],
     parserOptions: {
-        ecmaVersion: 2018,
+        ecmaVersion: 2019,
         sourceType: "module",
         ecmaFeatures: { jsx: true },
     },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
+    settings: {
+        react: {
+            version: "detect",
+        },
     },
     rules: {
         "prettier/prettier": ["error", prettier],
@@ -34,8 +34,8 @@ module.exports = {
         "@typescript-eslint/member-ordering": [
             "error",
             {
-                "default": {
-                    "memberTypes": [
+                default: {
+                    memberTypes: [
                         "public-static-field",
                         "protected-static-field",
                         "private-static-field",
@@ -54,37 +54,40 @@ module.exports = {
                         "protected-instance-method",
                         "private-instance-method",
                         "public-abstract-method",
-                        "protected-abstract-method"
+                        "protected-abstract-method",
                     ],
-                    "order": "as-written"
-                }
-            }
+                    order: "as-written",
+                },
+            },
         ],
-        "simple-import-sort/imports": ["error", {
-            "groups": [
-                [
-                    "^react",
-                    "^react-\\w+?$",
-                    "^@core",
-                    "^\\w+?$",
-                    "^[a-zA-Z-]+?$",
-                    "^@",
-                    "^config",
-                    "^http",
-                    "^component",
-                    "^module",
-                    "^utils",
-                    "^service",
-                    "^type",
-                    "^[^.]+?$",
-                    `.(${pictureFormat})$`,
-                    "^asset",
-                    "\\.\\/",
-                    "\\.\\.\\/",
-                    ".less"
-                ]
-            ]
-        }],
+        "simple-import-sort/imports": [
+            "error",
+            {
+                groups: [
+                    [
+                        "^react",
+                        "^react-\\w+?$",
+                        "^@core",
+                        "^\\w+?$",
+                        "^[a-zA-Z-]+?$",
+                        "^@",
+                        "^config",
+                        "^http",
+                        "^component",
+                        "^module",
+                        "^utils",
+                        "^service",
+                        "^type",
+                        "^[^.]+?$",
+                        `.(${pictureFormat})$`,
+                        "^asset",
+                        "\\.\\/",
+                        "\\.\\.\\/",
+                        ".less",
+                    ],
+                ],
+            },
+        ],
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-inferrable-types": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
