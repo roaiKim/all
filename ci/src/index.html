@@ -6,6 +6,112 @@
         <!-- <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src *;" /> -->
         <meta name="renderer" content="webkit" />
         <title>website</title>
+        <script>
+            /**
+ * 将键路径字符串转换为数组
+ * @param {string} path - 类似"a.b.c"的路径字符串
+ * @returns {string[]} 路径片段数组
+ */
+function parsePath(path) {
+  if (!path || typeof path !== 'string') return [];
+  return path.split('.').filter(segment => segment.trim() !== '');
+}
+
+/**
+ * 深拷贝对象，避免修改原对象
+ * @param {Object} obj - 要拷贝的对象
+ * @returns {Object} 新的拷贝对象
+ */
+function deepClone(obj) {
+  if (obj === null || typeof obj !== 'object') return obj;
+  
+  if (Array.isArray(obj)) {
+    return obj.map(item => deepClone(item));
+  }
+  
+  const cloned = {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      cloned[key] = deepClone(obj[key]);
+    }
+  }
+  return cloned;
+}
+
+/**
+ * 根据路径获取对象中的值
+ * @param {Object} obj - 源对象
+ * @param {string} path - 路径字符串
+ * @returns {any} 路径对应的 value
+ */
+function getValueByPath(obj, path) {
+  const segments = parsePath(path);
+  if (segments.length === 0) return undefined;
+  
+  let current = obj;
+  for (const segment of segments) {
+    if (current === null || current === undefined) return undefined;
+    current = current[segment];
+  }
+  return current;
+}
+
+/**
+ * 根据路径设置对象中的值（不修改原对象）
+ * @param {Object} obj - 源对象
+ * @param {string} path - 路径字符串
+ * @param {any} value - 要设置的新值
+ * @returns {Object} 修改后的新对象
+ */
+function setValueByPath(obj, path, value) {
+  const clonedObj = deepClone(obj);
+  const segments = parsePath(path);
+  
+  if (segments.length === 0) return clonedObj;
+  
+  let current = clonedObj;
+  for (let i = 0; i < segments.length - 1; i++) {
+    const segment = segments[i];
+    // 如果中间节点不存在，自动创建
+    if (current[segment] === null || current[segment] === undefined) {
+      current[segment] = {};
+    }
+    current = current[segment];
+  }
+  
+  // 设置叶节点值
+  const lastSegment = segments[segments.length - 1];
+  current[lastSegment] = value;
+  
+  return clonedObj;
+}
+
+// 使用示例
+const data = {
+  user: {
+    name: "John",
+    contact: {
+      email: "john@example.com",
+      phone: {
+        home: "123-456"
+      }
+    }
+  }
+};
+
+// 获取值
+console.log(getValueByPath(data, "user.contact.email")); // "john@example.com"
+
+// 修改值
+const updatedData = setValueByPath(data, "user.contact.phone.home", "789-012");
+console.log(updatedData.user.contact.phone.home); // "789-012"
+console.log(data.user.contact.phone.home); // 原对象保持不变 "123-456"
+
+// 创建新的深层节点
+const newData = setValueByPath(data, "user.preferences.theme", "dark");
+console.log(newData.user.preferences.theme); // "dark"
+
+        </script>
     </head>
 
     <body class="g-theme">
