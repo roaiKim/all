@@ -1,0 +1,23 @@
+{
+  "name": "eslint-config-rosen",
+  "version": "1.0.1",
+  "private": true,
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "5.1.0",
+    "@typescript-eslint/parser": "5.1.0",
+    "eslint": "8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "prettier": "2.4.1"
+  }
+}
