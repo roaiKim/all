@@ -51,7 +51,7 @@ export default defineConfig([
                 {
                     singleQuote: false,
                     tabWidth: 4,
-                    printWidth: 80,
+                    printWidth: 150,
                     trailingComma: "es5",
                     bracketSpacing: true,
                     endOfLine: "auto",
@@ -94,6 +94,14 @@ export default defineConfig([
                         ],
                         order: "as-written",
                     },
+                },
+            ],
+            "@typescript-eslint/no-unused-vars": [
+                "error",
+                {
+                    vars: "all",
+                    args: "after-used",
+                    caughtErrors: "none"
                 },
             ],
             "simple-import-sort/exports": "error",
