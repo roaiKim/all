@@ -1,11 +1,14 @@
 {
   "name": "eslint-config-base",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "main": "index.mjs",
   "exports": {
     ".": "./index.mjs"
   },
+  "files": [
+    "index.mjs"
+  ],
   "scripts": {
     "lint": "eslint ."
   },

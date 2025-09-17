@@ -2,11 +2,17 @@
 
 /-- 其他项目使用方法
 
-// .eslintrc.js
+// eslint.config.mjs
 ```js
-module.exports = {
-    extends: ["rosen"],
-};
+import exampleConfigs from "eslint-config-base";
+import { defineConfig } from "eslint/config";
+
+export default defineConfig([
+    exampleConfigs,
+    {
+        ignores: ["webpack/**", "src/index.html", "build"],
+    },
+]);
 ```
 
 // 需要设置 .vscode/settings.json
