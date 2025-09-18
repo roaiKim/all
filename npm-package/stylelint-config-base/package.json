@@ -1,0 +1,20 @@
+{
+  "name": "stylelint-config-base",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "lint": "stylelint ."
+  },
+  "dependencies": {
+    "stylelint": "^14.2.0",
+    "stylelint-config-standard": "^24.0.0",
+    "postcss-less": "^6.0.0"
+  }
+}
