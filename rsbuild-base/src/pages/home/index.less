@@ -1,0 +1,415 @@
+/************************* index.less ***************************/
+.screen {
+  width: 100%;
+  background-color: #f0f2f5;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.box {
+  background-color: white;
+  width: 100%;
+}
+
+.flex-top-margin {
+  padding-top: 15px;
+}
+
+.flex-margin {
+  margin: 0 15px;
+}
+
+/********************* Pending.css **********************/
+
+.pending-module {
+  .background {
+    background: linear-gradient(to right, #4083f2, #bed1f0);
+    justify-content: space-around;
+    color: white;
+    font-size: 22px;
+    padding: 25px;
+    text-align: left;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .img {
+    background-color: white;
+    border-radius: 50%;
+    max-width: 100px;
+    width: 6.5vw;
+    height: 6.5vw;
+    max-height: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img > img {
+    max-width: 80px;
+    width: 5.5vw;
+  }
+}
+
+/******************** Compose.css ************************/
+.compose-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .content {
+    flex: 1;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .flex1 {
+    flex: 1;
+  }
+
+  .title-box {
+    height: 50px;
+
+    .title {
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+  }
+}
+
+/******************** Operations.css ***********************/
+.operations-module {
+  .background {
+    background: linear-gradient(to right, #e7eef8, #a3c2f5);
+    justify-content: space-around;
+    font-size: 16px;
+    padding: 15px 20px;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 1vw;
+  }
+
+  .flex1 {
+    flex: 1;
+  }
+
+  .space-between {
+    justify-content: space-between;
+  }
+
+  .count {
+    font-weight: bold;
+    text-align: left;
+    padding-top: 8px;
+    font-size: 26px;
+  }
+
+  .img > img {
+    max-width: 80px;
+    width: 6vw;
+  }
+
+  .img {
+    margin-left: -15px;
+  }
+
+  /* 响应式适配：与原Vue样式一致 */
+  @media screen and (width >= 1400px) {
+    .flex {
+      font-size: 18px;
+    }
+  }
+}
+
+/*****************  analyze-module  *******************/
+.analyze-module {
+  .background {
+    background: linear-gradient(to right, #4083f2, #bed1f0);
+    justify-content: space-around;
+    color: white;
+    font-size: 22px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .img {
+    background-color: white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img > img {
+    width: 80px;
+  }
+
+  .chart {
+    height: 360px;
+  }
+}
+
+/*************************  settlement-module  ************/
+
+/* 财务结算组件样式 */
+.settlement-module {
+  .background {
+    justify-content: space-around;
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .flex1 {
+    flex: 1;
+  }
+
+  .title {
+    color: rgb(79 89 109 / 100%);
+    font-weight: normal;
+    font-size: 16px;
+  }
+
+  .space-between {
+    justify-content: space-between;
+  }
+
+  .count {
+    font-weight: bold;
+    padding-top: 8px;
+    font-size: 25px;
+  }
+
+  .img > img {
+    width: 90px;
+  }
+}
+
+/*******************  FinancialOrderNode  **************************/
+
+.financial-order-node-module {
+  .background {
+    background: linear-gradient(to right, #4083f2, #bed1f0);
+    justify-content: space-around;
+    color: white;
+    font-size: 22px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .img {
+    background-color: white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img > img {
+    width: 80px;
+  }
+
+  .chart {
+    height: 200px;
+
+    /* 补充：确保图表容器有明确高度，避免ECharts渲染异常 */
+    min-height: 200px;
+    margin: 8px 0;
+  }
+}
+
+/******************************  oft-module  ************************/
+.oft-module {
+  margin-top: 15px;
+
+  .background {
+    background: linear-gradient(to right, #4083f2, #bed1f0);
+    justify-content: space-around;
+    color: white;
+    font-size: 22px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .img {
+    background-color: white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img > img {
+    width: 80px;
+  }
+
+  /* 图表容器样式：宽度50% + 固定高度，确保双图表并排显示 */
+  .chart {
+    height: 300px;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 0 8px; /* 可选：增加内边距避免图表边缘拥挤 */
+  }
+}
+
+/*******************************  StrongCargoOwner  ************************/
+.strong-cargo-owner-module {
+  .background {
+    justify-content: space-around;
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .flex1 {
+    flex: 1;
+  }
+
+  .space-between {
+    justify-content: space-between;
+  }
+
+  .count {
+    font-weight: bold;
+    padding-top: 8px;
+    font-size: 25px;
+  }
+
+  .img > img {
+    width: 90px;
+  }
+}
+
+/************************************  GoldService  *********************/
+
+.gold-service-module {
+  .background {
+    justify-content: space-around;
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .flex1 {
+    flex: 1;
+  }
+
+  .space-between {
+    justify-content: space-between;
+  }
+
+  .count {
+    font-weight: bold;
+    padding-top: 8px;
+    font-size: 25px;
+  }
+
+  .img > img {
+    width: 90px;
+  }
+
+  /* 表格排名列样式调整 */
+  .ant-table-cell:nth-child(1) {
+    position: relative;
+  }
+}
+
+/***************************  abnormal-quality-module  ***************************/
+.abnormal-quality-module {
+  /* 提取 Vue 的 scoped 样式，保持原样式逻辑 */
+  .background {
+    justify-content: space-around;
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+
+  .flex1 {
+    flex: 1;
+  }
+
+  .space-between {
+    justify-content: space-between;
+  }
+
+  .count {
+    font-weight: bold;
+    padding-top: 8px;
+    font-size: 25px;
+  }
+
+  .img > img {
+    width: 90px;
+  }
+
+  /* 表格单元格样式（若添加排名列，确保图标定位正确） */
+  .ant-table-tbody .ant-table-cell {
+    vertical-align: middle; /* 单元格垂直居中 */
+  }
+
+  /* 排名列图标容器样式（若后续添加排名列） */
+  .rank-icon-container {
+    position: relative;
+    height: 40px; /* 与表格行高匹配 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

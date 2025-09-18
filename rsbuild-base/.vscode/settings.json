@@ -1,0 +1,14 @@
+{
+    "eslint.workingDirectories": [
+        {
+            "mode": "auto"
+        }
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.stylelint": "explicit"
+    },
+    "stylelint.packageManager": "yarn",
+    "stylelint.validate": ["css", "postcss", "less"],
+    "stylelint.nodePath": "./node_modules",
+    "stylelint.configFile": "${workspaceFolder}/rsbuild-base/stylelint.json"
+}

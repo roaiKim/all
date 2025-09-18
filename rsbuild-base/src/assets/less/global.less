@@ -1,0 +1,68 @@
+.g-theme {
+  button.ant-btn {
+    // &:not([class~="ant-input-search-button"]),
+    &:not([class~="ant-btn-icon-only"]) {
+      min-width: 60px;
+      // margin-left: 10px;
+      font-size: 12px;
+    }
+  }
+
+  .ro-flex {
+    display: flex;
+
+    &.ro-row-bewteen {
+      justify-content: space-between;
+    }
+
+    &.ro-row-center {
+      justify-content: center;
+    }
+
+    &.ro-col-center {
+      align-items: center;
+    }
+
+    &.ro-center {
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ro-grow {
+      flex-grow: 1;
+    }
+
+    &.ro-height-100 {
+      height: 100%;
+    }
+  }
+
+  .text-overflow-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .ro-scrollbar-container {
+    &::-webkit-scrollbar {
+      background-color: #e3e3e3;
+      width: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      // border: 2px solid #e3e3e3;
+      background-color: #89a2d3;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #061449;
+    }
+  }
+
+  .ro-text {
+    white-space: nowrap; /* 确保文本在一行内显示 */
+    overflow: hidden; /* 隐藏溢出的内容 */
+    text-overflow: ellipsis;
+  }
+}
