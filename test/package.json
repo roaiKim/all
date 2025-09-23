@@ -21,7 +21,8 @@
         "eslint-verify": "eslint \"{core,src,test,script,config}/**/*.{js,ts,tsx}\" --config .eslintrc.js",
         "stylelint-verify": "stylelint --config stylelint.json \"src/**/*.less\"",
         "module": "node webpack/module.js",
-        "fetch": "node src/module/echarts/component/script/fetch.js"
+        "fetch": "node src/module/echarts/component/script/fetch.js",
+        "api": "node webpack/script/getApi.js"
     },
     "devDependencies": {
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
