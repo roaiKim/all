@@ -10,5 +10,5 @@
 wechat-core/lib
 wechat-core/pure
 wechat-core/**.tgz
-**/**.tgz
+npm-package/**/**.tgz
 **/src/config/dev-tabs.ts
