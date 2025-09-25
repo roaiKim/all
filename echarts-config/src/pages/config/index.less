@@ -10,7 +10,7 @@
 
   .ec-container-box {
     position: relative;
-    width: 380px;
+    width: 390px;
     margin: 5px;
     padding: 5px;
     border: 1px solid #ccc;
@@ -19,10 +19,10 @@
 
   .ec-children-box {
     position: relative;
-    height: var(--ec-context-height);
+    // height: var(--ec-context-height);
     width: 360px;
-    margin: 5px;
-    padding: 5px;
+    margin: 15px 5px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
 
@@ -60,6 +60,14 @@
     .ec-options {
       > span {
         margin-right: 10px;
+      }
+    }
+
+    .ec-value {
+      display: flex;
+
+      :last-child {
+        flex-grow: 1;
       }
     }
   }
