@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router";
 import Chart from "@src/pages/chart";
 import Config from "@src/pages/config";
+import Leaflet from "@src/pages/leaflet";
 import Vis from "@src/pages/vis";
 import { WEB_COMMA_TENANT_ID, WEB_TOKEN } from "./service/config/static-envs";
 import { StorageService } from "./service/StorageService";
@@ -25,6 +26,7 @@ export function AppRouter() {
             <Route index element={<Config />} />
             <Route path="about" element={<Chart />} />
             <Route path="vis" element={<Vis />} />
+            <Route path="le" element={<Leaflet />} />
         </Routes>
     );
 }

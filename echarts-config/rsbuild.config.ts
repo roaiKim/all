@@ -26,11 +26,15 @@ const proxy = (origin = {}) => {
 export default defineConfig({
     server: {
         proxy: proxy(),
-        port: 10010,
+        port: 10086,
     },
     plugins: [pluginReact(), pluginLess()],
     html: {
         title: "Home",
         template: "./src/index.html",
+        favicon: "./src/favicon.ico",
+    },
+    output: {
+        copy: [{ from: "./src/pages/leaflet/imgs", to: "static/image" }],
     },
 });
