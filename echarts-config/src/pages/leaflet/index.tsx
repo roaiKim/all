@@ -43,9 +43,12 @@ class ImageMosaic {
     }
 
     fitToAllImages() {
-        const allBounds = this.layers.reduce((bounds, layer) => {
-            return bounds.extend(layer.getBounds());
-        }, Leaflet.latLngBounds());
+        const allBounds = this.layers.reduce(
+            (bounds, layer) => {
+                return bounds.extend(layer.getBounds());
+            },
+            Leaflet.latLngBounds([0, 0])
+        );
 
         this.map.fitBounds(allBounds, { padding: [20, 20] });
     }
@@ -66,7 +69,11 @@ function LeafletContainer() {
             zoomSnap: 0.5,
             minZoom: 0.1,
             maxZoom: 10,
+            renderer: Leaflet.canvas(),
             attributionControl: false,
+        });
+        map.on("zoom", (a) => {
+            console.log("--", map.getZoom(), map.getCenter());
         });
         // const greenIcon = Leaflet.icon({
         //     iconUrl: "/static/image/tile_0_0.webp",
