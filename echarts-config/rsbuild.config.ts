@@ -35,6 +35,6 @@ export default defineConfig({
         favicon: "./src/favicon.ico",
     },
     output: {
-        copy: [{ from: "./src/pages/leaflet/imgs", to: "static/image" }],
+        copy: [{ from: "./src/pages/leaflet/imgs", to: "static/image/leaflet" }],
     },
 });

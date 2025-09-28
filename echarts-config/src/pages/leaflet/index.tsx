@@ -28,7 +28,7 @@ class ImageMosaic {
             [position.y, position.x],
             [position.y + height, position.x + width],
         ];
-        console.log(bounds);
+
         const layer = Leaflet.imageOverlay(url, bounds, {
             attribution: title,
         }).addTo(this.group);
@@ -60,9 +60,11 @@ function LeafletContainer() {
     useEffect(() => {
         // https://leafletjs.cn/reference.html#map-option
         const map = Leaflet.map("ro-leaflet-map", {
+            crs: Leaflet.CRS.Simple,
             center: [0, 0],
-            zoom: 10,
+            zoom: 1,
             zoomSnap: 0.5,
+            minZoom: 0.1,
             maxZoom: 10,
             attributionControl: false,
         });
@@ -75,10 +77,10 @@ function LeafletContainer() {
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j <= 9; j++) {
                 imgs.push({
-                    url: `/static/image/tile_${i}_${j}.webp`,
-                    position: { x: j * 256, y: i * 256 },
-                    width: 256,
-                    height: 256,
+                    url: `/static/image/leaflet/tile_${i}_${j}.webp`,
+                    position: { x: j * 64, y: -i * 64 },
+                    width: 64,
+                    height: 64,
                 });
             }
         }
