@@ -35,6 +35,9 @@ export default defineConfig({
         favicon: "./src/favicon.ico",
     },
     output: {
-        copy: [{ from: "./src/pages/leaflet/imgs", to: "static/image/leaflet" }],
+        copy: [
+            { from: "./src/pages/leaflet/imgs", to: "static/image/leaflet" },
+            { from: "./src/pages/leaflet/tiles_64x64_webp", to: "static/image/tiles_64x64_webp" },
+        ],
     },
 });
