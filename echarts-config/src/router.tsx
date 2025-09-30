@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router";
 import Chart from "@src/pages/chart";
+import Chrome from "@src/pages/chrome";
+import ChromeTab from "@src/pages/chrome-tab";
 import Config from "@src/pages/config";
 import Leaflet from "@src/pages/leaflet";
 import Tile from "@src/pages/leaflet/tile";
@@ -24,11 +26,14 @@ export function AppRouter() {
 
     return (
         <Routes>
-            <Route index element={<Config />} />
-            <Route path="about" element={<Chart />} />
+            <Route index element={<div>Tyu</div>} />
+            <Route path="config" element={<Config />} />
+            <Route path="chart" element={<Chart />} />
             <Route path="vis" element={<Vis />} />
             <Route path="le" element={<Leaflet />} />
             <Route path="lie" element={<Tile />} />
+            <Route path="chrome" element={<ChromeTab />} />
+            <Route path="ch" element={<Chrome />} />
         </Routes>
     );
 }

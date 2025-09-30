@@ -1,0 +1,129 @@
+.ro-container {
+  background-color: #eee;
+  position: relative;
+
+  .ro-bottom-bar {
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 10;
+  }
+}
+
+.ro-box {
+  height: 41px;
+  display: flex;
+
+  .ro-item {
+    width: 260px;
+    background-color: #eee;
+    height: 34px;
+    border-radius: 4px;
+    position: relative;
+    margin-top: 4px;
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 7px;
+      bottom: 11px;
+      right: 0;
+      width: 2px;
+      background: blue;
+      opacity: 0.2;
+      transition: opacity 0.2s ease;
+    }
+
+    .ro-bg {
+      position: absolute;
+      z-index: 99;
+      height: 100%;
+      right: -7px;
+      left: -7px;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &:has(+ .ro-item:hover) {
+      &::after {
+        display: none;
+      }
+    }
+
+    &:has(+ .active) {
+      &::after {
+        display: none;
+      }
+    }
+
+    &:hover::after {
+      display: none;
+    }
+
+    &.active {
+      .ro-bg {
+        z-index: 999;
+
+        svg {
+          opacity: 1 !important;
+        }
+      }
+
+      .ro-context:hover {
+        background-color: initial;
+      }
+
+      .chrome-tab-geometry {
+        fill: #fff;
+      }
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .ro-context {
+      z-index: 999;
+      box-sizing: border-box;
+      align-items: center;
+      padding: 6px 8px;
+      display: flex;
+      position: absolute;
+      left: 5px;
+      right: 5px;
+      border-radius: 10px;
+
+      &:hover {
+        background-color: #ccc;
+      }
+
+      .ro-text {
+        flex-grow: 1;
+        margin: 0 5px;
+        cursor: default;
+      }
+
+      .ro-close {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 8px 8px;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(0, 0, 0, .65)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+
+        &:hover {
+          background-color: #e8eaed;
+        }
+      }
+    }
+  }
+}

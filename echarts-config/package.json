@@ -8,6 +8,7 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@ant-design/icons": "5.x",
     "antd": "^5.27.3",
     "axios": "^1.12.2",
     "echarts": "^6.0.0",
