@@ -2,7 +2,60 @@ import { AppleOutlined, FacebookOutlined, GithubOutlined, GoogleOutlined } from 
 import ChromeTabSvg from "./tab-path";
 import "./index.less";
 
-function ChromeStyleTab() {
+interface TabState {
+    /**
+     * 图标
+     */
+    icon?: React.ReactNode;
+
+    /**
+     * 显示title
+     */
+    label?: React.ReactNode;
+
+    /**
+     * 是显示关闭按钮
+     * default true
+     */
+    allowClose?: boolean;
+
+    /**
+     * 是否disabled
+     * default false
+     */
+    disabled?: boolean;
+}
+
+interface ChromeStyleTabProps {
+    /**
+     * tabs 数据
+     */
+    tabs: TabState[];
+
+    /**
+     * 是否可拖拽
+     */
+    draggable?: boolean;
+
+    /**
+     *
+     * @param tab 当前点击的元素
+     * @param index 当前点击元素的index
+     * @returns void
+     */
+    onClick?: (tab: TabState, index: number) => void;
+
+    /**
+     *
+     * @param tab 当前点击的元素
+     * @param index 当前点击元素的index
+     * @param tabs close 后的元素的copy副本
+     * @returns void
+     */
+    onClose?: (tab: TabState, index: number, tabs: TabState[]) => void;
+}
+
+function ChromeStyleTab(props: ChromeStyleTabProps) {
     return (
         <div className="ro-container ro-chrome-tabs">
             <div className="ro-box">
@@ -30,7 +83,7 @@ function ChromeStyleTab() {
                         <div className="ro-close"></div>
                     </div>
                 </div>
-                <div className="ro-item">
+                <div className="ro-item active">
                     <div className="ro-bg">
                         <ChromeTabSvg />
                     </div>
@@ -42,7 +95,7 @@ function ChromeStyleTab() {
                         <div className="ro-close"></div>
                     </div>
                 </div>
-                <div className="ro-item active">
+                <div className="ro-item">
                     <div className="ro-bg">
                         <ChromeTabSvg />
                     </div>
