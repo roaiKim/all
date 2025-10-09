@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router";
 import Chart from "@src/pages/chart";
-import Chrome from "@src/pages/chrome";
 import ChromeTab from "@src/pages/chrome-tab";
 import Config from "@src/pages/config";
 import Leaflet from "@src/pages/leaflet";
 import Tile from "@src/pages/leaflet/tile";
 import Vis from "@src/pages/vis";
+import ChromeExample from "@src/useExample/chrome-example";
 import { WEB_COMMA_TENANT_ID, WEB_TOKEN } from "./service/config/static-envs";
 import { StorageService } from "./service/StorageService";
 
@@ -26,14 +26,14 @@ export function AppRouter() {
 
     return (
         <Routes>
-            <Route index element={<div>Tyu</div>} />
+            <Route index element={<div>Home</div>} />
             <Route path="config" element={<Config />} />
             <Route path="chart" element={<Chart />} />
             <Route path="vis" element={<Vis />} />
             <Route path="le" element={<Leaflet />} />
             <Route path="lie" element={<Tile />} />
             <Route path="chrome" element={<ChromeTab />} />
-            <Route path="ch" element={<Chrome />} />
+            <Route path="ch" element={<ChromeExample />} />
         </Routes>
     );
 }

@@ -1,8 +1,10 @@
-.ro-container {
+.cst-container {
   background-color: #eee;
   position: relative;
+  height: 45px;
+  max-width: 95vw;
 
-  .ro-bottom-bar {
+  .cst-bottom-bar {
     position: absolute;
     bottom: 0;
     height: 4px;
@@ -11,19 +13,60 @@
     background: #fff;
     z-index: 10;
   }
+
+  .cst-prev-btn,
+  .cst-next-btn {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    z-index: 102;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px #00000026;
+    display: none;
+
+    &.show {
+      display: flex;
+    }
+  }
+
+  .cst-prev-btn {
+    left: 10px;
+  }
+
+  .cst-next-btn {
+    right: 10px;
+  }
 }
 
-.ro-box {
-  height: 41px;
+.cst-box {
   display: flex;
+  position: absolute;
+  bottom: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  height: 34px;
 
-  .ro-item {
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .cst-item {
     width: 260px;
     background-color: #eee;
-    height: 34px;
+    height: 100%;
     border-radius: 4px;
     position: relative;
-    margin-top: 4px;
+    flex-shrink: 0;
 
     &::after {
       content: "";
@@ -38,7 +81,7 @@
       transition: opacity 0.2s ease;
     }
 
-    .ro-bg {
+    .cst-bg {
       position: absolute;
       z-index: 99;
       height: 100%;
@@ -51,7 +94,7 @@
       }
     }
 
-    &:has(+ .ro-item:hover) {
+    &:has(+ .cst-item:hover) {
       &::after {
         display: none;
       }
@@ -68,7 +111,7 @@
     }
 
     &.active {
-      .ro-bg {
+      .cst-bg {
         z-index: 999;
 
         svg {
@@ -76,7 +119,7 @@
         }
       }
 
-      .ro-context:hover {
+      .cst-context:hover {
         background-color: initial;
       }
 
@@ -89,7 +132,7 @@
       }
     }
 
-    .ro-context {
+    .cst-context {
       z-index: 999;
       box-sizing: border-box;
       align-items: center;
@@ -99,26 +142,35 @@
       left: 5px;
       right: 5px;
       border-radius: 10px;
+      user-select: none;
 
       &:hover {
         background-color: #ccc;
       }
 
-      .ro-text {
+      .cst-text {
         flex-grow: 1;
         margin: 0 5px;
         cursor: default;
       }
 
-      .ro-close {
+      .cst-close {
         width: 16px;
         height: 16px;
         border-radius: 50%;
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: 8px 8px;
+        // background-position: center center;
+        // background-repeat: no-repeat;
+        // background-size: 8px 8px;
         cursor: pointer;
-        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(0, 0, 0, .65)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+        // background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(0, 0, 0, .65)' stroke-linecap='square' stroke-width='1.5' d='M0 0 L8 8 M8 0 L0 8'></path></svg>");
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+          width: 50%;
+          height: 50%;
+        }
 
         &:hover {
           background-color: #e8eaed;
