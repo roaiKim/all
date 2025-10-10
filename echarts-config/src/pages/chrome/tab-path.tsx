@@ -45,7 +45,7 @@ export const NextSvg: React.FC<React.SVGProps<SVGSVGElement>> = () => {
 export const CloseSvg: React.FC<React.SVGProps<SVGSVGElement>> = () => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8">
-            <path stroke="rgba(0, 0, 0, .65)" stroke-linecap="square" stroke-width="1.5" d="M0 0 L8 8 M8 0 L0 8"></path>
+            <path stroke="rgba(0, 0, 0, .65)" strokeLinecap="square" strokeWidth="1.5" d="M0 0 L8 8 M8 0 L0 8"></path>
         </svg>
     );
 };
