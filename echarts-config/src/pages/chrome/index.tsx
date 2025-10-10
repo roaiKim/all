@@ -8,6 +8,16 @@ import "./index.less";
 
 interface ChromeStyleTabsProps {
     /**
+     * @description className
+     */
+    className?: string;
+
+    /**
+     * @description style
+     */
+    style?: React.CSSProperties;
+
+    /**
      * @description default ActiveKey
      */
     defaultActiveKey?: string | number;
@@ -27,6 +37,11 @@ interface ChromeStyleTabsProps {
      * @default true
      */
     draggable?: boolean;
+
+    /**
+     * @description 点击左右前进按钮时 移动的距离
+     */
+    scrollStep?: number;
 
     /**
      * @description tab 点击事件
@@ -60,21 +75,37 @@ interface ChromeStyleTabsProps {
     onDrag?: (tabs: ChromeStyleTabType[]) => void;
 
     /**
-     * @description className
+     * @description 点击关闭之前的事件
+     * @param tab 当前点击的元素
+     * @param index 当前点击元素的index
+     * @returns Promise<boolean>; true 则关闭, false 则不关闭
      */
-    className?: string;
-
-    /**
-     * @description style
-     */
-    style?: React.CSSProperties;
+    onCloseBefore?: (tab: ChromeStyleTabType, index: number) => Promise<boolean>;
 }
 
-const scrollStep = 100;
-
 function ChromeStyleTabs(props: ChromeStyleTabsProps) {
-    const { tabs = [], activeKey, defaultActiveKey, onClick, onClose, onChange, draggable = true, onDrag, className, style } = props;
+    const {
+        tabs = [],
+        activeKey,
+        defaultActiveKey,
+        scrollStep = 100,
+        onClick,
+        onClose,
+        onChange,
+        draggable = true,
+        onDrag,
+        className,
+        style,
+        onCloseBefore,
+    } = props;
     const [activeTabKey, setActiveTabKey] = useState(defaultActiveKey);
+
+    const scrollStepNumber = useMemo(() => {
+        if (scrollStep && typeof scrollStep === "number") {
+            return scrollStep < 0 ? 100 : scrollStep;
+        }
+        return 100;
+    }, [scrollStep]);
 
     const tabContainerRef = useRef(null);
     const observerRef = useRef(null);
@@ -84,14 +115,14 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
         next: false,
     });
 
-    const onTabClose = (active: string | number) => {
-        const index = tabs.findIndex((item) => item.key === active);
+    const onTabClose = (key: string | number) => {
+        const index = tabs.findIndex((item) => item.key === key);
         const currentCloseTab = tabs[index];
-        const afterTabs = tabs.filter((item) => item.key !== active);
+        const afterTabs = tabs.filter((item) => item.key !== key);
         if (onClose) {
             onClose(currentCloseTab, index, afterTabs);
         }
-        if (active === activeTabKey) {
+        if (key === activeTabKey) {
             // has next tab
             const nextTab = tabs[index + 1];
             if (nextTab) {
@@ -100,6 +131,22 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
             } else {
                 const nextActive = tabs[index - 1]?.key || "";
                 setActiveTabKey(nextActive);
+            }
+        }
+    };
+
+    const onTabCloseBefore = (key: string | number) => {
+        if (onClose) {
+            if (onCloseBefore && onCloseBefore instanceof Promise) {
+                const index = tabs.findIndex((item) => item.key === key);
+                const currentCloseTab = tabs[index];
+                onCloseBefore(currentCloseTab, index).then((config) => {
+                    if (config === true) {
+                        onTabClose(key);
+                    }
+                });
+            } else {
+                onTabClose(key);
             }
         }
     };
@@ -155,9 +202,9 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
         }
 
         const options = {
-            root: box, // 默认视口作为根
-            rootMargin: "0px", // 扩展/缩小检测区域
-            threshold: 0.7, // 元素可见比例达到50%时触发
+            root: box,
+            rootMargin: "0px",
+            threshold: 0.7,
         };
 
         // 创建观察器
@@ -208,7 +255,7 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
     const memoTabs = useMemo(() => (tabs || []).map((item) => ({ ...item, id: item.key })), [tabs]);
 
     return (
-        <div className={`cst-container cst-tabs ${className}`} style={{ ...(style || {}) }}>
+        <div className={`cst-container cst-tabs ${className || ""}`} style={{ ...(style || {}) }}>
             <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
@@ -216,7 +263,7 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
                 modifiers={[restrictToHorizontalAxis]}
                 autoScroll={{ threshold: { x: 0.2, y: 0 } }}
             >
-                <div className={`cst-prev-btn ${prevAndNextBtnConfig.prev ? "show" : "hide"}`} onClick={() => stepScrollTab(-scrollStep)}>
+                <div className={`cst-prev-btn ${prevAndNextBtnConfig.prev ? "show" : "hide"}`} onClick={() => stepScrollTab(-scrollStepNumber)}>
                     <PrevSvg />
                 </div>
                 <SortableContext disabled={!draggable} items={memoTabs} strategy={horizontalListSortingStrategy}>
@@ -227,7 +274,7 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
                                 key={item.key}
                                 isActive={activeTabKey === item.key}
                                 onClick={onTabClick}
-                                onClose={onTabClose}
+                                onClose={onTabCloseBefore}
                                 tab={item}
                                 isFirstTab={!index}
                                 isLastTab={tabs.length === index + 1}
@@ -235,7 +282,7 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
                         ))}
                     </div>
                 </SortableContext>
-                <div className={`cst-next-btn ${prevAndNextBtnConfig.next ? "show" : "hide"}`} onClick={() => stepScrollTab(scrollStep)}>
+                <div className={`cst-next-btn ${prevAndNextBtnConfig.next ? "show" : "hide"}`} onClick={() => stepScrollTab(scrollStepNumber)}>
                     <NextSvg />
                 </div>
             </DndContext>

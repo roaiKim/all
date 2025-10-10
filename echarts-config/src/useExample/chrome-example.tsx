@@ -50,7 +50,7 @@ function ChromeExample() {
     const [tabs, setTabs] = useState<ChromeStyleTabType[]>(
         new Array(15).fill(0).map((item, index) => ({
             key: "Fackbook" + index,
-            label: "Fackbook" + index,
+            label: "Fackbook " + index,
             icon: <AppleOutlined />,
             // disabled: index % 2 === 0,
         }))
