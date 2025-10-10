@@ -1,6 +1,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { CloseSvg, TabBackageSvg } from "./tab-path";
+
+import type { ChromeStyleTabsProps } from ".";
 export interface ChromeStyleTabType {
     /**
      * @description icon
@@ -31,7 +33,9 @@ export interface ChromeStyleTabType {
     disabled?: boolean;
 }
 
-interface TabItemProps {
+type PickPropsOfChromeStyleTabs = "onContextMenu";
+
+interface TabItemProps extends Pick<ChromeStyleTabsProps, PickPropsOfChromeStyleTabs> {
     index: number;
     tab: ChromeStyleTabType;
     isActive: boolean;
@@ -42,7 +46,7 @@ interface TabItemProps {
 }
 
 export function TabItem(props: TabItemProps) {
-    const { tab, isActive, onClose, onClick, index, isFirstTab, isLastTab } = props;
+    const { tab, isActive, onClose, onClick, index, isFirstTab, isLastTab, onContextMenu } = props;
     const { key, label, icon, disabled, allowClose = true } = tab;
 
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: key, disabled });
@@ -66,12 +70,17 @@ export function TabItem(props: TabItemProps) {
             <div className="cst-bg">
                 <TabBackageSvg />
             </div>
-            <div className="cst-context" onMouseDown={() => onClick(tab, index)}>
+            <div
+                className="cst-context"
+                onMouseDown={() => onClick(tab, index)}
+                {...(onContextMenu ? { onContextMenu: (event) => onContextMenu(event, { id: key, index }) } : {})}
+            >
                 <div className="cst-icon">{icon}</div>
                 <div className="cst-text">{label}</div>
                 {!!allowClose && (
                     <div
                         className="cst-close"
+                        onMouseDown={(event) => event.stopPropagation()}
                         onClick={(event) => {
                             event.stopPropagation();
                             onClose(key);

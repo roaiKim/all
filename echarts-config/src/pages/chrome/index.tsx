@@ -6,7 +6,7 @@ import { type ChromeStyleTabType, TabItem } from "./tab";
 import { NextSvg, PrevSvg } from "./tab-path";
 import "./index.less";
 
-interface ChromeStyleTabsProps {
+export interface ChromeStyleTabsProps {
     /**
      * @description className
      */
@@ -81,6 +81,7 @@ interface ChromeStyleTabsProps {
      * @returns Promise<boolean>; true 则关闭, false 则不关闭
      */
     onCloseBefore?: (tab: ChromeStyleTabType, index: number) => Promise<boolean>;
+    onContextMenu?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, config: { id: string | number; index: number }) => void;
 }
 
 function ChromeStyleTabs(props: ChromeStyleTabsProps) {
@@ -97,6 +98,7 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
         className,
         style,
         onCloseBefore,
+        onContextMenu,
     } = props;
     const [activeTabKey, setActiveTabKey] = useState(defaultActiveKey);
 
@@ -137,14 +139,17 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
 
     const onTabCloseBefore = (key: string | number) => {
         if (onClose) {
-            if (onCloseBefore && onCloseBefore instanceof Promise) {
+            if (onCloseBefore) {
                 const index = tabs.findIndex((item) => item.key === key);
                 const currentCloseTab = tabs[index];
-                onCloseBefore(currentCloseTab, index).then((config) => {
-                    if (config === true) {
-                        onTabClose(key);
-                    }
-                });
+                const result = onCloseBefore(currentCloseTab, index);
+                if (result instanceof Promise) {
+                    result.then((config) => {
+                        if (config === true) {
+                            onTabClose(key);
+                        }
+                    });
+                }
             } else {
                 onTabClose(key);
             }
@@ -193,8 +198,8 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
 
     const tabObserver = () => {
         const box = tabContainerRef.current;
-        const firstTab = document.querySelector<HTMLDivElement>(".cst-first-tab"); // 第一个元素
-        const lastTab = document.querySelector<HTMLDivElement>(".cst-last-tab"); // 最后一个元素
+        const firstTab = document.querySelector<HTMLDivElement>(".cst-first-tab"); // first tab
+        const lastTab = document.querySelector<HTMLDivElement>(".cst-last-tab"); // last tab
         if (!box || (!firstTab && !lastTab)) return;
 
         if (observerRef.current) {
@@ -207,7 +212,7 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
             threshold: 0.7,
         };
 
-        // 创建观察器
+        // create Observer
         observerRef.current = new IntersectionObserver((entries, order) => {
             entries.forEach((entry, index) => {
                 if (entry.target) {
@@ -278,6 +283,7 @@ function ChromeStyleTabs(props: ChromeStyleTabsProps) {
                                 tab={item}
                                 isFirstTab={!index}
                                 isLastTab={tabs.length === index + 1}
+                                onContextMenu={onContextMenu}
                             ></TabItem>
                         ))}
                     </div>

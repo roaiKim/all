@@ -1,8 +1,10 @@
 :root {
   --cst-container-bg-color: #d3e3fd;
   --cst-bottom-bar-color: #fff;
-  --cst-prev-btn-color: #fff;
-  --cst-next-btn-color: #fff;
+  --cst-prev-btn-color: #000;
+  --cst-prev-btn-bg: #fff;
+  --cst-next-btn-color: #000;
+  --cst-next-btn-bg: #fff;
   --cst-tab-bg-color: var(--cst-container-bg-color);
   --cst-split-color: #a8c7fa;
   --cst-split-opacity: 0.8;
@@ -53,12 +55,14 @@
 
   .cst-prev-btn {
     left: 10px;
-    background: var(--cst-prev-btn-color);
+    color: var(--cst-prev-btn-color);
+    background: var(--cst-prev-btn-bg);
   }
 
   .cst-next-btn {
     right: 10px;
-    background: var(--cst-next-btn-color);
+    color: var(--cst-next-btn-color);
+    background: var(--cst-next-btn-bg);
   }
 }
 
