@@ -5,29 +5,28 @@ import { CloseSvg, TabBackageSvg } from "./tab-path";
 import type { ChromeStyleTabsProps } from ".";
 export interface ChromeStyleTabType {
     /**
-     * @description icon
+     * @description Icon displayed in the tab
      */
     icon?: React.ReactNode;
 
     /**
-     * @description title
+     * @description Title/label displayed in the tab
      */
     label?: React.ReactNode;
 
     /**
-     *
-     * @description key
+     * @description Unique identifier for the tab
      */
     key?: string | number;
 
     /**
-     * @description 是显示关闭按钮
+     * @description Whether to show the close button
      * @default true
      */
     allowClose?: boolean;
 
     /**
-     * @description disabled
+     * @description Whether the tab is disabled (non-interactive)
      * @default false
      */
     disabled?: boolean;
@@ -72,7 +71,7 @@ export function TabItem(props: TabItemProps) {
             </div>
             <div
                 className="cst-context"
-                onMouseDown={() => onClick(tab, index)}
+                onClick={() => onClick(tab, index)}
                 {...(onContextMenu ? { onContextMenu: (event) => onContextMenu(event, { id: key, index }) } : {})}
             >
                 <div className="cst-icon">{icon}</div>
@@ -80,7 +79,6 @@ export function TabItem(props: TabItemProps) {
                 {!!allowClose && (
                     <div
                         className="cst-close"
-                        onMouseDown={(event) => event.stopPropagation()}
                         onClick={(event) => {
                             event.stopPropagation();
                             onClose(key);

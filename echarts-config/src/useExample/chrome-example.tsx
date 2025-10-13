@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { Item, Menu, Separator, useContextMenu } from "react-contexify";
+import { Item, type ItemParams, Menu, Separator, useContextMenu } from "react-contexify";
 import { ChromeFilled } from "@ant-design/icons";
 import ChromeStyleTabs from "@src/pages/chrome";
 import type { ChromeStyleTabType } from "@src/pages/chrome/tab";
@@ -87,21 +87,17 @@ function ChromeExample2() {
         }))
     );
     const MENU_ID = useId();
-    const [activeKey, setActiveKey] = useState("Google4");
-
-    const onCloseBefore = (tab, index) => {
-        return Promise.resolve(!!(index % 2));
-    };
+    const [activeKey, setActiveKey] = useState("Chrome3");
 
     const { show } = useContextMenu({
         id: MENU_ID,
     });
 
-    function handleContextMenu(event, key) {
-        show({ event, props: key });
+    function handleContextMenu(event: React.MouseEvent<HTMLDivElement, MouseEvent>, config: { id: string | number; index: number }) {
+        show({ event, props: config });
     }
 
-    function handleItemClick({ event, props, triggerEvent, data }) {
+    function handleItemClick({ event, props, triggerEvent, data }: ItemParams<any, any>) {
         switch (data) {
             case ContextMenuType.close:
                 // closeTab(props.id);
@@ -127,7 +123,7 @@ function ChromeExample2() {
     }
 
     return (
-        <div>
+        <div style={{ width: "calc(100vw - 100px)", height: "80vh", background: "#ccc", padding: 10 }}>
             <ContextMenu contextMenuClick={handleItemClick} menuId={MENU_ID} />
             <ChromeStyleTabs
                 tabs={tabs}
@@ -138,7 +134,6 @@ function ChromeExample2() {
                 onDrag={(tabs) => {
                     setTabs(tabs);
                 }}
-                onCloseBefore={onCloseBefore}
                 onContextMenu={handleContextMenu}
             />
         </div>

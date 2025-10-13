@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router";
 import Chart from "@src/pages/chart";
+import ChromeStyleTabsReact from "@src/pages/chrome-style-tabs-react";
 import ChromeTab from "@src/pages/chrome-tab";
 import Config from "@src/pages/config";
 import Leaflet from "@src/pages/leaflet";
@@ -34,6 +35,7 @@ export function AppRouter() {
             <Route path="lie" element={<Tile />} />
             <Route path="chrome" element={<ChromeTab />} />
             <Route path="ch" element={<ChromeExample />} />
+            <Route path="chr" element={<ChromeStyleTabsReact />} />
         </Routes>
     );
 }

@@ -107,31 +107,30 @@ function ChromeExample() {
 
 
 ```ts
-interface ChromeStyleTabType {
+export interface ChromeStyleTabType {
     /**
-     * @description icon
+     * @description Icon displayed in the tab
      */
     icon?: React.ReactNode;
 
     /**
-     * @description title
+     * @description Title/label displayed in the tab
      */
     label?: React.ReactNode;
 
     /**
-     *
-     * @description key
+     * @description Unique identifier for the tab
      */
     key?: string | number;
 
     /**
-     * @description 是显示关闭按钮
+     * @description Whether to show the close button
      * @default true
      */
     allowClose?: boolean;
 
     /**
-     * @description disabled
+     * @description Whether the tab is disabled (non-interactive)
      * @default false
      */
     disabled?: boolean;

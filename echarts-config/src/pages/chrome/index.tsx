@@ -8,79 +8,86 @@ import "./index.less";
 
 export interface ChromeStyleTabsProps {
     /**
-     * @description className
+     * @description Custom class name for the component container
      */
     className?: string;
 
     /**
-     * @description style
+     * @description Inline style for the component container
      */
     style?: React.CSSProperties;
 
     /**
-     * @description default ActiveKey
+     * @description Default active tab key (for uncontrolled mode)
      */
     defaultActiveKey?: string | number;
 
     /**
-     * @description activeKey
+     * @description Active tab key (for controlled mode)
      */
     activeKey?: string | number;
 
     /**
-     * @description tabs 数据
+     * @description Data source for tabs
      */
     tabs: ChromeStyleTabType[];
 
     /**
-     * @description 是否可拖拽
+     * @description Whether tabs can be dragged for sorting
      * @default true
      */
     draggable?: boolean;
 
     /**
-     * @description 点击左右前进按钮时 移动的距离
+     * @description Scroll distance when clicking the left/right navigation buttons
      */
     scrollStep?: number;
 
     /**
-     * @description tab 点击事件
-     * @param tab 当前点击的 tab
-     * @param index 当前点击元素的index
+     * @description Callback when a tab is clicked
+     * @param tab The currently clicked tab
+     * @param index The index of the currently clicked tab
      * @returns void
      */
     onClick?: (tab: ChromeStyleTabType, index: number) => void;
 
     /**
-     * @description  tab close 事件
-     * @param tab 当前点击的元素
-     * @param index 当前点击元素的index
-     * @param tabs close 后的元素的copy副本
+     * @description Callback when a tab is closed
+     * @param tab The currently closed tab
+     * @param index The index of the currently closed tab
+     * @param tabs A copy of the tab list after closing
      * @returns void
      */
     onClose?: (tab: ChromeStyleTabType, index: number, tabs: ChromeStyleTabType[]) => void;
 
     /**
-     * @description 切换 tab 事件
-     * @param key activekey
+     * @description Callback when the active tab is switched
+     * @param key The key of the active tab
      * @returns void
      */
     onChange?: (key: string | number) => void;
 
     /**
-     * @description 拖拽事件 需要 draggable 为 true (draggable default is true)
-     * @param tabs 拖拽后的 tabs
+     * @description Callback when tabs are reordered via dragging (requires draggable to be true; draggable defaults to true)
+     * @param tabs The reordered tab list
      * @returns void
      */
     onDrag?: (tabs: ChromeStyleTabType[]) => void;
 
     /**
-     * @description 点击关闭之前的事件
-     * @param tab 当前点击的元素
-     * @param index 当前点击元素的index
-     * @returns Promise<boolean>; true 则关闭, false 则不关闭
+     * @description Callback before a tab is closed (for confirmation)
+     * @param tab The tab to be closed
+     * @param index The index of the tab to be closed
+     * @returns Promise<boolean>; Return true to close the tab, false to prevent closing
      */
     onCloseBefore?: (tab: ChromeStyleTabType, index: number) => Promise<boolean>;
+
+    /**
+     * @description Callback when right-click context menu is triggered on a tab
+     * @param event The mouse event object for the right-click
+     * @param config Configuration containing the tab's id and index
+     * @returns void
+     */
     onContextMenu?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, config: { id: string | number; index: number }) => void;
 }
 

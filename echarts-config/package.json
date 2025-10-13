@@ -33,6 +33,7 @@
     "@types/react-dom": "^19.1.9",
     "eslint-config-base": "file:tgz/eslint-config-base-v1.0.2.tgz",
     "stylelint-config-base": "file:tgz/stylelint-config-base-v1.0.0.tgz",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "chrome-style-tabs-react": "^1.0.0"
   }
 }
