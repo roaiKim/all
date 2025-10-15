@@ -97,11 +97,11 @@ export default defineConfig([
                 },
             ],
             "@typescript-eslint/no-unused-vars": [
-                "error",
+                "warn",
                 {
                     vars: "all",
-                    args: "after-used",
-                    caughtErrors: "none"
+                    args: "none",
+                    caughtErrors: "none",
                 },
             ],
             "simple-import-sort/exports": "error",
