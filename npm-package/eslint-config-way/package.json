@@ -1,13 +1,13 @@
 {
-  "name": "eslint-config-base",
+  "name": "eslint-config-way",
   "version": "1.0.2",
-  "private": true,
   "main": "index.mjs",
   "exports": {
     ".": "./index.mjs"
   },
   "files": [
-    "index.mjs"
+    "index.mjs",
+    "README.MD"
   ],
   "scripts": {
     "lint": "eslint ."
