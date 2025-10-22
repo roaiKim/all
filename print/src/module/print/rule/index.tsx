@@ -1,86 +1,125 @@
 import { useEffect, useLayoutEffect } from "react";
 
+function createHDCanvas(canvas, w, h) {
+    const ratio = devicePixelRatio || 1;
+    canvas.width = w * ratio;
+    canvas.height = h * ratio;
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    const ctx = canvas.getContext("2d");
+    ctx.scale(ratio, ratio);
+    return canvas;
+}
+
 export default function Rule() {
     useLayoutEffect(() => {
-        const canvas = document.getElementById("ruler") as HTMLCanvasElement;
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d")!;
+        // 获取Canvas元素和上下文
+        // const _canvas = document.getElementById("ruler");
+        const canvas = document.getElementById("ruler");
+        const ctx = canvas.getContext("2d");
 
-        // 刻度尺配置
-        const startPos = 50; // 起始位置
-        const endPos = canvas.width - 50; // 结束位置
-        const baseLineY = canvas.height / 2; // 基线Y坐标（刻度从这里向上延伸）
-        const cmHeight = 30; // 厘米刻度高度
-        const mmHeight = 15; // 毫米刻度高度
-        const totalCm = 20; // 总厘米数
-
-        // 计算每毫米的像素宽度
-        const mmPerPixel = (endPos - startPos) / (totalCm * 10);
-
-        // 绘制主刻度线（厘米）和数字
-        function drawCmMarks() {
-            ctx.font = "12px Arial";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "bottom"; // 文字在刻度线顶部
-
-            for (let cm = 0; cm <= totalCm; cm++) {
-                const x = startPos + cm * 10 * mmPerPixel;
-
-                // 绘制厘米刻度线（只向上延伸）
-                ctx.beginPath();
-                ctx.moveTo(x, baseLineY); // 从基线开始
-                ctx.lineTo(x, baseLineY - cmHeight); // 向上绘制
-                ctx.strokeStyle = "red";
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                // 绘制厘米数字（在刻度线顶部）
-                ctx.fillText(cm + "", x, baseLineY - cmHeight - 5);
-            }
-        }
-
-        // 绘制毫米刻度线
-        function drawMmMarks() {
-            ctx.lineWidth = 1;
-
-            for (let cm = 0; cm < totalCm; cm++) {
-                for (let mm = 1; mm < 10; mm++) {
-                    // 5毫米刻度线稍长
-                    const height = mm % 5 === 0 ? mmHeight * 1.5 : mmHeight;
-                    const x = startPos + (cm * 10 + mm) * mmPerPixel;
-
-                    ctx.beginPath();
-                    ctx.moveTo(x, baseLineY); // 从基线开始
-                    ctx.lineTo(x, baseLineY - height); // 向上绘制
-                    ctx.strokeStyle = "blue";
-                    ctx.stroke();
-                }
-            }
-        }
-
-        // 绘制刻度尺基线
-        function drawBaseLine() {
-            ctx.beginPath();
-            ctx.moveTo(startPos, baseLineY);
-            ctx.lineTo(endPos, baseLineY);
-            ctx.strokeStyle = "#000";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-        }
-
-        // 绘制刻度尺
+        canvas.width = document.body.getBoundingClientRect().width;
+        // createHDCanvas(canvas, canvas.width, 24);
+        // canvas.height = 200;
+        //▲初始化， ▼
+        // for (let i = 1; i < parseInt(canvas.width / 100); i++) {
+        //     ctx.beginPath();
+        //     ctx.moveTo(i * 100 + 0.5, 0);
+        //     ctx.lineTo(i * 100 + 0.5, canvas.height);
+        //     ctx.strokeStyle = "rgba(0,0,0,0.9)"; //← 请看这里颜色是黑色透明的
+        //     ctx.stroke();
+        // }
+        // return;
+        // ctx.scale(2, 2);
+        let rulerLength = canvas.width; // 初始长度
+        // 绘制刻度尺函数
         function drawRuler() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBaseLine();
-            drawCmMarks();
-            drawMmMarks();
+            // 清除画布
+            // ctx.clearRect(0, 0, canvas.width, canvas.height);
+            console.log("--devicePixelRatio--", devicePixelRatio);
+            // 设置刻度尺参数
+            const startX = 0; // 起始位置
+            const endX = rulerLength; // 结束位置
+            const totalLength = endX - startX; // 总长度
+            const smallTickInterval = 5; // 小刻度间隔(像素)
+            const smallTickHeight = 10; // 小刻度高度
+            const mediumTickHeight = 18; // 中刻度高度
+            const largeTickHeight = 24; // 大刻度高度
+            const tickY = canvas.height; // 刻度线Y坐标(中间位置)
+
+            // 计算总刻度数
+            const totalTicks = Math.floor(totalLength / smallTickInterval);
+
+            // 绘制基线
+            // ctx.beginPath();
+            // ctx.moveTo(startX, tickY);
+            // ctx.lineTo(startX, largeTickHeight);
+            // // ctx.fillStyle = "#000";
+            // ctx.strokeStyle = "#000";
+            // ctx.lineWidth = 1;
+            // ctx.stroke();
+
+            // 绘制刻度线和数字;
+            for (let i = 0; i <= totalTicks; i++) {
+                const x = startX + i * smallTickInterval;
+                let tickHeight;
+                let lineWidth; // 刻度线宽度
+
+                // // 确定刻度类型
+                if (i % 10 === 0) {
+                    // 大刻度(每10个小刻度)
+                    tickHeight = largeTickHeight;
+                    lineWidth = 1.2; // 大刻度稍粗（1.2px）
+                    // 绘制刻度数字
+                    ctx.font = "8px";
+                    ctx.textAlign = "left";
+                    ctx.textBaseline = "bottom";
+                    ctx.fillText(i, x + 3, tickY - 15);
+                } else if (i % 5 === 0) {
+                    // 中刻度(每5个小刻度)
+                    tickHeight = mediumTickHeight;
+                    lineWidth = 0.8; // 大刻度稍粗（1.2px）
+                } else {
+                    // 小刻度
+                    tickHeight = smallTickHeight;
+                    lineWidth = 0.5; // 大刻度稍粗（1.2px）
+                }
+
+                // 绘制刻度线
+
+                ctx.strokeStyle = "#000";
+                ctx.lineWidth = 1; //lineWidth; // 应用刻度线宽度
+                ctx.beginPath();
+                ctx.moveTo(x + 0.5, tickY);
+                ctx.lineTo(x + 0.5, tickY - tickHeight);
+                ctx.stroke();
+            }
         }
 
+        // 改变刻度尺长度
+        function changeLength(length) {
+            rulerLength = length;
+            canvas.width = length;
+            drawRuler();
+        }
+
+        // 重置刻度尺
+        function resetRuler() {
+            rulerLength = 800;
+            canvas.width = 800;
+            drawRuler();
+        }
+
+        // 初始绘制
         drawRuler();
+
+        // const canvas1 = createHDCanvas(canvas, 800, 400);
+        // 窗口大小改变时重新绘制
+        // window.addEventListener("resize", drawRuler);
     }, []);
     return (
         <div>
-            <canvas id="ruler" width="800" height="100"></canvas>
+            <canvas id="ruler" height="24"></canvas>
         </div>
     );
 }
