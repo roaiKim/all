@@ -1,0 +1,29 @@
+{
+  "name": "print",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "rsbuild dev --open",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router": "^7.9.4"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "^1.5.14",
+    "@rsbuild/plugin-less": "^1.5.0",
+    "@rsbuild/plugin-react": "^1.4.1",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.1",
+    "eslint-config-way": "^1.0.3",
+    "stylelint-config-way": "^1.0.0",
+    "typescript": "^5.9.3"
+  },
+  "stylelint": {
+    "extends": "stylelint-config-way"
+  }
+}
