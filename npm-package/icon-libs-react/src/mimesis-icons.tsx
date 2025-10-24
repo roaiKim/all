@@ -5,7 +5,7 @@ import { IconManifestType, IconsManifest, type IconType } from "react-icons";
 // 图标缓存对象
 const iconCache = new Map<string, IconType>();
 
-export type MimesisLibsType =
+export type RoveIconLibsType =
     | "ci"
     | "fa"
     | "fa6"
@@ -38,7 +38,7 @@ export type MimesisLibsType =
     | "pi"
     | "lia";
 
-type PrmiseLibsKeyType = Record<MimesisLibsType, () => Promise<Record<string, any>>>;
+type PrmiseLibsKeyType = Record<RoveIconLibsType, () => Promise<Record<string, any>>>;
 
 const PrmiseLibsKey: PrmiseLibsKeyType = {
     ci: () => import("react-icons/ci"),
@@ -74,11 +74,11 @@ const PrmiseLibsKey: PrmiseLibsKeyType = {
     lia: () => import("react-icons/lia"),
 };
 
-interface MimesisIconsProps extends React.SVGAttributes<SVGElement> {
+interface RoveIconProps extends React.SVGAttributes<SVGElement> {
     /**
      * @description lib name
      */
-    lib: MimesisLibsType;
+    lib: RoveIconLibsType;
     /**
      * @description icon name
      */
@@ -108,7 +108,7 @@ interface MimesisIconsProps extends React.SVGAttributes<SVGElement> {
     // [key: string]: any;
 }
 
-export const useGetIconLib = (lib: MimesisLibsType, name?: string) => {
+export const useGetIconLib = (lib: RoveIconLibsType, name?: string) => {
     const [IconComponent, setIconComponent] = useState<IconType | null>(null);
     const [Icons, setIcons] = useState([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -155,7 +155,7 @@ export const useGetIconLib = (lib: MimesisLibsType, name?: string) => {
     };
 };
 // Popular icons
-export const MimesisIcons: React.FC<MimesisIconsProps> = ({
+export const RoveIcon: React.FC<RoveIconProps> = ({
     lib,
     name,
     width,

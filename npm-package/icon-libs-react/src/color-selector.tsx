@@ -14,7 +14,15 @@ export function ColorSelector(props: ColorSelectorProps) {
 
     return (
         <div style={{ display: "flex", flexWrap: "wrap", ...style }}>
-            <Popup trigger={<button className="button">Trigger</button>} position="right center" closeOnDocumentClick>
+            <Popup
+                trigger={
+                    <div className="customer-color-pick" style={{ background: color }}>
+                        {" "}
+                    </div>
+                }
+                position="right center"
+                closeOnDocumentClick
+            >
                 <Chrome
                     // allowClear
                     onChange={(color) => {

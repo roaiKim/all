@@ -6,6 +6,7 @@ import ChromeTab from "@src/pages/chrome-tab";
 import Config from "@src/pages/config";
 import Leaflet from "@src/pages/leaflet";
 import Tile from "@src/pages/leaflet/tile";
+import Print from "@src/pages/print";
 import Vis from "@src/pages/vis";
 import ChromeExample from "@src/useExample/chrome-example";
 import { WEB_COMMA_TENANT_ID, WEB_TOKEN } from "./service/config/static-envs";
@@ -36,6 +37,7 @@ export function AppRouter() {
             <Route path="chrome" element={<ChromeTab />} />
             <Route path="ch" element={<ChromeExample />} />
             <Route path="chr" element={<ChromeStyleTabsReact />} />
+            <Route path="print" element={<Print />} />
         </Routes>
     );
 }

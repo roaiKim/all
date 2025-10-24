@@ -4,10 +4,10 @@ import { IconsManifest } from "react-icons";
 // import Modal from "@src/components/modal";
 // import useViewBasic from "@src/hooks/useViewBasic";
 import { ColorSelector } from "./color-selector";
-import { MimesisIcons, MimesisLibsType, useGetIconLib } from "./mimesis-icons";
+import { RoveIcon, RoveIconLibsType, useGetIconLib } from "./mimesis-icons";
 
 interface IconSelectorProps {
-    lib?: MimesisLibsType;
+    lib?: RoveIconLibsType;
     name?: string;
     onConfirm?: (color: IconSelectorState) => void;
     showSize?: boolean;
@@ -15,7 +15,7 @@ interface IconSelectorProps {
 }
 
 interface IconSelectorState {
-    lib: MimesisLibsType;
+    lib: RoveIconLibsType;
     name: string;
     width: number;
     height: number;
@@ -78,7 +78,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                         padding: "15px 5px",
                         position: "sticky",
                         top: 0,
-                        backgroundColor: "var(--ant-color-bg-base)",
+                        backgroundColor: "#fff",
                         display: "flex",
                         alignItems: "center",
                     }}
@@ -87,7 +87,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                         value={state.lib}
                         style={{ width: 180 }}
                         onChange={(event) => {
-                            const value = event.target.value as MimesisLibsType;
+                            const value = event.target.value as RoveIconLibsType;
                             setState((prev) => ({ ...prev, ...initState(), lib: value }));
                         }}
                         // options={libIcon}
@@ -117,9 +117,12 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                                     border: "1px dotted #333",
                                     borderRadius: 3,
                                     cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
                                 }}
                             >
-                                <MimesisIcons
+                                <RoveIcon
                                     style={{
                                         width: state.width || 24,
                                         height: state.height || 24,
@@ -131,7 +134,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                             </div>
                             {showSize && (
                                 <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
-                                    <span style={{ marginRight: 5 }}>宽度</span>
+                                    <span style={{ marginRight: 5 }}>宽度:</span>
                                     <input
                                         value={state.width}
                                         onChange={(value) => {
@@ -143,7 +146,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                             )}
                             {showSize && (
                                 <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
-                                    <span style={{ marginRight: 5 }}>高度</span>
+                                    <span style={{ marginRight: 5 }}>高度:</span>
                                     <input
                                         value={state.height}
                                         onChange={(value) => {
@@ -155,7 +158,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                             )}
                             {showColor && (
                                 <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
-                                    <span style={{ marginRight: 5 }}>颜色</span>
+                                    <span style={{ marginRight: 5 }}>颜色:</span>
                                     <ColorSelector
                                         color={state.color || "#000000"}
                                         onSetting={(color) => {
