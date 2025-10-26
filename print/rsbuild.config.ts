@@ -13,4 +13,13 @@ export default defineConfig({
         favicon: "./src/favicon.ico",
     },
     plugins: [pluginReact(), pluginLess()],
+    performance: {
+        bundleAnalyze: import.meta.env.PROD
+            ? {
+                  analyzerMode: "static",
+                  openAnalyzer: true,
+                  generateStatsFile: true,
+              }
+            : {},
+    },
 });

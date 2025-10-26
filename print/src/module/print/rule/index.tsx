@@ -74,7 +74,7 @@ export default function Rule() {
                     ctx.font = "8px";
                     ctx.textAlign = "left";
                     ctx.textBaseline = "bottom";
-                    ctx.fillText(i, x + 3, tickY - 15);
+                    ctx.fillText(i, x + 3, tickY - 13);
                 } else if (i % 5 === 0) {
                     // 中刻度(每5个小刻度)
                     tickHeight = mediumTickHeight;

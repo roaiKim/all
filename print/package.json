@@ -9,6 +9,9 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@ant-design/icons": "5.x",
+    "antd": "^5.27.6",
+    "classnames": "^2.5.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router": "^7.9.4"
