@@ -1,0 +1,201 @@
+.rove-panel {
+  .rove-select {
+    width: 180px;
+    align-items: center;
+    appearance: none;
+    border: none;
+    border-radius: 2px;
+    box-shadow: inset 0 0 0 1px rgb(17 20 24 / 20%), 0 1px 2px rgb(17 20 24 / 10%);
+    color: #1c2127;
+    cursor: pointer;
+    display: inline-flex;
+    flex-direction: row;
+    font-size: 14px;
+    height: 30px;
+    justify-content: center;
+    padding: 0 24px 0 8px;
+    text-align: left;
+    vertical-align: middle;
+
+    &:active {
+      box-shadow:
+        inset 0 0 0 1px rgb(33 93 176 / 75.2%),
+        0 0 0 1px rgb(33 93 176 / 75.2%),
+        inset 0 1px 1px rgb(17 20 24 / 20%);
+    }
+  }
+
+  button {
+    align-items: center;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    display: inline-flex;
+    flex-direction: row;
+    font-size: 14px;
+    justify-content: center;
+    min-height: 30px;
+    padding: 4px 8px;
+    text-align: left;
+    vertical-align: middle;
+    min-width: 60px;
+
+    &.primary {
+      background-color: #2d72d2;
+      box-shadow: inset 0 0 0 1px rgb(17 20 24 / 20%), 0 1px 2px rgb(17 20 24 / 10%);
+      color: #fff;
+    }
+  }
+
+  .rove-panel-header {
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+
+    &.sticky {
+      box-shadow:
+        0 0 0 1px rgb(17 20 24 / 10%),
+        0 2px 4px rgb(17 20 24 / 20%),
+        0 8px 24px rgb(17 20 24 / 20%);
+    }
+  }
+
+  .rove-panel-body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .rove-input {
+    appearance: none;
+    background: #fff;
+    border: none;
+    border-radius: 2px;
+    box-shadow:
+      0 0 0 0 rgb(33 93 176 / 0%),
+      0 0 0 0 rgb(33 93 176 / 0%),
+      inset 0 0 0 1px rgb(17 20 24 / 20%),
+      inset 0 1px 1px rgb(17 20 24 / 30%);
+    color: #1c2127;
+    font-size: 14px;
+    font-weight: 400;
+    height: 30px;
+    line-height: 30px;
+    outline: none;
+    padding: 0 8px;
+    transition:
+      box-shadow 0.1s
+      cubic-bezier(0.4, 1, 0.75, 0.9);
+    vertical-align: middle;
+
+    &:focus {
+      box-shadow:
+        inset 0 0 0 1px rgb(33 93 176 / 75.2%),
+        0 0 0 1px rgb(33 93 176 / 75.2%),
+        inset 0 1px 1px rgb(17 20 24 / 20%);
+    }
+  }
+}
+
+.customer-color-pick {
+  width: 22px;
+  height: 22px;
+  justify-items: center;
+  cursor: pointer;
+  margin: 1px;
+  border-radius: 50%;
+  position: relative;
+
+  &.active {
+    &::after {
+      display: inline-block;
+      content: " ";
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      top: 4px;
+      position: absolute;
+      left: 4px;
+      z-index: 9;
+    }
+  }
+
+  &.no-color {
+    border: 1px solid #ccc;
+  }
+}
+
+.rover-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(0 0 0 / 40%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .rover-container {
+    width: 90%;
+    height: 90%;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow:
+      0 0 0 1px rgb(17 20 24 / 10%),
+      0 2px 4px rgb(17 20 24 / 20%),
+      0 8px 24px rgb(17 20 24 / 20%);
+    position: relative;
+  }
+
+  .rover-modal-header {
+    align-items: center;
+    background: #fff;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 1px solid rgb(204 204 204 / 50%);
+    display: flex;
+    flex: 0 0 auto;
+    min-height: 38px;
+    padding: 4px 4px 4px 16px;
+    z-index: 0;
+
+    > span {
+      flex-grow: 1;
+    }
+
+    .rover-close {
+      padding: 3px 7px;
+      cursor: pointer;
+      border-radius: 3px;
+
+      &:hover {
+        background-color: rgb(204 204 204 / 50%);
+      }
+    }
+  }
+
+  .rover-modal-body {
+    overflow-y: auto;
+    height: calc(100% - 47px);
+  }
+
+  .rover-modal-footer {
+    align-items: center;
+    background-color: #fff;
+    border-radius: 0 0 4px 4px;
+    border-top: 1px solid rgb(17 20 24 / 15%);
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin: 0;
+    padding: 8px 8px 8px 16px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

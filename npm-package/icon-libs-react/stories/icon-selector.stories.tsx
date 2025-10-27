@@ -2,12 +2,13 @@ import { useId, useState } from "react";
 import { ChromeFilled } from "@ant-design/icons";
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "storybook/test";
-import { IconSelector } from "../src/index";
+import { RoveIconSelector } from "../src/index";
+import { RoveModal } from "../src/rove-modal";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-    title: "Example/icon-selector",
-    component: IconSelector,
+    title: "Example/Rove Icon Selector",
+    component: RoveIconSelector,
     parameters: {
         // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
         layout: "centered",
@@ -24,7 +25,7 @@ const meta = {
     },
     // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
     args: { showColor: true, showSize: true },
-} satisfies Meta<typeof IconSelector>;
+} satisfies Meta<typeof RoveIconSelector>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -37,7 +38,7 @@ const defaultTabs = new Array(15).fill(0).map((item, index) => ({
 }));
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const mimesisIconsBase: Story = {
+export const Base: Story = {
     args: {
         lib: "ai",
         name: "AiFillCloseSquare",
@@ -45,13 +46,13 @@ export const mimesisIconsBase: Story = {
     render: function ChromeExample() {
         return (
             <div style={{ width: "calc(100vw - 100px)", height: "80vh" }}>
-                <IconSelector showColor showSize />
+                <RoveIconSelector showColor showSize />
             </div>
         );
     },
 };
 
-export const mimesisIconsWithColor: Story = {
+export const WithModal: Story = {
     args: {
         lib: "ai",
         name: "AiFillCloseSquare",
@@ -59,13 +60,13 @@ export const mimesisIconsWithColor: Story = {
     render: function ChromeExample() {
         return (
             <div style={{ width: "calc(100vw - 100px)", height: "80vh" }}>
-                <IconSelector showColor showSize />
+                <RoveModal></RoveModal>
             </div>
         );
     },
 };
 
-export const mimesisIconsWithSize: Story = {
+export const WithSize: Story = {
     args: {
         lib: "ai",
         name: "AiFillCloseSquare",
@@ -73,7 +74,7 @@ export const mimesisIconsWithSize: Story = {
     render: function ChromeExample() {
         return (
             <div style={{ width: "calc(100vw - 100px)", height: "80vh" }}>
-                <IconSelector showColor showSize />
+                <RoveIconSelector showColor showSize />
             </div>
         );
     },

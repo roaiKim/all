@@ -1,6 +1,5 @@
 import Popup from "reactjs-popup";
 import { Chrome } from "@uiw/react-color";
-import "./color-selector.less";
 
 interface ColorSelectorProps {
     color: string | undefined;
@@ -14,15 +13,7 @@ export function ColorSelector(props: ColorSelectorProps) {
 
     return (
         <div style={{ display: "flex", flexWrap: "wrap", ...style }}>
-            <Popup
-                trigger={
-                    <div className="customer-color-pick" style={{ background: color }}>
-                        {" "}
-                    </div>
-                }
-                position="right center"
-                closeOnDocumentClick
-            >
+            <Popup trigger={<div className="customer-color-pick" style={{ background: color }}></div>} position="right center" closeOnDocumentClick>
                 <Chrome
                     // allowClear
                     onChange={(color) => {

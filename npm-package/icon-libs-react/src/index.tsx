@@ -1,2 +1,3 @@
 export { IconSelector } from "./icon-selector";
-export { RoveIcon } from "./mimesis-icons";
+export { RoveIcon } from "./rove-icons";
+import "./index.less";
