@@ -3,7 +3,6 @@ import { ChromeFilled } from "@ant-design/icons";
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "storybook/test";
 import { RoveIconSelector } from "../src/index";
-import { RoveModal } from "../src/rove-modal";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -60,13 +59,13 @@ export const WithModal: Story = {
     render: function ChromeExample() {
         return (
             <div style={{ width: "calc(100vw - 100px)", height: "80vh" }}>
-                <RoveModal></RoveModal>
+                <RoveIconSelector isPopup></RoveIconSelector>
             </div>
         );
     },
 };
 
-export const WithSize: Story = {
+export const WithChildren: Story = {
     args: {
         lib: "ai",
         name: "AiFillCloseSquare",
@@ -74,7 +73,9 @@ export const WithSize: Story = {
     render: function ChromeExample() {
         return (
             <div style={{ width: "calc(100vw - 100px)", height: "80vh" }}>
-                <RoveIconSelector showColor showSize />
+                <RoveIconSelector isPopup>
+                    <button className="rove-button primary">with children Popup</button>
+                </RoveIconSelector>
             </div>
         );
     },

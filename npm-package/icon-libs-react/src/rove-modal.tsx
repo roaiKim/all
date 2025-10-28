@@ -1,24 +1,18 @@
 import { PropsWithChildren, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { IconSelector, IconSelectorProps } from "./icon-selector";
-import { RoveIcon, RoveIconProps } from "./rove-icons";
+import { RoveIcon } from "./rove-icons";
 
-type RoveIconMixiSelector = RoveIconProps & IconSelectorProps;
-
-interface RoveIconSelectorProps extends RoveIconMixiSelector {
+interface RoveiconSelectorProps extends Partial<IconSelectorProps> {
     /**
      * @description wrap style
      */
     style?: React.CSSProperties;
-    /**
-     * @description Popup window selection or direct selection
-     * @default false
-     */
     isPopup?: boolean;
 }
 
-export function RoveIconSelector(props: PropsWithChildren<RoveIconSelectorProps>) {
-    const { lib, name, onConfirm, showSize, showColor, showCopy, showCopyName, style = {}, children, isPopup, ...rest } = props;
+export function RoveIconSelector(props: PropsWithChildren<RoveiconSelectorProps>) {
+    const { lib, name, onConfirm, showSize, showColor, showCopy, showCopyName, style = {}, children, isPopup } = props;
 
     const [open, setOpen] = useState(false);
 
@@ -43,7 +37,12 @@ export function RoveIconSelector(props: PropsWithChildren<RoveIconSelectorProps>
                     <div className="rover-container">
                         <div className="rover-modal-header">
                             <span>select icon</span>
-                            <div className="rover-close">
+                            <div
+                                className="rover-close"
+                                onClick={() => {
+                                    setOpen(false);
+                                }}
+                            >
                                 <RiCloseFill />
                             </div>
                         </div>
@@ -63,13 +62,14 @@ export function RoveIconSelector(props: PropsWithChildren<RoveIconSelectorProps>
                 </div>
             )}
             <div
+                className="rove-handler"
                 onClick={() => {
                     if (isPopup) {
                         setOpen(true);
                     }
                 }}
             >
-                {children || <RoveIcon lib={lib} name={name} {...rest} />}
+                {children || <button className="rove-button">select</button>}
             </div>
         </div>
     );

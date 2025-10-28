@@ -208,6 +208,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                                     const text = `${state.lib}#${state.name}`;
                                     copyToClipboard(text);
                                 }}
+                                className="rove-button"
                             >
                                 复制名称
                             </button>
@@ -219,6 +220,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                                     const text = JSON.stringify(state);
                                     copyToClipboard(text);
                                 }}
+                                className="rove-button"
                             >
                                 复制
                             </button>
@@ -227,7 +229,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                 ) : (
                     <div style={{ marginLeft: 20, flexGrow: 1 }}></div>
                 )}
-                <button className="primary" onClick={onSubmit}>
+                <button className="rove-button primary" onClick={onSubmit}>
                     确认
                 </button>
             </div>
