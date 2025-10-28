@@ -1,432 +1,305 @@
 
 [English](./README.md) | [中文](./README-CH.md) 
 
-# ChromeStyleTabs Component Documentation
+# RoveIconSelector 图标选择器组件
 
-## Component Introduction
+## 组件介绍
 
-`ChromeStyleTabs` is a Chrome-style tab component with core capabilities including tab drag-and-drop sorting, scroll navigation, pre-close confirmation, and custom styling.
+RoveIconSelector 是一个基于[react-icons@^5.5.0](https://github.com/react-icons/react-icons)版本的的封装库，提供其全部的图标选择
+
+> 说明 <span style="color: red"> rove-icon-react 包含[react-icons@^5.5.0](https://github.com/react-icons/react-icons)全部的图标库的选择器，所以会打包所有图标，无法 Tree shaking</span>  
+RoveIcon 组件使用时 则只会加载 当前图标库下的图标(会有缓存), 其他库则不会加载, 但是依然会打包所有
+
+> `RoveIconSelector, RoveIcon` 搭配使用 `RoveIconSelector` 选择图标, `RoveIcon` 则是选择后的使用
+
+## 特性
 
 
 
-!["video"](assets/video.gif)
+* 支持多种图标库选择
 
-## Dependency Instructions
+* 可以排除图标库选择
 
-Installation command:
+* 实时搜索筛选图标
+
+* 可调整图标尺寸
+
+* 自定义图标颜色
+
+* 复制图标信息功能
+
+* 支持国际化
+
+* 可配置显示 / 隐藏功能项
+
+* MIT 协议图标筛选
+
+## 安装
 
 
 
 ```
-npm install chrome-style-tabs-react --save
+npm install rove-icon-react
 
-\# Or with yarn
+\# 或
 
-yarn add chrome-style-tabs-react
+yarn add rove-icon-react
 ```
 
-## Usage Examples
+## 导入组件
 
-### 1. Basic Usage
+
+
+```
+import { RoveIconSelector, RoveIcon } from 'rove-icon-react';
+```
+
+## 基本使用
+
+
+
+```tsx
+import React, { useState } from 'react';
+import { RoveIconSelector, RoveIcon } from 'rove-icon-react';
+
+function App() {
+    const [state, setState] = useState<IconSelectorState>({
+        lib: "ai",
+        name: "",
+        width: 24,
+        height: 24,
+        color: "#000000",
+    });
+
+    return (
+        <div style={{ width: "calc(100vw - 100px)", height: "80vh", display: "flex" }}>
+            <RoveIconSelector
+                isPopup
+                onConfirm={(state) => {
+                    setState(state);
+                }}
+            ></RoveIconSelector>
+            <div style={{ marginLeft: 20 }}></div>
+            <RoveIcon {...state} />
+        </div>
+    );
+}
+
+export default App;
+```
+
+## 属性说明
+
+### IconSelectorProps
+
+
+| 属性名          | 类型                                   | 默认值     | 说明              |
+| ------------ | ------------------------------------ | ------- | --------------- |
+| style          | `React.CSSProperties`                   | -       | style        |
+| title          | `string`                   | -       | 弹窗的header title        |
+| isPopup          | `boolean`                   | `false`       | 是否弹窗形式        |
+| lib          | `RoveIconLibsType`                   | `ai`       | 初始选中的图标库        |
+| name         | `string`                             | -       | 初始选中的图标名称       |
+| onConfirm    | `(state: IconSelectorState) => void` | -       | 确认选择时的回调函数      |
+| showSize     | `boolean`                            | `true`  | 是否显示尺寸输入框       |
+| showColor    | `boolean`                            | `true`  | 是否显示颜色选择器       |
+| showCopy     | `boolean`                            | `true`  | 是否显示复制按钮        |
+| showCopyName | `boolean`                            | `true`  | 是否显示复制名称按钮      |
+| MIT          | `boolean`                            | `false` | 是否只显示 MIT 协议的图标 |
+| exclude      | `RoveIconLibsType[]`                 | `[]`    | 排除的图标库列表        |
+| include      | `RoveIconLibsType[]`                 | -       | 包含的图标库列表（优先级最高） |
+
+
+### IconSelectorState
+
+
+| 属性名    | 类型                 | 默认值         | 说明      |
+| ------ | ------------------ | ----------- | ------- |
+| lib    | `RoveIconLibsType` | `"ai"`      | 选中的图标库  |
+| name   | `string`           | `null`      | 选中的图标名称 |
+| width  | `number`           | `24`        | 图标的宽度   |
+| height | `number`           | `24`        | 图标的高度   |
+| color  | `string`           | `"#000000"` | 图标的颜色   |
+
+
+
+### RoveIconLibsType
+
+```ts
+type RoveIconLibsType =
+    | "ci"
+    | "fa"
+    | "fa6"
+    | "io"
+    | "io5"
+    | "md"
+    | "ti"
+    | "go"
+    | "fi"
+    | "lu"
+    | "gi"
+    | "wi"
+    | "di"
+    | "ai"
+    | "bs"
+    | "ri"
+    | "fc"
+    | "gr"
+    | "hi"
+    | "hi2"
+    | "si"
+    | "sl"
+    | "im"
+    | "bi"
+    | "cg"
+    | "vsc"
+    | "tb"
+    | "tfi"
+    | "rx"
+    | "pi"
+    | "lia";
+```
+
+## 事件说明
+
+### onConfirm
+
+确认选择时触发的回调函数，返回当前选中图标的完整状态。
 
 
 
 ```ts
-// import ChromeStyleTabs from "chrome-style-tabs-react";
-function ChromeExample() {
-    const [tabs, setTabs] = useState<ChromeStyleTabType[]>(
-        new Array(15).fill(0).map((item, index) => ({
-            key: "Fackbook" + index,
-            label: "Fackbook " + index,
-            icon: <AppleOutlined />,
-            // disabled: index % 2 === 0,
-        }))
-    );
-    const [activeKey, setActiveKey] = useState("Google");
+const handleConfirm = (state) => {​
+  console.log('Icon selected:', state);​
+  // state 包含: lib, name, width, height, color​
+};
+```
 
+## 图标库支持
+
+组件支持 react-icons 库中的所有图标库 [查看](https://github.com/react-icons/react-icons?tab=readme-ov-file#icons)
+
+
+## 高级用法
+
+### 1. 只显示指定的图标库
+
+
+
+```ts
+<IconSelector
+    include={['ai', 'fa', 'md']}
+    onConfirm={handleIconConfirm}
+/>
+```
+
+### 2. 排除某些图标库
+
+
+
+```ts
+<IconSelector
+    exclude={['ai', 'fa', 'md']}
+    onConfirm={handleIconConfirm}
+/>
+```
+
+### 3. 只显示 MIT 协议的图标
+
+
+
+```ts
+<IconSelector
+    MIT={true}
+    onConfirm={handleIconConfirm}
+/>
+```
+
+
+## 样式说明
+
+组件使用以下 CSS 类名，可根据需要进行自定义：
+
+
+## 国际化支持
+
+组件集成了国际化功能 (RoveContext)
+> 内置 英文|中文，其他语言 参考[这个例子]()
+
+```ts
+function Example() {
+    const [state, setState] = useState<IconSelectorState>({
+        lib: "ai",
+        name: "",
+        width: 24,
+        height: 24,
+        color: "#000000",
+    });
     return (
-        <div>
-            <ChromeStyleTabs
-                tabs={tabs}
-                activeKey={activeKey}
-                onClose={(tab, index, tabs) => {
-                    setTabs(tabs);
+        <div style={{ width: "calc(100vw - 100px)", height: "80vh", display: "flex" }}>
+            <RoveContext.Provider
+                value={{
+                    type: "ch",
                 }}
-                onDrag={(tabs) => {
-                    setTabs(tabs);
-                }}
-            />
+            >
+                <>
+                    <RoveIconSelector
+                        isPopup
+                        onConfirm={(state) => {
+                            setState(state);
+                        }}
+                    ></RoveIconSelector>
+                    <div style={{ marginLeft: 20 }}></div>
+                    <RoveIcon {...state} />
+                </>
+            </RoveContext.Provider>
         </div>
     );
 }
 ```
 
-## Component Props
+1. RoveContext 支持 type 和 language
+```ts
+<RoveContext.Provider
+    value={{
+        type: "en",
+        language: {
+            "rove-modal-title": "my modal title",
+        },
+    }}
+>
+//...
+<RoveContext.Provider/>
+```
 
-
-
-| Prop Name          | Type                                                                           | Default Value | Description                                                                                                                                      |
-| ------------------ | ------------------------------------------------------------------------------ | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `className`        | `string`                                                                       | -             | Custom class name for the component's outer container (for overriding default styles like background color or border).                           |
-| `style`            | `React.CSSProperties`                                                          | -             | Inline styles for the component's outer container (supports custom layouts like width, margin, padding).                                         |
-| `tabs`             | `ChromeStyleTabType[]`                                                         | `[]`          | **Required**. Data source for tabs; each item must conform to the `ChromeStyleTabType` structure.                                                |
-| `activeKey`        | `string \| number`                                                             | -             | Unique identifier of the currently active tab in **controlled mode** (takes precedence over `defaultActiveKey`).                                 |
-| `defaultActiveKey` | `string \| number`                                                             | -             | Initial active tab identifier in **uncontrolled mode**; the component manages subsequent active states internally.                               |
-| `draggable`        | `boolean`                                                                      | `true`        | Whether to enable tab drag-and-drop sorting (set to `false` to disable dragging).                                                                |
-| `scrollStep`       | `number`                                                                       | `100`         | Scroll distance (in pixels) when clicking left/right navigation buttons; negative values are automatically reset to 100.                         |
-| `onClick`          | `(tab: ChromeStyleTabType, index: number) => void`                             | -             | Callback triggered when a tab is clicked; returns the clicked tab data (`tab`) and its index (`index`).                                          |
-| `onClose`          | `(tab: ChromeStyleTabType, index: number, tabs: ChromeStyleTabType[]) => void` | -             | Callback triggered when a tab is closed; returns the closed tab (`tab`), its index (`index`), and a copy of the tab list after closing (`tabs`). |
-| `onChange`         | `(key: string \| number) => void`                                              | -             | Callback triggered when the active tab switches; returns the `key` of the currently active tab.                                                  |
-| `onDrag`           | `(tabs: ChromeStyleTabType[]) => void`                                         | -             | Callback triggered after tab drag-and-drop sorting; returns the fully sorted tab list.                                                           |
-| `onCloseBefore`    | `(tab: ChromeStyleTabType, index: number) => Promise<boolean>`                 | -             | Confirmation callback before closing a tab; returns a `Promise<boolean>`:- `true`: Allow closing the tab- `false`: Prevent closing the tab       |
-
-## CSS Variables
-
-```css
-:root {
-  --cst-container-bg-color: #d3e3fd;
-  --cst-bottom-bar-color: #fff;
-  --cst-prev-btn-color: #fff;
-  --cst-next-btn-color: #fff;
-  --cst-tab-bg-color: var(--cst-container-bg-color);
-  --cst-split-color: #a8c7fa;
-  --cst-split-opacity: 0.8;
-  --cst-tab-active-color: #fff;
-  --cst-tab-hover-bg-color: #a8c7fa;
-  --cst-close-hover-bg-color: #93add9;
-  --cst-close-active-hover-bg-color: #dcdcdd;
-  --cst-prev-next-btn-shadow: 0 2px 8px #00000026;
-  --cst-tab-width: initial;
-  --cst-tab-min-width: initial;
-  --cst-tab-max-width: initial;
-  --cst-font-size: 12px;
+2. language中的key
+```ts
+{
+    "rove-modal-title": "select icon",
+    "rove-modal-select-name": "select",
+    "rove-selector-width": "width",
+    "rove-selector-height": "height",
+    "rove-selector-color": "color",
+    "rove-selector-copyname": "Copy name",
+    "rove-selector-copy": "Copy",
+    "rove-selector-ok": "Confirm",
+    "rove-search-placeholder": "Search icon name",
+    "rove-search-button": "Search",
 }
-```
+``` 
 
-## Type Definitions
+## 注意事项
 
-### 1. ChromeStyleTabType (Tab Data Structure)
 
-Each item in the `tabs` array must conform to the following structure:
 
+1. **图标库加载**：图标库会在选择时动态加载，首次使用可能会有加载延迟
 
+2. **协议问题**：react-icons 中的图标库并非都基于 MIT 协议，使用时请注意相关许可协议 (可以使用 MIT 参数控制)
 
-```ts
-export interface ChromeStyleTabType {
-    /**
-     * @description Icon displayed in the tab
-     */
-    icon?: React.ReactNode;
+3. **性能优化**：建议根据项目需要使用 `include` 属性限制加载的图标库数量
 
-    /**
-     * @description Title/label displayed in the tab
-     */
-    label: React.ReactNode;
+4. **搜索功能**：搜索功能不区分大小写，会匹配图标名称的任意部分
 
-    /**
-     * @description Unique identifier for the tab
-     */
-    key: string | number;
-
-    /**
-     * @description Whether to show the close button
-     * @default true
-     */
-    allowClose?: boolean;
-
-    /**
-     * @description Whether the tab is disabled (non-interactive)
-     * @default false
-     */
-    disabled?: boolean;
-}
-```
-
-## Core Functionality Explanation
-
-### 1. Basic Tab Interaction
-
-#### (1) Active State Management
-
-
-
-* **Controlled Mode**: Control the active tab via the externally passed `activeKey` state. The `onChange` callback is triggered whenever the active state changes, and you must sync the state externally.
-
-  Example:
-
-
-
-```ts
-const [currentKey, setCurrentKey] = useState("1");
-<ChromeStyleTabs
-  tabs={tabs}
-  activeKey={currentKey}
-  onChange={(key) => setCurrentKey(key)}
-/>
-```
-
-* **Uncontrolled Mode**: Only set the initial active tab via `defaultActiveKey`; the component manages subsequent active states internally (no external sync required).
-
-  Example:
-
-
-```ts
-<ChromeStyleTabs
-  tabs={tabs}
-  defaultActiveKey="1"
-/>
-```
-
-
-
-* **Auto-Activation After Closing**: When the currently active tab is closed, the component will:
-
-1. Prioritize activating the next tab (if it exists);
-
-2. Activate the previous tab if there is no next tab;
-
-3. Clear the active state if no tabs remain.
-
-#### (2) Tab Closing Logic
-
-
-
-1. Click the close button in the top-right corner of the tab to trigger the closing process;
-
-2. If `onCloseBefore` is configured, the confirmation logic runs first. The tab will close only if `Promise<boolean>` resolves to `true`;
-
-3. After successful closing, the `onClose` callback is triggered, returning a copy of the tab list after closing (the original array remains unmodified).
-
-### 2. Drag-and-Drop Sorting
-
-
-
-* **Enable Condition**: `draggable={true}` (enabled by default);
-
-* **Drag Restriction**: Only horizontal dragging is allowed (implemented via the `restrictToHorizontalAxis` modifier) to prevent vertical offset;
-
-* **Sorting Callback**: After dragging completes, the `onDrag` callback is triggered, returning the sorted tab list. You must sync the updated list to the `tabs` data source externally to reflect changes in the view.
-
-### 3. Scroll Navigation
-
-When the number of tabs exceeds the container width, left/right navigation buttons are automatically displayed. Two scrolling methods are supported:
-
-
-
-* **Mouse Wheel Scrolling**: Scroll the mouse wheel over the tab container to scroll the tab list horizontally;
-
-* **Navigation Button Scrolling**: Click the left button to scroll left by `scrollStep` pixels, and the right button to scroll right by `scrollStep` pixels;
-
-* **Button Display Logic**: The `IntersectionObserver` API is used to detect if the first/last tab is visible:
-
-
-  * Show the left ("Previous") button if the first tab is not visible;
-
-  * Show the right ("Next") button if the last tab is not visible.
-
-## Notes
-
-1. **Important**: <span style="color: red"> A width must be set for the parent container of `ChromeStyleTabs` (otherwise, the tab container may not render correctly).</span>
-
-2. **Uniqueness of Data Source**: The `key` of each item in the `tabs` array must be unique. Duplicate keys will cause tab rendering errors or drag-and-drop sorting failures;
-
-3. **Controlled Mode Sync**: When using `activeKey` (controlled mode), you must sync the external state via the `onChange` callback. Otherwise, "active state mismatch" issues may occur;
-
-4. **Data Update for Drag-and-Drop**: After enabling drag-and-drop, you must sync the updated `tabs` data source in the `onDrag` callback. The view will not reflect sorting changes unless the data source is updated;
-
-5. **Compatibility Notes**:
-
-* `IntersectionObserver` is compatible with Chrome 51+, Firefox 55+, Edge 15+, and Safari 12.1+. It is not supported in IE. To support IE, import a [polyfill](https://github.com/w3c/IntersectionObserver/tree/main/polyfill);
-
-* DnD-Kit depends on modern browser features and is not recommended for use in IE;
-
-1. **Important**: A width must be set for the parent container of `ChromeStyleTabs` (otherwise, the tab container may not render correctly).
-
-## Frequently Asked Questions (FAQ)
-
-### Q1: The active state does not switch automatically after closing a tab.
-
-A1: Check if both `activeKey` and `defaultActiveKey` are set. If using controlled mode (`activeKey`), you must manually update the `activeKey` state in the `onClose` callback— the component will not modify the externally passed `activeKey` automatically.
-
-### Q2: The view does not update after dragging tabs to sort them.
-
-A2: Ensure that the `tabs` data source is synced in the `onDrag` callback. Drag-and-drop only triggers sorting logic; it does not modify the original array. The view will only refresh if the `tabs` data source is updated manually.
-
-### Q3: The left/right navigation buttons are not displayed.
-
-A3: Check the following two points:
-
-
-1. Whether the number of tabs exceeds the container width (buttons are automatically hidden if no scrolling is needed);
-
-2. Whether the parent container of `ChromeStyleTabs` has a set width (buttons may fail to render if the container width is not defined).
-
-### Q4: `onCloseBefore` is not triggered.
-
-A4: Ensure that `onCloseBefore` is a function that returns a `Promise<boolean>`, not a regular function. Example of correct usage:
-
-```ts
-// Correct: Returns a Promise\<boolean>
-const onCloseBefore = (tab: ChromeStyleTabType, index: number): Promise<boolean> => {
-    return new Promise((resolve) => {
-        const confirm = window.confirm(`Are you sure you want to close the tag ${tab.label}?`);
-        resolve(confirm);
-    });
-};
-```
-
-
-## Integrating with Context Menu (react-contexify)
-
-Install the additional dependency:
-
-
-
-```
-npm install react-contexify --save
-
-\# Or with yarn
-
-yarn add react-contexify
-```
-
-Import the `react-contexify` CSS:
-
-
-
-```css
-import "react-contexify/ReactContexify.css";
-```
-
-### Step 1: Create the Context Menu Component
-
-
-
-```ts
-// ./ContextMenu.tsx
-import { Item, Menu, Separator } from "react-contexify";
-
-export enum ContextMenuType {
-    close = "close",
-    refresh = "refresh",
-    closeOther = "closeOther",
-    closeAll = "closeAll",
-    closeRight = "closeRight",
-    closeLeft = "closeLeft",
-}
-
-export const ContextMenu: React.FC<{ contextMenuClick: (e: any) => void; menuId: string }> = ({ contextMenuClick, menuId }) => {
-    return (
-        <Menu className="tab-hader-right-menu" preventDefaultOnKeydown={false} id={menuId}>
-            <Item data={ContextMenuType.close} onClick={contextMenuClick}>
-                <span className="right-click-menu-text">Close</span>
-            </Item>
-            <Separator />
-            <Item data={ContextMenuType.refresh} onClick={contextMenuClick}>
-                <span className="right-click-menu-text">refresh</span>
-            </Item>
-            <Separator />
-            <Item data={ContextMenuType.closeOther} onClick={contextMenuClick}>
-                <span className="right-click-menu-text">Close Others</span>
-            </Item>
-            <Separator />
-            <Item data={ContextMenuType.closeAll} onClick={contextMenuClick}>
-                <span className="right-click-menu-text">Close All</span>
-            </Item>
-            <Separator />
-            <Item data={ContextMenuType.closeRight} onClick={contextMenuClick}>
-                <span className="right-click-menu-text">Close to the Right</span>
-            </Item>
-            <Separator />
-            <Item data={ContextMenuType.closeLeft} onClick={contextMenuClick}>
-                <span className="right-click-menu-text">Close to the Left</span>
-            </Item>
-        </Menu>
-    );
-};
-```
-
-### Step 2: Use the Context Menu with ChromeStyleTabs
-
-
-
-```ts
-// index.tsx
-import { useId, useState } from "react";
-import { type ItemParams, useContextMenu } from "react-contexify";
-import { ChromeFilled } from "@ant-design/icons";
-import ChromeStyleTabs from "chrome-style-tabs-react";
-import type { ChromeStyleTabType } from "chrome-style-tabs-react";
-import { ContextMenu } from "./ContextMenu.tsx";
-
-
-import "react-contexify/ReactContexify.css";// Don't forget to introduce
-
-function ChromeExample() {
-    const [tabs, setTabs] = useState<ChromeStyleTabType[]>(
-        new Array(15).fill(0).map((item, index) => ({
-            key: "Chrome" + index,
-            label: "Chrome " + index,
-            icon: <ChromeFilled />,
-            // disabled: index % 2 === 0,
-        }))
-    );
-    const MENU_ID = useId();
-    const [activeKey, setActiveKey] = useState("Chrome3");
-
-    const { show } = useContextMenu({
-        id: MENU_ID,
-    });
-
-    function handleContextMenu(event: React.MouseEvent<HTMLDivElement, MouseEvent>, config: { id: string | number; index: number }) {
-        show({ event, props: config });
-    }
-
-    function handleItemClick({ event, props, triggerEvent, data }: ItemParams<any, any>) {
-        switch (data) {
-            case ContextMenuType.close:
-                // closeTab(props.id);
-                return;
-            case ContextMenuType.refresh:
-                if (activeKey === props.id) {
-                    // refreshAuto(props.id);
-                }
-                return;
-            case ContextMenuType.closeOther:
-                // closeOtherTab(props.id);
-                return;
-            case ContextMenuType.closeAll:
-                // closeAllTab();
-                return;
-            case ContextMenuType.closeRight:
-                // closeRightTab(props.id);
-                return;
-            case ContextMenuType.closeLeft:
-                // closeLeftTab(props.id);
-                return;
-        }
-    }
-
-    return (
-        <div style={{ width: "calc(100vw - 100px)", height: "80vh", background: "#ccc", padding: 10 }}>
-            <ContextMenu contextMenuClick={handleItemClick} menuId={MENU_ID} />
-            <ChromeStyleTabs
-                tabs={tabs}
-                activeKey={activeKey}
-                onClose={(tab, index, tabs) => {
-                    setTabs(tabs);
-                }}
-                onDrag={(tabs) => {
-                    setTabs(tabs);
-                }}
-                onContextMenu={handleContextMenu}
-            />
-        </div>
-    );
-}
-```
-
-more [react-contexify](https://github.com/fkhadra/react-contexify) 
 
 ## License
 MIT

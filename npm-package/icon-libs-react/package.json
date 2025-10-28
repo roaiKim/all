@@ -1,6 +1,6 @@
 {
-  "name": "chrome-style-tabs-react",
-  "version": "1.0.4",
+  "name": "rove-icon-react",
+  "version": "1.0.1",
   "type": "module",
   "license": "MIT",
   "exports": {
@@ -19,17 +19,16 @@
   "author": "roaiKim https://github.com/roaiKim",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/roaiKim/chrome-style-tabs-react"
+    "url": "git+https://github.com/roaiKim/rove-icon-react"
   },
   "bugs": {
-    "url": "https://github.com/roaiKim/chrome-style-tabs-react/issues"
+    "url": "https://github.com/roaiKim/rove-icon-react/issues"
   },
   "keywords": [
     "react",
-    "chrome-style",
-    "chrome-style-tabs",
-    "chrome-style-tabs-react",
-    "tabs",
+    "icon",
+    "react-icons",
+    "rove-icon-react",
     "react-component"
   ],
   "scripts": {

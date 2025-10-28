@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
 
-// 图标缓存对象
+// cache
 const iconCache = new Map<string, IconType>();
 
 export type RoveIconLibsType =
@@ -85,7 +85,7 @@ export const useGetRoveIcons = (lib: RoveIconLibsType, name?: string) => {
         const cacheKey = `${lib}:${name}`;
         const loadIcon = async () => {
             try {
-                // 检查缓存
+                // cache
                 if (iconCache.has(cacheKey)) {
                     setIcon(() => iconCache.get(cacheKey)!);
                     return;

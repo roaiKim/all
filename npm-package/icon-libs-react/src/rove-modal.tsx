@@ -1,33 +1,32 @@
 import { PropsWithChildren, useState } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { IconSelector, IconSelectorProps } from "./icon-selector";
-import { RoveIcon } from "./rove-icons";
+import { useGetLanguage } from "./useGetLanguage";
 
-interface RoveiconSelectorProps extends Partial<IconSelectorProps> {
+export interface RoveiconSelectorProps extends Partial<IconSelectorProps> {
     /**
      * @description wrap style
      */
     style?: React.CSSProperties;
+    title?: string;
     isPopup?: boolean;
 }
 
 export function RoveIconSelector(props: PropsWithChildren<RoveiconSelectorProps>) {
-    const { lib, name, onConfirm, showSize, showColor, showCopy, showCopyName, style = {}, children, isPopup } = props;
+    const { onConfirm: save, style = {}, children, isPopup, title, ...rest } = props;
 
     const [open, setOpen] = useState(false);
+    const { getLanguage } = useGetLanguage();
+
+    const onConfirm = (state) => {
+        if (save) {
+            save(state);
+        }
+        setOpen(false);
+    };
 
     if (!isPopup) {
-        return (
-            <IconSelector
-                lib={lib}
-                name={name}
-                onConfirm={onConfirm}
-                showSize={showSize}
-                showColor={showColor}
-                showCopy={showCopy}
-                showCopyName={showCopyName}
-            />
-        );
+        return <IconSelector onConfirm={onConfirm} {...rest} />;
     }
 
     return (
@@ -36,7 +35,7 @@ export function RoveIconSelector(props: PropsWithChildren<RoveiconSelectorProps>
                 <div className="rover-modal">
                     <div className="rover-container">
                         <div className="rover-modal-header">
-                            <span>select icon</span>
+                            <span>{title || getLanguage("rove-modal-title")}</span>
                             <div
                                 className="rover-close"
                                 onClick={() => {
@@ -47,15 +46,7 @@ export function RoveIconSelector(props: PropsWithChildren<RoveiconSelectorProps>
                             </div>
                         </div>
                         <div className="rover-modal-body">
-                            <IconSelector
-                                lib={lib}
-                                name={name}
-                                onConfirm={onConfirm}
-                                showSize={showSize}
-                                showColor={showColor}
-                                showCopy={showCopy}
-                                showCopyName={showCopyName}
-                            />
+                            <IconSelector onConfirm={onConfirm} {...rest} />
                         </div>
                         {/* <div className="rover-modal-footer"></div> */}
                     </div>
@@ -69,7 +60,7 @@ export function RoveIconSelector(props: PropsWithChildren<RoveiconSelectorProps>
                     }
                 }}
             >
-                {children || <button className="rove-button">select</button>}
+                {children || <button className="rove-button">{getLanguage("rove-modal-select-name")}</button>}
             </div>
         </div>
     );

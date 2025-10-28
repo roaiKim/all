@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { IconsManifest } from "react-icons";
-// import { Button, Input, InputNumber, Select } from "antd";
-// import Modal from "@src/components/modal";
-// import useViewBasic from "@src/hooks/useViewBasic";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { ColorSelector } from "./color-selector";
 import { RoveIcon, RoveIconProps } from "./rove-icons";
+import { RoveSearch } from "./search";
+import { useGetLanguage } from "./useGetLanguage";
 import { RoveIconLibsType, useGetRoveIcons } from "./useGetRoveIcons";
 import { copyToClipboard } from "./utils";
 
-export interface IconSelectorProps extends Pick<RoveIconProps, "lib" | "name"> {
+export interface IconSelectorProps extends Partial<Pick<RoveIconProps, "lib" | "name">> {
     /**
      * @description confirm function
      * @param state color IconSelectorState
@@ -35,9 +35,22 @@ export interface IconSelectorProps extends Pick<RoveIconProps, "lib" | "name"> {
      * @default true
      */
     showCopyName?: boolean;
+    /**
+     * @description react icons are not all based on the MIT protocol. Should we only select those that include the MIT protocol?
+     * @default false
+     */
+    MIT?: boolean;
+    /**
+     * @description Exclude icon library
+     */
+    exclude?: RoveIconLibsType[];
+    /**
+     * @description With the highest weight. If this option is available, only the selected values will be included.
+     */
+    include?: RoveIconLibsType[];
 }
 
-interface IconSelectorState {
+export interface IconSelectorState {
     lib: RoveIconLibsType;
     name: string;
     width: number;
@@ -66,26 +79,29 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
     const { lib, name, showSize = true, showColor = true, showCopy = true, showCopyName = true } = props;
     const [state, setState] = useState(initState());
     const overHandlerRef = useRef(null);
-
     const [searchValue, setSearchValue] = useState(null);
     const [panelInView, setPanelInView] = useState(true);
+    const { getLanguage } = useGetLanguage();
 
-    const [libs] = useState(() => IconsManifest);
+    const [libs] = useState(() => {
+        const { MIT, exclude = [], include } = props;
+
+        if (include) {
+            return IconsManifest.filter((item) => include.includes(item.id as RoveIconLibsType));
+        }
+
+        return IconsManifest.filter((item) => (MIT ? (item.license || "").toLocaleUpperCase() === "MIT" : true)).filter(
+            (item) => !exclude.includes(item.id as RoveIconLibsType)
+        );
+    });
 
     const { IconList, loading } = useGetRoveIcons(state.lib);
 
-    const showModal = () => {
-        if (lib && name) {
-            setState((prev) => ({ ...prev, lib, name }));
-        }
-    };
-
     const onSubmit = () => {
-        console.log("icon-state", state);
         if (props.onConfirm) {
             props.onConfirm(state);
         } else {
-            console.log("icon-state", state);
+            //
         }
     };
 
@@ -129,15 +145,11 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                         <option value={item.id}>{item.name}</option>
                     ))}
                 </select>
-                <input
-                    placeholder="搜索图标名称"
-                    className="rove-input"
-                    // onSearch={(value) => {
-                    //     console.log("--", value);
-                    //     setSearchValue(value);
-                    // }}
-                    style={{ width: 160, marginLeft: 5 }}
-                />
+                <RoveSearch
+                    onSearch={(value) => {
+                        setSearchValue(value);
+                    }}
+                ></RoveSearch>
                 {state.lib && state.name ? (
                     <div style={{ marginLeft: 20, flexGrow: 1, display: "flex" }}>
                         <div
@@ -161,7 +173,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                         </div>
                         {showSize && (
                             <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
-                                <span style={{ marginRight: 5 }}>宽度:</span>
+                                <span style={{ marginRight: 5 }}>{getLanguage("rove-selector-width")}:</span>
                                 <input
                                     className="rove-input"
                                     value={state.width}
@@ -170,13 +182,13 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                                         setState((prev) => ({ ...prev, width: value }));
                                     }}
                                     pattern="/^[1-9]\d*$/"
-                                    style={{ width: 100 }}
+                                    style={{ width: 60 }}
                                 />
                             </div>
                         )}
                         {showSize && (
                             <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
-                                <span style={{ marginRight: 5 }}>高度:</span>
+                                <span style={{ marginRight: 5 }}>{getLanguage("rove-selector-height")}:</span>
                                 <input
                                     className="rove-input"
                                     value={state.height}
@@ -185,19 +197,18 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                                         setState((prev) => ({ ...prev, height: value }));
                                     }}
                                     pattern="/^[1-9]\d*$/"
-                                    style={{ width: 100 }}
+                                    style={{ width: 60 }}
                                 />
                             </div>
                         )}
                         {showColor && (
                             <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>
-                                <span style={{ marginRight: 5 }}>颜色:</span>
+                                <span style={{ marginRight: 5 }}>{getLanguage("rove-selector-color")}:</span>
                                 <ColorSelector
                                     color={state.color}
                                     onSetting={(color) => {
                                         setState((prev) => ({ ...prev, color }));
                                     }}
-                                    example
                                 />
                             </div>
                         )}
@@ -210,7 +221,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                                 }}
                                 className="rove-button"
                             >
-                                复制名称
+                                {getLanguage("rove-selector-copyname")}
                             </button>
                         )}
                         {showCopyName && (
@@ -222,7 +233,7 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                                 }}
                                 className="rove-button"
                             >
-                                复制
+                                {getLanguage("rove-selector-copy")}
                             </button>
                         )}
                     </div>
@@ -230,11 +241,16 @@ export const IconSelector = function AddOrEdit(props: IconSelectorProps, ref) {
                     <div style={{ marginLeft: 20, flexGrow: 1 }}></div>
                 )}
                 <button className="rove-button primary" onClick={onSubmit}>
-                    确认
+                    {getLanguage("rove-selector-ok")}
                 </button>
             </div>
             <div className="rove-panel-body">
                 <div ref={overHandlerRef}></div>
+                {loading && (
+                    <div className="rove-pb-mask">
+                        <AiOutlineLoading3Quarters style={{ width: 30, height: 30 }} />
+                    </div>
+                )}
                 {(searchValue ? IconList.filter((item) => validateName(item.name, searchValue)) : IconList)?.map((item) => {
                     const Component = item.Component;
                     return (

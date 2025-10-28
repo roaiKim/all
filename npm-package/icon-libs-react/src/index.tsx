@@ -1,3 +1,5 @@
+export type { IconSelectorState } from "./icon-selector";
 export { RoveIcon } from "./rove-icons";
-export { RoveIconSelector } from "./rove-modal";
+export { RoveIconSelector, type RoveiconSelectorProps } from "./rove-modal";
+export { RoveContext } from "./useGetLanguage";
 import "./index.less";
