@@ -1,0 +1,3 @@
+[submodule "npm-package/rove-icon-react"]
+	path = npm-package/rove-icon-react
+	url = https://github.com/roaiKim/rove-icon-react.git
