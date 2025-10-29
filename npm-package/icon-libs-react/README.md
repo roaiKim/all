@@ -1,52 +1,52 @@
-
 [English](./README.md) | [中文](./README-CH.md) 
 
-# RoveIconSelector 图标选择器组件
+# RoveIconSelector Icon Picker Component
 
-## 组件介绍
+## Component Introduction
 
-RoveIconSelector 是一个基于[react-icons@^5.5.0](https://github.com/react-icons/react-icons)版本的的封装库，提供其全部的图标选择
+RoveIconSelector is a wrapper library based on [react-icons@^5.5.0](https://github.com/react-icons/react-icons), providing access to all its icon selections.
 
-> 说明 <span style="color: red"> rove-icon-react 包含[react-icons@^5.5.0](https://github.com/react-icons/react-icons)全部的图标库的选择器，所以会打包所有图标，无法 Tree shaking</span>  
-RoveIcon 组件使用时 则只会加载 当前图标库下的图标(会有缓存), 其他库则不会加载, 但是依然会打包所有
+1. Note: <span style="color: red">rove-icon-react includes the selector for all icon libraries from [react-icons@^5.5.0](https://github.com/react-icons/react-icons), so it will bundle all icons and cannot be tree-shaken.</span>
 
-> `RoveIconSelector, RoveIcon` 搭配使用 `RoveIconSelector` 选择图标, `RoveIcon` 则是选择后的使用
+2.  When using the RoveIcon component, only icons from the currently selected icon library will be loaded (with caching), while other libraries will not be loaded. However, all libraries are still bundled.
 
-## 特性
+3. `RoveIconSelector` and `RoveIcon` are used together: `RoveIconSelector` for selecting icons, and `RoveIcon` for using the selected icons.
+
+## Features
 
 
 
-* 支持多种图标库选择
+* Support for multiple icon library selections
 
-* 可以排除图标库选择
+* Ability to exclude specific icon libraries
 
-* 实时搜索筛选图标
+* Real-time search and filtering of icons
 
-* 可调整图标尺寸
+* Adjustable icon size
 
-* 自定义图标颜色
+* Customizable icon color
 
-* 复制图标信息功能
+* Icon information copying functionality
 
-* 支持国际化
+* Internationalization support
 
-* 可配置显示 / 隐藏功能项
+* Configurable display/hide of feature items
 
-* MIT 协议图标筛选
+* MIT license icon filtering
 
-## 安装
+## Installation
 
 
 
 ```
 npm install rove-icon-react
 
-\# 或
+\# or
 
 yarn add rove-icon-react
 ```
 
-## 导入组件
+## Import Component
 
 
 
@@ -54,11 +54,11 @@ yarn add rove-icon-react
 import { RoveIconSelector, RoveIcon } from 'rove-icon-react';
 ```
 
-## 基本使用
+## Basic Usage
 
 
 
-```tsx
+```ts
 import React, { useState } from 'react';
 import { RoveIconSelector, RoveIcon } from 'rove-icon-react';
 
@@ -88,42 +88,43 @@ function App() {
 export default App;
 ```
 
-## 属性说明
+## Property Description
 
 ### IconSelectorProps
 
 
-| 属性名          | 类型                                   | 默认值     | 说明              |
-| ------------ | ------------------------------------ | ------- | --------------- |
-| style          | `React.CSSProperties`                   | -       | style        |
-| title          | `string`                   | -       | 弹窗的header title        |
-| isPopup          | `boolean`                   | `false`       | 是否弹窗形式        |
-| lib          | `RoveIconLibsType`                   | `ai`       | 初始选中的图标库        |
-| name         | `string`                             | -       | 初始选中的图标名称       |
-| onConfirm    | `(state: IconSelectorState) => void` | -       | 确认选择时的回调函数      |
-| showSize     | `boolean`                            | `true`  | 是否显示尺寸输入框       |
-| showColor    | `boolean`                            | `true`  | 是否显示颜色选择器       |
-| showCopy     | `boolean`                            | `true`  | 是否显示复制按钮        |
-| showCopyName | `boolean`                            | `true`  | 是否显示复制名称按钮      |
-| MIT          | `boolean`                            | `false` | 是否只显示 MIT 协议的图标 |
-| exclude      | `RoveIconLibsType[]`                 | `[]`    | 排除的图标库列表        |
-| include      | `RoveIconLibsType[]`                 | -       | 包含的图标库列表（优先级最高） |
 
+| Property     | Type                                 | Default | Description                                        |
+| ------------ | ------------------------------------ | ------- | -------------------------------------------------- |
+| style        | `React.CSSProperties`                | -       | Custom style for the component                     |
+| title        | `string`                             | -       | Popup header title                                 |
+| isPopup      | `boolean`                            | `false` | Whether to display as a popup                      |
+| lib          | `RoveIconLibsType`                   | `ai`    | Initially selected icon library                    |
+| name         | `string`                             | -       | Initially selected icon name                       |
+| onConfirm    | `(state: IconSelectorState) => void` | -       | Callback function when confirming selection        |
+| showSize     | `boolean`                            | `true`  | Whether to show size input                         |
+| showColor    | `boolean`                            | `true`  | Whether to show color picker                       |
+| showCopy     | `boolean`                            | `true`  | Whether to show copy button                        |
+| showCopyName | `boolean`                            | `true`  | Whether to show copy name button                   |
+| MIT          | `boolean`                            | `false` | Whether to only show MIT licensed icons            |
+| exclude      | `RoveIconLibsType[]`                 | `[]`    | List of excluded icon libraries                    |
+| include      | `RoveIconLibsType[]`                 | -       | List of included icon libraries (highest priority) |
 
 ### IconSelectorState
 
 
-| 属性名    | 类型                 | 默认值         | 说明      |
-| ------ | ------------------ | ----------- | ------- |
-| lib    | `RoveIconLibsType` | `"ai"`      | 选中的图标库  |
-| name   | `string`           | `null`      | 选中的图标名称 |
-| width  | `number`           | `24`        | 图标的宽度   |
-| height | `number`           | `24`        | 图标的高度   |
-| color  | `string`           | `"#000000"` | 图标的颜色   |
 
-
+| Property | Type               | Default     | Description           |
+| -------- | ------------------ | ----------- | --------------------- |
+| lib      | `RoveIconLibsType` | `"ai"`      | Selected icon library |
+| name     | `string`           | `null`      | Selected icon name    |
+| width    | `number`           | `24`        | Icon width            |
+| height   | `number`           | `24`        | Icon height           |
+| color    | `string`           | `"#000000"` | Icon color            |
 
 ### RoveIconLibsType
+
+
 
 ```ts
 type RoveIconLibsType =
@@ -160,11 +161,11 @@ type RoveIconLibsType =
     | "lia";
 ```
 
-## 事件说明
+## Event Description
 
 ### onConfirm
 
-确认选择时触发的回调函数，返回当前选中图标的完整状态。
+Callback function triggered when confirming selection, returns the complete state of the currently selected icon.
 
 
 
@@ -175,14 +176,13 @@ const handleConfirm = (state) => {​
 };
 ```
 
-## 图标库支持
+## Icon Library Support
 
-组件支持 react-icons 库中的所有图标库 [查看](https://github.com/react-icons/react-icons?tab=readme-ov-file#icons)
+The component supports all icon libraries from the react-icons library [View](https://github.com/react-icons/react-icons?tab=readme-ov-file#icons)
 
+## Advanced Usage
 
-## 高级用法
-
-### 1. 只显示指定的图标库
+### 1. Show only specified icon libraries
 
 
 
@@ -193,7 +193,7 @@ const handleConfirm = (state) => {​
 />
 ```
 
-### 2. 排除某些图标库
+### 2. Exclude certain icon libraries
 
 
 
@@ -204,7 +204,7 @@ const handleConfirm = (state) => {​
 />
 ```
 
-### 3. 只显示 MIT 协议的图标
+### 3. Show only MIT licensed icons
 
 
 
@@ -215,16 +215,17 @@ const handleConfirm = (state) => {​
 />
 ```
 
+## Style Description
 
-## 样式说明
+The component uses the following CSS class names, which can be customized as needed:
 
-组件使用以下 CSS 类名，可根据需要进行自定义：
+## Internationalization Support
+
+The component integrates internationalization functionality (RoveContext)
+
+> Built-in English|Chinese, for other languages refer to this example
 
 
-## 国际化支持
-
-组件集成了国际化功能 (RoveContext)
-> 内置 英文|中文，其他语言 参考[这个例子]()
 
 ```ts
 function Example() {
@@ -258,7 +259,12 @@ function Example() {
 }
 ```
 
-1. RoveContext 支持 type 和 language
+
+
+1. RoveContext supports type and language
+
+
+
 ```ts
 <RoveContext.Provider
     value={{
@@ -272,7 +278,12 @@ function Example() {
 <RoveContext.Provider/>
 ```
 
-2. language中的key
+
+
+1. Keys in language
+
+
+
 ```ts
 {
     "rove-modal-title": "select icon",
@@ -286,20 +297,61 @@ function Example() {
     "rove-search-placeholder": "Search icon name",
     "rove-search-button": "Search",
 }
-``` 
+```
 
-## 注意事项
+# RoveIcon
 
 
 
-1. **图标库加载**：图标库会在选择时动态加载，首次使用可能会有加载延迟
+```ts
+interface RoveIconProps = {
+    /**
+     * @description lib name
+     */
+    lib: RoveIconLibsType;
+    /**
+     * @description icon name
+     */
+    name: string;
+    /**
+     * @description width
+     * @default 24 px
+     */
+    width?: number;
+    /**
+     * @description width
+     * @default 24 px
+     */
+    height?: number;
+    /**
+     * @description icon color
+     */
+    color?: string;
+    /**
+     * @description if not found,return it
+     */
+    fallback?: React.ReactNode;
+    /**
+     * @description loading, show it
+     */
+    loadingIndicator?: React.ReactNode;
+}
 
-2. **协议问题**：react-icons 中的图标库并非都基于 MIT 协议，使用时请注意相关许可协议 (可以使用 MIT 参数控制)
+<RoveIcon lib="ai" name="AiFillAudio" width={30} height={30} />
+```
 
-3. **性能优化**：建议根据项目需要使用 `include` 属性限制加载的图标库数量
+## Notes
 
-4. **搜索功能**：搜索功能不区分大小写，会匹配图标名称的任意部分
 
+
+1. **Icon Library Loading**: Icon libraries are loaded dynamically when selected, which may cause a loading delay on first use.
+
+2. **License Issues**: Not all icon libraries in react-icons are based on the MIT license. Please pay attention to the relevant license agreements when using them (can be controlled using the MIT parameter).
+
+3. **Performance Optimization**: It is recommended to use the `include` property to limit the number of loaded icon libraries according to project needs.
+
+4. **Search Functionality**: The search function is case-insensitive and will match any part of the icon name.
 
 ## License
+
 MIT
