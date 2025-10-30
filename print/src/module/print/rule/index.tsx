@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect } from "react";
+import { dpiManager } from "../utils/dpiManager";
 
 function createHDCanvas(canvas, w, h) {
     const ratio = devicePixelRatio || 1;
@@ -41,7 +42,7 @@ export default function Rule() {
             const startX = 0; // 起始位置
             const endX = rulerLength; // 结束位置
             const totalLength = endX - startX; // 总长度
-            const smallTickInterval = 5; // 小刻度间隔(像素)
+            const smallTickInterval = dpiManager.mmToPx(5) / 5; // 小刻度间隔(像素)
             const smallTickHeight = 10; // 小刻度高度
             const mediumTickHeight = 18; // 中刻度高度
             const largeTickHeight = 24; // 大刻度高度
@@ -90,8 +91,8 @@ export default function Rule() {
                 ctx.strokeStyle = "#000";
                 ctx.lineWidth = 1; //lineWidth; // 应用刻度线宽度
                 ctx.beginPath();
-                ctx.moveTo(x + 0.5, tickY);
-                ctx.lineTo(x + 0.5, tickY - tickHeight);
+                ctx.moveTo(x, tickY);
+                ctx.lineTo(x, tickY - tickHeight);
                 ctx.stroke();
             }
         }

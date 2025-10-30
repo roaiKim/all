@@ -1,0 +1,31 @@
+.print-main {
+  width: calc(100vw - 24px);
+  height: calc(100vh - 98px);
+  position: relative;
+  overflow: auto;
+  margin-left: 24px;
+}
+
+.print-body {
+  width: 100%;
+  height: 150vh;
+
+  .print-template {
+    position: absolute;
+    top: 80px;
+    margin-left: 260px;
+    background-color: #ffd7d8;
+    box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%), 0 3px 6px -4px rgb(0 0 0 / 12%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+
+    //
+    background-image:
+      linear-gradient(to right, #ccc 1px, transparent 1px),
+      linear-gradient(to bottom, #ccc 1px, transparent 1px);
+    background-size: 5mm 5mm;
+
+    &.a4 {
+      width: 210mm;
+      height: 296mm;
+    }
+  }
+}

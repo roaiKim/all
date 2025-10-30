@@ -21,7 +21,7 @@ export default function Header() {
         <div className="rk-header" style={{ height: headerHeight }}>
             <div className="rk-copyright">
                 <PrinterOutlined style={{ fontSize: 40 }} />
-                <span className="rk-print-name">ROKIM-PRINT</span>
+                <span className="rk-print-name">ROAIKIM-PRINT</span>
             </div>
             <div className="rk-element">
                 <IconButton text="文本" hoverMask pointer="move">
