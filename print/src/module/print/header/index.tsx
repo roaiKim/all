@@ -16,7 +16,12 @@ import { headerHeight } from "@src/configure";
 import IconButton from "./icon-button";
 import "./index.less";
 
-export default function Header() {
+interface HeaderProps {
+    onDragEnd: (event, config) => void;
+}
+
+export default function Header(props: HeaderProps) {
+    const { onDragEnd, ...rest } = props;
     return (
         <div className="rk-header" style={{ height: headerHeight }}>
             <div className="rk-copyright">
@@ -24,7 +29,7 @@ export default function Header() {
                 <span className="rk-print-name">ROAIKIM-PRINT</span>
             </div>
             <div className="rk-element">
-                <IconButton text="文本" hoverMask pointer="move">
+                <IconButton text="文本" hoverMask pointer="move" draggable onDragEnd={onDragEnd} {...rest}>
                     <FontSizeOutlined />
                 </IconButton>
                 <IconButton text="图片" hoverMask pointer="move">

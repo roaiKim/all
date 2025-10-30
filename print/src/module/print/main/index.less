@@ -1,4 +1,18 @@
 .print-container {
   position: relative;
   height: 100vh;
+  overflow: hidden;
+}
+
+.print-temporary-template {
+  display: none;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  position: absolute;
+  z-index: 99;
+
+  &.moving {
+    display: block;
+  }
 }

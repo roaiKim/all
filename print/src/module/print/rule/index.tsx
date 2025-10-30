@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect } from "react";
 import { dpiManager } from "../utils/dpiManager";
+import "./index.less";
 
 function createHDCanvas(canvas, w, h) {
     const ratio = devicePixelRatio || 1;
@@ -119,7 +120,7 @@ export default function Rule() {
         // window.addEventListener("resize", drawRuler);
     }, []);
     return (
-        <div>
+        <div className="print-rule-container">
             <canvas id="ruler" height="24"></canvas>
         </div>
     );

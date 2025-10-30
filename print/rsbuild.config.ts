@@ -5,7 +5,7 @@ import { pluginReact } from "@rsbuild/plugin-react";
 export default defineConfig({
     server: {
         port: 10010,
-        base: "/print",
+        // base: "/print",
     },
     html: {
         title: "Home",
