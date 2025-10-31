@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原生JS边角控制器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border: 1px solid #ddd;
+            overflow: hidden;
+        }
+
+        .target {
+            position: absolute;
+            width: 200px;
+            height: 150px;
+            background-color: #40a9ff;
+            left: 100px;
+            top: 100px;
+            cursor: move;
+            user-select: none;
+            transition: all 0.05s ease;
+        }
+
+        .target.selected {
+            box-shadow: 0 0 0 2px #1890ff;
+        }
+
+        /* 控制器样式 */
+        .control-point {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: #1890ff;
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translate(-50%, -50%);
+        }
+
+        .control-point:hover {
+            background-color: #096dd9;
+        }
+
+        .control-point.tl { top: 0; left: 0; cursor: nwse-resize; }
+        .control-point.tr { top: 0; right: 0; cursor: nesw-resize; }
+        .control-point.bl { bottom: 0; left: 0; cursor: nesw-resize; }
+        .control-point.br { bottom: 0; right: 0; cursor: nwse-resize; }
+        .control-point.mt { top: 0; left: 50%; cursor: ns-resize; }
+        .control-point.mb { bottom: 0; left: 50%; cursor: ns-resize; }
+        .control-point.ml { top: 50%; left: 0; cursor: ew-resize; }
+        .control-point.mr { top: 50%; right: 0; cursor: ew-resize; }
+
+        /* 旋转控制器 */
+        .rotate-control {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff4d4f;
+            border: 2px solid white;
+            border-radius: 50%;
+            cursor: grab;
+            z-index: 15;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transform: translate(-50%, -50%);
+        }
+
+        .rotate-control:hover {
+            background-color: #cf1322;
+        }
+
+        .rotate-control:active {
+            cursor: grabbing;
+        }
+
+        /* 辅助线 */
+        .guide-line {
+            position: absolute;
+            background-color: rgba(255, 102, 102, 0.3);
+            z-index: 5;
+        }
+
+        .guide-line.horizontal {
+            width: 100%;
+            height: 1px;
+        }
+
+        .guide-line.vertical {
+            width: 1px;
+            height: 100%;
+        }
+
+        /* 信息面板 */
+        .info-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-panel h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .info-panel p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 工具栏 */
+        .toolbar {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .toolbar button {
+            padding: 6px 12px;
+            margin-right: 10px;
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .toolbar button:hover {
+            background-color: #096dd9;
+        }
+
+        .toolbar button.active {
+            background-color: #096dd9;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.3);
+        }
+
+        .status-bar {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <button id="addRect">添加矩形</button>
+        <button id="addCircle">添加圆形</button>
+        <button id="delete" disabled>删除选中</button>
+        <button id="lock" disabled>锁定/解锁</button>
+        <span class="status-bar">提示：点击对象选中，拖拽控制器调整大小，拖拽旋转按钮旋转</span>
+    </div>
+
+    <div class="container" id="canvas">
+        <!-- 目标元素将在这里动态创建 -->
+    </div>
+
+    <div class="info-panel">
+        <h3>对象信息</h3>
+        <p>位置: <span id="posInfo">0, 0</span></p>
+        <p>尺寸: <span id="sizeInfo">0 × 0</span></p>
+        <p>角度: <span id="angleInfo">0°</span></p>
+        <p>状态: <span id="statusInfo">未选中</span></p>
+    </div>
+
+    <script>
+        class ResizableElement {
+            constructor(options = {}) {
+                this.element = document.createElement('div');
+                this.element.className = 'target';
+                this.element.style.width = options.width || '200px';
+                this.element.style.height = options.height || '150px';
+                this.element.style.left = options.left || '100px';
+                this.element.style.top = options.top || '100px';
+                this.element.style.backgroundColor = options.color || '#40a9ff';
+                
+                if (options.type === 'circle') {
+                    this.element.style.borderRadius = '50%';
+                }
+
+                this.isDragging = false;
+                this.isResizing = false;
+                this.isRotating = false;
+                this.isLocked = false;
+                this.currentControl = null;
+                this.rotation = 0;
+                this.startTransform = {};
+
+                this.initControls();
+                this.bindEvents();
+
+                return this.element;
+            }
+
+            initControls() {
+                // 创建8个边角控制器
+                const controlPoints = ['tl', 'tr', 'bl', 'br', 'mt', 'mb', 'ml', 'mr'];
+                this.controls = {};
+
+                controlPoints.forEach(position => {
+                    const control = document.createElement('div');
+                    control.className = `control-point ${position}`;
+                    this.element.appendChild(control);
+                    this.controls[position] = control;
+                });
+
+                // 创建旋转控制器
+                this.rotateControl = document.createElement('div');
+                this.rotateControl.className = 'rotate-control';
+                this.rotateControl.style.top = '-30px';
+                this.rotateControl.style.left = '50%';
+                this.element.appendChild(this.rotateControl);
+            }
+
+            bindEvents() {
+                // 拖拽移动
+                this.element.addEventListener('mousedown', (e) => {
+                    if (this.isLocked) return;
+                    
+                    // 如果点击的是控制器，不触发移动
+                    if (e.target.classList.contains('control-point') || 
+                        e.target === this.rotateControl) {
+                        return;
+                    }
+
+                    this.startDrag(e);
+                });
+
+                // 调整大小
+                Object.values(this.controls).forEach(control => {
+                    control.addEventListener('mousedown', (e) => {
+                        if (this.isLocked) return;
+                        this.startResize(e, control.classList[1]);
+                    });
+                });
+
+                // 旋转
+                this.rotateControl.addEventListener('mousedown', (e) => {
+                    if (this.isLocked) return;
+                    this.startRotate(e);
+                });
+
+                // 全局事件监听
+                document.addEventListener('mousemove', (e) => this.onMouseMove(e));
+                document.addEventListener('mouseup', (e) => this.onMouseUp(e));
+                document.addEventListener('keydown', (e) => this.onKeyDown(e));
+                document.addEventListener('keyup', (e) => this.onKeyUp(e));
+            }
+
+            startDrag(e) {
+                this.isDragging = true;
+                this.startX = e.clientX;
+                this.startY = e.clientY;
+                this.startLeft = parseInt(this.element.style.left) || 0;
+                this.startTop = parseInt(this.element.style.top) || 0;
+                
+                this.element.style.cursor = 'grabbing';
+                this.select();
+                
+                // 阻止默认行为
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            startResize(e, controlPosition) {
+                this.isResizing = true;
+                this.currentControl = controlPosition;
+                this.startX = e.clientX;
+                this.startY = e.clientY;
+                
+                // 记录初始状态
+                this.startTransform = {
+                    left: parseInt(this.element.style.left) || 0,
+                    top: parseInt(this.element.style.top) || 0,
+                    width: parseInt(this.element.style.width) || 0,
+                    height: parseInt(this.element.style.height) || 0,
+                    rotation: this.rotation
+                };
+
+                this.select();
+                
+                // 阻止默认行为
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            startRotate(e) {
+                this.isRotating = true;
+                this.startX = e.clientX;
+                this.startY = e.clientY;
+                
+                // 计算初始角度
+                const rect = this.element.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                this.startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+                this.startRotation = this.rotation;
+
+                this.select();
+                
+                // 阻止默认行为
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            onMouseMove(e) {
+                if (this.isDragging) {
+                    this.handleDrag(e);
+                } else if (this.isResizing) {
+                    this.handleResize(e);
+                } else if (this.isRotating) {
+                    this.handleRotate(e);
+                }
+            }
+
+            handleDrag(e) {
+                const deltaX = e.clientX - this.startX;
+                const deltaY = e.clientY - this.startY;
+                
+                const newLeft = this.startLeft + deltaX;
+                const newTop = this.startTop + deltaY;
+                
+                // 边界限制
+                const container = this.element.parentElement;
+                const maxLeft = container.clientWidth - parseInt(this.element.style.width);
+                const maxTop = container.clientHeight - parseInt(this.element.style.height);
+                
+                this.element.style.left = Math.max(0, Math.min(newLeft, maxLeft)) + 'px';
+                this.element.style.top = Math.max(0, Math.min(newTop, maxTop)) + 'px';
+                
+                this.updateInfo();
+            }
+
+            handleResize(e) {
+                const deltaX = e.clientX - this.startX;
+                const deltaY = e.clientY - this.startY;
+                
+                let newWidth = this.startTransform.width;
+                let newHeight = this.startTransform.height;
+                let newLeft = this.startTransform.left;
+                let newTop = this.startTransform.top;
+
+                // 根据控制器位置计算新尺寸
+                switch (this.currentControl) {
+                    case 'tl':
+                        newWidth = Math.max(20, this.startTransform.width - deltaX);
+                        newHeight = Math.max(20, this.startTransform.height - deltaY);
+                        newLeft = this.startTransform.left + deltaX;
+                        newTop = this.startTransform.top + deltaY;
+                        break;
+                    case 'tr':
+                        newWidth = Math.max(20, this.startTransform.width + deltaX);
+                        newHeight = Math.max(20, this.startTransform.height - deltaY);
+                        newTop = this.startTransform.top + deltaY;
+                        break;
+                    case 'bl':
+                        newWidth = Math.max(20, this.startTransform.width - deltaX);
+                        newHeight = Math.max(20, this.startTransform.height + deltaY);
+                        newLeft = this.startTransform.left + deltaX;
+                        break;
+                    case 'br':
+                        newWidth = Math.max(20, this.startTransform.width + deltaX);
+                        newHeight = Math.max(20, this.startTransform.height + deltaY);
+                        break;
+                    case 'mt':
+                        newHeight = Math.max(20, this.startTransform.height - deltaY);
+                        newTop = this.startTransform.top + deltaY;
+                        break;
+                    case 'mb':
+                        newHeight = Math.max(20, this.startTransform.height + deltaY);
+                        break;
+                    case 'ml':
+                        newWidth = Math.max(20, this.startTransform.width - deltaX);
+                        newLeft = this.startTransform.left + deltaX;
+                        break;
+                    case 'mr':
+                        newWidth = Math.max(20, this.startTransform.width + deltaX);
+                        break;
+                }
+
+                // 等比例缩放（Shift键）
+                if (this.shiftKey && (this.currentControl.includes('t') || this.currentControl.includes('b'))) {
+                    const aspectRatio = this.startTransform.width / this.startTransform.height;
+                    if (this.currentControl.includes('l') || this.currentControl.includes('r')) {
+                        newHeight = newWidth / aspectRatio;
+                    } else {
+                        newWidth = newHeight * aspectRatio;
+                    }
+                }
+
+                // 应用新尺寸和位置
+                this.element.style.width = newWidth + 'px';
+                this.element.style.height = newHeight + 'px';
+                this.element.style.left = newLeft + 'px';
+                this.element.style.top = newTop + 'px';
+
+                this.updateInfo();
+            }
+
+            handleRotate(e) {
+                const rect = this.element.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                const currentAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+                const angleDelta = currentAngle - this.startAngle;
+                
+                this.rotation = this.startRotation + fabric.util.radiansToDegrees(angleDelta);
+                this.element.style.transform = `rotate(${this.rotation}deg)`;
+
+                this.updateInfo();
+            }
+
+            onMouseUp(e) {
+                if (this.isDragging) {
+                    this.element.style.cursor = 'move';
+                    this.isDragging = false;
+                } else if (this.isResizing) {
+                    this.isResizing = false;
+                    this.currentControl = null;
+                } else if (this.isRotating) {
+                    this.isRotating = false;
+                }
+            }
+
+            onKeyDown(e) {
+                this.shiftKey = e.shiftKey;
+                
+                // Delete键删除
+                if (e.key === 'Delete' && this.element.classList.contains('selected')) {
+                    this.element.remove();
+                    this.updateSelection();
+                }
+            }
+
+            onKeyUp(e) {
+                this.shiftKey = e.shiftKey;
+            }
+
+            select() {
+                // 取消其他元素的选中状态
+                document.querySelectorAll('.target.selected').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                
+                this.element.classList.add('selected');
+                this.updateSelection();
+                this.updateInfo();
+            }
+
+            updateSelection() {
+                const selected = document.querySelector('.target.selected');
+                const deleteBtn = document.getElementById('delete');
+                const lockBtn = document.getElementById('lock');
+                
+                if (selected) {
+                    deleteBtn.disabled = false;
+                    lockBtn.disabled = false;
+                    lockBtn.textContent = selected.isLocked ? '解锁' : '锁定';
+                } else {
+                    deleteBtn.disabled = true;
+                    lockBtn.disabled = true;
+                }
+            }
+
+            updateInfo() {
+                const posInfo = document.getElementById('posInfo');
+                const sizeInfo = document.getElementById('sizeInfo');
+                const angleInfo = document.getElementById('angleInfo');
+                const statusInfo = document.getElementById('statusInfo');
+
+                if (this.element.classList.contains('selected')) {
+                    const left = parseInt(this.element.style.left) || 0;
+                    const top = parseInt(this.element.style.top) || 0;
+                    const width = parseInt(this.element.style.width) || 0;
+                    const height = parseInt(this.element.style.height) || 0;
+
+                    posInfo.textContent = `${left}, ${top}`;
+                    sizeInfo.textContent = `${width} × ${height}`;
+                    angleInfo.textContent = `${Math.round(this.rotation)}°`;
+                    statusInfo.textContent = this.isLocked ? '已锁定' : '已选中';
+                }
+            }
+
+            toggleLock() {
+                this.isLocked = !this.isLocked;
+                this.element.style.opacity = this.isLocked ? '0.6' : '1';
+                this.updateInfo();
+                this.updateSelection();
+            }
+        }
+
+        // 工具函数
+        const fabric = {
+            util: {
+                radiansToDegrees: function(radians) {
+                    return radians * (180 / Math.PI);
+                },
+                degreesToRadians: function(degrees) {
+                    return degrees * (Math.PI / 180);
+                }
+            }
+        };
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+            let selectedElement = null;
+
+            // 添加矩形
+            document.getElementById('addRect').addEventListener('click', function() {
+                const rect = new ResizableElement({
+                    width: '200px',
+                    height: '150px',
+                    left: Math.random() * 500 + 'px',
+                    top: Math.random() * 400 + 'px',
+                    color: getRandomColor()
+                });
+                canvas.appendChild(rect);
+            });
+
+            // 添加圆形
+            document.getElementById('addCircle').addEventListener('click', function() {
+                const circle = new ResizableElement({
+                    type: 'circle',
+                    width: '150px',
+                    height: '150px',
+                    left: Math.random() * 500 + 'px',
+                    top: Math.random() * 400 + 'px',
+                    color: getRandomColor()
+                });
+                canvas.appendChild(circle);
+            });
+
+            // 删除选中
+            document.getElementById('delete').addEventListener('click', function() {
+                const selected = document.querySelector('.target.selected');
+                if (selected) {
+                    selected.remove();
+                    updateSelectionInfo();
+                }
+            });
+
+            // 锁定/解锁
+            document.getElementById('lock').addEventListener('click', function() {
+                const selected = document.querySelector('.target.selected');
+                if (selected && selected.toggleLock) {
+                    selected.toggleLock();
+                }
+            });
+
+            // 点击空白处取消选中
+            canvas.addEventListener('click', function(e) {
+                if (e.target === canvas) {
+                    document.querySelectorAll('.target.selected').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    updateSelectionInfo();
+                }
+            });
+
+            // 更新选择信息
+            function updateSelectionInfo() {
+                const selected = document.querySelector('.target.selected');
+                const posInfo = document.getElementById('posInfo');
+                const sizeInfo = document.getElementById('sizeInfo');
+                const angleInfo = document.getElementById('angleInfo');
+                const statusInfo = document.getElementById('statusInfo');
+
+                if (!selected) {
+                    posInfo.textContent = '0, 0';
+                    sizeInfo.textContent = '0 × 0';
+                    angleInfo.textContent = '0°';
+                    statusInfo.textContent = '未选中';
+                }
+            }
+
+            // 生成随机颜色
+            function getRandomColor() {
+                const colors = [
+                    '#40a9ff', '#73d13d', '#ff4d4f', '#faad14',
+                    '#722ed1', '#1890ff', '#00b96b', '#f5222d'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            // 初始化添加一个矩形
+            const initialRect = new ResizableElement();
+            canvas.appendChild(initialRect);
+        });
+    </script>
+</body>
+</html>

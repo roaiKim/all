@@ -10,9 +10,9 @@ export function AppRouter() {
         <Routes>
             <Route index element={<Home />} />
             <Route path="print" element={<Print />} />
-            <Route path="ai-print" element={<AIPrint />} />
-            <Route path="ai-print2" element={<PrintTemplateEditor />} />
-            <Route path="ai-print3" element={<DragPrintComponent />} />
+            <Route path="1" element={<AIPrint />} />
+            <Route path="2" element={<PrintTemplateEditor />} />
+            <Route path="3" element={<DragPrintComponent />} />
         </Routes>
     );
 }
