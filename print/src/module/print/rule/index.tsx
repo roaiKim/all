@@ -38,7 +38,7 @@ export default function Rule() {
         function drawRuler() {
             // 清除画布
             // ctx.clearRect(0, 0, canvas.width, canvas.height);
-            console.log("--devicePixelRatio--", devicePixelRatio);
+            // console.log("--devicePixelRatio--", devicePixelRatio);
             // 设置刻度尺参数
             const startX = 0; // 起始位置
             const endX = rulerLength; // 结束位置
