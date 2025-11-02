@@ -13,15 +13,16 @@ export default function PrintBody(props: PrintBodyProps) {
 
     const [movingId, setMovingId] = useState("");
     const onMouseMove = (event) => {
-        //
-        if (movingId) {
-            console.log("--event--", event);
-        }
+        // //
+        // if (movingId) {
+        //     console.log("--event--", event);
+        // }
     };
+    console.log("----------printElement---", printElement);
     return (
         <div className="print-main">
             <div className="print-body">
-                <div ref={ref} className="print-template a4" onMouseMove={onMouseMove} onMouseUp={() => setMovingId("")}>
+                <div ref={ref} className="print-template a4" /* onMouseMove={onMouseMove} onMouseUp={() => setMovingId("")} */>
                     {Object.values(printElement).map((item) => (
                         <TextPrint key={item.id} element={item} setMovingId={setMovingId} />
                     ))}

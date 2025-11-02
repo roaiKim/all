@@ -86,6 +86,7 @@ export default function Assemble() {
     };
 
     const onContainerMoving = (event, config) => {
+        console.log("-onContainerMoving-", event);
         if (!printTemporaryTemplate.moving) return;
         // console.log("-onContainerMoving-", event.pageX, event.pageY);
         setPrintTemporaryTemplate((prev) => ({ ...prev, x: event.pageX, y: event.pageY }));
