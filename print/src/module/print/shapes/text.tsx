@@ -46,16 +46,20 @@ export function TextPrint(props) {
         console.log("delta", deltaX, deltaY);
         // rectRef.current.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
     };
+    const onDrag = (event) => {
+        console.log("onDrag", origin);
+    };
 
     return (
         <div
             ref={rectRef}
             className="print-element"
             style={position}
-            onMouseMove={onMouseMove}
-            onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp}
-            onMouseLeave={onMouseUp}
+            // onMouseMove={onMouseMove}
+            // onMouseDown={onMouseDown}
+            // onMouseUp={onMouseUp}
+            // onMouseLeave={onMouseUp}
+            onDrag={() => {}}
         >
             {content}
         </div>

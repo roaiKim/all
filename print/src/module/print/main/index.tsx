@@ -93,7 +93,7 @@ export default function Assemble() {
     };
 
     return (
-        <div className="print-container" onMouseMove={onContainerMoving} onMouseUp={onMouseUp}>
+        <div className="print-container" /* onMouseMove={onContainerMoving} onMouseUp={onMouseUp} */>
             <Header onDragEnd={onDragEnd} onMouseDown={onMouseDown} onMouseUp={onMouseUp} />
             <Operate />
             <Rule></Rule>
