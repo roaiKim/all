@@ -1,100 +1,67 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
+import { type DragState, initialDragState, ListenerType, WebPrint } from "./print";
+import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
 import Operate from "../operate";
 import PrintBody from "../print-body";
 import Rule from "../rule";
-import { CurtainLocationManager } from "../utils/CurtainLocationManager";
-import { UidManager } from "../utils/UidManager";
 import "./index.less";
 
-const initialPrintTemporaryTemplate = () => ({
-    x: 0,
-    y: 0,
-    type: "",
-    with: 180,
-    height: 24,
-    moving: false,
-});
-
-export interface PrintElement {
+export interface PrintElement extends DragState {
     id: string;
-    type: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
     content: string;
     option?: any;
 }
 
 export default function Assemble() {
-    const [printTemporaryTemplate, setPrintTemporaryTemplate] = useState(initialPrintTemporaryTemplate());
     const printCurtain = useRef<HTMLElement>(null);
     const temporaryTemplateRef = useRef<HTMLDivElement>(null);
+    const printContainer = useRef<HTMLDivElement>(null);
+
     const [printElement, setPrintElement] = useState<Record<string, PrintElement>>({});
+    const [printTemporaryTemplate, setPrintTemporaryTemplate] = useState(initialDragState());
 
-    // const [draging, setDraging] = useState({
-    //     type: "",
-    //     with: 100,
-    //     height: 35,
-    //     moving: false,
-    // });
+    const [printModule, setPrintModule] = useState<WebPrint>();
+    const customDragEvent = useRef<CustomerDragingEvent>(null);
 
-    const onDragEnd = (event, config) => {
-        // console.log("-onDragEnd-", event, config);
-    };
+    useLayoutEffect(() => {
+        const print = new WebPrint(printCurtain.current, temporaryTemplateRef.current);
+        customDragEvent.current = new CustomerDragingEvent(print, printContainer.current);
+        setPrintModule(print);
+    }, []);
 
-    const onMouseDown = (event, config) => {
-        // console.log("-onMouseDown-", event, config);
-        setPrintTemporaryTemplate((prev) => ({ ...prev, x: event.pageX, y: event.pageY, moving: true }));
-    };
+    const actorChange = useCallback((actor) => {
+        setPrintElement(actor);
+    }, []);
 
-    const addPrintElement = (state: { x: number; y: number; width?: number; height?: number }) => {
-        const elements = { ...printElement };
-        const id = UidManager.getUid();
-        elements[id] = {
-            id,
-            type: "",
-            x: 0,
-            y: 0,
-            width: 180,
-            height: 24,
-            content: "文本模板",
-            option: {},
-            ...state,
-        };
-        setPrintElement(elements);
-    };
-
-    const onMouseUp = (event, config) => {
-        // console.log("-onMouseUp-", event, config);
-        if (!printTemporaryTemplate.moving) return;
-        if (printCurtain.current) {
-            const isWrap = CurtainLocationManager.isChildrenInContainer(temporaryTemplateRef.current, printCurtain.current, true);
-            if (isWrap) {
-                // console.log("-elementRect-", true);
-                const position = CurtainLocationManager.getPositionByContainer(temporaryTemplateRef.current, printCurtain.current);
-                console.log("-position-", position);
-                addPrintElement({ ...position });
-                // addPrintElement({});
-            } else {
-                message.error("请拖拽到幕布中");
-            }
+    useEffect(() => {
+        if (printTemporaryTemplate.moving) {
+            customDragEvent.current?.mousemove();
+            customDragEvent.current?.mouseup();
+        } else {
+            customDragEvent.current?.destroy();
         }
-        setPrintTemporaryTemplate(initialPrintTemporaryTemplate());
-    };
+        return () => {
+            customDragEvent.current?.destroy();
+        };
+    }, [printTemporaryTemplate.moving]);
 
-    const onContainerMoving = (event, config) => {
-        console.log("-onContainerMoving-", event);
-        if (!printTemporaryTemplate.moving) return;
-        // console.log("-onContainerMoving-", event.pageX, event.pageY);
-        setPrintTemporaryTemplate((prev) => ({ ...prev, x: event.pageX, y: event.pageY }));
-    };
+    useEffect(() => {
+        if (printModule) {
+            printModule.subscribe(ListenerType.actorChange, (actor) => {
+                actorChange(actor);
+            });
+            printModule.subscribe(ListenerType.dragStateChange, (state) => {
+                setPrintTemporaryTemplate((prev) => ({ ...prev, ...state }));
+            });
+        }
+    }, [printModule]);
 
+    console.log("--state-", printTemporaryTemplate);
     return (
-        <div className="print-container" /* onMouseMove={onContainerMoving} onMouseUp={onMouseUp} */>
-            <Header onDragEnd={onDragEnd} onMouseDown={onMouseDown} onMouseUp={onMouseUp} />
+        <div className="print-container" ref={printContainer}>
+            <Header printModule={printModule} />
             <Operate />
             <Rule></Rule>
             <PrintBody ref={printCurtain} printElement={printElement} />
@@ -102,9 +69,9 @@ export default function Assemble() {
                 ref={temporaryTemplateRef}
                 className={`print-temporary-template ${printTemporaryTemplate.moving ? "moving" : ""}`}
                 style={{
-                    top: printTemporaryTemplate.y - printTemporaryTemplate.height / 2,
-                    left: printTemporaryTemplate.x - printTemporaryTemplate.with / 2,
-                    width: printTemporaryTemplate.with,
+                    top: printTemporaryTemplate.y,
+                    left: printTemporaryTemplate.x,
+                    width: printTemporaryTemplate.width,
                     height: printTemporaryTemplate.height,
                 }}
             ></div>

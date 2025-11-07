@@ -18,7 +18,7 @@ export default function PrintBody(props: PrintBodyProps) {
         //     console.log("--event--", event);
         // }
     };
-    console.log("----------printElement---", printElement);
+    // console.log("----------printElement---", printElement);
     return (
         <div className="print-main">
             <div className="print-body">

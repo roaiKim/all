@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect } from "react";
-import { dpiManager } from "../utils/dpiManager";
+import { dpiManager } from "../utils/dpi-manager";
 import "./index.less";
 
 function createHDCanvas(canvas, w, h) {

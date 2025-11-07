@@ -1,5 +1,5 @@
 import Assemble from "./main";
 
-export default function Print() {
+export default function WebPrint() {
     return <Assemble />;
 }

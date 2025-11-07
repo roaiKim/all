@@ -1,4 +1,4 @@
-export class CurtainLocationManager {
+export class PositionManager {
     /**
      * @description 获取元素的宽
      * @param element HTMLElement

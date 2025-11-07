@@ -1,3 +1,4 @@
+import { useEffect, useLayoutEffect, useRef } from "react";
 import {
     BarcodeOutlined,
     CameraOutlined,
@@ -14,40 +15,57 @@ import {
 } from "@ant-design/icons";
 import { headerHeight } from "@src/configure";
 import IconButton from "./icon-button";
+import { CustomerDragEvent } from "../event/drag-event";
+import type { WebPrint } from "../main/print";
+import { DraggableType } from "../main/static";
 import "./index.less";
 
 interface HeaderProps {
-    onDragEnd: (event, config) => void;
+    printModule: WebPrint;
 }
 
 export default function Header(props: HeaderProps) {
-    const { onDragEnd, ...rest } = props;
+    const { printModule } = props;
+    const dragContainer = useRef(null);
+    const customDragEvent = useRef<CustomerDragEvent>(null);
+
+    useEffect(() => {
+        if (printModule) {
+            customDragEvent.current = new CustomerDragEvent(printModule, dragContainer.current);
+            customDragEvent.current.mousedown();
+            customDragEvent.current.mouseup();
+        }
+        return () => {
+            customDragEvent.current?.destroy();
+        };
+    }, [printModule]);
+
     return (
         <div className="rk-header" style={{ height: headerHeight }}>
             <div className="rk-copyright">
                 <PrinterOutlined style={{ fontSize: 40 }} />
                 <span className="rk-print-name">ROAIKIM-PRINT</span>
             </div>
-            <div className="rk-element">
-                <IconButton text="文本" hoverMask pointer="move" draggable onDragEnd={onDragEnd} {...rest}>
+            <div ref={dragContainer} className="rk-element">
+                <IconButton text="文本" draggableType={DraggableType.TEXT} hoverMask pointer="move">
                     <FontSizeOutlined />
                 </IconButton>
-                <IconButton text="图片" hoverMask pointer="move">
+                <IconButton text="图片" draggableType={DraggableType.IMG} hoverMask pointer="move">
                     <PictureOutlined />
                 </IconButton>
-                <IconButton text="条形码" hoverMask pointer="move">
+                <IconButton text="条形码" draggableType={DraggableType.BRCODE} hoverMask pointer="move">
                     <QrcodeOutlined />
                 </IconButton>
-                <IconButton text="二维码" hoverMask pointer="move">
+                <IconButton text="二维码" draggableType={DraggableType.QRCODE} hoverMask pointer="move">
                     <BarcodeOutlined />
                 </IconButton>
-                <IconButton text="长文" hoverMask pointer="move">
+                <IconButton text="长文" draggableType={DraggableType.TEXTAREA} hoverMask pointer="move">
                     <OneToOneOutlined />
                 </IconButton>
-                <IconButton text="表格" hoverMask pointer="move">
+                <IconButton text="表格" draggableType={DraggableType.TABLE} hoverMask pointer="move">
                     <TableOutlined />
                 </IconButton>
-                <IconButton text="html" hoverMask pointer="move">
+                <IconButton text="html" draggableType={DraggableType.HTML} hoverMask pointer="move">
                     <Html5Outlined />
                 </IconButton>
             </div>
