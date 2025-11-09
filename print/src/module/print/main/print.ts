@@ -30,6 +30,41 @@ export const initialDragState = () => ({
     moving: false,
 });
 
+export interface MovingState {
+    id: string;
+    x: number;
+    y: number;
+    type: DraggableType | null;
+    width: number;
+    height: number;
+    moving: boolean;
+}
+
+export const initialMovingState = (state?: MovingState) => ({
+    id: "",
+    x: 0,
+    y: 0,
+    type: null,
+    width: 180,
+    height: 24,
+    moving: false,
+    ...state,
+});
+
+export interface CurtainState {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export const initialCurtainState = () => ({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+});
+
 export enum ListenerType {
     /**
      * 拖拽结束
@@ -44,33 +79,43 @@ export enum ListenerType {
      */
     actorChange = "actorChange",
     /**
-     *
+     * drag 变化
      */
     dragStateChange = "dragStateChange",
+
+    /**
+     * 移动
+     */
+    movingStateChange = "movingStateChange",
 }
 
 type PrintListener = (...state: any[]) => void;
 
 export class WebPrint {
+    curtain: HTMLElement;
     shapes: Record<string, any>;
     actor: PrintElement[];
     dragState: DragState;
+    movingState: MovingState;
+    curtainState: CurtainState;
     listener: Partial<Record<keyof typeof ListenerType, PrintListener[]>>;
     listenerType: (keyof typeof ListenerType)[] = Object.keys(ListenerType) as Array<keyof typeof ListenerType>;
-    constructor(
-        private curtain: HTMLElement,
-        private slidingBlock: HTMLElement,
-        shapesType?: string[]
-    ) {
+    constructor(curtain: HTMLElement, shapesType?: string[]) {
         this.shapes = {
             base: [],
             auxiliary: [],
             other: [],
             custom: [],
         };
+        this.curtain = curtain;
         this.actor = [];
         this.listener = {};
+        this.movingState = initialMovingState();
         this.initialDragState();
+        this.#initialCurtainState();
+
+        // @ts-ignore
+        window.__web_pring__ = this;
     }
 
     getDragState() {
@@ -89,6 +134,16 @@ export class WebPrint {
         this.dragState = initialDragState();
         this.#triggerListener(ListenerType.dragStateChange, this.dragState);
         return this.dragState;
+    }
+
+    #initialCurtainState() {
+        this.curtainState = PositionManager.getRectState(this.curtain);
+    }
+
+    initialMovingState() {
+        this.movingState = initialMovingState();
+        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        return this.movingState;
     }
 
     dragStart(event, type: DraggableType) {
@@ -115,12 +170,12 @@ export class WebPrint {
         return this.dragState;
     }
 
-    dragEnd(showWholeContain = true) {
+    dragEnd(slidingBlock?: HTMLElement, showWholeContain = true) {
         if (!this.dragState.moving) return;
         if (this.curtain) {
-            const isWrap = PositionManager.isChildrenInContainer(this.slidingBlock, this.curtain, showWholeContain);
+            const isWrap = PositionManager.isChildrenInContainer(slidingBlock, this.curtain, showWholeContain);
             if (isWrap) {
-                const position = PositionManager.getPositionByContainer(this.slidingBlock, this.curtain);
+                const position = PositionManager.getPositionByContainer(slidingBlock, this.curtain);
                 this.addActor({ ...position });
             }
             this.#triggerListener(ListenerType.dragEnd, {
@@ -129,6 +184,45 @@ export class WebPrint {
             });
         }
         return this.initialDragState();
+    }
+
+    moveStart(event, moveState: MovingState) {
+        // const x = event.pageX - moveState.width / 2;
+        // const y = event.pageY - moveState.height / 2;
+        this.#initialCurtainState();
+        this.movingState = {
+            ...moveState,
+            // x: x - this.curtainState.x,
+            // y: y - this.curtainState.y,
+            moving: true,
+        };
+        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        return this.movingState;
+    }
+
+    moving(event: MouseEvent) {
+        if (!this.movingState.moving) return;
+        const x = event.clientX - this.movingState.width / 2;
+        const y = event.clientY - this.movingState.height / 2;
+        this.movingState.x = x - this.curtainState.x;
+        this.movingState.y = y - this.curtainState.y;
+        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        return this.movingState;
+    }
+
+    moveEnd() {
+        if (!this.movingState.moving) return;
+        const id = this.movingState.id;
+        if (id) {
+            const index = this.actor.findIndex((item) => item.id === id);
+            if (index > -1) {
+                this.actor[index] = {
+                    ...this.actor[index],
+                    ...this.movingState,
+                };
+            }
+        }
+        return this.initialMovingState();
     }
 
     addActor(state: { x: number; y: number; width?: number; height?: number }) {

@@ -16,23 +16,28 @@ export class CustomerDragingEvent extends BaseCustomerEvent {
 
     mousemove() {
         if (this.dragTarget) {
-            const moving = throttle(this.moving, 40);
-            this.addEventListener(this.dragTarget, "mousemove", moving);
+            const _draging = throttle(this.draging, 40);
+            this.addEventListener(this.dragTarget, "mousemove", _draging);
+            return _draging;
         }
     }
 
-    mouseup() {
+    mouseup(slidingBlock) {
         if (this.dragTarget) {
-            this.addEventListener(this.dragTarget, "mouseup", this.end);
+            const _end = () => {
+                this.end(slidingBlock);
+            };
+            this.addEventListener(this.dragTarget, "mouseup", _end);
+            return _end;
         }
     }
 
-    moving = (event: MouseEvent) => {
+    draging = (event: MouseEvent) => {
         event.stopPropagation();
         this.printModule.draging(event);
     };
 
-    end = () => {
-        this.printModule.dragEnd();
+    end = (slidingBlock) => {
+        this.printModule.dragEnd(slidingBlock);
     };
 }

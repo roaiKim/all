@@ -1,7 +1,13 @@
 import type { WebPrint } from "../main/print";
 
+interface BaseCustomerEventListeners {
+    target: HTMLElement;
+    name: string;
+    listener: EventListenerOrEventListenerObject;
+}
+
 export class BaseCustomerEvent {
-    listeners: any[];
+    listeners: BaseCustomerEventListeners[];
     printModule: WebPrint;
     constructor(printModule: WebPrint) {
         this.printModule = printModule;
@@ -25,12 +31,20 @@ export class BaseCustomerEvent {
         }
     }
 
-    destroy() {
+    destroy(listener?: EventListenerOrEventListenerObject) {
+        console.log("--------------listener-----------", listener);
         if (this.listeners?.length) {
-            this.listeners.forEach((item) => {
-                const { target, name, listener } = item;
-                this.removeEventListener(target, name, listener);
-            });
+            if (listener) {
+                const currentListener = this.listeners.find((item) => item.listener === listener);
+                if (currentListener) {
+                    this.removeEventListener(currentListener.target, currentListener.name, listener);
+                }
+            } else {
+                this.listeners.forEach((item) => {
+                    const { target, name, listener } = item;
+                    this.removeEventListener(target, name, listener);
+                });
+            }
         }
     }
 }

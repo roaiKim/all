@@ -1,14 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { type PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
 import type { PrintElement } from "../main";
+import { ListenerType, type MovingState, type WebPrint } from "../main/print";
 import "./index.less";
 
 interface ControllerProps {
-    setMovingId: (id: string) => void;
     element: PrintElement;
+    printModule: WebPrint;
+    movingState: MovingState;
 }
 
-export function Controller(props: ControllerProps) {
-    const { element, setMovingId } = props;
+export function Controller(props: PropsWithChildren<ControllerProps>) {
+    const { element, children, printModule, movingState } = props;
     const { x, y, width, height, content, id } = element || {};
     const [moving, setMoving] = useState(false);
 
@@ -17,53 +19,25 @@ export function Controller(props: ControllerProps) {
     const [position, setPosition] = useState(() => ({ left: x, top: y, width, height }));
     const [origin, setOrigin] = useState([0, 0]);
 
+    // const movingStateChange = useCallback(
+    //     (state) => {
+    //         console.log("--moving--", state);
+    //     },
+    //     [id]
+    // );
+
     useEffect(() => {
-        setPosition({ left: x, top: y, width, height });
-    }, [x, y, width, height]);
-
-    const onMouseDown = (event) => {
-        // setMovingId(id);
-        setMoving(true);
-        if (origin[0] || origin[1]) {
-            return;
+        if (id) {
+            if (movingState.id === id) {
+                const { x, y, width, height } = movingState;
+                setPosition(() => ({ left: x, top: y, width, height }));
+            }
         }
-        setOrigin([event.pageX, event.pageY]);
-    };
-
-    const onMouseUp = (event) => {
-        // setMovingId("");
-        setMoving(false);
-
-        // setOrigin([event.pageX, event.pageY]);
-    };
-
-    const onMouseMove = (event) => {
-        if (!moving) {
-            return;
-        }
-        console.log("onMouseMove", origin);
-        const deltaX = event.pageX - origin[0];
-        const deltaY = event.pageY - origin[1];
-        // 用transform更新位置（性能优于top/left）
-        console.log("delta", deltaX, deltaY);
-        // rectRef.current.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-    };
-    const onDrag = (event) => {
-        console.log("onDrag", origin);
-    };
+    }, [movingState, id]);
 
     return (
-        <div
-            ref={rectRef}
-            className="print-element-container"
-            style={position}
-            // onMouseMove={onMouseMove}
-            // onMouseDown={onMouseDown}
-            // onMouseUp={onMouseUp}
-            // onMouseLeave={onMouseUp}
-            // onDrag={() => {}}
-        >
-            {content}
+        <div ref={rectRef} className="print-element-container" style={position} data-draggable-id={id}>
+            {children}
         </div>
     );
 }

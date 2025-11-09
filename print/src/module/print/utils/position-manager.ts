@@ -98,6 +98,24 @@ export class PositionManager {
         }
     }
 
+    static getRectState(element: HTMLElement) {
+        if (element) {
+            const { width, height, x, y } = element.getBoundingClientRect();
+            return {
+                width,
+                height,
+                x: x + window.pageXOffset,
+                y: y + window.pageYOffset,
+            };
+        }
+        return {
+            width: 0,
+            height: 0,
+            x: 0,
+            y: 0,
+        };
+    }
+
     static getPositionByContainer(childrenElement: HTMLElement, containerElement: HTMLElement) {
         if (!childrenElement || !containerElement) return { x: 0, y: 0 };
         const childrenX = this.getPageXByAbsolute(childrenElement);

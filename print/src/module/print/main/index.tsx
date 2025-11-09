@@ -26,7 +26,7 @@ export default function Assemble() {
     const customDragEvent = useRef<CustomerDragingEvent>(null);
 
     useLayoutEffect(() => {
-        const print = new WebPrint(printCurtain.current, temporaryTemplateRef.current);
+        const print = new WebPrint(printCurtain.current);
         customDragEvent.current = new CustomerDragingEvent(print, printContainer.current);
         setPrintModule(print);
     }, []);
@@ -38,7 +38,7 @@ export default function Assemble() {
     useEffect(() => {
         if (printTemporaryTemplate.moving) {
             customDragEvent.current?.mousemove();
-            customDragEvent.current?.mouseup();
+            customDragEvent.current?.mouseup(temporaryTemplateRef.current);
         } else {
             customDragEvent.current?.destroy();
         }
@@ -64,7 +64,7 @@ export default function Assemble() {
             <Header printModule={printModule} />
             <Operate />
             <Rule></Rule>
-            <PrintBody ref={printCurtain} printElement={printElement} />
+            <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
             <div
                 ref={temporaryTemplateRef}
                 className={`print-temporary-template ${printTemporaryTemplate.moving ? "moving" : ""}`}

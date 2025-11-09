@@ -27,16 +27,16 @@ interface HeaderProps {
 export default function Header(props: HeaderProps) {
     const { printModule } = props;
     const dragContainer = useRef(null);
-    const customDragEvent = useRef<CustomerDragEvent>(null);
+    const customerDragEvent = useRef<CustomerDragEvent>(null);
 
     useEffect(() => {
         if (printModule) {
-            customDragEvent.current = new CustomerDragEvent(printModule, dragContainer.current);
-            customDragEvent.current.mousedown();
-            customDragEvent.current.mouseup();
+            customerDragEvent.current = new CustomerDragEvent(printModule, dragContainer.current);
+            customerDragEvent.current.mousedown();
+            customerDragEvent.current.mouseup();
         }
         return () => {
-            customDragEvent.current?.destroy();
+            customerDragEvent.current?.destroy();
         };
     }, [printModule]);
 
