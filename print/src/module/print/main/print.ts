@@ -25,8 +25,8 @@ export const initialDragState = () => ({
     x: 0,
     y: 0,
     type: null,
-    width: 180,
-    height: 24,
+    width: 280,
+    height: 100,
     moving: false,
 });
 
@@ -45,8 +45,8 @@ export const initialMovingState = (state?: MovingState) => ({
     x: 0,
     y: 0,
     type: null,
-    width: 180,
-    height: 24,
+    width: 280,
+    height: 100,
     moving: false,
     ...state,
 });
@@ -97,6 +97,7 @@ export class WebPrint {
     actor: PrintElement[];
     dragState: DragState;
     movingState: MovingState;
+    editState: PrintElement;
     curtainState: CurtainState;
     listener: Partial<Record<keyof typeof ListenerType, PrintListener[]>>;
     listenerType: (keyof typeof ListenerType)[] = Object.keys(ListenerType) as Array<keyof typeof ListenerType>;
@@ -204,8 +205,11 @@ export class WebPrint {
         if (!this.movingState.moving) return;
         const x = event.clientX - this.movingState.width / 2;
         const y = event.clientY - this.movingState.height / 2;
-        this.movingState.x = x - this.curtainState.x;
-        this.movingState.y = y - this.curtainState.y;
+        // 边界问题
+        const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
+        const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
+        this.movingState.x = _x; // x - this.curtainState.x;
+        this.movingState.y = _y; // y - this.curtainState.y;
         this.#triggerListener(ListenerType.movingStateChange, this.movingState);
         return this.movingState;
     }

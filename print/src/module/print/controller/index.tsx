@@ -37,7 +37,7 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
 
     return (
         <div ref={rectRef} className="print-element-container" style={position} data-draggable-id={id}>
-            {children}
+            {children} {position.left} <br /> {position.top}
         </div>
     );
 }
