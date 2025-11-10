@@ -32,7 +32,6 @@ export class BaseCustomerEvent {
     }
 
     destroy(listener?: EventListenerOrEventListenerObject) {
-        console.log("--------------listener-----------", listener);
         if (this.listeners?.length) {
             if (listener) {
                 const currentListener = this.listeners.find((item) => item.listener === listener);

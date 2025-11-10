@@ -1,7 +1,97 @@
-.print-element-container {
+.print-element-control {
   position: absolute;
-  border: 1px solid blue;
+  border: 1px solid #820017;
   cursor: move;
   user-select: none;
   box-sizing: border-box;
+
+  &.moving {
+    .print-control {
+      opacity: 0.3;
+    }
+  }
+
+  .print-control {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+    z-index: 10;
+
+    &.tl {
+      top: 0;
+      left: 0;
+      cursor: nwse-resize;
+      border-top: 3px solid red;
+      border-left: 3px solid red;
+      transform: translate(-15%, -15%);
+    }
+
+    &.tr {
+      top: 0;
+      right: 0;
+      cursor: nesw-resize;
+      border-top: 3px solid red;
+      border-right: 3px solid red;
+      transform: translate(15%, -15%);
+    }
+
+    &.bl {
+      bottom: 0;
+      left: 0;
+      cursor: nesw-resize;
+      border-bottom: 3px solid red;
+      border-left: 3px solid red;
+      transform: translate(-15%, 15%);
+    }
+
+    &.br {
+      bottom: 0;
+      right: 0;
+      cursor: nwse-resize;
+      border-bottom: 3px solid red;
+      border-right: 3px solid red;
+      transform: translate(15%, 15%);
+    }
+
+    &.mt {
+      top: 0;
+      left: 50%;
+      cursor: ns-resize;
+      height: 3px;
+      width: 15px;
+      background-color: red;
+      transform: translate(-50%, -60%);
+    }
+
+    &.mb {
+      bottom: 0;
+      left: 50%;
+      cursor: ns-resize;
+      height: 3px;
+      width: 15px;
+      background-color: red;
+      transform: translate(-50%, 60%);
+    }
+
+    &.ml {
+      top: 50%;
+      left: 0;
+      cursor: ew-resize;
+      height: 15px;
+      width: 3px;
+      background-color: red;
+      transform: translate(-60%, -50%);
+    }
+
+    &.mr {
+      top: 50%;
+      right: 0;
+      cursor: ew-resize;
+      height: 15px;
+      width: 3px;
+      background-color: red;
+      transform: translate(60%, -50%);
+    }
+  }
 }

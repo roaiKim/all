@@ -24,7 +24,7 @@ export default function PrintBody(props: PrintBodyProps) {
     });
 
     const movingStateChange = useCallback((state) => {
-        console.log("===movingState===", state);
+        // console.log("===movingState===", state);
         setMovingState((prev) => ({ ...prev, ...state }));
     }, []);
 
@@ -34,9 +34,6 @@ export default function PrintBody(props: PrintBodyProps) {
             customerMovingEvent.current.mousedown();
             customerMovingEvent.current.mouseup();
             printModule.subscribe(ListenerType.movingStateChange, movingStateChange);
-
-            mouseEvent.current.mousemove = customerMovingEvent.current.mousemove();
-            mouseEvent.current.mouseleave = customerMovingEvent.current.mouseleave();
         }
         return () => {
             customerMovingEvent.current?.destroy();
@@ -46,15 +43,19 @@ export default function PrintBody(props: PrintBodyProps) {
         };
     }, [printModule]);
 
-    // useEffect(() => {
-    //     if (movingState.moving) {
-    //         mouseEvent.current.mousemove = customerMovingEvent.current.mousemove();
-    //         mouseEvent.current.mouseleave = customerMovingEvent.current.mouseleave();
-    //     } else {
-    //         customerMovingEvent.current?.destroy(mouseEvent.current.mousemove);
-    //         customerMovingEvent.current?.destroy(mouseEvent.current.mouseleave);
-    //     }
-    // }, [movingState.moving]);
+    useEffect(() => {
+        if (movingState.moving) {
+            mouseEvent.current.mousemove = customerMovingEvent.current.mousemove();
+            mouseEvent.current.mouseleave = customerMovingEvent.current.mouseleave();
+        } else {
+            if (mouseEvent.current.mousemove) {
+                customerMovingEvent.current?.destroy(mouseEvent.current.mousemove);
+            }
+            if (mouseEvent.current.mouseleave) {
+                customerMovingEvent.current?.destroy(mouseEvent.current.mouseleave);
+            }
+        }
+    }, [movingState.moving]);
     // console.log(customerMovingEvent.current);
     return (
         <div className="print-main">

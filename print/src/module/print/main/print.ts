@@ -92,12 +92,13 @@ export enum ListenerType {
 type PrintListener = (...state: any[]) => void;
 
 export class WebPrint {
+    moveEndTimer: number;
     curtain: HTMLElement;
     shapes: Record<string, any>;
-    actor: PrintElement[];
+    actors: PrintElement[];
     dragState: DragState;
     movingState: MovingState;
-    editState: PrintElement;
+    spotlightActor: PrintElement;
     curtainState: CurtainState;
     listener: Partial<Record<keyof typeof ListenerType, PrintListener[]>>;
     listenerType: (keyof typeof ListenerType)[] = Object.keys(ListenerType) as Array<keyof typeof ListenerType>;
@@ -109,14 +110,14 @@ export class WebPrint {
             custom: [],
         };
         this.curtain = curtain;
-        this.actor = [];
+        this.actors = [];
         this.listener = {};
         this.movingState = initialMovingState();
         this.initialDragState();
         this.#initialCurtainState();
 
         // @ts-ignore
-        window.__web_pring__ = this;
+        window.__WEB_PRINT__ = this;
     }
 
     getDragState() {
@@ -124,7 +125,7 @@ export class WebPrint {
     }
 
     getActor() {
-        return this.actor;
+        return this.actors;
     }
 
     getListener() {
@@ -216,29 +217,47 @@ export class WebPrint {
 
     moveEnd() {
         if (!this.movingState.moving) return;
+        this.movingState.moving = false;
+        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
         const id = this.movingState.id;
         if (id) {
-            const index = this.actor.findIndex((item) => item.id === id);
+            const index = this.actors.findIndex((item) => item.id === id);
             if (index > -1) {
-                this.actor[index] = {
-                    ...this.actor[index],
+                this.actors[index] = {
+                    ...this.actors[index],
                     ...this.movingState,
                 };
             }
         }
-        return this.initialMovingState();
+        // 延迟
+        this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
+    }
+
+    captureSpotlight(id: string) {
+        if (id) {
+            const spotlightActor = this.actors.find((item) => item.id === id);
+            if (spotlightActor) {
+                this.spotlightActor = spotlightActor;
+            }
+        }
+    }
+
+    removeSpotlight() {
+        if (this.spotlightActor) {
+            this.spotlightActor = null;
+        }
     }
 
     addActor(state: { x: number; y: number; width?: number; height?: number }) {
         const id = UidManager.getUid();
-        const actor = {
+        const actors = {
             ...this.dragState,
             id,
             content: this.dragState.type,
             ...state,
         };
-        this.actor.push(actor);
-        this.#triggerListener(ListenerType.addActor, actor);
+        this.actors.push(actors);
+        this.#triggerListener(ListenerType.addActor, actors);
         this.#triggerListener(ListenerType.actorChange, this.getActor());
     }
 

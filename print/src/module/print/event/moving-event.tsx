@@ -41,12 +41,11 @@ export class CustomerMovingEvent extends BaseCustomerEvent {
 
     start = (event: MouseEvent) => {
         event.stopPropagation();
-        console.log("-----");
         const target: any = event.target;
         if (target) {
             if (target.dataset?.draggableId) {
                 const id = target.dataset?.draggableId;
-                const state = this.printModule.actor.find((item) => item.id === id);
+                const state = this.printModule.actors.find((item) => item.id === id);
                 if (state) {
                     this.printModule.moveStart(event, state);
                 }
