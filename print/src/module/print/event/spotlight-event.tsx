@@ -1,13 +1,15 @@
 import { BaseCustomerEvent } from "./base-event";
+import type { PrintElement } from "../main";
 import type { WebPrint } from "../main/print";
 import { throttle } from "../utils/throttle";
 
 export class CustomerSpotlightEvent extends BaseCustomerEvent {
     // curtain: HTMLElement;
-    actor: HTMLElement;
-    constructor(printModule: WebPrint, actor: HTMLElement) {
+    stage: HTMLElement;
+    actor: PrintElement;
+    constructor(printModule: WebPrint, stage: HTMLElement, actor: PrintElement) {
         super(printModule);
-        // this.curtain = printModule.curtain;
+        this.stage = stage;
         this.actor = actor;
         this.initial();
     }
@@ -17,49 +19,79 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
     }
 
     initial() {
-        if (this.actor) {
-            this.addEventListener(this.actor, "click", this.start);
+        if (this.stage) {
+            this.addEventListener(this.stage, "click", this.toSpotlight);
         }
     }
 
-    mousedown() {
-        if (this.actor) {
-            this.addEventListener(this.actor, "mousedown", this.start);
-        }
-    }
-
-    mousemove() {
-        if (this.actor) {
-            const _moving = throttle(this.moving, 40);
-            this.addEventListener(this.actor, "mousemove", _moving);
-            return _moving;
-        }
-    }
-
-    mouseleave() {
-        if (this.actor) {
-            this.addEventListener(this.actor, "mouseleave", this.end);
-        }
-    }
-
-    mouseup() {
-        if (this.actor) {
-            this.addEventListener(this.actor, "mouseup", this.end);
-        }
-    }
-
-    start = (event: MouseEvent) => {
+    // 初始化点击事件 用于选中当前元素
+    toSpotlight = (event: MouseEvent) => {
         event.stopPropagation();
         event.preventDefault();
         const target: any = event.target;
         if (target) {
             if (target.dataset?.draggableId) {
                 const id = target.dataset?.draggableId;
-                console.log("--id---", id);
                 this.printModule.captureSpotlight(id);
+                // 新增点击其他区域 取消选中
+                this.registerLeaveSpotlight();
+                this.registerResize();
             }
         }
     };
+
+    // 取消选中 事件
+    registerLeaveSpotlight() {
+        this.addEventListener(document.body, "click", this.leaveSpotlight);
+    }
+
+    // 移除事件
+    leaveSpotlight = (event: MouseEvent) => {
+        console.log("---de-");
+        event.stopPropagation();
+        this.printModule.removeSpotlight();
+        // this.removeEventListener(document.body, "click", this.leaveSpotlight);
+        // this.destroy();
+        // setTimeout(this.initial.bind(this), 50);
+    };
+
+    registerResize() {
+        if (this.stage) {
+            this.addEventListener(this.stage, "mousedown", this.resize);
+        }
+    }
+
+    resize(event: MouseEvent) {
+        console.log("==rw==");
+        event.stopPropagation();
+        const target: any = event.target;
+        if (target) {
+            if (target.dataset?.fluctuateDirection) {
+                const direction = target.dataset.fluctuateDirection;
+                console.log("==fluctuateDirection==", direction);
+            }
+        }
+    }
+
+    mousemove() {
+        if (this.stage) {
+            const _moving = throttle(this.moving, 40);
+            this.addEventListener(this.stage, "mousemove", _moving);
+            return _moving;
+        }
+    }
+
+    mouseleave() {
+        if (this.stage) {
+            this.addEventListener(this.stage, "mouseleave", this.end);
+        }
+    }
+
+    mouseup() {
+        if (this.stage) {
+            this.addEventListener(this.stage, "mouseup", this.end);
+        }
+    }
 
     moving = (event: MouseEvent) => {
         event.stopPropagation();

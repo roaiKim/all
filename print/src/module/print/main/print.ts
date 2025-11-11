@@ -87,6 +87,10 @@ export enum ListenerType {
      * 移动
      */
     movingStateChange = "movingStateChange",
+    /**
+     *
+     */
+    spotlightChange = "spotlightChange",
 }
 
 type PrintListener = (...state: any[]) => void;
@@ -238,6 +242,7 @@ export class WebPrint {
             const spotlightActor = this.actors.find((item) => item.id === id);
             if (spotlightActor) {
                 this.spotlightActor = spotlightActor;
+                this.#triggerListener(ListenerType.spotlightChange, this.spotlightActor);
             }
         }
     }
@@ -245,6 +250,7 @@ export class WebPrint {
     removeSpotlight() {
         if (this.spotlightActor) {
             this.spotlightActor = null;
+            this.#triggerListener(ListenerType.spotlightChange, this.spotlightActor);
         }
     }
 

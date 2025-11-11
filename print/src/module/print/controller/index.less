@@ -11,12 +11,19 @@
     }
   }
 
+  &.spotlighting {
+    .print-control {
+      display: block;
+    }
+  }
+
   .print-control {
     position: absolute;
     width: 10px;
     height: 10px;
     background-color: transparent;
     z-index: 10;
+    display: none;
 
     &.tl {
       top: 0;

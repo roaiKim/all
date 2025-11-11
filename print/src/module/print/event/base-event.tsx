@@ -18,10 +18,18 @@ export class BaseCustomerEvent {
         return this.printModule;
     }
 
-    addEventListener(target: HTMLElement, name, listener: EventListenerOrEventListenerObject) {
+    addEventListener(target: HTMLElement, name, listener: EventListenerOrEventListenerObject, repetition = false) {
         if (target && name && listener) {
-            target.addEventListener(name, listener);
-            this.listeners.push({ target, name, listener });
+            if (repetition) {
+                target.addEventListener(name, listener);
+                this.listeners.push({ target, name, listener });
+            } else {
+                const hasRepetition = this.listeners.find((item) => item.target === target && item.name === name && item.listener === listener);
+                if (!hasRepetition) {
+                    target.addEventListener(name, listener);
+                    this.listeners.push({ target, name, listener });
+                }
+            }
         }
     }
 
