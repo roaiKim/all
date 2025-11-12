@@ -32,7 +32,6 @@ export default function PrintBody(props: PrintBodyProps) {
     }, []);
 
     const spotlightChange = useCallback((state) => {
-        console.log("===spotlightChange===", state);
         if (state) {
             setSpotlightState((prev) => ({ ...prev, ...state }));
         } else {
@@ -43,6 +42,7 @@ export default function PrintBody(props: PrintBodyProps) {
     useEffect(() => {
         if (printModule) {
             customerMovingEvent.current = new CustomerMovingEvent(printModule);
+            // 监听
             customerMovingEvent.current.mousedown();
             printModule.subscribe(ListenerType.movingStateChange, movingStateChange);
             printModule.subscribe(ListenerType.spotlightChange, spotlightChange);

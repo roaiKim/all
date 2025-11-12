@@ -50,15 +50,16 @@ export default function Assemble() {
     useEffect(() => {
         if (printModule) {
             printModule.subscribe(ListenerType.actorChange, (actor) => {
+                console.log("--actor-正在改动-", actor);
                 actorChange(actor);
             });
             printModule.subscribe(ListenerType.dragStateChange, (state) => {
+                console.log("--printTemporaryTemplate-正在拖动-", state);
                 setPrintTemporaryTemplate((prev) => ({ ...prev, ...state }));
             });
         }
     }, [printModule]);
 
-    console.log("--state-", printTemporaryTemplate);
     return (
         <div className="print-container" ref={printContainer}>
             <Header printModule={printModule} />

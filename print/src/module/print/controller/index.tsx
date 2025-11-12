@@ -23,8 +23,8 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
     useEffect(() => {
         if (id) {
             if (movingState.id === id) {
-                const { x, y, width, height, moving } = movingState;
-                console.log("===", moving);
+                const { x, y, width, height, moving, type } = movingState;
+                console.log(`当前${type}元素(${id})正在移动`, moving);
                 setPosition(() => ({ left: x, top: y, width, height, moving }));
             }
         }

@@ -23,11 +23,13 @@ export class BaseCustomerEvent {
             if (repetition) {
                 target.addEventListener(name, listener);
                 this.listeners.push({ target, name, listener });
+                console.log(`${target}-${name.className} 事件已注册`);
             } else {
                 const hasRepetition = this.listeners.find((item) => item.target === target && item.name === name && item.listener === listener);
                 if (!hasRepetition) {
                     target.addEventListener(name, listener);
                     this.listeners.push({ target, name, listener });
+                    console.log(`${target.className}-${name} 事件已注册`);
                 }
             }
         }
@@ -36,6 +38,7 @@ export class BaseCustomerEvent {
     removeEventListener(target: HTMLElement, name, listener: EventListenerOrEventListenerObject) {
         if (target && name && listener) {
             target.removeEventListener(name, listener);
+            console.log(`${target.className}-${name} 事件已移除`);
         }
     }
 

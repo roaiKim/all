@@ -20,22 +20,24 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
 
     initial() {
         if (this.stage) {
-            this.addEventListener(this.stage, "click", this.toSpotlight);
+            // this.addEventListener(this.stage, "click", this.toSpotlight);
         }
     }
 
     // 初始化点击事件 用于选中当前元素
     toSpotlight = (event: MouseEvent) => {
-        event.stopPropagation();
-        event.preventDefault();
-        const target: any = event.target;
-        if (target) {
-            if (target.dataset?.draggableId) {
-                const id = target.dataset?.draggableId;
-                this.printModule.captureSpotlight(id);
-                // 新增点击其他区域 取消选中
-                this.registerLeaveSpotlight();
-                this.registerResize();
+        if (!this.isSpotlighting()) {
+            event.stopPropagation();
+            event.preventDefault();
+            const target: any = event.target;
+            if (target) {
+                if (target.dataset?.draggableId) {
+                    const id = target.dataset?.draggableId;
+                    this.printModule.captureSpotlight(id);
+                    // 新增点击其他区域 取消选中
+                    this.registerLeaveSpotlight();
+                    this.registerResize();
+                }
             }
         }
     };
@@ -47,7 +49,6 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
 
     // 移除事件
     leaveSpotlight = (event: MouseEvent) => {
-        console.log("---de-");
         event.stopPropagation();
         this.printModule.removeSpotlight();
         // this.removeEventListener(document.body, "click", this.leaveSpotlight);
@@ -62,7 +63,6 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
     }
 
     resize(event: MouseEvent) {
-        console.log("==rw==");
         event.stopPropagation();
         const target: any = event.target;
         if (target) {
@@ -71,6 +71,10 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
                 console.log("==fluctuateDirection==", direction);
             }
         }
+    }
+
+    isSpotlighting() {
+        return this.printModule.spotlightActor?.id === this.actor.id;
     }
 
     mousemove() {
