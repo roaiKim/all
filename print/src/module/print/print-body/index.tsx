@@ -32,6 +32,7 @@ export default function PrintBody(props: PrintBodyProps) {
     }, []);
 
     const spotlightChange = useCallback((state) => {
+        console.log("--spotlight-正在改动-", state);
         if (state) {
             setSpotlightState((prev) => ({ ...prev, ...state }));
         } else {
@@ -48,7 +49,7 @@ export default function PrintBody(props: PrintBodyProps) {
             printModule.subscribe(ListenerType.spotlightChange, spotlightChange);
         }
         return () => {
-            customerMovingEvent.current?.destroy();
+            customerMovingEvent.current?.destroyAll();
             if (printModule) {
                 printModule.unsubscribe(ListenerType.movingStateChange, movingStateChange);
                 printModule.unsubscribe(ListenerType.spotlightChange, spotlightChange);
@@ -63,13 +64,13 @@ export default function PrintBody(props: PrintBodyProps) {
             mouseEvent.current.mouseleave = customerMovingEvent.current.mouseleave();
         } else {
             if (mouseEvent.current.mousemove) {
-                customerMovingEvent.current?.destroy(mouseEvent.current.mousemove);
+                customerMovingEvent.current?.destroyByState(mouseEvent.current.mousemove);
             }
             if (mouseEvent.current.mouseleave) {
-                customerMovingEvent.current?.destroy(mouseEvent.current.mouseleave);
+                customerMovingEvent.current?.destroyByState(mouseEvent.current.mouseleave);
             }
             if (mouseEvent.current.mouseup) {
-                customerMovingEvent.current?.destroy(mouseEvent.current.mouseup);
+                customerMovingEvent.current?.destroyByState(mouseEvent.current.mouseup);
             }
         }
     }, [movingState.moving]);

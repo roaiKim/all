@@ -22,20 +22,19 @@ export class CustomerMovingEvent extends BaseCustomerEvent {
     mousemove() {
         if (this.curtain) {
             const _moving = throttle(this.moving, 40);
-            this.addEventListener(this.curtain, "mousemove", _moving);
-            return _moving;
+            return this.addEventListener(this.curtain, "mousemove", _moving);
         }
     }
 
     mouseleave() {
         if (this.curtain) {
-            this.addEventListener(this.curtain, "mouseleave", this.end);
+            return this.addEventListener(this.curtain, "mouseleave", this.end);
         }
     }
 
     mouseup() {
         if (this.curtain) {
-            this.addEventListener(this.curtain, "mouseup", this.end);
+            return this.addEventListener(this.curtain, "mouseup", this.end);
         }
     }
 

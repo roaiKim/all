@@ -1,4 +1,4 @@
-import { BaseCustomerEvent } from "./base-event";
+import { BaseCustomerEvent, type ListenerConfig } from "./base-event";
 import type { PrintElement } from "../main";
 import type { WebPrint } from "../main/print";
 import { throttle } from "../utils/throttle";
@@ -7,11 +7,12 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
     // curtain: HTMLElement;
     stage: HTMLElement;
     actor: PrintElement;
+    initialListener: ListenerConfig;
     constructor(printModule: WebPrint, stage: HTMLElement, actor: PrintElement) {
         super(printModule);
         this.stage = stage;
         this.actor = actor;
-        this.initial();
+        this.initialListener = this.initial();
     }
 
     getPrint() {
@@ -20,7 +21,7 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
 
     initial() {
         if (this.stage) {
-            // this.addEventListener(this.stage, "click", this.toSpotlight);
+            return this.addEventListener(this.stage, "click", this.toSpotlight);
         }
     }
 
@@ -36,7 +37,7 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
                     this.printModule.captureSpotlight(id);
                     // 新增点击其他区域 取消选中
                     this.registerLeaveSpotlight();
-                    this.registerResize();
+                    // this.registerResize();
                 }
             }
         }
@@ -49,12 +50,23 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
 
     // 移除事件
     leaveSpotlight = (event: MouseEvent) => {
-        event.stopPropagation();
-        this.printModule.removeSpotlight();
-        // this.removeEventListener(document.body, "click", this.leaveSpotlight);
-        // this.destroy();
-        // setTimeout(this.initial.bind(this), 50);
+        console.log("---leaveSpotlight--");
+        if (!this.isCurrentControllElement(event)) {
+            event.stopPropagation();
+            this.printModule.removeSpotlight();
+            this.destroyExclude(this.initialListener);
+        }
     };
+
+    isCurrentControllElement(event: MouseEvent) {
+        const target: any = event.target;
+        if (target) {
+            if (target.dataset?.draggableId) {
+                return this.printModule.spotlightActor?.id === target.dataset?.draggableId;
+            }
+        }
+        return false;
+    }
 
     registerResize() {
         if (this.stage) {

@@ -40,10 +40,10 @@ export default function Assemble() {
             customDragEvent.current?.mousemove();
             customDragEvent.current?.mouseup(temporaryTemplateRef.current);
         } else {
-            customDragEvent.current?.destroy();
+            customDragEvent.current?.destroyAll();
         }
         return () => {
-            customDragEvent.current?.destroy();
+            customDragEvent.current?.destroyAll();
         };
     }, [printTemporaryTemplate.moving]);
 

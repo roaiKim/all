@@ -36,7 +36,7 @@ export default function Header(props: HeaderProps) {
             customerDragEvent.current.mousedown();
         }
         return () => {
-            customerDragEvent.current?.destroy();
+            customerDragEvent.current?.destroyAll();
         };
     }, [printModule]);
 
