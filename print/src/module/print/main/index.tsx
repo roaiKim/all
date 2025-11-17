@@ -62,7 +62,7 @@ export default function Assemble() {
 
     return (
         <div className="print-container" ref={printContainer}>
-            <Header printModule={printModule} />
+            <Header printModule={printModule} printTemporaryTemplate={printTemporaryTemplate} />
             <Operate />
             <Rule></Rule>
             <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />

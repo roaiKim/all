@@ -42,6 +42,10 @@ export class BaseCustomerEvent {
         }
     }
 
+    isRegistered(listener: EventListenerOrEventListenerObject) {
+        return this.listeners.find((item) => item.listener === listener);
+    }
+
     destroy(listener?: EventListenerOrEventListenerObject) {
         if (this.listeners?.length) {
             if (listener) {

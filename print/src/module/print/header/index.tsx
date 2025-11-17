@@ -16,16 +16,17 @@ import {
 import { headerHeight } from "@src/configure";
 import IconButton from "./icon-button";
 import { CustomerDragEvent } from "../event/drag-event";
-import type { WebPrint } from "../main/print";
+import type { DragState, WebPrint } from "../main/print";
 import { DraggableType } from "../main/static";
 import "./index.less";
 
 interface HeaderProps {
     printModule: WebPrint;
+    printTemporaryTemplate: DragState;
 }
 
 export default function Header(props: HeaderProps) {
-    const { printModule } = props;
+    const { printModule, printTemporaryTemplate } = props;
     const dragContainer = useRef(null);
     const customerDragEvent = useRef<CustomerDragEvent>(null);
 
@@ -33,12 +34,16 @@ export default function Header(props: HeaderProps) {
         if (printModule) {
             customerDragEvent.current = new CustomerDragEvent(printModule, dragContainer.current);
             customerDragEvent.current.mousedown();
-            customerDragEvent.current.mouseup();
         }
         return () => {
             customerDragEvent.current?.destroy();
         };
     }, [printModule]);
+
+    // useEffect(() => {
+    //     if () {}
+    //     customerDragEvent.current.mouseup();
+    // }, [printTemporaryTemplate.moving]);
 
     return (
         <div className="rk-header" style={{ height: headerHeight }}>
