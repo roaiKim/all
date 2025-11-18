@@ -35,13 +35,22 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
                 if (target.dataset?.draggableId) {
                     const id = target.dataset?.draggableId;
                     this.printModule.captureSpotlight(id);
-                    // 新增点击其他区域 取消选中
-                    this.registerLeaveSpotlight();
-                    // this.registerResize();
                 }
             }
         }
     };
+
+    spotlighting() {
+        // 注册点击空白事件
+        this.registerLeaveSpotlight();
+        // 注册 resize
+        this.registerResize();
+    }
+
+    spotlightingOut() {
+        this.destroyExclude(this.initialListener);
+        console.log("---------", this.listeners);
+    }
 
     // 取消选中 事件
     registerLeaveSpotlight() {
@@ -53,8 +62,8 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
         console.log("---leaveSpotlight--");
         if (!this.isCurrentControllElement(event)) {
             event.stopPropagation();
-            this.printModule.removeSpotlight();
-            this.destroyExclude(this.initialListener);
+            this.printModule.removeSpotlight(this.actor.id);
+            this.spotlightingOut();
         }
     };
 
@@ -70,7 +79,7 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
 
     registerResize() {
         if (this.stage) {
-            this.addEventListener(this.stage, "mousedown", this.resize);
+            // this.addEventListener(this.stage, "mousedown", this.resize);
         }
     }
 

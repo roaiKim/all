@@ -17,7 +17,7 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
     const { x, y, width, height, content, id } = element || {};
 
     const printControlRef = useRef(null);
-    const spotlightEventRef = useRef(null);
+    const spotlightEventRef = useRef<CustomerSpotlightEvent>(null);
     const [position, setPosition] = useState(() => ({ left: x, top: y, width, height, moving: false }));
 
     useEffect(() => {
@@ -35,6 +35,25 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
             spotlightEventRef.current = new CustomerSpotlightEvent(printModule, printControlRef.current, element);
         }
     }, [printModule]);
+
+    useEffect(() => {
+        if (spotlightEventRef.current) {
+            if (spotlighting) {
+                spotlightEventRef.current.spotlighting();
+            } else {
+                //
+            }
+        }
+    }, [spotlighting]);
+
+    useEffect(() => {
+        return () => {
+            if (spotlightEventRef.current) {
+                console.log("---destroyAll--");
+                spotlightEventRef.current.destroyAll();
+            }
+        };
+    }, []);
 
     const clasName = classNames({
         "print-element-control": true,

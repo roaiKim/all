@@ -247,8 +247,8 @@ export class WebPrint {
         }
     }
 
-    removeSpotlight() {
-        if (this.spotlightActor) {
+    removeSpotlight(id: string) {
+        if (this.spotlightActor?.id === id) {
             this.spotlightActor = null;
             this.#triggerListener(ListenerType.spotlightChange, this.spotlightActor);
         }
