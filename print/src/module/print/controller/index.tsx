@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { CustomerSpotlightEvent } from "../event/spotlight-event";
+import { CustomerSpotlightEvent, MoveDirection } from "../event/spotlight-event";
 import type { PrintElement } from "../main";
 import { ListenerType, type MovingState, type WebPrint } from "../main/print";
 import "./index.less";
@@ -37,23 +37,13 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
     }, [printModule]);
 
     useEffect(() => {
-        if (spotlightEventRef.current) {
-            if (spotlighting) {
-                spotlightEventRef.current.spotlighting();
-            } else {
-                //
-            }
+        if (spotlighting) {
+            spotlightEventRef.current.registerResize();
+        } else {
+            // removeResize
+            // spotlightEventRef.current?.removeResize();
         }
     }, [spotlighting]);
-
-    useEffect(() => {
-        return () => {
-            if (spotlightEventRef.current) {
-                console.log("---destroyAll--");
-                spotlightEventRef.current.destroyAll();
-            }
-        };
-    }, []);
 
     const clasName = classNames({
         "print-element-control": true,
@@ -64,14 +54,14 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
     return (
         <div ref={printControlRef} className={`${clasName}`} style={position} data-draggable-id={id}>
             {children} {position.left} <br /> {position.top}
-            <div className="print-control tl" data-fluctuate-direction="tl"></div>
-            <div className="print-control tr" data-fluctuate-direction="tr"></div>
-            <div className="print-control bl" data-fluctuate-direction="bl"></div>
-            <div className="print-control br" data-fluctuate-direction="br"></div>
-            <div className="print-control mt" data-fluctuate-direction="mt"></div>
-            <div className="print-control mb" data-fluctuate-direction="mb"></div>
-            <div className="print-control ml" data-fluctuate-direction="ml"></div>
-            <div className="print-control mr" data-fluctuate-direction="mr"></div>
+            <div className="print-control tl" data-fluctuate-direction={MoveDirection.TL}></div>
+            <div className="print-control tr" data-fluctuate-direction={MoveDirection.TR}></div>
+            <div className="print-control bl" data-fluctuate-direction={MoveDirection.BL}></div>
+            <div className="print-control br" data-fluctuate-direction={MoveDirection.BR}></div>
+            <div className="print-control mt" data-fluctuate-direction={MoveDirection.MT}></div>
+            <div className="print-control mb" data-fluctuate-direction={MoveDirection.MB}></div>
+            <div className="print-control ml" data-fluctuate-direction={MoveDirection.ML}></div>
+            <div className="print-control mr" data-fluctuate-direction={MoveDirection.MR}></div>
         </div>
     );
 }

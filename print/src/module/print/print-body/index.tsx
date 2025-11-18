@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "antd";
 import { Controller } from "../controller";
+import { CustomerBodyEvent } from "../event/body-event";
 import { CustomerMovingEvent } from "../event/moving-event";
 import type { PrintElement } from "../main";
-import { initialMovingState, ListenerType, type WebPrint } from "../main/print";
+import { initialMovingState, ListenerType, type MovingState, type WebPrint } from "../main/print";
 import { TextPrint } from "../shapes/text";
 import "./index.less";
 
@@ -17,8 +18,10 @@ export default function PrintBody(props: PrintBodyProps) {
     const { ref, printElement, printModule } = props;
 
     const [movingState, setMovingState] = useState(initialMovingState);
-    const [spotlightState, setSpotlightState] = useState(initialMovingState);
+    const [spotlightState, setSpotlightState] = useState<MovingState>();
+    const printBodyRef = useRef<HTMLDivElement>(null);
     const customerMovingEvent = useRef<CustomerMovingEvent>(null);
+    const customerBodyEvent = useRef<CustomerBodyEvent>(null);
 
     const mouseEvent = useRef({
         mousemove: null,
@@ -34,7 +37,7 @@ export default function PrintBody(props: PrintBodyProps) {
     const spotlightChange = useCallback((state) => {
         console.log("--spotlight-正在改动-", state);
         if (state) {
-            setSpotlightState((prev) => ({ ...prev, ...state }));
+            setSpotlightState((prev) => ({ ...(prev || {}), ...state }));
         } else {
             setSpotlightState(null);
         }
@@ -43,6 +46,7 @@ export default function PrintBody(props: PrintBodyProps) {
     useEffect(() => {
         if (printModule) {
             customerMovingEvent.current = new CustomerMovingEvent(printModule);
+            customerBodyEvent.current = new CustomerBodyEvent(printModule, printBodyRef.current);
             // 监听
             customerMovingEvent.current.mousedown();
             printModule.subscribe(ListenerType.movingStateChange, movingStateChange);
@@ -75,10 +79,25 @@ export default function PrintBody(props: PrintBodyProps) {
         }
     }, [movingState.moving]);
 
+    const hasSpotlight = !!spotlightState;
+
+    useEffect(() => {
+        if (hasSpotlight) {
+            customerBodyEvent.current?.registerLeaveSpotlight();
+        } else {
+            customerBodyEvent.current?.removeLeaveSpotlight();
+        }
+        return () => {
+            if (customerBodyEvent.current) {
+                customerBodyEvent.current.destroyAll();
+            }
+        };
+    }, [hasSpotlight]);
+
     // console.log(customerMovingEvent.current);
     return (
         <div className="print-main">
-            <div className="print-body">
+            <div ref={printBodyRef} className="print-body">
                 <div ref={ref} className="print-template a4" /* onMouseMove={onMouseMove} onMouseUp={() => setMovingId("")} */>
                     {Object.values(printElement).map((item) => (
                         <Controller
