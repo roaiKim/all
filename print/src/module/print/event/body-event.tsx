@@ -17,7 +17,7 @@ export class CustomerBodyEvent extends BaseCustomerEvent {
     }
 
     leaveSpotlight = (event: MouseEvent) => {
-        if (!this.isPrintElement(event)) {
+        if (!this.isResizeing() && !this.isPrintElement(event)) {
             event.stopPropagation();
             this.printModule.removeSpotlight(this.printModule.spotlightActor?.id);
         }
@@ -33,5 +33,9 @@ export class CustomerBodyEvent extends BaseCustomerEvent {
 
     removeLeaveSpotlight() {
         this.removeEventListener(this.body, "click", this.leaveSpotlight);
+    }
+
+    isResizeing() {
+        return this.printModule.movingState?.moving;
     }
 }

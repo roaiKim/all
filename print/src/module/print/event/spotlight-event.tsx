@@ -15,30 +15,30 @@ export enum MoveDirection {
 }
 
 export class CustomerSpotlightEvent extends BaseCustomerEvent {
-    // curtain: HTMLElement;
     stage: HTMLElement;
     actor: PrintElement;
     initialListener: ListenerConfig;
     direction: MoveDirection;
+    throttleMoving: any;
     constructor(printModule: WebPrint, stage: HTMLElement, actor: PrintElement) {
         super(printModule);
         this.stage = stage;
         this.actor = actor;
-        this.initialListener = this.initial();
+        this.initialListener = this.registerClick();
     }
 
     getPrint() {
         return this.printModule;
     }
 
-    initial() {
+    registerClick() {
         if (this.stage) {
-            return this.addEventListener(this.stage, "click", this.toSpotlight);
+            return this.addEventListener(this.stage, "click", this.setSpotlight);
         }
     }
 
     // 初始化点击事件 用于选中当前元素
-    toSpotlight = (event: MouseEvent) => {
+    setSpotlight = (event: MouseEvent) => {
         if (!this.isSpotlighting()) {
             event.stopPropagation();
             event.preventDefault();
@@ -52,43 +52,6 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
         }
     };
 
-    // spotlighting() {
-    //     // 注册点击空白事件
-    //     this.registerLeaveSpotlight();
-    //     // 注册 resize
-    //     this.registerResize();
-    // }
-
-    // spotlightingOut() {
-    //     this.destroyExclude(this.initialListener);
-    //     console.log("---------", this.listeners);
-    // }
-
-    // // 取消选中 事件
-    // registerLeaveSpotlight() {
-    //     this.addEventListener(document.body, "click", this.leaveSpotlight);
-    // }
-
-    // // 移除事件
-    // leaveSpotlight = (event: MouseEvent) => {
-    //     console.log("---leaveSpotlight--");
-    //     if (!this.isCurrentControllElement(event)) {
-    //         event.stopPropagation();
-    //         this.printModule.removeSpotlight(this.actor.id);
-    //         this.spotlightingOut();
-    //     }
-    // };
-
-    // isCurrentControllElement(event: MouseEvent) {
-    //     const target: any = event.target;
-    //     if (target) {
-    //         if (target.dataset?.draggableId) {
-    //             return this.printModule.spotlightActor?.id === target.dataset?.draggableId;
-    //         }
-    //     }
-    //     return false;
-    // }
-
     registerResize() {
         if (this.stage) {
             this.addEventListener(this.stage, "mousedown", this.resize);
@@ -100,48 +63,43 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
         this.end();
     }
 
+    registerMousemove = () => {
+        if (this.stage) {
+            this.throttleMoving = throttle(this.moving, 40);
+            this.addEventListener(this.printModule.curtain, "mousemove", this.throttleMoving);
+            this.registerMouseleave();
+            this.registerMouseup();
+        }
+    };
+
+    registerMouseleave() {
+        this.addEventListener(this.printModule.curtain, "mouseleave", this.end);
+    }
+
+    registerMouseup() {
+        this.addEventListener(this.printModule.curtain, "mouseup", this.end);
+    }
+
     resize = (event: MouseEvent) => {
         const target: any = event.target;
         if (target) {
             if (target.dataset?.fluctuateDirection) {
                 event.stopPropagation();
                 this.direction = target.dataset.fluctuateDirection as MoveDirection;
-                this.mousemove();
+                this.printModule.resizeStart(this.actor);
+                this.registerMousemove();
             }
         }
     };
 
-    mousemove = () => {
-        if (this.stage) {
-            this.addEventListener(this.printModule.curtain, "mousemove", this.throttleMoving);
-            this.mouseleave();
-            this.mouseup();
-        }
-    };
-
-    throttleMoving() {
-        return throttle(this.moving, 40);
-    }
-
     moving = (event: MouseEvent) => {
         event.stopPropagation();
-        const { x, y } = this.printModule.curtainState;
-        const currentX = event.clientX - x;
-        const currentY = event.clientY - y;
-        console.log("=currentX, currentY=", currentX, currentY);
+        // const { x, y } = this.printModule.curtainState;
+        // const currentX = event.clientX - x;
+        // const currentY = event.clientY - y;
+        // console.log("=currentX, currentY=", currentX, currentY);
+        this.printModule.resizing(event);
     };
-
-    mouseleave() {
-        if (this.stage) {
-            this.addEventListener(this.stage, "mouseleave", this.end);
-        }
-    }
-
-    mouseup() {
-        if (this.stage) {
-            this.addEventListener(this.stage, "mouseup", this.end);
-        }
-    }
 
     end = (event?: MouseEvent) => {
         if (event) {
@@ -149,8 +107,8 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
         }
         this.direction = null;
         this.removeEventListener(this.printModule.curtain, "mousemove", this.throttleMoving);
-        this.removeEventListener(this.stage, "mouseup", this.end);
-        this.removeEventListener(this.stage, "mouseleave", this.end);
+        this.removeEventListener(this.printModule.curtain, "mouseup", this.end);
+        this.removeEventListener(this.printModule.curtain, "mouseleave", this.end);
     };
 
     isSpotlighting() {

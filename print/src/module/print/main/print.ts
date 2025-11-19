@@ -237,6 +237,48 @@ export class WebPrint {
         this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
     }
 
+    resizeStart(moveState: MovingState) {
+        this.#initialCurtainState();
+        this.movingState = {
+            ...moveState,
+            moving: true,
+        };
+        // this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        return this.movingState;
+    }
+
+    resizing(event: MouseEvent) {
+        if (!this.movingState.moving) return;
+        const x = event.clientX - this.movingState.width / 2;
+        const y = event.clientY - this.movingState.height / 2;
+        // 边界问题
+        const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
+        const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
+        this.movingState.x = _x; // x - this.curtainState.x;
+        this.movingState.y = _y; // y - this.curtainState.y;
+        // this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        return this.movingState;
+    }
+
+    resizeEnd() {
+        if (!this.movingState.moving) return;
+        this.movingState.moving = false;
+        // this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        const id = this.movingState.id;
+        // if (id) {
+        //     const index = this.actors.findIndex((item) => item.id === id);
+        //     if (index > -1) {
+        //         this.actors[index] = {
+        //             ...this.actors[index],
+        //             ...this.movingState,
+        //         };
+        //     }
+        // }
+        // 延迟
+        // this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
+        this.movingState = initialMovingState();
+    }
+
     captureSpotlight(id: string) {
         if (id) {
             const spotlightActor = this.actors.find((item) => item.id === id);
