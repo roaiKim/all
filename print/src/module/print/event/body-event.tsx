@@ -26,7 +26,7 @@ export class CustomerBodyEvent extends BaseCustomerEvent {
     isPrintElement(event: MouseEvent) {
         const target: any = event.target;
         if (target) {
-            return !!target.dataset?.draggableId;
+            return !!target.dataset?.draggableId || !!target.dataset?.fluctuateDirection;
         }
         return false;
     }
@@ -36,6 +36,6 @@ export class CustomerBodyEvent extends BaseCustomerEvent {
     }
 
     isResizeing() {
-        return this.printModule.movingState?.moving;
+        return this.printModule.movingState?.moving || this.printModule.movingState?.resizing;
     }
 }

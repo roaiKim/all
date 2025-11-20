@@ -38,6 +38,7 @@ export interface MovingState {
     width: number;
     height: number;
     moving: boolean;
+    resizing: boolean;
 }
 
 export const initialMovingState = (state?: MovingState) => ({
@@ -48,6 +49,7 @@ export const initialMovingState = (state?: MovingState) => ({
     width: 280,
     height: 100,
     moving: false,
+    resizing: false,
     ...state,
 });
 
@@ -192,14 +194,11 @@ export class WebPrint {
         return this.initialDragState();
     }
 
-    moveStart(event, moveState: MovingState) {
-        // const x = event.pageX - moveState.width / 2;
-        // const y = event.pageY - moveState.height / 2;
+    moveStart(event, moveState: Partial<MovingState>) {
         this.#initialCurtainState();
         this.movingState = {
+            ...this.movingState,
             ...moveState,
-            // x: x - this.curtainState.x,
-            // y: y - this.curtainState.y,
             moving: true,
         };
         this.#triggerListener(ListenerType.movingStateChange, this.movingState);
@@ -213,8 +212,8 @@ export class WebPrint {
         // 边界问题
         const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
         const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
-        this.movingState.x = _x; // x - this.curtainState.x;
-        this.movingState.y = _y; // y - this.curtainState.y;
+        this.movingState.x = _x;
+        this.movingState.y = _y;
         this.#triggerListener(ListenerType.movingStateChange, this.movingState);
         return this.movingState;
     }
@@ -230,6 +229,7 @@ export class WebPrint {
                 this.actors[index] = {
                     ...this.actors[index],
                     ...this.movingState,
+                    moving: false,
                 };
             }
         }
@@ -237,46 +237,46 @@ export class WebPrint {
         this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
     }
 
-    resizeStart(moveState: MovingState) {
+    resizeStart(moveState: Partial<MovingState>) {
+        if (!moveState) return;
         this.#initialCurtainState();
         this.movingState = {
+            ...this.movingState,
             ...moveState,
-            moving: true,
+            resizing: true,
         };
-        // this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
         return this.movingState;
     }
 
     resizing(event: MouseEvent) {
-        if (!this.movingState.moving) return;
-        const x = event.clientX - this.movingState.width / 2;
-        const y = event.clientY - this.movingState.height / 2;
-        // 边界问题
-        const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
-        const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
-        this.movingState.x = _x; // x - this.curtainState.x;
-        this.movingState.y = _y; // y - this.curtainState.y;
-        // this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        if (!this.movingState.resizing) return;
+        const width = Math.max(this.movingState.x, Math.min(event.clientX - this.curtainState.x, this.curtainState.width));
+        const height = Math.max(this.movingState.y, Math.min(event.clientY - this.curtainState.y, this.curtainState.height));
+
+        this.movingState.width = width - this.movingState.x;
+        this.movingState.height = height - this.movingState.y;
+        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+
         return this.movingState;
     }
 
     resizeEnd() {
-        if (!this.movingState.moving) return;
-        this.movingState.moving = false;
-        // this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+        if (!this.movingState.resizing) return;
+        this.movingState.resizing = false;
+        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
         const id = this.movingState.id;
-        // if (id) {
-        //     const index = this.actors.findIndex((item) => item.id === id);
-        //     if (index > -1) {
-        //         this.actors[index] = {
-        //             ...this.actors[index],
-        //             ...this.movingState,
-        //         };
-        //     }
-        // }
+        if (id) {
+            const index = this.actors.findIndex((item) => item.id === id);
+            if (index > -1) {
+                this.actors[index] = {
+                    ...this.actors[index],
+                    ...this.movingState,
+                };
+            }
+        }
         // 延迟
-        // this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
-        this.movingState = initialMovingState();
+        this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
     }
 
     captureSpotlight(id: string) {

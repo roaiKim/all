@@ -16,19 +16,26 @@ export enum MoveDirection {
 
 export class CustomerSpotlightEvent extends BaseCustomerEvent {
     stage: HTMLElement;
-    actor: PrintElement;
+    actorId: string;
     initialListener: ListenerConfig;
     direction: MoveDirection;
     throttleMoving: any;
-    constructor(printModule: WebPrint, stage: HTMLElement, actor: PrintElement) {
+    constructor(printModule: WebPrint, stage: HTMLElement, actorId: string) {
         super(printModule);
         this.stage = stage;
-        this.actor = actor;
+        this.actorId = actorId;
         this.initialListener = this.registerClick();
     }
 
     getPrint() {
         return this.printModule;
+    }
+
+    getActor() {
+        if (this.actorId) {
+            return this.printModule.actors.find((item) => item.id === this.actorId);
+        }
+        return null;
     }
 
     registerClick() {
@@ -86,7 +93,7 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
             if (target.dataset?.fluctuateDirection) {
                 event.stopPropagation();
                 this.direction = target.dataset.fluctuateDirection as MoveDirection;
-                this.printModule.resizeStart(this.actor);
+                this.printModule.resizeStart(this.getActor());
                 this.registerMousemove();
             }
         }
@@ -105,6 +112,7 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
         if (event) {
             event.stopPropagation();
         }
+        this.printModule.resizeEnd();
         this.direction = null;
         this.removeEventListener(this.printModule.curtain, "mousemove", this.throttleMoving);
         this.removeEventListener(this.printModule.curtain, "mouseup", this.end);
@@ -112,6 +120,6 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
     };
 
     isSpotlighting() {
-        return this.printModule.spotlightActor?.id === this.actor.id;
+        return this.printModule.spotlightActor?.id === this.getActor()?.id;
     }
 }

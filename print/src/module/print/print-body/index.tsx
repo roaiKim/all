@@ -30,7 +30,7 @@ export default function PrintBody(props: PrintBodyProps) {
     });
 
     const movingStateChange = useCallback((state) => {
-        // console.log("===movingState===", state);
+        console.log("===movingState===", state);
         setMovingState((prev) => ({ ...prev, ...state }));
     }, []);
 
@@ -82,7 +82,8 @@ export default function PrintBody(props: PrintBodyProps) {
     const hasSpotlight = !!spotlightState;
 
     useEffect(() => {
-        if (hasSpotlight) {
+        console.log("---movingState---", movingState.moving, movingState.resizing);
+        if (hasSpotlight && !movingState.moving && !movingState.resizing) {
             customerBodyEvent.current?.registerLeaveSpotlight();
         } else {
             customerBodyEvent.current?.removeLeaveSpotlight();
@@ -92,7 +93,7 @@ export default function PrintBody(props: PrintBodyProps) {
                 customerBodyEvent.current.destroyAll();
             }
         };
-    }, [hasSpotlight]);
+    }, [hasSpotlight, movingState.moving, movingState.resizing]);
 
     // console.log(customerMovingEvent.current);
     return (
