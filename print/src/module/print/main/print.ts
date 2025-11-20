@@ -1,7 +1,9 @@
 import { Content } from "antd/es/layout/layout";
 import { DraggableType } from "./static";
+import type { MoveDirection } from "../event/spotlight-event";
 import { PositionManager } from "../utils/position-manager";
-import { UidManager } from "../utils/uid-manager";
+import { ResizeManager } from "../utils/resize-manager";
+import { ToolManager } from "../utils/tool-manager";
 
 import type { PrintElement } from ".";
 
@@ -12,12 +14,15 @@ interface Shapes {
     custom: any[];
 }
 
-export interface DragState {
+export interface BaseShape {
     x: number;
     y: number;
-    type: DraggableType | null;
     width: number;
     height: number;
+}
+
+export interface DragState extends BaseShape {
+    type: DraggableType | null;
     moving: boolean;
 }
 
@@ -30,13 +35,9 @@ export const initialDragState = () => ({
     moving: false,
 });
 
-export interface MovingState {
+export interface MovingState extends BaseShape {
     id: string;
-    x: number;
-    y: number;
     type: DraggableType | null;
-    width: number;
-    height: number;
     moving: boolean;
     resizing: boolean;
 }
@@ -53,11 +54,8 @@ export const initialMovingState = (state?: MovingState) => ({
     ...state,
 });
 
-export interface CurtainState {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+export interface CurtainState extends BaseShape {
+    color?: string;
 }
 
 export const initialCurtainState = () => ({
@@ -159,8 +157,8 @@ export class WebPrint {
         const y = event.pageY - this.dragState.height / 2;
         this.dragState = {
             ...this.dragState,
-            x,
-            y,
+            x: ToolManager.numberPrecision(x),
+            y: ToolManager.numberPrecision(y),
             type,
             moving: true,
         };
@@ -172,8 +170,8 @@ export class WebPrint {
         if (!this.dragState.moving) return;
         const x = event.pageX - this.dragState.width / 2;
         const y = event.pageY - this.dragState.height / 2;
-        this.dragState.x = x;
-        this.dragState.y = y;
+        this.dragState.x = ToolManager.numberPrecision(x);
+        this.dragState.y = ToolManager.numberPrecision(y);
         this.#triggerListener(ListenerType.dragStateChange, this.dragState);
         return this.dragState;
     }
@@ -212,8 +210,8 @@ export class WebPrint {
         // 边界问题
         const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
         const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
-        this.movingState.x = _x;
-        this.movingState.y = _y;
+        this.movingState.x = ToolManager.numberPrecision(_x);
+        this.movingState.y = ToolManager.numberPrecision(_y);
         this.#triggerListener(ListenerType.movingStateChange, this.movingState);
         return this.movingState;
     }
@@ -249,13 +247,18 @@ export class WebPrint {
         return this.movingState;
     }
 
-    resizing(event: MouseEvent) {
+    resizing(event: MouseEvent, direction: MoveDirection) {
         if (!this.movingState.resizing) return;
-        const width = Math.max(this.movingState.x, Math.min(event.clientX - this.curtainState.x, this.curtainState.width));
-        const height = Math.max(this.movingState.y, Math.min(event.clientY - this.curtainState.y, this.curtainState.height));
+        // const width = Math.max(this.movingState.x, Math.min(event.clientX - this.curtainState.x, this.curtainState.width));
+        // const height = Math.max(this.movingState.y, Math.min(event.clientY - this.curtainState.y, this.curtainState.height));
 
-        this.movingState.width = width - this.movingState.x;
-        this.movingState.height = height - this.movingState.y;
+        // this.movingState.width = width - this.movingState.x;
+        // this.movingState.height = height - this.movingState.y;
+        const size = ResizeManager.controller(event, direction, this);
+        this.movingState = {
+            ...this.movingState,
+            ...size,
+        };
         this.#triggerListener(ListenerType.movingStateChange, this.movingState);
 
         return this.movingState;
@@ -276,7 +279,7 @@ export class WebPrint {
             }
         }
         // 延迟
-        this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
+        this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 100);
     }
 
     captureSpotlight(id: string) {
@@ -297,7 +300,7 @@ export class WebPrint {
     }
 
     addActor(state: { x: number; y: number; width?: number; height?: number }) {
-        const id = UidManager.getUid();
+        const id = ToolManager.getUid();
         const actors = {
             ...this.dragState,
             id,

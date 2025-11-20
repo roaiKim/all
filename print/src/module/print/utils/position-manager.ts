@@ -1,3 +1,5 @@
+import { ToolManager } from "./tool-manager";
+
 export class PositionManager {
     /**
      * @description 获取元素的宽
@@ -101,13 +103,14 @@ export class PositionManager {
     static getRectState(element: HTMLElement) {
         if (element) {
             const { width, height, x, y } = element.getBoundingClientRect();
-            return {
+            return ToolManager.numberObjectPrecision({
                 width,
                 height,
                 x: x + window.pageXOffset,
                 y: y + window.pageYOffset,
-            };
+            });
         }
+
         return {
             width: 0,
             height: 0,
@@ -122,9 +125,10 @@ export class PositionManager {
         const childrenY = this.getPageYByAbsolute(childrenElement);
         const containerX = this.getPageXByAbsolute(containerElement);
         const containerY = this.getPageYByAbsolute(containerElement);
-        return {
+
+        return ToolManager.numberObjectPrecision({
             x: childrenX - containerX,
             y: childrenY - containerY,
-        };
+        });
     }
 }

@@ -1,6 +1,6 @@
 import type { WebPrint } from "./print";
 import { PositionManager } from "../utils/position-manager";
-import { UidManager } from "../utils/uid-manager";
+import { UidManager } from "../utils/tool-manager";
 
 interface EventProps {
     base: any[];

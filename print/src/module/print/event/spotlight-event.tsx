@@ -105,7 +105,7 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
         // const currentX = event.clientX - x;
         // const currentY = event.clientY - y;
         // console.log("=currentX, currentY=", currentX, currentY);
-        this.printModule.resizing(event);
+        this.printModule.resizing(event, this.direction);
     };
 
     end = (event?: MouseEvent) => {
