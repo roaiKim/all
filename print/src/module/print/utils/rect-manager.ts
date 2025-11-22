@@ -2,30 +2,31 @@ import { ToolManager } from "./tool-manager";
 import { MoveDirection } from "../event/spotlight-event";
 import type { BaseShape, CurtainState, MovingState, WebPrint } from "../main/print";
 
-export class ResizeManager {
-    static controller(event: MouseEvent, direction: MoveDirection, printModule: WebPrint): Partial<BaseShape> {
-        const { movingState, curtainState } = printModule;
-        switch (direction) {
-            case MoveDirection.BOTTOM_RIGHT: // 右下角
-                return this.BottomRight(event, movingState, curtainState);
-            case MoveDirection.MIDDLE_RIGHT: // 右中
-                return this.MiddleRight(event, movingState, curtainState);
-            case MoveDirection.MIDDLE_BOTTOM: // 下中
-                return this.MiddleBottom(event, movingState, curtainState);
-            case MoveDirection.MIDDLE_TOP: // 上中
-                return this.MiddleTop(event, movingState, curtainState);
-            case MoveDirection.MIDDLE_LEFT: // 左中
-                return this.MiddleLeft(event, movingState, curtainState);
-            case MoveDirection.BOTTOM_LEFT: // 左下
-                return this.BottomLeft(event, movingState, curtainState);
-            case MoveDirection.TOP_RIGHT: // 右上
-                return this.TopRight(event, movingState, curtainState);
-            case MoveDirection.TOP_LEFT: // 左上
-                return this.TopLeft(event, movingState, curtainState);
-            default:
-                return {};
-        }
-        return {};
+export class RectManager {
+    // -x
+    static negativeXElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
+        return Math.min(movingState.x + movingState.width, Math.max(event.clientX - curtainState.x, 0));
+    }
+
+    // -y
+    static negativeYElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
+        return Math.min(movingState.y + movingState.height, Math.max(event.clientY - curtainState.y, 0));
+    }
+
+    static negativeHeightElasticity(y: number, movingState: MovingState) {
+        return movingState.y - y + movingState.height;
+    }
+
+    static positiveHeightElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
+        return Math.max(movingState.y, Math.min(event.clientY - curtainState.y, curtainState.height)) - movingState.y;
+    }
+
+    static negativeWidthElasticity(x: number, movingState: MovingState) {
+        return movingState.x - x + movingState.width;
+    }
+
+    static positiveWidthElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
+        return Math.max(movingState.x, Math.min(event.clientX - curtainState.x, curtainState.width)) - movingState.x;
     }
 
     static BottomRight(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
@@ -76,29 +77,5 @@ export class ResizeManager {
         const y = this.negativeYElasticity(event, movingState, curtainState);
         const height = this.negativeHeightElasticity(y, movingState);
         return ToolManager.numberObjectPrecision({ width, height, x, y });
-    }
-
-    static negativeXElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
-        return Math.min(movingState.x + movingState.width, Math.max(event.clientX - curtainState.x, 0));
-    }
-
-    static negativeYElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
-        return Math.min(movingState.y + movingState.height, Math.max(event.clientY - curtainState.y, 0));
-    }
-
-    static negativeHeightElasticity(y: number, movingState: MovingState) {
-        return movingState.y - y + movingState.height;
-    }
-
-    static positiveHeightElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
-        return Math.max(movingState.y, Math.min(event.clientY - curtainState.y, curtainState.height)) - movingState.y;
-    }
-
-    static negativeWidthElasticity(x: number, movingState: MovingState) {
-        return movingState.x - x + movingState.width;
-    }
-
-    static positiveWidthElasticity(event: MouseEvent, movingState: MovingState, curtainState: CurtainState) {
-        return Math.max(movingState.x, Math.min(event.clientX - curtainState.x, curtainState.width)) - movingState.x;
     }
 }

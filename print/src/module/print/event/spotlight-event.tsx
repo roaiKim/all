@@ -4,14 +4,14 @@ import type { WebPrint } from "../main/print";
 import { throttle } from "../utils/throttle";
 
 export enum MoveDirection {
-    TL = "tl",
-    TR = "tr",
-    BL = "bl",
-    BR = "br",
-    MT = "mt",
-    MB = "mb",
-    ML = "ml",
-    MR = "mr",
+    TOP_LEFT = "tl",
+    TOP_RIGHT = "tr",
+    BOTTOM_LEFT = "bl",
+    BOTTOM_RIGHT = "br",
+    MIDDLE_TOP = "mt",
+    MIDDLE_BOTTOM = "mb",
+    MIDDLE_LEFT = "ml",
+    MIDDLE_RIGHT = "mr",
 }
 
 export class CustomerSpotlightEvent extends BaseCustomerEvent {

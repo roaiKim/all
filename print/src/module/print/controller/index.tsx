@@ -54,14 +54,14 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
     return (
         <div ref={printControlRef} className={`${clasName}`} style={position} data-draggable-id={id}>
             {children} {position.left} <br /> {position.top}
-            <div className="print-control tl" data-fluctuate-direction={MoveDirection.TL}></div>
-            <div className="print-control tr" data-fluctuate-direction={MoveDirection.TR}></div>
-            <div className="print-control bl" data-fluctuate-direction={MoveDirection.BL}></div>
-            <div className="print-control br" data-fluctuate-direction={MoveDirection.BR}></div>
-            <div className="print-control mt" data-fluctuate-direction={MoveDirection.MT}></div>
-            <div className="print-control mb" data-fluctuate-direction={MoveDirection.MB}></div>
-            <div className="print-control ml" data-fluctuate-direction={MoveDirection.ML}></div>
-            <div className="print-control mr" data-fluctuate-direction={MoveDirection.MR}></div>
+            <div className="print-control tl" data-fluctuate-direction={MoveDirection.TOP_LEFT}></div>
+            <div className="print-control tr" data-fluctuate-direction={MoveDirection.TOP_RIGHT}></div>
+            <div className="print-control bl" data-fluctuate-direction={MoveDirection.BOTTOM_LEFT}></div>
+            <div className="print-control br" data-fluctuate-direction={MoveDirection.BOTTOM_RIGHT}></div>
+            <div className="print-control mt" data-fluctuate-direction={MoveDirection.MIDDLE_TOP}></div>
+            <div className="print-control mb" data-fluctuate-direction={MoveDirection.MIDDLE_BOTTOM}></div>
+            <div className="print-control ml" data-fluctuate-direction={MoveDirection.MIDDLE_LEFT}></div>
+            <div className="print-control mr" data-fluctuate-direction={MoveDirection.MIDDLE_RIGHT}></div>
         </div>
     );
 }
