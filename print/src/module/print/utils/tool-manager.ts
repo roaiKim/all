@@ -18,4 +18,8 @@ export class ToolManager {
     static numberObjectPrecision<T extends Record<string, number>>(state: T): T {
         return Object.entries(state).reduce((prev, [key, value]) => ((prev[key] = this.numberPrecision(value)), prev), {}) as any;
     }
+
+    // static getPluginInstance(type: string) {
+
+    // }
 }

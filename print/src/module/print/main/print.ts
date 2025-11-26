@@ -1,13 +1,14 @@
-import { Content } from "antd/es/layout/layout";
 import { DraggableType } from "./static";
 import type { MoveDirection } from "../event/spotlight-event";
+import * as printPlugin from "../plugin";
+import { BasePrintPlugin } from "../plugin/base-print-plugin";
 import { PositionManager } from "../utils/position-manager";
 import { ResizeManager } from "../utils/resize-manager";
 import { ToolManager } from "../utils/tool-manager";
 
 import type { PrintElement } from ".";
 
-interface Shapes {
+export interface Shapes {
     base: any[];
     auxiliary: any[];
     other: any[];
@@ -98,27 +99,40 @@ type PrintListener = (...state: any[]) => void;
 export class WebPrint {
     moveEndTimer: number;
     curtain: HTMLElement;
-    shapes: Record<string, any>;
+    // shapes: Shapes;
+    // defalutPlugin: BasePrintPlugin;
+    plugins: Partial<Record<string, BasePrintPlugin>>;
     actors: PrintElement[];
     dragState: DragState;
     movingState: MovingState;
     spotlightActor: PrintElement;
     curtainState: CurtainState;
+    excludeShapesType: (keyof typeof DraggableType & string)[];
     listener: Partial<Record<keyof typeof ListenerType, PrintListener[]>>;
     listenerType: (keyof typeof ListenerType)[] = Object.keys(ListenerType) as Array<keyof typeof ListenerType>;
-    constructor(curtain: HTMLElement, shapesType?: string[]) {
-        this.shapes = {
-            base: [],
-            auxiliary: [],
-            other: [],
-            custom: [],
-        };
+    constructor(curtain: HTMLElement, excludeShapesType?: (keyof typeof DraggableType & string)[]) {
+        // this.shapes = {
+        //     base: [],
+        //     auxiliary: [],
+        //     other: [],
+        //     custom: [],
+        // };
         this.curtain = curtain;
         this.actors = [];
         this.listener = {};
+        this.plugins = {};
+        this.excludeShapesType = excludeShapesType || [];
         this.movingState = initialMovingState();
         this.initialDragState();
         this.#initialCurtainState();
+        this.#registerDefaultShapes();
+        this.plugins["DEFAULT"] = new BasePrintPlugin({
+            key: "DEFAULT",
+            title: "DEFAULT",
+            type: null,
+            width: 280,
+            height: 100,
+        });
 
         // @ts-ignore
         window.__WEB_PRINT__ = this;
@@ -155,10 +169,13 @@ export class WebPrint {
     dragStart(event, type: DraggableType) {
         const x = event.pageX - this.dragState.width / 2;
         const y = event.pageY - this.dragState.height / 2;
+        const shape = this.getPluginByName(type);
         this.dragState = {
             ...this.dragState,
             x: ToolManager.numberPrecision(x),
             y: ToolManager.numberPrecision(y),
+            width: shape.option.width,
+            height: shape.option.height,
             type,
             moving: true,
         };
@@ -353,10 +370,29 @@ export class WebPrint {
         }
     }
 
-    registerShapes(shapeName: string, shape: any) {
-        if (this.shapes[shapeName]) {
-            throw new Error(`${shapeName}已经注册`);
+    getPluginByName(name: DraggableType): BasePrintPlugin {
+        if (this.plugins[name]) {
+            return this.plugins[name];
+        } else {
+            return this.plugins["DEFAULT"];
+            // throw new Error(`插件${name}不存在`);
         }
-        this.shapes[shapeName] = shape;
+    }
+
+    registerShapes(plugin: BasePrintPlugin) {
+        const { type, key, title, height, width } = plugin.option;
+        if (!this.excludeShapesType.includes(key as any)) {
+            if (!this.plugins[key]) {
+                this.plugins[key] = plugin;
+            } else {
+                throw new Error(`插件${title}已经注册`);
+            }
+        }
+    }
+
+    #registerDefaultShapes() {
+        Object.values(printPlugin).forEach((item) => {
+            this.registerShapes(new item());
+        });
     }
 }
