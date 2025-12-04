@@ -98,8 +98,8 @@ export default function PrintBody(props: PrintBodyProps) {
     // console.log(customerMovingEvent.current);
     return (
         <div className="print-main">
-            <div ref={printBodyRef} className="print-body">
-                <div ref={ref} className="print-template a4" /* onMouseMove={onMouseMove} onMouseUp={() => setMovingId("")} */>
+            <div id="printBodyDom" ref={printBodyRef} className="print-body">
+                <div id="printTemplateDom" ref={ref} className="print-template a4" /* onMouseMove={onMouseMove} onMouseUp={() => setMovingId("")} */>
                     {Object.values(printElement).map((item) => (
                         <Controller
                             key={item.id}
@@ -113,13 +113,6 @@ export default function PrintBody(props: PrintBodyProps) {
                     ))}
                 </div>
             </div>
-            <Button
-                onClick={() => {
-                    console.log("printModule", printModule);
-                }}
-            >
-                大小
-            </Button>
         </div>
     );
 }

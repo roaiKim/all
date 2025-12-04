@@ -14,7 +14,7 @@ export interface PrintElement extends DragState {
     option?: any;
 }
 
-export default function Assemble() {
+export default function TemporaryTemplate() {
     const printCurtain = useRef<HTMLElement>(null);
     const temporaryTemplateRef = useRef<HTMLDivElement>(null);
     const printContainer = useRef<HTMLDivElement>(null);
@@ -61,21 +61,16 @@ export default function Assemble() {
     }, [printModule]);
 
     return (
-        <div id="printContainerDom" className="print-container" ref={printContainer}>
-            <Header printModule={printModule} printTemporaryTemplate={printTemporaryTemplate} />
-            <Operate />
-            <Rule></Rule>
-            <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
-            <div
-                ref={temporaryTemplateRef}
-                className={`print-temporary-template ${printTemporaryTemplate.moving ? "moving" : ""}`}
-                style={{
-                    top: printTemporaryTemplate.y,
-                    left: printTemporaryTemplate.x,
-                    width: printTemporaryTemplate.width,
-                    height: printTemporaryTemplate.height,
-                }}
-            ></div>
-        </div>
+        <div
+            ref={temporaryTemplateRef}
+            id="temporaryTemplateDom"
+            className={`print-temporary-template ${printTemporaryTemplate.moving ? "moving" : ""}`}
+            style={{
+                top: printTemporaryTemplate.y,
+                left: printTemporaryTemplate.x,
+                width: printTemporaryTemplate.width,
+                height: printTemporaryTemplate.height,
+            }}
+        ></div>
     );
 }

@@ -6,7 +6,7 @@ export class CustomerMovingEvent extends BaseCustomerEvent {
     curtain: HTMLElement;
     constructor(printModule: WebPrint) {
         super(printModule);
-        this.curtain = printModule.curtain;
+        this.curtain = printModule.domManger.printTemplateDom;
     }
 
     getPrint() {

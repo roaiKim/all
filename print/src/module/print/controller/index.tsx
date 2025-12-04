@@ -52,7 +52,7 @@ export function Controller(props: PropsWithChildren<ControllerProps>) {
     });
 
     return (
-        <div ref={printControlRef} className={`${clasName}`} style={position} data-draggable-id={id}>
+        <div id="printControlDom" ref={printControlRef} className={`${clasName}`} style={position} data-draggable-id={id}>
             {children}
             <div className="print-control tl" data-fluctuate-direction={MoveDirection.TOP_LEFT}></div>
             <div className="print-control tr" data-fluctuate-direction={MoveDirection.TOP_RIGHT}></div>

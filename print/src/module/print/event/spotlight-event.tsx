@@ -20,11 +20,13 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
     initialListener: ListenerConfig;
     direction: MoveDirection;
     throttleMoving: any;
+    curtain: HTMLElement;
     constructor(printModule: WebPrint, stage: HTMLElement, actorId: string) {
         super(printModule);
         this.stage = stage;
         this.actorId = actorId;
         this.initialListener = this.registerClick();
+        this.curtain = printModule.domManger.printTemplateDom;
     }
 
     getPrint() {
@@ -73,18 +75,18 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
     registerMousemove = () => {
         if (this.stage) {
             this.throttleMoving = throttle(this.moving, 40);
-            this.addEventListener(this.printModule.curtain, "mousemove", this.throttleMoving);
+            this.addEventListener(this.curtain, "mousemove", this.throttleMoving);
             this.registerMouseleave();
             this.registerMouseup();
         }
     };
 
     registerMouseleave() {
-        this.addEventListener(this.printModule.curtain, "mouseleave", this.end);
+        this.addEventListener(this.curtain, "mouseleave", this.end);
     }
 
     registerMouseup() {
-        this.addEventListener(this.printModule.curtain, "mouseup", this.end);
+        this.addEventListener(this.curtain, "mouseup", this.end);
     }
 
     resize = (event: MouseEvent) => {
@@ -114,9 +116,9 @@ export class CustomerSpotlightEvent extends BaseCustomerEvent {
         }
         this.printModule.resizeEnd();
         this.direction = null;
-        this.removeEventListener(this.printModule.curtain, "mousemove", this.throttleMoving);
-        this.removeEventListener(this.printModule.curtain, "mouseup", this.end);
-        this.removeEventListener(this.printModule.curtain, "mouseleave", this.end);
+        this.removeEventListener(this.curtain, "mousemove", this.throttleMoving);
+        this.removeEventListener(this.curtain, "mouseup", this.end);
+        this.removeEventListener(this.curtain, "mouseleave", this.end);
     };
 
     isSpotlighting() {

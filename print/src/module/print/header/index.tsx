@@ -51,7 +51,7 @@ export default function Header(props: HeaderProps) {
                 <PrinterOutlined style={{ fontSize: 40 }} />
                 <span className="rk-print-name">ROAIKIM-PRINT</span>
             </div>
-            <div ref={dragContainer} className="rk-element">
+            <div id="dragContainerDom" ref={dragContainer} className="rk-element">
                 <IconButton text="文本" draggableType={DraggableType.TEXT} hoverMask pointer="move">
                     <FontSizeOutlined />
                 </IconButton>

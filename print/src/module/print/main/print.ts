@@ -1,4 +1,5 @@
 import { DraggableType } from "./static";
+import { DomManger } from "../event/dom-manger";
 import type { MoveDirection } from "../event/spotlight-event";
 import * as printPlugin from "../plugin";
 import { BasePrintPlugin } from "../plugin/base-print-plugin";
@@ -98,10 +99,11 @@ type PrintListener = (...state: any[]) => void;
 
 export class WebPrint {
     moveEndTimer: number;
-    curtain: HTMLElement;
+    // curtain: HTMLElement;
     // shapes: Shapes;
     // defalutPlugin: BasePrintPlugin;
     plugins: Partial<Record<string, BasePrintPlugin>>;
+    domManger: DomManger;
     actors: PrintElement[];
     dragState: DragState;
     movingState: MovingState;
@@ -110,14 +112,16 @@ export class WebPrint {
     excludeShapesType: (keyof typeof DraggableType & string)[];
     listener: Partial<Record<keyof typeof ListenerType, PrintListener[]>>;
     listenerType: (keyof typeof ListenerType)[] = Object.keys(ListenerType) as Array<keyof typeof ListenerType>;
-    constructor(curtain: HTMLElement, excludeShapesType?: (keyof typeof DraggableType & string)[]) {
+    constructor(excludeShapesType?: (keyof typeof DraggableType & string)[]) {
         // this.shapes = {
         //     base: [],
         //     auxiliary: [],
         //     other: [],
         //     custom: [],
         // };
-        this.curtain = curtain;
+        // this.curtain = curtain;
+
+        this.domManger = new DomManger();
         this.actors = [];
         this.listener = {};
         this.plugins = {};
@@ -126,13 +130,6 @@ export class WebPrint {
         this.initialDragState();
         this.#initialCurtainState();
         this.#registerDefaultShapes();
-        this.plugins["DEFAULT"] = new BasePrintPlugin({
-            key: "DEFAULT",
-            title: "DEFAULT",
-            type: null,
-            width: 280,
-            height: 100,
-        });
 
         // @ts-ignore
         window.__WEB_PRINT__ = this;
@@ -157,7 +154,7 @@ export class WebPrint {
     }
 
     #initialCurtainState() {
-        this.curtainState = PositionManager.getRectState(this.curtain);
+        this.curtainState = PositionManager.getRectState(this.domManger.printTemplateDom);
     }
 
     initialMovingState() {
@@ -195,10 +192,10 @@ export class WebPrint {
 
     dragEnd(slidingBlock?: HTMLElement, showWholeContain = true) {
         if (!this.dragState.moving) return;
-        if (this.curtain) {
-            const isWrap = PositionManager.isChildrenInContainer(slidingBlock, this.curtain, showWholeContain);
+        if (this.domManger.printTemplateDom) {
+            const isWrap = PositionManager.isChildrenInContainer(slidingBlock, this.domManger.printTemplateDom, showWholeContain);
             if (isWrap) {
-                const position = PositionManager.getPositionByContainer(slidingBlock, this.curtain);
+                const position = PositionManager.getPositionByContainer(slidingBlock, this.domManger.printTemplateDom);
                 this.addActor({ ...position });
             }
             this.#triggerListener(ListenerType.dragEnd, {
@@ -391,6 +388,13 @@ export class WebPrint {
     }
 
     #registerDefaultShapes() {
+        this.plugins["DEFAULT"] = new BasePrintPlugin({
+            key: "DEFAULT",
+            title: "DEFAULT",
+            type: null,
+            width: 280,
+            height: 100,
+        });
         Object.values(printPlugin).forEach((item) => {
             this.registerShapes(new item());
         });
