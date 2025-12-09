@@ -1,4 +1,6 @@
+import type { JSX } from "react/jsx-runtime";
 import { BasePrintPlugin } from "./base-print-plugin";
+import type { DragState } from "../main/print";
 import { DraggableType } from "../main/static";
 
 export class TextPlugin extends BasePrintPlugin {
@@ -34,6 +36,10 @@ export class BrcodePlugin extends BasePrintPlugin {
             height: 50,
             width: 180,
         });
+    }
+
+    dragRender(props) {
+        return <div>BRCODE</div>;
     }
 }
 

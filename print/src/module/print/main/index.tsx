@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
 import { type DragState, initialDragState, ListenerType, WebPrint } from "./print";
+import TemporaryTemplate from "./temporary-template";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
 import Operate from "../operate";
@@ -16,66 +17,35 @@ export interface PrintElement extends DragState {
 
 export default function Assemble() {
     const printCurtain = useRef<HTMLElement>(null);
-    const temporaryTemplateRef = useRef<HTMLDivElement>(null);
     const printContainer = useRef<HTMLDivElement>(null);
 
-    const [printElement, setPrintElement] = useState<Record<string, PrintElement>>({});
-    const [printTemporaryTemplate, setPrintTemporaryTemplate] = useState(initialDragState());
+    const [printElement, setPrintElement] = useState<PrintElement[]>([]);
 
     const [printModule, setPrintModule] = useState<WebPrint>();
     const customDragEvent = useRef<CustomerDragingEvent>(null);
 
     useLayoutEffect(() => {
         const print = new WebPrint();
-        customDragEvent.current = new CustomerDragingEvent(print, printContainer.current);
+        customDragEvent.current = new CustomerDragingEvent(print);
         setPrintModule(print);
     }, []);
-
-    const actorChange = useCallback((actor) => {
-        setPrintElement(actor);
-    }, []);
-
-    useEffect(() => {
-        if (printTemporaryTemplate.moving) {
-            customDragEvent.current?.mousemove();
-            customDragEvent.current?.mouseup(temporaryTemplateRef.current);
-        } else {
-            customDragEvent.current?.destroyAll();
-        }
-        return () => {
-            customDragEvent.current?.destroyAll();
-        };
-    }, [printTemporaryTemplate.moving]);
 
     useEffect(() => {
         if (printModule) {
             printModule.subscribe(ListenerType.actorChange, (actor) => {
                 console.log("--actor-正在改动-", actor);
-                actorChange(actor);
-            });
-            printModule.subscribe(ListenerType.dragStateChange, (state) => {
-                console.log("--printTemporaryTemplate-正在拖动-", state);
-                setPrintTemporaryTemplate((prev) => ({ ...prev, ...state }));
+                setPrintElement(() => actor);
             });
         }
     }, [printModule]);
 
     return (
         <div id="printContainerDom" className="print-container" ref={printContainer}>
-            <Header printModule={printModule} printTemporaryTemplate={printTemporaryTemplate} />
+            <Header printModule={printModule} />
             <Operate />
             <Rule></Rule>
             <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
-            <div
-                ref={temporaryTemplateRef}
-                className={`print-temporary-template ${printTemporaryTemplate.moving ? "moving" : ""}`}
-                style={{
-                    top: printTemporaryTemplate.y,
-                    left: printTemporaryTemplate.x,
-                    width: printTemporaryTemplate.width,
-                    height: printTemporaryTemplate.height,
-                }}
-            ></div>
+            <TemporaryTemplate printModule={printModule} />
         </div>
     );
 }

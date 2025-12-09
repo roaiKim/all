@@ -10,7 +10,7 @@ import "./index.less";
 
 interface PrintBodyProps {
     ref: any;
-    printElement: Record<string, PrintElement>;
+    printElement: PrintElement[];
     printModule: WebPrint;
 }
 
@@ -95,12 +95,11 @@ export default function PrintBody(props: PrintBodyProps) {
         };
     }, [hasSpotlight, movingState.moving, movingState.resizing]);
 
-    // console.log(customerMovingEvent.current);
     return (
         <div className="print-main">
             <div id="printBodyDom" ref={printBodyRef} className="print-body">
                 <div id="printTemplateDom" ref={ref} className="print-template a4" /* onMouseMove={onMouseMove} onMouseUp={() => setMovingId("")} */>
-                    {Object.values(printElement).map((item) => (
+                    {printElement.map((item) => (
                         <Controller
                             key={item.id}
                             element={item}

@@ -1,4 +1,4 @@
-import type { Shapes } from "../main/print";
+import type { DragState, Shapes } from "../main/print";
 import type { DraggableType } from "../main/static";
 
 export interface BasePrintPluginOption {
@@ -20,10 +20,13 @@ export class BasePrintPlugin {
             ...this.defaultOption,
             ...option,
         };
+
+        this.dragRender.bind(this);
+        this.render.bind(this);
     }
 
-    dragRender() {
-        const { width = 0, height = 0 } = this.option;
+    dragRender(props: DragState) {
+        const { width = 0, height = 0 } = props;
         return <div style={{ width, height }}></div>;
     }
 

@@ -3,11 +3,10 @@ import type { WebPrint } from "../main/print";
 import { throttle } from "../utils/throttle";
 
 export class CustomerDragingEvent extends BaseCustomerEvent {
-    constructor(
-        printModule: WebPrint,
-        private dragTarget
-    ) {
+    printContainerDom: HTMLElement;
+    constructor(printModule: WebPrint) {
         super(printModule);
+        this.printContainerDom = printModule.domManger.printContainerDom;
     }
 
     getPrint() {
@@ -15,19 +14,19 @@ export class CustomerDragingEvent extends BaseCustomerEvent {
     }
 
     mousemove() {
-        if (this.dragTarget) {
+        if (this.printContainerDom) {
             const _draging = throttle(this.draging, 40);
-            this.addEventListener(this.dragTarget, "mousemove", _draging);
+            this.addEventListener(this.printContainerDom, "mousemove", _draging);
             return _draging;
         }
     }
 
-    mouseup(slidingBlock) {
-        if (this.dragTarget) {
+    mouseup() {
+        if (this.printContainerDom) {
             const _end = () => {
-                this.end(slidingBlock);
+                this.end();
             };
-            this.addEventListener(this.dragTarget, "mouseup", _end);
+            this.addEventListener(this.printContainerDom, "mouseup", _end);
             return _end;
         }
     }
@@ -37,7 +36,7 @@ export class CustomerDragingEvent extends BaseCustomerEvent {
         this.printModule.draging(event);
     };
 
-    end = (slidingBlock) => {
-        this.printModule.dragEnd(slidingBlock);
+    end = () => {
+        this.printModule.dragEnd();
     };
 }

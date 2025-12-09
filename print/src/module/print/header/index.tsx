@@ -22,11 +22,10 @@ import "./index.less";
 
 interface HeaderProps {
     printModule: WebPrint;
-    printTemporaryTemplate: DragState;
 }
 
 export default function Header(props: HeaderProps) {
-    const { printModule, printTemporaryTemplate } = props;
+    const { printModule } = props;
     const dragContainer = useRef(null);
     const customerDragEvent = useRef<CustomerDragEvent>(null);
 

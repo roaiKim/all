@@ -139,12 +139,25 @@ export class WebPrint {
         return this.dragState;
     }
 
-    getActor() {
+    getActor(config = true) {
+        if (config) {
+            // return new actors
+            return [...this.actors];
+        }
         return this.actors;
     }
 
     getListener() {
         return this.listener;
+    }
+
+    getPluginByName(name: DraggableType): BasePrintPlugin {
+        if (this.plugins[name]) {
+            return this.plugins[name];
+        } else {
+            return this.plugins["DEFAULT"];
+            // throw new Error(`插件${name}不存在`);
+        }
     }
 
     initialDragState() {
@@ -190,12 +203,13 @@ export class WebPrint {
         return this.dragState;
     }
 
-    dragEnd(slidingBlock?: HTMLElement, showWholeContain = true) {
+    dragEnd(showWholeContain = true) {
         if (!this.dragState.moving) return;
         if (this.domManger.printTemplateDom) {
-            const isWrap = PositionManager.isChildrenInContainer(slidingBlock, this.domManger.printTemplateDom, showWholeContain);
+            const temporaryTemplateDom = this.domManger.temporaryTemplateDom;
+            const isWrap = PositionManager.isChildrenInContainer(temporaryTemplateDom, this.domManger.printTemplateDom, showWholeContain);
             if (isWrap) {
-                const position = PositionManager.getPositionByContainer(slidingBlock, this.domManger.printTemplateDom);
+                const position = PositionManager.getPositionByContainer(temporaryTemplateDom, this.domManger.printTemplateDom);
                 this.addActor({ ...position });
             }
             this.#triggerListener(ListenerType.dragEnd, {
@@ -364,15 +378,6 @@ export class WebPrint {
         }
         if (this.listener[type]) {
             this.listener[type] = this.listener[type].filter((item) => item !== listener);
-        }
-    }
-
-    getPluginByName(name: DraggableType): BasePrintPlugin {
-        if (this.plugins[name]) {
-            return this.plugins[name];
-        } else {
-            return this.plugins["DEFAULT"];
-            // throw new Error(`插件${name}不存在`);
         }
     }
 
