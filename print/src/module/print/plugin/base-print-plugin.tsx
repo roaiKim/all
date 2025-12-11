@@ -1,5 +1,5 @@
+import type { PrintElement } from "../main";
 import type { DragState, Shapes } from "../main/print";
-import type { DraggableType } from "../main/static";
 
 export interface BasePrintPluginOption {
     type: keyof Shapes;
@@ -30,10 +30,8 @@ export class BasePrintPlugin {
         return <div style={{ width, height }}></div>;
     }
 
-    render(props) {
-        const { element } = props;
-        const { x, y, width, height, content, id } = element || {};
-
-        return <div className="print-element">{content}</div>;
+    render(props: PrintElement): React.ReactNode {
+        const { content } = props || {};
+        return content;
     }
 }

@@ -5,7 +5,7 @@ import { CustomerBodyEvent } from "../event/body-event";
 import { CustomerMovingEvent } from "../event/moving-event";
 import type { PrintElement } from "../main";
 import { initialMovingState, ListenerType, type MovingState, type WebPrint } from "../main/print";
-import { TextPrint } from "../shapes/text";
+import { PrintRender } from "../shapes/text";
 import "./index.less";
 
 interface PrintBodyProps {
@@ -107,7 +107,7 @@ export default function PrintBody(props: PrintBodyProps) {
                             printModule={printModule}
                             spotlighting={spotlightState?.id === item.id}
                         >
-                            <TextPrint element={item} />
+                            <PrintRender printElement={item} printModule={printModule} />
                         </Controller>
                     ))}
                 </div>

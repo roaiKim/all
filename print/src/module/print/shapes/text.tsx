@@ -1,13 +1,22 @@
 import { useEffect, useRef, useState } from "react";
+import type { PrintElement } from "../main";
+import type { WebPrint } from "../main/print";
 import "./index.less";
 
-interface TextPrint {
-    setMovingId: (id: string) => void;
+interface PrintRenderPrint {
+    printModule: WebPrint;
+    printElement: PrintElement;
 }
 
-export function TextPrint(props) {
-    const { element, setMovingId } = props;
-    const { x, y, width, height, content, id } = element || {};
+export function PrintRender(props: PrintRenderPrint) {
+    const { printElement, printModule } = props;
+    const { x, y, width, height, content, id, type } = printElement || {};
 
-    return <div className="print-element">{content}</div>;
+    const [PrintWebElement] = useState<any>(() => printModule.getPluginByName(type).render);
+
+    return (
+        <div className="print-element">
+            <PrintWebElement {...printElement}></PrintWebElement>
+        </div>
+    );
 }

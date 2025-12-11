@@ -1,4 +1,3 @@
-import type { JSX } from "react/jsx-runtime";
 import { BasePrintPlugin } from "./base-print-plugin";
 import type { DragState } from "../main/print";
 import { DraggableType } from "../main/static";
@@ -13,6 +12,10 @@ export class TextPlugin extends BasePrintPlugin {
             width: 200,
         });
     }
+
+    // render() {
+    //     return "ddddddddddddd";
+    // }
 }
 
 export class ImgPlugin extends BasePrintPlugin {
