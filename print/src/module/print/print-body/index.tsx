@@ -6,6 +6,7 @@ import { CustomerMovingEvent } from "../event/moving-event";
 import type { PrintElement } from "../main";
 import { initialMovingState, ListenerType, type MovingState, type WebPrint } from "../main/print";
 import { PrintRender } from "../shapes/text";
+import { dpiManager } from "../utils/dpi-manager";
 import "./index.less";
 
 interface PrintBodyProps {
@@ -95,10 +96,12 @@ export default function PrintBody(props: PrintBodyProps) {
         };
     }, [hasSpotlight, movingState.moving, movingState.resizing]);
 
+    const height = dpiManager.mmToPx(296) * 1.5 + 80;
+
     return (
-        <div className="print-main">
-            <div id="printBodyDom" ref={printBodyRef} className="print-body">
-                <div id="printTemplateDom" ref={ref} className="print-template a4" /* onMouseMove={onMouseMove} onMouseUp={() => setMovingId("")} */>
+        <div className="print-stage">
+            <div id="printBodyDom" ref={printBodyRef} className="print-body" style={{ height }}>
+                <div id="printTemplateDom" ref={ref} className="print-template a4">
                     {printElement.map((item) => (
                         <Controller
                             key={item.id}

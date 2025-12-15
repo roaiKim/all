@@ -44,7 +44,10 @@ export default function Assemble() {
             <Header printModule={printModule} />
             <Operate />
             <Rule></Rule>
-            <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
+            <div className="print-main">
+                <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
+                <div className="print-option"></div>
+            </div>
             <TemporaryTemplate printModule={printModule} />
         </div>
     );
