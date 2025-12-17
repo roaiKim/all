@@ -11,7 +11,7 @@ export interface PrintElement {
 
 export default function WebContainer() {
     return (
-        <div>
+        <div className="web-app">
             <div></div>
             <div id="web-container" className="web-container"></div>
             <div style={{ height: 200 }}></div>
