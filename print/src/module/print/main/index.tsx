@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
-import { type DragState, initialDragState, ListenerType, WebPrint } from "./print";
+import { type BaseShape, type DragState, initialDragState, ListenerType, WebPrint } from "./print";
+import type { DraggableType } from "./static";
 import TemporaryTemplate from "./temporary-template";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
@@ -9,7 +10,8 @@ import PrintBody from "../print-body";
 import Rule from "../rule";
 import "./index.less";
 
-export interface PrintElement extends DragState {
+export interface PrintElement extends BaseShape {
+    type: DraggableType | null;
     id: string;
     content: string;
     option?: any;

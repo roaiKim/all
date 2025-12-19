@@ -34,17 +34,17 @@ export default function TemporaryTemplate(props: TemporaryTemplateProps) {
         }
     }, [printModule]);
 
-    useEffect(() => {
-        if (printTemporaryTemplate.moving) {
-            customDragEvent.current?.mousemove();
-            customDragEvent.current?.mouseup();
-        } else {
-            customDragEvent.current?.destroyAll();
-        }
-        return () => {
-            customDragEvent.current?.destroyAll();
-        };
-    }, [printTemporaryTemplate.moving]);
+    // useEffect(() => {
+    //     if (printTemporaryTemplate.moving) {
+    //         customDragEvent.current?.mousemove();
+    //         customDragEvent.current?.mouseup();
+    //     } else {
+    //         customDragEvent.current?.destroyAll();
+    //     }
+    //     return () => {
+    //         customDragEvent.current?.destroyAll();
+    //     };
+    // }, [printTemporaryTemplate.moving]);
 
     useEffect(() => {
         if (printTemporaryTemplate.type) {
@@ -55,7 +55,7 @@ export default function TemporaryTemplate(props: TemporaryTemplateProps) {
     return (
         <div
             id="temporaryTemplateDom"
-            className={`print-temporary-template ${printTemporaryTemplate.moving ? "moving" : ""}`}
+            className={`print-temporary-template ${printTemporaryTemplate.draging ? "moving" : ""}`}
             style={{
                 top: printTemporaryTemplate.y,
                 left: printTemporaryTemplate.x,

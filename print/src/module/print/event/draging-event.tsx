@@ -33,10 +33,10 @@ export class CustomerDragingEvent extends BaseCustomerEvent {
 
     draging = (event: MouseEvent) => {
         event.stopPropagation();
-        this.printModule.draging(event);
+        // this.printModule.draging(event);
     };
 
     end = () => {
-        this.printModule.dragEnd();
+        // this.printModule.dragEnd();
     };
 }

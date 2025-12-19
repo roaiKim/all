@@ -16,14 +16,16 @@ interface IconButtonProps {
 
 export default function IconButton(props: PropsWithChildren<IconButtonProps>) {
     const { text, children, pointer, hoverMask, size, title, draggable, draggableType } = props;
-    const clasname = classNames({
+
+    const classname = classNames({
         "rk-icon-button": true,
         [`${pointer || ""}`]: true,
         [`${size || ""}`]: true,
         "hover-mask": hoverMask,
     });
+
     return (
-        <div className={clasname} title={title} data-draggable-type={draggableType}>
+        <div className={classname} title={title} data-draggable-type={draggableType}>
             <div>
                 {children}
                 <span className="rk-ib-text">{text}</span>

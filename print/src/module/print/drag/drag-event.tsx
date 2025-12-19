@@ -1,6 +1,9 @@
-import { DragBaseEventManager, type DragBaseEventManagerProps } from "./base-event";
+import { DragBaseEventManager, type DragBaseEventManagerProps } from "./base-drag-event";
+import type { WebPrint } from "../main/print";
+import type { DraggableType } from "../main/static";
 
 interface DragEventManagerProps extends DragBaseEventManagerProps {
+    draggableType: DraggableType;
     movStart?: (state: DragBaseEventManagerProps["state"]) => void;
     moving?: (state: DragBaseEventManagerProps["state"]) => void;
     movEnd?: (state: DragBaseEventManagerProps["state"], isWrap: boolean) => void;
@@ -8,17 +11,21 @@ interface DragEventManagerProps extends DragBaseEventManagerProps {
 
 export class DragEventManager extends DragBaseEventManager {
     options: DragEventManagerProps;
-    constructor(props: DragEventManagerProps) {
+    printModule: WebPrint;
+    constructor(props: DragEventManagerProps, printModule: WebPrint) {
         // const { dragId, containerId } = props;
         super(props);
         this.options = props;
+
+        this.printModule = printModule;
     }
 
-    mousedownListener = () => {
+    mousedownListener = (event) => {
         console.log("--mousedownListener--");
         if (this.options.movStart) {
             this.options.movStart(this.state);
         }
+        // const
     };
 
     mousemoveListener = () => {

@@ -30,12 +30,12 @@ export class CustomerDragEvent extends BaseCustomerEvent {
         const target: any = event.target;
         if (target) {
             if (target.dataset?.draggableType) {
-                this.printModule.dragStart(event, target.dataset.draggableType);
+                // this.printModule.dragStart(event, target.dataset.draggableType);
             }
         }
     };
 
     end = () => {
-        this.printModule.dragEnd();
+        // this.printModule.dragEnd();
     };
 }

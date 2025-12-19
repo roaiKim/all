@@ -25,7 +25,7 @@ export interface BaseShape {
 
 export interface DragState extends BaseShape {
     type: DraggableType | null;
-    moving: boolean;
+    draging: boolean;
 }
 
 export const initialDragState = () => ({
@@ -34,7 +34,7 @@ export const initialDragState = () => ({
     type: null,
     width: 280,
     height: 100,
-    moving: false,
+    draging: false,
 });
 
 export interface MovingState extends BaseShape {
@@ -176,49 +176,53 @@ export class WebPrint {
         return this.movingState;
     }
 
-    dragStart(event, type: DraggableType) {
-        const x = event.pageX - this.dragState.width / 2;
-        const y = event.pageY - this.dragState.height / 2;
-        const shape = this.getPluginByName(type);
-        this.dragState = {
-            ...this.dragState,
-            x: ToolManager.numberPrecision(x),
-            y: ToolManager.numberPrecision(y),
-            width: shape.option.width,
-            height: shape.option.height,
-            type,
-            moving: true,
-        };
-        this.#triggerListener(ListenerType.dragStateChange, this.dragState);
-        return this.dragState;
+    dragEvent(eventType: "start" | "draging" | "end", state) {
+        //
     }
 
-    draging(event) {
-        if (!this.dragState.moving) return;
-        const x = event.pageX - this.dragState.width / 2;
-        const y = event.pageY - this.dragState.height / 2;
-        this.dragState.x = ToolManager.numberPrecision(x);
-        this.dragState.y = ToolManager.numberPrecision(y);
-        this.#triggerListener(ListenerType.dragStateChange, this.dragState);
-        return this.dragState;
-    }
+    // dragStart(event, type: DraggableType) {
+    //     const x = event.pageX - this.dragState.width / 2;
+    //     const y = event.pageY - this.dragState.height / 2;
+    //     const shape = this.getPluginByName(type);
+    //     this.dragState = {
+    //         ...this.dragState,
+    //         x: ToolManager.numberPrecision(x),
+    //         y: ToolManager.numberPrecision(y),
+    //         width: shape.option.width,
+    //         height: shape.option.height,
+    //         type,
+    //         moving: true,
+    //     };
+    //     this.#triggerListener(ListenerType.dragStateChange, this.dragState);
+    //     return this.dragState;
+    // }
 
-    dragEnd(showWholeContain = true) {
-        if (!this.dragState.moving) return;
-        if (this.domManger.printTemplateDom) {
-            const temporaryTemplateDom = this.domManger.temporaryTemplateDom;
-            const isWrap = PositionManager.isChildrenInContainer(temporaryTemplateDom, this.domManger.printTemplateDom, showWholeContain);
-            if (isWrap) {
-                const position = PositionManager.getPositionByContainer(temporaryTemplateDom, this.domManger.printTemplateDom);
-                this.addActor({ ...position });
-            }
-            this.#triggerListener(ListenerType.dragEnd, {
-                dragState: this.dragState,
-                contain: isWrap,
-            });
-        }
-        return this.initialDragState();
-    }
+    // draging(event) {
+    //     if (!this.dragState.moving) return;
+    //     const x = event.pageX - this.dragState.width / 2;
+    //     const y = event.pageY - this.dragState.height / 2;
+    //     this.dragState.x = ToolManager.numberPrecision(x);
+    //     this.dragState.y = ToolManager.numberPrecision(y);
+    //     this.#triggerListener(ListenerType.dragStateChange, this.dragState);
+    //     return this.dragState;
+    // }
+
+    // dragEnd(showWholeContain = true) {
+    //     if (!this.dragState.moving) return;
+    //     if (this.domManger.printTemplateDom) {
+    //         const temporaryTemplateDom = this.domManger.temporaryTemplateDom;
+    //         const isWrap = PositionManager.isChildrenInContainer(temporaryTemplateDom, this.domManger.printTemplateDom, showWholeContain);
+    //         if (isWrap) {
+    //             const position = PositionManager.getPositionByContainer(temporaryTemplateDom, this.domManger.printTemplateDom);
+    //             this.addActor({ ...position });
+    //         }
+    //         this.#triggerListener(ListenerType.dragEnd, {
+    //             dragState: this.dragState,
+    //             contain: isWrap,
+    //         });
+    //     }
+    //     return this.initialDragState();
+    // }
 
     moveStart(event, moveState: Partial<MovingState>) {
         this.#initialCurtainState();
@@ -255,7 +259,7 @@ export class WebPrint {
                 this.actors[index] = {
                     ...this.actors[index],
                     ...this.movingState,
-                    moving: false,
+                    // moving: false,
                 };
             }
         }
