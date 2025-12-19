@@ -99,8 +99,8 @@ export class DragBaseEventManager {
     #registerMouseup = (event: MouseEvent) => {
         event.preventDefault();
         this.state.draging = false;
-        this.mouseupListener(event);
-        this.#validateWhole(this.#options.showWholeContain);
+        const isWrap = this.#validateWhole(this.#options.showWholeContain);
+        this.mouseupListener(event, isWrap);
         this.#body.removeEventListener("mousemove", this.#registerMousemove);
         this.#body.removeEventListener("mouseup", this.#registerMouseup);
         this.#body.removeEventListener("mouseleave", this.#registerMouseup);
@@ -119,5 +119,5 @@ export class DragBaseEventManager {
 
     mousedownListener = (event: MouseEvent) => {};
     mousemoveListener = (event: MouseEvent) => {};
-    mouseupListener = (event: MouseEvent) => {};
+    mouseupListener = (event: MouseEvent, isWrap: boolean) => {};
 }

@@ -28,8 +28,8 @@ export class DragEventManager extends DragBaseEventManager {
         }
     };
 
-    mouseupListener = () => {
-        console.log("--mouseupListener--");
+    mouseupListener = (event, isWrap) => {
+        console.log("--mouseupListener--", isWrap);
         if (this.options.movEnd) {
             this.options.movEnd(this.state);
         }
