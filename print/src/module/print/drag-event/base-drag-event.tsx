@@ -1,5 +1,6 @@
 import { PositionManager } from "../utils/position-manager";
 import { throttle } from "../utils/throttle";
+import { ToolManager } from "../utils/tool-manager";
 
 export interface WebEventState {
     x: number;
@@ -19,7 +20,7 @@ export interface DragBaseEventManagerProps<T = WebEventState> {
     /**
      * 容器target
      */
-    container: string | HTMLElement;
+    container?: string | HTMLElement;
     /**
      * move 触发频率
      */
@@ -45,25 +46,29 @@ export class DragBaseEventManager {
     #options: DragBaseEventManagerProps;
     constructor(props: DragBaseEventManagerProps) {
         const { dragger, container, frequency = 40, state } = props;
-        this.#dragDom = this.#getDom(dragger);
-        this.#body = document.body;
-        this.#containerDom = this.#getDom(container);
 
-        if (!this.#dragDom || !this.#containerDom) {
-            console.error("元素或容器不存在");
+        this.#dragDom = this.#getDom(dragger);
+        this.#containerDom = this.#getDom(container);
+        this.#body = document.body;
+
+        if (!this.#dragDom) {
+            console.error("元素不存在");
             return;
         }
 
         this.#options = props;
 
-        this.state = initialDragState(state);
+        this.initialDragState(state);
 
         this.#registerMousemove = throttle(this.#mousemoveHander, frequency);
 
         this.#init();
     }
 
-    #getDom = (element: string | HTMLElement) => {
+    #getDom = (element?: string | HTMLElement) => {
+        if (!element) {
+            return null;
+        }
         if (typeof element === "string") {
             return document.getElementById(element);
         } else {
@@ -78,8 +83,12 @@ export class DragBaseEventManager {
     #registerMousedown = (event: MouseEvent) => {
         event.preventDefault();
         const { offsetX, offsetY } = event;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
+        this.offsetX = ToolManager.numberPrecision(offsetX || 0);
+        this.offsetY = ToolManager.numberPrecision(offsetY || 0);
+        const x = event.pageX - this.state.width / 2;
+        const y = event.pageY - this.state.height / 2;
+        this.state.x = ToolManager.numberPrecision(x /*  + (window.pageXOffset || 0) */);
+        this.state.y = ToolManager.numberPrecision(y /* + (window.pageYOffset || 0) */);
         this.state.draging = true;
         this.mousedownListener(event);
         this.#body.addEventListener("mousemove", this.#registerMousemove);
@@ -89,24 +98,26 @@ export class DragBaseEventManager {
 
     #mousemoveHander = (event: MouseEvent) => {
         event.preventDefault();
-        const x = event.x - this.offsetX;
-        const y = event.y - this.offsetY;
-        this.state.x = x + window.pageXOffset;
-        this.state.y = y + window.pageYOffset;
+        // const x = event.x - this.offsetX;
+        // const y = event.y - this.offsetY;
+        const x = event.pageX - this.state.width / 2;
+        const y = event.pageY - this.state.height / 2;
+        this.state.x = ToolManager.numberPrecision(x /*  + (window.pageXOffset || 0) */);
+        this.state.y = ToolManager.numberPrecision(y /*  + (window.pageYOffset || 0) */);
         this.mousemoveListener(event);
     };
 
     #registerMouseup = (event: MouseEvent) => {
         event.preventDefault();
         this.state.draging = false;
-        const isWrap = this.#validateWhole(this.#options.showWholeContain);
+        const isWrap = this.validateWhole(this.#options.showWholeContain);
         this.mouseupListener(event, isWrap);
         this.#body.removeEventListener("mousemove", this.#registerMousemove);
         this.#body.removeEventListener("mouseup", this.#registerMouseup);
         this.#body.removeEventListener("mouseleave", this.#registerMouseup);
     };
 
-    #validateWhole = (showWholeContain = true) => {
+    validateWhole = (showWholeContain = true) => {
         if (this.#containerDom) {
             return PositionManager.isChildrenInContainer(this.#dragDom, this.#containerDom, showWholeContain);
         }
@@ -116,6 +127,10 @@ export class DragBaseEventManager {
     setState = (state: Partial<WebEventState>) => {
         this.state = Object.assign({}, this.state, state);
     };
+
+    initialDragState(state?: Partial<WebEventState>) {
+        this.state = initialDragState(state);
+    }
 
     mousedownListener = (event: MouseEvent) => {};
     mousemoveListener = (event: MouseEvent) => {};

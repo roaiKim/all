@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, Ref } from "react";
 
 type IconButtonPointer = "pointer" | "move";
 
@@ -12,10 +12,11 @@ interface IconButtonProps {
     size?: ("s" | "m" | "l") & string;
     draggable?: boolean;
     onDragEnd?: (event, config) => void;
+    ref?: Ref<HTMLDivElement>;
 }
 
 export default function IconButton(props: PropsWithChildren<IconButtonProps>) {
-    const { text, children, pointer, hoverMask, size, title, draggable, draggableType } = props;
+    const { text, children, pointer, hoverMask, size, title, ref, draggable, draggableType } = props;
 
     const classname = classNames({
         "rk-icon-button": true,
@@ -25,7 +26,7 @@ export default function IconButton(props: PropsWithChildren<IconButtonProps>) {
     });
 
     return (
-        <div className={classname} title={title} data-draggable-type={draggableType}>
+        <div ref={ref} className={classname} title={title} data-draggable-type={draggableType}>
             <div>
                 {children}
                 <span className="rk-ib-text">{text}</span>

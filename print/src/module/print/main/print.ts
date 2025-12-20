@@ -176,8 +176,37 @@ export class WebPrint {
         return this.movingState;
     }
 
-    dragEvent(eventType: "start" | "draging" | "end", state) {
-        //
+    dragEvent(eventType: "start" | "draging" | "end", state: Partial<DragState>, isWrap?: boolean) {
+        if (eventType === "start") {
+            this.dragState = {
+                ...this.dragState,
+                ...state,
+            };
+            this.#triggerListener(ListenerType.dragStateChange, this.dragState);
+            return this.dragState;
+        } else if (eventType === "draging") {
+            if (!this.dragState.draging) return;
+            this.dragState = {
+                ...this.dragState,
+                ...state,
+            };
+            this.#triggerListener(ListenerType.dragStateChange, this.dragState);
+            return this.dragState;
+        } else if (eventType === "end") {
+            if (!this.dragState.draging) return;
+            if (this.domManger.printTemplateDom) {
+                const temporaryTemplateDom = this.domManger.temporaryTemplateDom;
+                if (isWrap) {
+                    const position = PositionManager.getPositionByContainer(temporaryTemplateDom, this.domManger.printTemplateDom);
+                    this.addActor({ ...position });
+                }
+                this.#triggerListener(ListenerType.dragEnd, {
+                    dragState: this.dragState,
+                    contain: isWrap,
+                });
+            }
+            return this.initialDragState();
+        }
     }
 
     // dragStart(event, type: DraggableType) {

@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useEffect, useRef } from "react";
 import IconButton from "./icon-button";
-import { DragEventManager } from "../drag/drag-event";
+import { DragEventManager } from "../drag-event/drag-event";
 import type { WebPrint } from "../main/print";
 import type { DraggableType } from "../main/static";
 
@@ -11,7 +11,7 @@ interface DragerProps {
     draggableType?: DraggableType;
     hoverMask?: boolean;
     pointer?: IconButtonPointer & string;
-    printModule?: WebPrint;
+    printModule: WebPrint;
 }
 
 export default function Drager(props: PropsWithChildren<DragerProps>) {
@@ -25,7 +25,6 @@ export default function Drager(props: PropsWithChildren<DragerProps>) {
                 {
                     draggableType,
                     dragger: dragRef.current,
-                    container: printModule.domManger.printTemplateDom,
                 },
                 printModule
             );
@@ -33,10 +32,8 @@ export default function Drager(props: PropsWithChildren<DragerProps>) {
     }, [draggableType, printModule]);
 
     return (
-        <div ref={dragRef}>
-            <IconButton text={text} draggableType={draggableType} hoverMask={hoverMask} pointer={pointer}>
-                {children}
-            </IconButton>
-        </div>
+        <IconButton ref={dragRef} text={text} draggableType={draggableType} hoverMask={hoverMask} pointer={pointer}>
+            {children}
+        </IconButton>
     );
 }
