@@ -3,12 +3,12 @@ import type { PrintElement } from "../main";
 import type { WebPrint } from "../main/print";
 import "./index.less";
 
-interface PrintRenderPrint {
+interface DramaActorProps {
     printModule: WebPrint;
     printElement: PrintElement;
 }
 
-export function PrintRender(props: PrintRenderPrint) {
+export function DramaActor(props: DramaActorProps) {
     const { printElement, printModule } = props;
     const { x, y, width, height, content, id, type } = printElement || {};
 

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "antd";
-import { Controller } from "../controller";
+import StageManager from "./drama-actor";
+import { Director } from "../controller";
 import { CustomerBodyEvent } from "../event/body-event";
 import { CustomerMovingEvent } from "../event/moving-event";
 import type { PrintElement } from "../main";
 import { initialMovingState, ListenerType, type MovingState, type WebPrint } from "../main/print";
-import { PrintRender } from "../shapes/text";
+// import { DramaActor } from "../shapes/text";
 import { dpiManager } from "../utils/dpi-manager";
 import "./index.less";
 
@@ -31,70 +32,70 @@ export default function PrintBody(props: PrintBodyProps) {
     });
 
     const movingStateChange = useCallback((state) => {
-        console.log("===movingState===", state);
+        // console.log("===movingState===", state);
         setMovingState((prev) => ({ ...prev, ...state }));
     }, []);
 
-    const spotlightChange = useCallback((state) => {
-        console.log("--spotlight-正在改动-", state);
-        if (state) {
-            setSpotlightState((prev) => ({ ...(prev || {}), ...state }));
-        } else {
-            setSpotlightState(null);
-        }
-    }, []);
+    // const spotlightChange = useCallback((state) => {
+    //     console.log("--spotlight-正在改动-", state);
+    //     if (state) {
+    //         setSpotlightState((prev) => ({ ...(prev || {}), ...state }));
+    //     } else {
+    //         setSpotlightState(null);
+    //     }
+    // }, []);
 
     useEffect(() => {
         if (printModule) {
-            customerMovingEvent.current = new CustomerMovingEvent(printModule);
-            customerBodyEvent.current = new CustomerBodyEvent(printModule, printBodyRef.current);
+            // customerMovingEvent.current = new CustomerMovingEvent(printModule);
+            // customerBodyEvent.current = new CustomerBodyEvent(printModule, printBodyRef.current);
             // 监听
-            customerMovingEvent.current.mousedown();
+            // customerMovingEvent.current.mousedown();
             printModule.subscribe(ListenerType.movingStateChange, movingStateChange);
-            printModule.subscribe(ListenerType.spotlightChange, spotlightChange);
+            // printModule.subscribe(ListenerType.spotlightChange, spotlightChange);
         }
         return () => {
             customerMovingEvent.current?.destroyAll();
             if (printModule) {
                 printModule.unsubscribe(ListenerType.movingStateChange, movingStateChange);
-                printModule.unsubscribe(ListenerType.spotlightChange, spotlightChange);
+                // printModule.unsubscribe(ListenerType.spotlightChange, spotlightChange);
             }
         };
     }, [printModule]);
 
-    useEffect(() => {
-        if (movingState.moving) {
-            mouseEvent.current.mousemove = customerMovingEvent.current.mousemove();
-            mouseEvent.current.mouseup = customerMovingEvent.current.mouseup();
-            mouseEvent.current.mouseleave = customerMovingEvent.current.mouseleave();
-        } else {
-            if (mouseEvent.current.mousemove) {
-                customerMovingEvent.current?.destroyByState(mouseEvent.current.mousemove);
-            }
-            if (mouseEvent.current.mouseleave) {
-                customerMovingEvent.current?.destroyByState(mouseEvent.current.mouseleave);
-            }
-            if (mouseEvent.current.mouseup) {
-                customerMovingEvent.current?.destroyByState(mouseEvent.current.mouseup);
-            }
-        }
-    }, [movingState.moving]);
+    // useEffect(() => {
+    //     if (movingState.moving) {
+    //         mouseEvent.current.mousemove = customerMovingEvent.current.mousemove();
+    //         mouseEvent.current.mouseup = customerMovingEvent.current.mouseup();
+    //         mouseEvent.current.mouseleave = customerMovingEvent.current.mouseleave();
+    //     } else {
+    //         if (mouseEvent.current.mousemove) {
+    //             customerMovingEvent.current?.destroyByState(mouseEvent.current.mousemove);
+    //         }
+    //         if (mouseEvent.current.mouseleave) {
+    //             customerMovingEvent.current?.destroyByState(mouseEvent.current.mouseleave);
+    //         }
+    //         if (mouseEvent.current.mouseup) {
+    //             customerMovingEvent.current?.destroyByState(mouseEvent.current.mouseup);
+    //         }
+    //     }
+    // }, [movingState.moving]);
 
     const hasSpotlight = !!spotlightState;
 
-    useEffect(() => {
-        console.log("---movingState---", movingState.moving, movingState.resizing);
-        if (hasSpotlight && !movingState.moving && !movingState.resizing) {
-            customerBodyEvent.current?.registerLeaveSpotlight();
-        } else {
-            customerBodyEvent.current?.removeLeaveSpotlight();
-        }
-        return () => {
-            if (customerBodyEvent.current) {
-                customerBodyEvent.current.destroyAll();
-            }
-        };
-    }, [hasSpotlight, movingState.moving, movingState.resizing]);
+    // useEffect(() => {
+    //     console.log("---movingState---", movingState.moving, movingState.resizing);
+    //     if (hasSpotlight && !movingState.moving && !movingState.resizing) {
+    //         // customerBodyEvent.current?.registerLeaveSpotlight();
+    //     } else {
+    //         // customerBodyEvent.current?.removeLeaveSpotlight();
+    //     }
+    //     return () => {
+    //         if (customerBodyEvent.current) {
+    //             customerBodyEvent.current.destroyAll();
+    //         }
+    //     };
+    // }, [hasSpotlight, movingState.moving, movingState.resizing]);
 
     const height = dpiManager.mmToPx(296) * 1.5 + 80;
 
@@ -102,16 +103,23 @@ export default function PrintBody(props: PrintBodyProps) {
         <div className="print-stage">
             <div id="printBodyDom" ref={printBodyRef} className="print-body" style={{ height }}>
                 <div id="printTemplateDom" ref={ref} className="print-template a4">
-                    {printElement.map((item) => (
-                        <Controller
-                            key={item.id}
-                            element={item}
+                    {printElement.map((actor) => (
+                        <StageManager
+                            key={actor.id}
+                            dramaActor={actor}
                             movingState={movingState}
-                            printModule={printModule}
-                            spotlighting={spotlightState?.id === item.id}
-                        >
-                            <PrintRender printElement={item} printModule={printModule} />
-                        </Controller>
+                            spotlighting={spotlightState?.id === actor.id}
+                            stagePlay={printModule}
+                        />
+                        // <Controller
+                        //     key={item.id}
+                        //     element={item}
+                        //     movingState={movingState}
+                        //     printModule={printModule}
+                        //     spotlighting={spotlightState?.id === item.id}
+                        // >
+                        //     <PrintRender printElement={item} printModule={printModule} />
+                        // </Controller>
                     ))}
                 </div>
             </div>

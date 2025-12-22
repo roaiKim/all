@@ -37,9 +37,7 @@ export const initialDragState = () => ({
     draging: false,
 });
 
-export interface MovingState extends BaseShape {
-    id: string;
-    type: DraggableType | null;
+export interface MovingState extends PrintElement {
     moving: boolean;
     resizing: boolean;
 }
@@ -253,48 +251,87 @@ export class WebPrint {
     //     return this.initialDragState();
     // }
 
-    moveStart(event, moveState: Partial<MovingState>) {
-        this.#initialCurtainState();
-        this.movingState = {
-            ...this.movingState,
-            ...moveState,
-            moving: true,
-        };
-        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-        return this.movingState;
-    }
-
-    moving(event: MouseEvent) {
-        if (!this.movingState.moving) return;
-        const x = event.clientX - this.movingState.width / 2;
-        const y = event.clientY - this.movingState.height / 2;
-        // 边界问题
-        const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
-        const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
-        this.movingState.x = ToolManager.numberPrecision(_x);
-        this.movingState.y = ToolManager.numberPrecision(_y);
-        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-        return this.movingState;
-    }
-
-    moveEnd() {
-        if (!this.movingState.moving) return;
-        this.movingState.moving = false;
-        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-        const id = this.movingState.id;
-        if (id) {
-            const index = this.actors.findIndex((item) => item.id === id);
-            if (index > -1) {
-                this.actors[index] = {
-                    ...this.actors[index],
-                    ...this.movingState,
-                    // moving: false,
-                };
+    moveEvent(eventType: "start" | "moving" | "end", state: Partial<MovingState>) {
+        if (eventType === "start") {
+            this.movingState = {
+                ...this.movingState,
+                ...state,
+                moving: true,
+            };
+            this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+            return this.movingState;
+        } else if (eventType === "moving") {
+            this.movingState = {
+                ...this.movingState,
+                ...state,
+            };
+            this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+            return this.movingState;
+        } else if (eventType === "end") {
+            this.movingState = {
+                ...this.movingState,
+                ...state,
+                moving: false,
+            };
+            this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+            const id = this.movingState.id;
+            if (id) {
+                const index = this.actors.findIndex((item) => item.id === id);
+                if (index > -1) {
+                    this.actors[index] = {
+                        ...this.actors[index],
+                        ...this.movingState,
+                        // moving: false,
+                    };
+                }
             }
+            this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
+            return this.movingState;
         }
-        // 延迟
-        this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
     }
+
+    // moveStart(event, moveState: Partial<MovingState>) {
+    //     this.#initialCurtainState();
+    //     this.movingState = {
+    //         ...this.movingState,
+    //         ...moveState,
+    //         moving: true,
+    //     };
+    //     this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+    //     return this.movingState;
+    // }
+
+    // moving(event: MouseEvent) {
+    //     if (!this.movingState.moving) return;
+    //     const x = event.clientX - this.movingState.width / 2;
+    //     const y = event.clientY - this.movingState.height / 2;
+    //     // 边界问题
+    //     const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
+    //     const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
+    //     this.movingState.x = ToolManager.numberPrecision(_x);
+    //     this.movingState.y = ToolManager.numberPrecision(_y);
+    //     this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+    //     return this.movingState;
+    // }
+
+    // moveEnd() {
+    //     if (!this.movingState.moving) return;
+    //     this.movingState.moving = false;
+    //     this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+    //     const id = this.movingState.id;
+    //     if (id) {
+    //         const index = this.actors.findIndex((item) => item.id === id);
+    //         if (index > -1) {
+    //             this.actors[index] = {
+    //                 ...this.actors[index],
+    //                 ...this.movingState,
+    //                 // moving: false,
+    //             };
+    //         }
+    //     }
+    //     // 延迟
+    //     this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
+    // }
 
     resizeStart(moveState: Partial<MovingState>) {
         if (!moveState) return;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
 import { type BaseShape, type DragState, initialDragState, ListenerType, WebPrint } from "./print";
 import type { DraggableType } from "./static";
@@ -16,6 +16,12 @@ export interface PrintElement extends BaseShape {
     content: string;
     option?: any;
 }
+
+interface StagePlayState {
+    stagePlay: WebPrint;
+}
+
+export const StagePlayContext = createContext<StagePlayState>(null);
 
 export default function Assemble() {
     const printCurtain = useRef<HTMLElement>(null);
@@ -42,15 +48,21 @@ export default function Assemble() {
     }, [printModule]);
 
     return (
-        <div id="printContainerDom" className="print-container" ref={printContainer}>
-            <Header printModule={printModule} />
-            <Operate />
-            <Rule></Rule>
-            <div className="print-main">
-                <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
-                <div className="print-option"></div>
+        <StagePlayContext.Provider
+            value={{
+                stagePlay: printModule,
+            }}
+        >
+            <div id="printContainerDom" className="print-container" ref={printContainer}>
+                <Header printModule={printModule} />
+                <Operate />
+                <Rule></Rule>
+                <div className="print-main">
+                    <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
+                    <div className="print-option"></div>
+                </div>
+                <TemporaryTemplate printModule={printModule} />
             </div>
-            <TemporaryTemplate printModule={printModule} />
-        </div>
+        </StagePlayContext.Provider>
     );
 }
