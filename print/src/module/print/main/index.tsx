@@ -10,7 +10,7 @@ import PrintBody from "../print-body";
 import Rule from "../rule";
 import "./index.less";
 
-export interface PrintElement extends BaseShape {
+export interface DramaActor extends BaseShape {
     type: DraggableType | null;
     id: string;
     content: string;
@@ -27,7 +27,7 @@ export default function Assemble() {
     const printCurtain = useRef<HTMLElement>(null);
     const printContainer = useRef<HTMLDivElement>(null);
 
-    const [printElement, setPrintElement] = useState<PrintElement[]>([]);
+    const [printElement, setPrintElement] = useState<DramaActor[]>([]);
 
     const [printModule, setPrintModule] = useState<WebPrint>();
     const customDragEvent = useRef<CustomerDragingEvent>(null);

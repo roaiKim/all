@@ -7,7 +7,7 @@ import { PositionManager } from "../utils/position-manager";
 import { ResizeManager } from "../utils/resize-manager";
 import { ToolManager } from "../utils/tool-manager";
 
-import type { PrintElement } from ".";
+import type { DramaActor } from ".";
 
 export interface Shapes {
     base: any[];
@@ -23,12 +23,12 @@ export interface BaseShape {
     height: number;
 }
 
-export interface DragState extends BaseShape {
+export interface Dancer extends BaseShape {
     type: DraggableType | null;
     draging: boolean;
 }
 
-export const initialDragState = () => ({
+export const initialDancer = () => ({
     x: 0,
     y: 0,
     type: null,
@@ -37,21 +37,40 @@ export const initialDragState = () => ({
     draging: false,
 });
 
-export interface MovingState extends PrintElement {
+export interface ProtagonistStatus {
+    /**
+     * 是否在移动
+     */
     moving: boolean;
+    /**
+     * 是否 在resize
+     */
     resizing: boolean;
+    /**
+     * 是否聚焦
+     */
+    spotlight: boolean;
 }
 
-export const initialMovingState = (state?: MovingState) => ({
-    id: "",
-    x: 0,
-    y: 0,
-    type: null,
-    width: 280,
-    height: 100,
+export interface Protagonist extends ProtagonistStatus {
+    protagonist: DramaActor;
+}
+
+export const initialProtagonist = (status?: Partial<ProtagonistStatus>, state?: DramaActor): Protagonist => ({
+    protagonist: {
+        id: "",
+        x: 0,
+        y: 0,
+        type: null,
+        width: 280,
+        height: 100,
+        content: "",
+        ...state,
+    },
     moving: false,
     resizing: false,
-    ...state,
+    spotlight: false,
+    ...status,
 });
 
 export interface CurtainState extends BaseShape {
@@ -100,13 +119,14 @@ export class WebPrint {
     // curtain: HTMLElement;
     // shapes: Shapes;
     // defalutPlugin: BasePrintPlugin;
-    plugins: Partial<Record<string, BasePrintPlugin>>;
+    roles: Partial<Record<string, BasePrintPlugin>>;
     domManger: DomManger;
-    actors: PrintElement[];
-    dragState: DragState;
-    movingState: MovingState;
-    spotlightActor: PrintElement;
-    curtainState: CurtainState;
+    dramaActors: DramaActor[];
+    dancer: Dancer;
+    // movingState: MovingState;
+    // spotlightActor: PrintElement;
+    // curtainState: CurtainState;
+    protagonist: Protagonist;
     excludeShapesType: (keyof typeof DraggableType & string)[];
     listener: Partial<Record<keyof typeof ListenerType, PrintListener[]>>;
     listenerType: (keyof typeof ListenerType)[] = Object.keys(ListenerType) as Array<keyof typeof ListenerType>;
@@ -120,13 +140,13 @@ export class WebPrint {
         // this.curtain = curtain;
 
         this.domManger = new DomManger();
-        this.actors = [];
+        this.dramaActors = [];
         this.listener = {};
-        this.plugins = {};
+        this.roles = {};
         this.excludeShapesType = excludeShapesType || [];
-        this.movingState = initialMovingState();
-        this.initialDragState();
-        this.#initialCurtainState();
+        this.initialProtagonist();
+        this.initialDancer();
+        // this.#initialCurtainState();
         this.#registerDefaultShapes();
 
         // @ts-ignore
@@ -134,15 +154,15 @@ export class WebPrint {
     }
 
     getDragState() {
-        return this.dragState;
+        return this.dancer;
     }
 
     getActor(config = true) {
         if (config) {
-            // return new actors
-            return [...this.actors];
+            // return new dramaActors
+            return [...this.dramaActors];
         }
-        return this.actors;
+        return this.dramaActors;
     }
 
     getListener() {
@@ -150,31 +170,33 @@ export class WebPrint {
     }
 
     getPluginByName(name: DraggableType): BasePrintPlugin {
-        if (this.plugins[name]) {
-            return this.plugins[name];
+        if (this.roles[name]) {
+            return this.roles[name];
         } else {
-            return this.plugins["DEFAULT"];
+            return this.roles["DEFAULT"];
             // throw new Error(`插件${name}不存在`);
         }
     }
 
-    initialDragState() {
-        this.dragState = initialDragState();
-        this.#triggerListener(ListenerType.dragStateChange, this.dragState);
-        return this.dragState;
+    initialDancer() {
+        this.dancer = initialDancer();
+        this.#triggerListener(ListenerType.dragStateChange, this.dancer);
+        return this.dancer;
     }
 
-    #initialCurtainState() {
-        this.curtainState = PositionManager.getRectState(this.domManger.printTemplateDom);
+    // #initialCurtainState() {
+    //     this.curtainState = PositionManager.getRectState(this.domManger.printTemplateDom);
+    // }
+
+    initialProtagonist(regain: boolean = false) {
+        this.protagonist = initialProtagonist();
+        if (regain) {
+            this.#triggerListener(ListenerType.movingStateChange, this.protagonist);
+        }
+        return this.protagonist;
     }
 
-    initialMovingState() {
-        this.movingState = initialMovingState();
-        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-        return this.movingState;
-    }
-
-    dragEvent(eventType: "start" | "draging" | "end", state: Partial<DragState>, isWrap?: boolean) {
+    dragEvent(eventType: "start" | "draging" | "end", state: Partial<Dancer>, isWrap?: boolean) {
         if (eventType === "start") {
             this.dragState = {
                 ...this.dragState,
@@ -203,7 +225,7 @@ export class WebPrint {
                     contain: isWrap,
                 });
             }
-            return this.initialDragState();
+            return this.initialDancer();
         }
     }
 
@@ -276,10 +298,10 @@ export class WebPrint {
             this.#triggerListener(ListenerType.movingStateChange, this.movingState);
             const id = this.movingState.id;
             if (id) {
-                const index = this.actors.findIndex((item) => item.id === id);
+                const index = this.dramaActors.findIndex((item) => item.id === id);
                 if (index > -1) {
-                    this.actors[index] = {
-                        ...this.actors[index],
+                    this.dramaActors[index] = {
+                        ...this.dramaActors[index],
                         ...this.movingState,
                         // moving: false,
                     };
@@ -320,10 +342,10 @@ export class WebPrint {
     //     this.#triggerListener(ListenerType.movingStateChange, this.movingState);
     //     const id = this.movingState.id;
     //     if (id) {
-    //         const index = this.actors.findIndex((item) => item.id === id);
+    //         const index = this.dramaActors.findIndex((item) => item.id === id);
     //         if (index > -1) {
-    //             this.actors[index] = {
-    //                 ...this.actors[index],
+    //             this.dramaActors[index] = {
+    //                 ...this.dramaActors[index],
     //                 ...this.movingState,
     //                 // moving: false,
     //             };
@@ -368,10 +390,10 @@ export class WebPrint {
         this.#triggerListener(ListenerType.movingStateChange, this.movingState);
         const id = this.movingState.id;
         if (id) {
-            const index = this.actors.findIndex((item) => item.id === id);
+            const index = this.dramaActors.findIndex((item) => item.id === id);
             if (index > -1) {
-                this.actors[index] = {
-                    ...this.actors[index],
+                this.dramaActors[index] = {
+                    ...this.dramaActors[index],
                     ...this.movingState,
                 };
             }
@@ -382,7 +404,7 @@ export class WebPrint {
 
     captureSpotlight(id: string) {
         if (id) {
-            const spotlightActor = this.actors.find((item) => item.id === id);
+            const spotlightActor = this.dramaActors.find((item) => item.id === id);
             if (spotlightActor) {
                 this.spotlightActor = spotlightActor;
                 this.#triggerListener(ListenerType.spotlightChange, this.spotlightActor);
@@ -399,14 +421,14 @@ export class WebPrint {
 
     addActor(state: { x: number; y: number; width?: number; height?: number }) {
         const id = ToolManager.getUid();
-        const actors = {
+        const dramaActors = {
             ...this.dragState,
             id,
             content: this.dragState.type,
             ...state,
         };
-        this.actors.push(actors);
-        this.#triggerListener(ListenerType.addActor, actors);
+        this.dramaActors.push(dramaActors);
+        this.#triggerListener(ListenerType.addActor, dramaActors);
         this.#triggerListener(ListenerType.actorChange, this.getActor());
     }
 
@@ -454,8 +476,8 @@ export class WebPrint {
     registerShapes(plugin: BasePrintPlugin) {
         const { type, key, title, height, width } = plugin.option;
         if (!this.excludeShapesType.includes(key as any)) {
-            if (!this.plugins[key]) {
-                this.plugins[key] = plugin;
+            if (!this.roles[key]) {
+                this.roles[key] = plugin;
             } else {
                 throw new Error(`插件${title}已经注册`);
             }
@@ -463,7 +485,7 @@ export class WebPrint {
     }
 
     #registerDefaultShapes() {
-        this.plugins["DEFAULT"] = new BasePrintPlugin({
+        this.roles["DEFAULT"] = new BasePrintPlugin({
             key: "DEFAULT",
             title: "DEFAULT",
             type: null,

@@ -17,7 +17,7 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
     const { element, children, printModule, movingState, spotlighting } = props;
     const { x, y, width, height, content, id } = element || {};
 
-    const printControlRef = useRef(null);
+    const directorRef = useRef(null);
     const spotlightEventRef = useRef<CustomerSpotlightEvent>(null);
     const [position, setPosition] = useState(() => ({ left: x, top: y, width, height, moving: false, resizing: false }));
 
@@ -49,7 +49,7 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
     useEffect(() => {
         if (printModule) {
             new MoveEventManager(
-                { state: element, container: printModule.domManger.printTemplateDom, mover: printControlRef.current, initMousedownEvent: true },
+                { state: element, container: printModule.domManger.printTemplateDom, mover: directorRef.current, initMousedownEvent: true },
                 printModule
             );
         }
@@ -62,7 +62,7 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
     });
 
     return (
-        <div id="printControlDom" ref={printControlRef} className={`${className}`} style={position} data-draggable-id={id}>
+        <div id="printControlDom" ref={directorRef} className={`${className}`} style={position} data-draggable-id={id}>
             {children}
             <div className="print-control tl" data-fluctuate-direction={MoveDirection.TOP_LEFT}></div>
             <div className="print-control tr" data-fluctuate-direction={MoveDirection.TOP_RIGHT}></div>
