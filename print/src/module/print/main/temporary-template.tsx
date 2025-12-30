@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
-import { type DragState, initialDragState, ListenerType, WebPrint } from "./print";
+import { IncidentalMusic, initialStageDirections, type StageDirections, WebPrint } from "./print";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
 import Operate from "../operate";
@@ -8,7 +8,7 @@ import PrintBody from "../print-body";
 import Rule from "../rule";
 import "./index.less";
 
-export interface PrintElement extends DragState {
+export interface PrintElement extends StageDirections {
     id: string;
     content: string;
     option?: any;
@@ -20,7 +20,7 @@ interface TemporaryTemplateProps {
 
 export default function TemporaryTemplate(props: TemporaryTemplateProps) {
     const { printModule } = props;
-    const [printTemporaryTemplate, setPrintTemporaryTemplate] = useState(initialDragState());
+    const [printTemporaryTemplate, setPrintTemporaryTemplate] = useState(initialStageDirections());
     const CustomerDragPrint = useRef((...args) => null);
 
     const customDragEvent = useRef<CustomerDragingEvent>(null);
@@ -28,7 +28,7 @@ export default function TemporaryTemplate(props: TemporaryTemplateProps) {
     useLayoutEffect(() => {
         if (printModule) {
             customDragEvent.current = new CustomerDragingEvent(printModule);
-            printModule.subscribe(ListenerType.dragStateChange, (state) => {
+            printModule.subscribe(IncidentalMusic.dragStateChange, (state) => {
                 setPrintTemporaryTemplate((prev) => ({ ...prev, ...state }));
             });
         }

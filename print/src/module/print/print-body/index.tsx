@@ -4,23 +4,23 @@ import StageManager from "./drama-actor";
 import { Director } from "../controller";
 import { CustomerBodyEvent } from "../event/body-event";
 import { CustomerMovingEvent } from "../event/moving-event";
-import type { PrintElement } from "../main";
-import { initialMovingState, ListenerType, type MovingState, type WebPrint } from "../main/print";
+import type { DramaActor } from "../main";
+import { IncidentalMusic, initialProtagonist, type WebPrint } from "../main/print";
 // import { DramaActor } from "../shapes/text";
 import { dpiManager } from "../utils/dpi-manager";
 import "./index.less";
 
 interface PrintBodyProps {
     ref: any;
-    printElement: PrintElement[];
+    printElement: DramaActor[];
     printModule: WebPrint;
 }
 
 export default function PrintBody(props: PrintBodyProps) {
     const { ref, printElement, printModule } = props;
 
-    const [movingState, setMovingState] = useState(initialMovingState);
-    const [spotlightState, setSpotlightState] = useState<MovingState>();
+    const [movingState, setMovingState] = useState(initialProtagonist);
+    const [spotlightState, setSpotlightState] = useState<DramaActor>();
     const printBodyRef = useRef<HTMLDivElement>(null);
     const customerMovingEvent = useRef<CustomerMovingEvent>(null);
     const customerBodyEvent = useRef<CustomerBodyEvent>(null);
@@ -51,13 +51,13 @@ export default function PrintBody(props: PrintBodyProps) {
             // customerBodyEvent.current = new CustomerBodyEvent(printModule, printBodyRef.current);
             // 监听
             // customerMovingEvent.current.mousedown();
-            printModule.subscribe(ListenerType.movingStateChange, movingStateChange);
+            printModule.subscribe(IncidentalMusic.movingStateChange, movingStateChange);
             // printModule.subscribe(ListenerType.spotlightChange, spotlightChange);
         }
         return () => {
             customerMovingEvent.current?.destroyAll();
             if (printModule) {
-                printModule.unsubscribe(ListenerType.movingStateChange, movingStateChange);
+                printModule.unsubscribe(IncidentalMusic.movingStateChange, movingStateChange);
                 // printModule.unsubscribe(ListenerType.spotlightChange, spotlightChange);
             }
         };

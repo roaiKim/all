@@ -1,11 +1,11 @@
 import { DragBaseEventManager, type DragBaseEventManagerProps } from "./base-drag-event";
 import type { WebPrint } from "../main/print";
-import type { DraggableType } from "../main/static";
+import type { RolesName } from "../main/static";
 import type { BasePrintPlugin } from "../plugin/base-print-plugin";
 import { PositionManager } from "../utils/position-manager";
 
 interface DragEventManagerProps extends DragBaseEventManagerProps {
-    draggableType: DraggableType;
+    draggableType: RolesName;
     movStart?: (state: DragBaseEventManagerProps["state"]) => void;
     moving?: (state: DragBaseEventManagerProps["state"]) => void;
     movEnd?: (state: DragBaseEventManagerProps["state"], isWrap: boolean) => void;

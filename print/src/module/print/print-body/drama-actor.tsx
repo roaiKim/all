@@ -1,10 +1,10 @@
 import { Director } from "../controller";
-import type { PrintElement } from "../main";
+import type { DramaActor } from "../main";
 import type { WebPrint } from "../main/print";
-import { DramaActor } from "../shapes/text";
+import { Agent } from "../shapes/text";
 
 interface StageManagerProps {
-    dramaActor: PrintElement;
+    dramaActor: DramaActor;
     stagePlay: WebPrint;
     spotlighting: boolean;
     movingState: any;
@@ -15,7 +15,7 @@ export default function StageManager(props: StageManagerProps) {
 
     return (
         <Director element={dramaActor} movingState={movingState} printModule={stagePlay} spotlighting={spotlighting}>
-            <DramaActor printElement={dramaActor} printModule={stagePlay} />
+            <Agent printElement={dramaActor} printModule={stagePlay} />
         </Director>
     );
 }

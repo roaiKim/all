@@ -1,4 +1,4 @@
-export enum DraggableType {
+export enum RolesName {
     TEXT = "TEXT",
     IMG = "IMG",
     BRCODE = "BRCODE",

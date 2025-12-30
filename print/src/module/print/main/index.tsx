@@ -1,7 +1,7 @@
 import { createContext, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
-import { type BaseShape, type DragState, initialDragState, ListenerType, WebPrint } from "./print";
-import type { DraggableType } from "./static";
+import { type BaseShape, IncidentalMusic, WebPrint } from "./print";
+import type { RolesName } from "./static";
 import TemporaryTemplate from "./temporary-template";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
@@ -11,7 +11,7 @@ import Rule from "../rule";
 import "./index.less";
 
 export interface DramaActor extends BaseShape {
-    type: DraggableType | null;
+    type: RolesName | null;
     id: string;
     content: string;
     option?: any;
@@ -40,7 +40,7 @@ export default function Assemble() {
 
     useEffect(() => {
         if (printModule) {
-            printModule.subscribe(ListenerType.actorChange, (actor) => {
+            printModule.subscribe(IncidentalMusic.actorChange, (actor) => {
                 console.log("--actor-正在改动-", actor);
                 setPrintElement(() => actor);
             });

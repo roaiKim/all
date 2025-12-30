@@ -1,4 +1,5 @@
-import { DraggableType } from "./static";
+import { produce } from "immer";
+import { RolesName } from "./static";
 import { DomManger } from "../event/dom-manger";
 import type { MoveDirection } from "../event/spotlight-event";
 import * as printPlugin from "../plugin";
@@ -23,12 +24,12 @@ export interface BaseShape {
     height: number;
 }
 
-export interface Dancer extends BaseShape {
-    type: DraggableType | null;
+export interface StageDirections extends BaseShape {
+    type: RolesName | null;
     draging: boolean;
 }
 
-export const initialDancer = () => ({
+export const initialStageDirections = () => ({
     x: 0,
     y: 0,
     type: null,
@@ -53,24 +54,29 @@ export interface ProtagonistStatus {
 }
 
 export interface Protagonist extends ProtagonistStatus {
-    protagonist: DramaActor;
+    dramaActor: DramaActor;
 }
 
-export const initialProtagonist = (status?: Partial<ProtagonistStatus>, state?: DramaActor): Protagonist => ({
-    protagonist: {
-        id: "",
-        x: 0,
-        y: 0,
-        type: null,
-        width: 280,
-        height: 100,
-        content: "",
-        ...state,
-    },
+const initialDramaActor = (state?: Partial<DramaActor>) => ({
+    id: "",
+    x: 0,
+    y: 0,
+    type: null,
+    width: 280,
+    height: 100,
+    content: "",
+    ...state,
+});
+const initialProtagonistStatus = (status?: Partial<ProtagonistStatus>) => ({
     moving: false,
     resizing: false,
     spotlight: false,
     ...status,
+});
+
+export const initialProtagonist = (status?: Partial<ProtagonistStatus>, state?: DramaActor): Protagonist => ({
+    dramaActor: initialDramaActor(state),
+    ...initialProtagonistStatus(status),
 });
 
 export interface CurtainState extends BaseShape {
@@ -84,7 +90,7 @@ export const initialCurtainState = () => ({
     height: 0,
 });
 
-export enum ListenerType {
+export enum IncidentalMusic {
     /**
      * 拖拽结束
      */
@@ -114,23 +120,46 @@ export enum ListenerType {
 
 type PrintListener = (...state: any[]) => void;
 
+// stage play
 export class WebPrint {
     moveEndTimer: number;
     // curtain: HTMLElement;
     // shapes: Shapes;
     // defalutPlugin: BasePrintPlugin;
+    /**
+     * 角色 插件
+     */
     roles: Partial<Record<string, BasePrintPlugin>>;
     domManger: DomManger;
+    /**
+     * 演员组
+     */
     dramaActors: DramaActor[];
-    dancer: Dancer;
+    /**
+     * 舞台指导
+     */
+    stageDirections: StageDirections;
     // movingState: MovingState;
     // spotlightActor: PrintElement;
     // curtainState: CurtainState;
+    /**
+     * 主角
+     */
     protagonist: Protagonist;
-    excludeShapesType: (keyof typeof DraggableType & string)[];
-    listener: Partial<Record<keyof typeof ListenerType, PrintListener[]>>;
-    listenerType: (keyof typeof ListenerType)[] = Object.keys(ListenerType) as Array<keyof typeof ListenerType>;
-    constructor(excludeShapesType?: (keyof typeof DraggableType & string)[]) {
+    /**
+     * 排除的 角色
+     */
+    excludeRoles: (keyof typeof RolesName & string)[];
+    /**
+     * 插曲 监听事件
+     */
+    incidentalMusic: Partial<Record<keyof typeof IncidentalMusic, PrintListener[]>>;
+    /**
+     *
+     * 类别
+     */
+    incidentalMusicName: (keyof typeof IncidentalMusic)[] = Object.keys(IncidentalMusic) as Array<keyof typeof IncidentalMusic>;
+    constructor(excludeRoles?: (keyof typeof RolesName & string)[]) {
         // this.shapes = {
         //     base: [],
         //     auxiliary: [],
@@ -141,11 +170,11 @@ export class WebPrint {
 
         this.domManger = new DomManger();
         this.dramaActors = [];
-        this.listener = {};
+        this.incidentalMusic = {};
         this.roles = {};
-        this.excludeShapesType = excludeShapesType || [];
+        this.excludeRoles = excludeRoles || [];
         this.initialProtagonist();
-        this.initialDancer();
+        this.initialStageDirections();
         // this.#initialCurtainState();
         this.#registerDefaultShapes();
 
@@ -154,7 +183,7 @@ export class WebPrint {
     }
 
     getDragState() {
-        return this.dancer;
+        return this.stageDirections;
     }
 
     getActor(config = true) {
@@ -166,10 +195,10 @@ export class WebPrint {
     }
 
     getListener() {
-        return this.listener;
+        return this.incidentalMusic;
     }
 
-    getPluginByName(name: DraggableType): BasePrintPlugin {
+    getPluginByName(name: RolesName): BasePrintPlugin {
         if (this.roles[name]) {
             return this.roles[name];
         } else {
@@ -178,10 +207,10 @@ export class WebPrint {
         }
     }
 
-    initialDancer() {
-        this.dancer = initialDancer();
-        this.#triggerListener(ListenerType.dragStateChange, this.dancer);
-        return this.dancer;
+    initialStageDirections() {
+        this.#variantStageDirections(initialStageDirections());
+        this.#triggerListener(IncidentalMusic.dragStateChange, this.stageDirections);
+        return this.stageDirections;
     }
 
     // #initialCurtainState() {
@@ -189,247 +218,159 @@ export class WebPrint {
     // }
 
     initialProtagonist(regain: boolean = false) {
-        this.protagonist = initialProtagonist();
+        // this.protagonist = initialProtagonist();
+        produce(this.protagonist, (draft) => {
+            draft.dramaActor = initialDramaActor();
+            draft.moving = false;
+            draft.resizing = false;
+            draft.spotlight = false;
+        });
         if (regain) {
-            this.#triggerListener(ListenerType.movingStateChange, this.protagonist);
+            this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
         }
         return this.protagonist;
     }
 
-    dragEvent(eventType: "start" | "draging" | "end", state: Partial<Dancer>, isWrap?: boolean) {
+    dragEvent(eventType: "start" | "draging" | "end", state: Partial<StageDirections>, isWrap?: boolean) {
         if (eventType === "start") {
-            this.dragState = {
-                ...this.dragState,
-                ...state,
-            };
-            this.#triggerListener(ListenerType.dragStateChange, this.dragState);
-            return this.dragState;
+            this.#variantStageDirections(state);
+            this.#triggerListener(IncidentalMusic.dragStateChange, this.stageDirections);
+            return this.stageDirections;
         } else if (eventType === "draging") {
-            if (!this.dragState.draging) return;
-            this.dragState = {
-                ...this.dragState,
-                ...state,
-            };
-            this.#triggerListener(ListenerType.dragStateChange, this.dragState);
-            return this.dragState;
+            if (!this.stageDirections.draging) return;
+            this.#variantStageDirections(state);
+            this.#triggerListener(IncidentalMusic.dragStateChange, this.stageDirections);
+            return this.stageDirections;
         } else if (eventType === "end") {
-            if (!this.dragState.draging) return;
+            if (!this.stageDirections.draging) return;
             if (this.domManger.printTemplateDom) {
                 const temporaryTemplateDom = this.domManger.temporaryTemplateDom;
                 if (isWrap) {
                     const position = PositionManager.getPositionByContainer(temporaryTemplateDom, this.domManger.printTemplateDom);
                     this.addActor({ ...position });
                 }
-                this.#triggerListener(ListenerType.dragEnd, {
-                    dragState: this.dragState,
+                this.#triggerListener(IncidentalMusic.dragEnd, {
+                    stageDirections: this.stageDirections,
                     contain: isWrap,
                 });
             }
-            return this.initialDancer();
+            return this.initialStageDirections();
         }
     }
 
-    // dragStart(event, type: DraggableType) {
-    //     const x = event.pageX - this.dragState.width / 2;
-    //     const y = event.pageY - this.dragState.height / 2;
-    //     const shape = this.getPluginByName(type);
-    //     this.dragState = {
-    //         ...this.dragState,
-    //         x: ToolManager.numberPrecision(x),
-    //         y: ToolManager.numberPrecision(y),
-    //         width: shape.option.width,
-    //         height: shape.option.height,
-    //         type,
-    //         moving: true,
-    //     };
-    //     this.#triggerListener(ListenerType.dragStateChange, this.dragState);
-    //     return this.dragState;
-    // }
-
-    // draging(event) {
-    //     if (!this.dragState.moving) return;
-    //     const x = event.pageX - this.dragState.width / 2;
-    //     const y = event.pageY - this.dragState.height / 2;
-    //     this.dragState.x = ToolManager.numberPrecision(x);
-    //     this.dragState.y = ToolManager.numberPrecision(y);
-    //     this.#triggerListener(ListenerType.dragStateChange, this.dragState);
-    //     return this.dragState;
-    // }
-
-    // dragEnd(showWholeContain = true) {
-    //     if (!this.dragState.moving) return;
-    //     if (this.domManger.printTemplateDom) {
-    //         const temporaryTemplateDom = this.domManger.temporaryTemplateDom;
-    //         const isWrap = PositionManager.isChildrenInContainer(temporaryTemplateDom, this.domManger.printTemplateDom, showWholeContain);
-    //         if (isWrap) {
-    //             const position = PositionManager.getPositionByContainer(temporaryTemplateDom, this.domManger.printTemplateDom);
-    //             this.addActor({ ...position });
-    //         }
-    //         this.#triggerListener(ListenerType.dragEnd, {
-    //             dragState: this.dragState,
-    //             contain: isWrap,
-    //         });
-    //     }
-    //     return this.initialDragState();
-    // }
-
-    moveEvent(eventType: "start" | "moving" | "end", state: Partial<MovingState>) {
+    moveEvent(eventType: "start" | "moving" | "end", protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
         if (eventType === "start") {
-            this.movingState = {
-                ...this.movingState,
-                ...state,
-                moving: true,
-            };
-            this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-            return this.movingState;
+            this.#variantProtagonist(protagonistStatus, state);
+            this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
+            return this.protagonist;
         } else if (eventType === "moving") {
-            this.movingState = {
-                ...this.movingState,
-                ...state,
-            };
-            this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-            return this.movingState;
+            this.#variantProtagonist(protagonistStatus, state);
+            this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
+            return this.protagonist;
         } else if (eventType === "end") {
-            this.movingState = {
-                ...this.movingState,
-                ...state,
-                moving: false,
-            };
-            this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-            const id = this.movingState.id;
+            this.#variantProtagonist(protagonistStatus, state);
+            this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
+            const id = this.protagonist.dramaActor.id;
             if (id) {
                 const index = this.dramaActors.findIndex((item) => item.id === id);
                 if (index > -1) {
-                    this.dramaActors[index] = {
-                        ...this.dramaActors[index],
-                        ...this.movingState,
-                        // moving: false,
-                    };
+                    // this.dramaActors[index] = {
+                    //     ...this.dramaActors[index],
+                    //     ...this.movingState,
+                    //     // moving: false,
+                    // };
+                    produce(this.dramaActors, (dramaActors) => {
+                        for (const key in state) {
+                            dramaActors[index][key] = state[key];
+                        }
+                    });
                 }
             }
-            this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
-            return this.movingState;
+            this.moveEndTimer = setTimeout(this.initialProtagonist.bind(this), 50);
+            return this.protagonist;
         }
     }
 
-    // moveStart(event, moveState: Partial<MovingState>) {
+    // resizeStart(moveState: Partial<MovingState>) {
+    //     if (!moveState) return;
     //     this.#initialCurtainState();
     //     this.movingState = {
     //         ...this.movingState,
     //         ...moveState,
-    //         moving: true,
+    //         resizing: true,
     //     };
-    //     this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+    //     this.#triggerListener(IncidentalMusic.movingStateChange, this.movingState);
     //     return this.movingState;
     // }
 
-    // moving(event: MouseEvent) {
-    //     if (!this.movingState.moving) return;
-    //     const x = event.clientX - this.movingState.width / 2;
-    //     const y = event.clientY - this.movingState.height / 2;
-    //     // 边界问题
-    //     const _x = Math.min(Math.max(0, x - this.curtainState.x), this.curtainState.width - this.movingState.width);
-    //     const _y = Math.min(Math.max(0, y - this.curtainState.y), this.curtainState.height - this.movingState.height);
-    //     this.movingState.x = ToolManager.numberPrecision(_x);
-    //     this.movingState.y = ToolManager.numberPrecision(_y);
-    //     this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+    // resizing(event: MouseEvent, direction: MoveDirection) {
+    //     if (!this.movingState.resizing) return;
+    //     // const width = Math.max(this.movingState.x, Math.min(event.clientX - this.curtainState.x, this.curtainState.width));
+    //     // const height = Math.max(this.movingState.y, Math.min(event.clientY - this.curtainState.y, this.curtainState.height));
+
+    //     // this.movingState.width = width - this.movingState.x;
+    //     // this.movingState.height = height - this.movingState.y;
+    //     const size = ResizeManager.controller(event, direction, this);
+    //     this.movingState = {
+    //         ...this.movingState,
+    //         ...size,
+    //     };
+    //     this.#triggerListener(IncidentalMusic.movingStateChange, this.movingState);
+
     //     return this.movingState;
     // }
 
-    // moveEnd() {
-    //     if (!this.movingState.moving) return;
-    //     this.movingState.moving = false;
-    //     this.#triggerListener(ListenerType.movingStateChange, this.movingState);
+    // resizeEnd() {
+    //     if (!this.movingState.resizing) return;
+    //     this.movingState.resizing = false;
+    //     this.#triggerListener(IncidentalMusic.movingStateChange, this.movingState);
     //     const id = this.movingState.id;
     //     if (id) {
     //         const index = this.dramaActors.findIndex((item) => item.id === id);
     //         if (index > -1) {
-    //             this.dramaActors[index] = {
-    //                 ...this.dramaActors[index],
-    //                 ...this.movingState,
-    //                 // moving: false,
-    //             };
+    //             // this.dramaActors[index] = {
+    //             //     ...this.dramaActors[index],
+    //             //     ...this.movingState,
+    //             // };
     //         }
     //     }
     //     // 延迟
-    //     this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 50);
+    //     this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 100);
     // }
 
-    resizeStart(moveState: Partial<MovingState>) {
-        if (!moveState) return;
-        this.#initialCurtainState();
-        this.movingState = {
-            ...this.movingState,
-            ...moveState,
-            resizing: true,
-        };
-        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-        return this.movingState;
-    }
+    // captureSpotlight(id: string) {
+    //     if (id) {
+    //         const spotlightActor = this.dramaActors.find((item) => item.id === id);
+    //         if (spotlightActor) {
+    //             this.spotlightActor = spotlightActor;
+    //             this.#triggerListener(IncidentalMusic.spotlightChange, this.spotlightActor);
+    //         }
+    //     }
+    // }
 
-    resizing(event: MouseEvent, direction: MoveDirection) {
-        if (!this.movingState.resizing) return;
-        // const width = Math.max(this.movingState.x, Math.min(event.clientX - this.curtainState.x, this.curtainState.width));
-        // const height = Math.max(this.movingState.y, Math.min(event.clientY - this.curtainState.y, this.curtainState.height));
-
-        // this.movingState.width = width - this.movingState.x;
-        // this.movingState.height = height - this.movingState.y;
-        const size = ResizeManager.controller(event, direction, this);
-        this.movingState = {
-            ...this.movingState,
-            ...size,
-        };
-        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-
-        return this.movingState;
-    }
-
-    resizeEnd() {
-        if (!this.movingState.resizing) return;
-        this.movingState.resizing = false;
-        this.#triggerListener(ListenerType.movingStateChange, this.movingState);
-        const id = this.movingState.id;
-        if (id) {
-            const index = this.dramaActors.findIndex((item) => item.id === id);
-            if (index > -1) {
-                this.dramaActors[index] = {
-                    ...this.dramaActors[index],
-                    ...this.movingState,
-                };
-            }
-        }
-        // 延迟
-        this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 100);
-    }
-
-    captureSpotlight(id: string) {
-        if (id) {
-            const spotlightActor = this.dramaActors.find((item) => item.id === id);
-            if (spotlightActor) {
-                this.spotlightActor = spotlightActor;
-                this.#triggerListener(ListenerType.spotlightChange, this.spotlightActor);
-            }
-        }
-    }
-
-    removeSpotlight(id: string) {
-        if (this.spotlightActor?.id === id) {
-            this.spotlightActor = null;
-            this.#triggerListener(ListenerType.spotlightChange, this.spotlightActor);
-        }
-    }
+    // removeSpotlight(id: string) {
+    //     if (this.spotlightActor?.id === id) {
+    //         this.spotlightActor = null;
+    //         this.#triggerListener(IncidentalMusic.spotlightChange, this.spotlightActor);
+    //     }
+    // }
 
     addActor(state: { x: number; y: number; width?: number; height?: number }) {
         const id = ToolManager.getUid();
-        const dramaActors = {
-            ...this.dragState,
+
+        const dramaActor = {
+            ...this.stageDirections,
             id,
-            content: this.dragState.type,
+            content: this.stageDirections.type,
             ...state,
         };
-        this.dramaActors.push(dramaActors);
-        this.#triggerListener(ListenerType.addActor, dramaActors);
-        this.#triggerListener(ListenerType.actorChange, this.getActor());
+
+        produce(this.dramaActors, (dramaActors) => {
+            dramaActors.push(dramaActor);
+        });
+
+        this.#triggerListener(IncidentalMusic.addActor, dramaActor);
+        this.#triggerListener(IncidentalMusic.actorChange, this.getActor());
     }
 
     // #initSize(curtain) {
@@ -447,35 +388,35 @@ export class WebPrint {
     //     window.addEventListener("resize", updateContainerBounds);
     // }
 
-    subscribe(type: keyof typeof ListenerType, listener: PrintListener) {
-        if (!this.listenerType.includes(type)) {
+    subscribe(type: keyof typeof IncidentalMusic, incidentalMusic: PrintListener) {
+        if (!this.incidentalMusicName.includes(type)) {
             throw new Error("订阅事件类型不存在");
         }
-        if (this.listener[type]) {
-            this.listener[type].push(listener);
+        if (this.incidentalMusic[type]) {
+            this.incidentalMusic[type].push(incidentalMusic);
         } else {
-            this.listener[type] = [listener];
+            this.incidentalMusic[type] = [incidentalMusic];
         }
     }
 
-    #triggerListener(type: keyof typeof ListenerType, ...state: any[]) {
-        if (this.listener[type]?.length) {
-            this.listener[type].forEach((item) => item(...state));
+    #triggerListener(type: keyof typeof IncidentalMusic, ...state: any[]) {
+        if (this.incidentalMusic[type]?.length) {
+            this.incidentalMusic[type].forEach((item) => item(...state));
         }
     }
 
-    unsubscribe(type: ListenerType, listener?: PrintListener) {
-        if (!this.listenerType.includes(type)) {
+    unsubscribe(type: IncidentalMusic, incidentalMusic?: PrintListener) {
+        if (!this.incidentalMusicName.includes(type)) {
             throw new Error("取消订阅事件类型不存在");
         }
-        if (this.listener[type]) {
-            this.listener[type] = this.listener[type].filter((item) => item !== listener);
+        if (this.incidentalMusic[type]) {
+            this.incidentalMusic[type] = this.incidentalMusic[type].filter((item) => item !== incidentalMusic);
         }
     }
 
     registerShapes(plugin: BasePrintPlugin) {
         const { type, key, title, height, width } = plugin.option;
-        if (!this.excludeShapesType.includes(key as any)) {
+        if (!this.excludeRoles.includes(key as any)) {
             if (!this.roles[key]) {
                 this.roles[key] = plugin;
             } else {
@@ -496,4 +437,31 @@ export class WebPrint {
             this.registerShapes(new item());
         });
     }
+
+    #variantStageDirections(stageDirections: Partial<StageDirections>) {
+        return produce(this.stageDirections, (draft) => {
+            for (const key in stageDirections) {
+                draft[key] = stageDirections[key];
+            }
+        });
+    }
+
+    #variantProtagonist(protagonistStatus: Partial<ProtagonistStatus>, protagonist: Partial<DramaActor>) {
+        return produce(this.protagonist, (draft) => {
+            for (const key in protagonistStatus) {
+                draft[key] = protagonistStatus[key];
+            }
+            for (const key in protagonist) {
+                draft.dramaActor[key] = protagonist[key];
+            }
+        });
+    }
+
+    // #immer(agent, state) {
+    //     return produce(agent, (draft) => {
+    //         for (const status in state) {
+    //             draft[status] = state[status];
+    //         }
+    //     });
+    // }
 }

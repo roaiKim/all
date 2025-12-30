@@ -1,12 +1,12 @@
 import { MoveBaseEventManager, type MoveBaseEventManagerProps } from "./base-move-event";
-import type { PrintElement } from "../main";
+import type { DramaActor } from "../main";
 import type { WebPrint } from "../main/print";
-import type { DraggableType } from "../main/static";
+import type { RolesName } from "../main/static";
 import type { BasePrintPlugin } from "../plugin/base-print-plugin";
 import { PositionManager } from "../utils/position-manager";
 
 interface MoveEventManagerProps extends MoveBaseEventManagerProps {
-    state: PrintElement;
+    state: DramaActor;
     movStart?: (state: MoveBaseEventManagerProps["state"]) => void;
     moving?: (state: MoveBaseEventManagerProps["state"]) => void;
     movEnd?: (state: MoveBaseEventManagerProps["state"], isWrap: boolean) => void;

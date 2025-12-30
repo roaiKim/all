@@ -17,8 +17,8 @@ import { headerHeight } from "@src/configure";
 import Drager from "./drager";
 import IconButton from "./icon-button";
 import { CustomerDragEvent } from "../event/drag-event";
-import type { DragState, WebPrint } from "../main/print";
-import { DraggableType } from "../main/static";
+import type { WebPrint } from "../main/print";
+import { RolesName } from "../main/static";
 import "./index.less";
 
 interface HeaderProps {
@@ -47,25 +47,25 @@ export default function Header(props: HeaderProps) {
                 <span className="rk-print-name">ROAIKIM-PRINT</span>
             </div>
             <div id="dragContainerDom" ref={dragContainer} className="rk-element">
-                <Drager text="文本" printModule={printModule} draggableType={DraggableType.TEXT} hoverMask pointer="move">
+                <Drager text="文本" printModule={printModule} draggableType={RolesName.TEXT} hoverMask pointer="move">
                     <FontSizeOutlined />
                 </Drager>
-                <Drager text="图片" printModule={printModule} draggableType={DraggableType.IMG} hoverMask pointer="move">
+                <Drager text="图片" printModule={printModule} draggableType={RolesName.IMG} hoverMask pointer="move">
                     <PictureOutlined />
                 </Drager>
-                <Drager text="条形码" printModule={printModule} draggableType={DraggableType.BRCODE} hoverMask pointer="move">
+                <Drager text="条形码" printModule={printModule} draggableType={RolesName.BRCODE} hoverMask pointer="move">
                     <QrcodeOutlined />
                 </Drager>
-                <Drager text="二维码" printModule={printModule} draggableType={DraggableType.QRCODE} hoverMask pointer="move">
+                <Drager text="二维码" printModule={printModule} draggableType={RolesName.QRCODE} hoverMask pointer="move">
                     <BarcodeOutlined />
                 </Drager>
-                <Drager text="长文" printModule={printModule} draggableType={DraggableType.TEXTAREA} hoverMask pointer="move">
+                <Drager text="长文" printModule={printModule} draggableType={RolesName.TEXTAREA} hoverMask pointer="move">
                     <OneToOneOutlined />
                 </Drager>
-                <Drager text="表格" printModule={printModule} draggableType={DraggableType.TABLE} hoverMask pointer="move">
+                <Drager text="表格" printModule={printModule} draggableType={RolesName.TABLE} hoverMask pointer="move">
                     <TableOutlined />
                 </Drager>
-                <Drager text="html" printModule={printModule} draggableType={DraggableType.HTML} hoverMask pointer="move">
+                <Drager text="html" printModule={printModule} draggableType={RolesName.HTML} hoverMask pointer="move">
                     <Html5Outlined />
                 </Drager>
             </div>

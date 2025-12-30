@@ -1,15 +1,15 @@
 import { type PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { CustomerSpotlightEvent, MoveDirection } from "../event/spotlight-event";
-import type { PrintElement } from "../main";
-import { ListenerType, type MovingState, type WebPrint } from "../main/print";
+import type { DramaActor } from "../main";
+import { type Protagonist, type WebPrint } from "../main/print";
 import { MoveEventManager } from "../move-event/move-event";
 import "./index.less";
 
 interface DirectorProps {
-    element: PrintElement;
+    element: DramaActor;
     printModule: WebPrint;
-    movingState: MovingState;
+    movingState: Protagonist;
     spotlighting: boolean;
 }
 

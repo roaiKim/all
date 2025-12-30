@@ -1,13 +1,13 @@
-import type { WebPrint } from "./print";
-import { PositionManager } from "../utils/position-manager";
-import { UidManager } from "../utils/tool-manager";
+// import type { WebPrint } from "./print";
+// import { PositionManager } from "../utils/position-manager";
+// import { UidManager } from "../utils/tool-manager";
 
-interface EventProps {
-    base: any[];
-    auxiliary: any[];
-    other: any[];
-    custom: any[];
-}
+// interface EventProps {
+//     base: any[];
+//     auxiliary: any[];
+//     other: any[];
+//     custom: any[];
+// }
 
 // export class CustomDragEvent {
 //     listeners: any[];
