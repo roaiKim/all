@@ -11,7 +11,14 @@ export interface WebEventState {
     moving?: boolean;
 }
 
-export const initialMoveState = (state?: Partial<WebEventState>) => ({ x: 0, y: 0, width: 100, height: 100, moving: false, ...state });
+export const initialMoveState = (state?: Partial<WebEventState>) => ({
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100,
+    moving: false,
+    ...state,
+});
 
 export interface MoveBaseEventManagerProps<T extends WebEventState = WebEventState> {
     /**
@@ -92,7 +99,7 @@ export class MoveBaseEventManager {
     #registerMousedown = (event: MouseEvent) => {
         event.preventDefault();
         this.#initialStageState();
-        // console.log("--registerMousedown-");
+        console.log("--registerMousedown-event", event);
         const { offsetX, offsetY } = event;
         this.offsetX = ToolManager.numberPrecision(offsetX || 0);
         this.offsetY = ToolManager.numberPrecision(offsetY || 0);
@@ -149,6 +156,7 @@ export class MoveBaseEventManager {
         this.state = initialMoveState(state);
     }
 
+    mousedownContinue = (event: MouseEvent): boolean => true;
     mousedownListener = (event: MouseEvent) => {};
     mousemoveListener = (event: MouseEvent) => {};
     mouseupListener = (event: MouseEvent, isWrap: boolean) => {};

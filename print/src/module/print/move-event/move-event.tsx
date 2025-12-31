@@ -25,7 +25,7 @@ export class MoveEventManager extends MoveBaseEventManager {
         if (this.options.movStart) {
             this.options.movStart(this.state);
         }
-        this.printModule.moveEvent("start", { moving: true }, this.state);
+        this.printModule.moveEvent("start", { moving: true, spotlight: true }, this.state);
     };
 
     mousemoveListener = () => {
@@ -41,4 +41,17 @@ export class MoveEventManager extends MoveBaseEventManager {
         }
         this.printModule.moveEvent("end", { moving: false }, this.state);
     };
+
+    // mousedownContinue = (event: MouseEvent) => {
+    //     const target: any = event.target;
+    //     if (target) {
+    //         if (target.dataset?.fluctuateDirection) {
+    //             event.stopPropagation();
+    //             this.direction = target.dataset.fluctuateDirection as MoveDirection;
+    //             this.printModule.resizeStart(this.getActor());
+    //             this.registerMousemove();
+    //         }
+    //     }
+    //     return true;
+    // };
 }

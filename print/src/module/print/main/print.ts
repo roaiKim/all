@@ -115,7 +115,7 @@ export enum IncidentalMusic {
     /**
      *
      */
-    spotlightChange = "spotlightChange",
+    // spotlightChange = "spotlightChange",
 }
 
 type PrintListener = (...state: any[]) => void;
@@ -330,7 +330,7 @@ export class WebPrint {
                 }
             }
 
-            this.moveEndTimer = setTimeout(this.initialProtagonist.bind(this), 50);
+            // this.moveEndTimer = setTimeout(this.initialProtagonist.bind(this), 50);
             return this.protagonist;
             // this.#variantProtagonist(protagonistStatus, state);
             // this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
@@ -402,20 +402,20 @@ export class WebPrint {
     //     this.moveEndTimer = setTimeout(this.initialMovingState.bind(this), 100);
     // }
 
-    // captureSpotlight(id: string) {
+    // upSpotlight(id: string) {
     //     if (id) {
     //         const spotlightActor = this.dramaActors.find((item) => item.id === id);
     //         if (spotlightActor) {
-    //             this.spotlightActor = spotlightActor;
-    //             this.#triggerListener(IncidentalMusic.spotlightChange, this.spotlightActor);
+    //             this.protagonist = initialProtagonist({ spotlight: true }, spotlightActor);
+    //             this.#triggerListener(IncidentalMusic.spotlightChange, this.protagonist);
     //         }
     //     }
     // }
 
-    // removeSpotlight(id: string) {
-    //     if (this.spotlightActor?.id === id) {
-    //         this.spotlightActor = null;
-    //         this.#triggerListener(IncidentalMusic.spotlightChange, this.spotlightActor);
+    // downSpotlight(id: string) {
+    //     if (this.protagonist.dramaActor?.id === id) {
+    //         this.protagonist = initialProtagonist({ spotlight: false });
+    //         this.#triggerListener(IncidentalMusic.spotlightChange, this.protagonist);
     //     }
     // }
 
@@ -433,6 +433,9 @@ export class WebPrint {
         //     dramaActors.push(dramaActor);
         // });
 
+        this.protagonist = initialProtagonist({ spotlight: true }, dramaActor);
+
+        this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
         this.#triggerListener(IncidentalMusic.addActor, dramaActor);
         this.#triggerListener(IncidentalMusic.actorChange, this.getActor());
     }

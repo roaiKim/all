@@ -26,7 +26,7 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
             if (protagonist.dramaActor.id === id) {
                 const { dramaActor, moving, resizing } = protagonist;
                 const { x, y, width, height } = dramaActor;
-                console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
+                // console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
                 setPosition(() => ({ left: x, top: y, width, height, moving, resizing }));
             }
         }
@@ -61,7 +61,7 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
         spotlighting,
         moving: position.moving,
     });
-    console.log("element--", element);
+    // console.log("element--", element);
     return (
         <div id="printControlDom" ref={directorRef} className={`${className}`} style={position} data-draggable-id={id}>
             {children}

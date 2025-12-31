@@ -52,13 +52,13 @@ export default function PrintBody(props: PrintBodyProps) {
             // 监听
             // customerMovingEvent.current.mousedown();
             printModule.subscribe(IncidentalMusic.movingStateChange, movingStateChange);
-            // printModule.subscribe(ListenerType.spotlightChange, spotlightChange);
+            // printModule.subscribe(IncidentalMusic.spotlightChange, movingStateChange);
         }
         return () => {
             customerMovingEvent.current?.destroyAll();
             if (printModule) {
                 printModule.unsubscribe(IncidentalMusic.movingStateChange, movingStateChange);
-                // printModule.unsubscribe(ListenerType.spotlightChange, spotlightChange);
+                // printModule.unsubscribe(IncidentalMusic.spotlightChange, movingStateChange);
             }
         };
     }, [printModule]);
@@ -108,7 +108,7 @@ export default function PrintBody(props: PrintBodyProps) {
                             key={actor.id}
                             dramaActor={actor}
                             protagonist={protagonist}
-                            spotlighting={spotlightState?.id === actor.id}
+                            spotlighting={protagonist.dramaActor?.id === actor.id}
                             stagePlay={printModule}
                         />
                         // <Controller
