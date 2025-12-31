@@ -29,6 +29,7 @@ export default function TemporaryTemplate(props: TemporaryTemplateProps) {
         if (printModule) {
             customDragEvent.current = new CustomerDragingEvent(printModule);
             printModule.subscribe(IncidentalMusic.dragStateChange, (state) => {
+                // console.log("--printTemporaryTemplate--", state);
                 setPrintTemporaryTemplate((prev) => ({ ...prev, ...state }));
             });
         }

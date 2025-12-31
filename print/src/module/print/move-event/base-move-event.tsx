@@ -100,7 +100,7 @@ export class MoveBaseEventManager {
         // const y = event.pageY - this.offsetY;
         // this.state.x = ToolManager.numberPrecision(x /*  + (window.pageXOffset || 0) */);
         // this.state.y = ToolManager.numberPrecision(y /* + (window.pageYOffset || 0) */);
-        // this.state.moving = true;
+        this.state.moving = true;
         this.mousedownListener(event);
         this.containerDom.addEventListener("mousemove", this.#registerMousemove);
         this.containerDom.addEventListener("mouseup", this.#registerMouseup);

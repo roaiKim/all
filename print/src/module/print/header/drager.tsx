@@ -2,13 +2,13 @@ import { type PropsWithChildren, useEffect, useRef } from "react";
 import IconButton from "./icon-button";
 import { DragEventManager } from "../drag-event/drag-event";
 import type { WebPrint } from "../main/print";
-import type { DraggableType } from "../main/static";
+import type { RolesName } from "../main/static";
 
 type IconButtonPointer = "pointer" | "move";
 
 interface DragerProps {
     text: string;
-    draggableType?: DraggableType;
+    draggableType?: RolesName;
     hoverMask?: boolean;
     pointer?: IconButtonPointer & string;
     printModule: WebPrint;

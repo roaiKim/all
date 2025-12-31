@@ -19,7 +19,7 @@ interface PrintBodyProps {
 export default function PrintBody(props: PrintBodyProps) {
     const { ref, printElement, printModule } = props;
 
-    const [movingState, setMovingState] = useState(initialProtagonist);
+    const [protagonist, setProtagonist] = useState(initialProtagonist);
     const [spotlightState, setSpotlightState] = useState<DramaActor>();
     const printBodyRef = useRef<HTMLDivElement>(null);
     const customerMovingEvent = useRef<CustomerMovingEvent>(null);
@@ -33,7 +33,7 @@ export default function PrintBody(props: PrintBodyProps) {
 
     const movingStateChange = useCallback((state) => {
         // console.log("===movingState===", state);
-        setMovingState((prev) => ({ ...prev, ...state }));
+        setProtagonist((prev) => ({ ...prev, ...state }));
     }, []);
 
     // const spotlightChange = useCallback((state) => {
@@ -107,7 +107,7 @@ export default function PrintBody(props: PrintBodyProps) {
                         <StageManager
                             key={actor.id}
                             dramaActor={actor}
-                            movingState={movingState}
+                            protagonist={protagonist}
                             spotlighting={spotlightState?.id === actor.id}
                             stagePlay={printModule}
                         />

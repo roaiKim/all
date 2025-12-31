@@ -9,12 +9,12 @@ import "./index.less";
 interface DirectorProps {
     element: DramaActor;
     printModule: WebPrint;
-    movingState: Protagonist;
+    protagonist: Protagonist;
     spotlighting: boolean;
 }
 
 export function Director(props: PropsWithChildren<DirectorProps>) {
-    const { element, children, printModule, movingState, spotlighting } = props;
+    const { element, children, printModule, protagonist, spotlighting } = props;
     const { x, y, width, height, content, id } = element || {};
 
     const directorRef = useRef(null);
@@ -23,13 +23,14 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
 
     useEffect(() => {
         if (id) {
-            if (movingState.id === id) {
-                const { x, y, width, height, moving, type, resizing } = movingState;
-                console.log(/* `当前${type}元素(${id})正在移动`,  */ movingState);
+            if (protagonist.dramaActor.id === id) {
+                const { dramaActor, moving, resizing } = protagonist;
+                const { x, y, width, height } = dramaActor;
+                console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
                 setPosition(() => ({ left: x, top: y, width, height, moving, resizing }));
             }
         }
-    }, [movingState, id]);
+    }, [protagonist, id]);
 
     // useEffect(() => {
     //     if (printModule) {
@@ -60,7 +61,7 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
         spotlighting,
         moving: position.moving,
     });
-
+    console.log("element--", element);
     return (
         <div id="printControlDom" ref={directorRef} className={`${className}`} style={position} data-draggable-id={id}>
             {children}

@@ -7,10 +7,10 @@ export interface WebEventState {
     y: number;
     width: number;
     height: number;
-    // draging: boolean;
+    draging: boolean;
 }
 
-export const initialDragState = (state?: Partial<WebEventState>) => ({ x: 0, y: 0, width: 100, height: 100, ...state });
+export const initialDragState = (state?: Partial<WebEventState>) => ({ x: 0, y: 0, width: 100, height: 100, draging: false, ...state });
 
 export interface DragBaseEventManagerProps<T = WebEventState> {
     /**
@@ -44,7 +44,7 @@ export class DragBaseEventManager {
     offsetX: number = 0;
     offsetY: number = 0;
     #options: DragBaseEventManagerProps;
-    draging: boolean;
+    // draging: boolean;
     constructor(props: DragBaseEventManagerProps) {
         const { dragger, container, frequency = 40, state } = props;
 
@@ -83,6 +83,7 @@ export class DragBaseEventManager {
 
     #registerMousedown = (event: MouseEvent) => {
         event.preventDefault();
+        console.log("---");
         const { offsetX, offsetY } = event;
         this.offsetX = ToolManager.numberPrecision(offsetX || 0);
         this.offsetY = ToolManager.numberPrecision(offsetY || 0);
@@ -90,7 +91,7 @@ export class DragBaseEventManager {
         const y = event.pageY - this.state.height / 2;
         this.state.x = ToolManager.numberPrecision(x /*  + (window.pageXOffset || 0) */);
         this.state.y = ToolManager.numberPrecision(y /* + (window.pageYOffset || 0) */);
-        this.draging = true;
+        this.state.draging = true;
         this.mousedownListener(event);
         this.#body.addEventListener("mousemove", this.#registerMousemove);
         this.#body.addEventListener("mouseup", this.#registerMouseup);
@@ -110,7 +111,7 @@ export class DragBaseEventManager {
 
     #registerMouseup = (event: MouseEvent) => {
         event.preventDefault();
-        this.draging = false;
+        this.state.draging = false;
         const isWrap = this.validateWhole(this.#options.showWholeContain);
         this.mouseupListener(event, isWrap);
         this.#body.removeEventListener("mousemove", this.#registerMousemove);

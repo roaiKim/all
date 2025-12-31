@@ -7,14 +7,14 @@ interface StageManagerProps {
     dramaActor: DramaActor;
     stagePlay: WebPrint;
     spotlighting: boolean;
-    movingState: any;
+    protagonist: any;
 }
 
 export default function StageManager(props: StageManagerProps) {
-    const { dramaActor, stagePlay, spotlighting, movingState } = props;
+    const { dramaActor, stagePlay, spotlighting, protagonist } = props;
 
     return (
-        <Director element={dramaActor} movingState={movingState} printModule={stagePlay} spotlighting={spotlighting}>
+        <Director element={dramaActor} protagonist={protagonist} printModule={stagePlay} spotlighting={spotlighting}>
             <Agent printElement={dramaActor} printModule={stagePlay} />
         </Director>
     );
