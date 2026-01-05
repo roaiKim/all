@@ -278,45 +278,10 @@ export class WebPrint {
     }
 
     moveEvent(eventType: "start" | "moving" | "end", protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
-        if (eventType === "start") {
-            this.protagonist = {
-                ...this.protagonist,
-                ...protagonistStatus,
-                dramaActor: {
-                    ...this.protagonist.dramaActor,
-                    ...state,
-                },
-            };
-            this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
-            return this.protagonist;
+        this.#upProtagonist(protagonistStatus, state);
+        this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
 
-            // this.#variantProtagonist(protagonistStatus, state);
-            // this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
-            // return this.protagonist;
-        } else if (eventType === "moving") {
-            this.protagonist = {
-                ...this.protagonist,
-                ...protagonistStatus,
-                dramaActor: {
-                    ...this.protagonist.dramaActor,
-                    ...state,
-                },
-            };
-            this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
-            return this.protagonist;
-            // this.#variantProtagonist(protagonistStatus, state);
-            // this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
-            // return this.protagonist;
-        } else if (eventType === "end") {
-            this.protagonist = {
-                ...this.protagonist,
-                ...protagonistStatus,
-                dramaActor: {
-                    ...this.protagonist.dramaActor,
-                    ...state,
-                },
-            };
-            this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
+        if (eventType === "end") {
             const id = this.protagonist.dramaActor.id;
 
             if (id) {
@@ -332,28 +297,11 @@ export class WebPrint {
 
             // this.moveEndTimer = setTimeout(this.initialProtagonist.bind(this), 50);
             return this.protagonist;
-            // this.#variantProtagonist(protagonistStatus, state);
-            // this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
-            // const id = this.protagonist.dramaActor.id;
-            // if (id) {
-            //     const index = this.dramaActors.findIndex((item) => item.id === id);
-            //     if (index > -1) {
-            //         // this.dramaActors[index] = {
-            //         //     ...this.dramaActors[index],
-            //         //     ...this.movingState,
-            //         //     // moving: false,
-            //         // };
-            //         produce(this.dramaActors, (dramaActors) => {
-            //             for (const key in state) {
-            //                 dramaActors[index][key] = state[key];
-            //             }
-            //         });
-            //     }
-            // }
-            // this.moveEndTimer = setTimeout(this.initialProtagonist.bind(this), 50);
-            // return this.protagonist;
         }
+        return this.protagonist;
     }
+
+    resizeEvent(eventType: "" | "" | "") {}
 
     // resizeStart(moveState: Partial<MovingState>) {
     //     if (!moveState) return;
@@ -503,6 +451,17 @@ export class WebPrint {
         Object.values(printPlugin).forEach((item) => {
             this.registerShapes(new item());
         });
+    }
+
+    #upProtagonist(protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
+        this.protagonist = {
+            ...this.protagonist,
+            ...protagonistStatus,
+            dramaActor: {
+                ...this.protagonist.dramaActor,
+                ...state,
+            },
+        };
     }
 
     // #variantStageDirections(stageDirections: Partial<StageDirections>) {
