@@ -9,6 +9,7 @@ export interface WebEventState {
     width: number;
     height: number;
     moving?: boolean;
+    resizing?: boolean;
 }
 
 export const initialMoveState = (state?: Partial<WebEventState>) => ({
@@ -17,6 +18,7 @@ export const initialMoveState = (state?: Partial<WebEventState>) => ({
     width: 100,
     height: 100,
     moving: false,
+    resizing: false,
     ...state,
 });
 
@@ -43,6 +45,8 @@ export interface MoveBaseEventManagerProps<T extends WebEventState = WebEventSta
     initMousedownEvent?: boolean;
 }
 
+type MoveBaseEventType = "move" | "resize";
+
 export class MoveBaseEventManager {
     containerDom: HTMLElement;
     moverDom: HTMLElement;
@@ -51,8 +55,7 @@ export class MoveBaseEventManager {
     offsetX: number = 0;
     offsetY: number = 0;
     stageState: BaseShape;
-
-    // #options: MoveBaseEventManagerProps;
+    eventType: MoveBaseEventType;
     constructor(props: MoveBaseEventManagerProps) {
         const { mover, container, frequency = 40, state, initMousedownEvent = false } = props;
 
@@ -69,7 +72,7 @@ export class MoveBaseEventManager {
         this.initialMoveState(state);
         this.#initialStageState();
 
-        this.#registerMousemove = throttle(this.#mousemoveHander, frequency);
+        this.#registerMousemove = throttle(this.#registermoveHander, frequency);
 
         if (initMousedownEvent) {
             this.initRegisterEvent();
@@ -88,7 +91,6 @@ export class MoveBaseEventManager {
     };
 
     initRegisterEvent() {
-        console.log("--initRegisterEvent-");
         this.moverDom.addEventListener("mousedown", this.#registerMousedown);
     }
 
@@ -99,35 +101,52 @@ export class MoveBaseEventManager {
     #registerMousedown = (event: MouseEvent) => {
         event.preventDefault();
         this.#initialStageState();
-        console.log("--registerMousedown-event", event);
+
+        this.eventType = this.decideEventType(event);
+
+        if (this.eventType === "move") {
+            this.#movStart(event);
+        } else {
+            this.#resizeStart(event);
+        }
+        this.mousedownListener(event);
+        this.#addEventListener(event);
+    };
+
+    #registermoveHander = (event) => {
+        event.preventDefault();
+        if (!this.eventType) return;
+
+        if (this.eventType === "move") {
+            this.#moving(event);
+        } else {
+            this.#resizing(event);
+        }
+
+        this.mousemoveListener(event);
+    };
+
+    #registerMouseup = (event: MouseEvent) => {
+        event.preventDefault();
+
+        if (this.eventType === "move") {
+            this.#movEnd(event);
+        } else {
+            this.#resizeEnd(event);
+        }
+        this.mouseupListener(event, false);
+        this.#removeEventListener(event);
+        this.eventType = null;
+    };
+
+    #movStart = (event: MouseEvent) => {
         const { offsetX, offsetY } = event;
         this.offsetX = ToolManager.numberPrecision(offsetX || 0);
         this.offsetY = ToolManager.numberPrecision(offsetY || 0);
-        // const x = event.pageX - this.offsetX;
-        // const y = event.pageY - this.offsetY;
-        // this.state.x = ToolManager.numberPrecision(x /*  + (window.pageXOffset || 0) */);
-        // this.state.y = ToolManager.numberPrecision(y /* + (window.pageYOffset || 0) */);
         this.state.moving = true;
-        this.mousedownListener(event);
-        this.containerDom.addEventListener("mousemove", this.#registerMousemove);
-        this.containerDom.addEventListener("mouseup", this.#registerMouseup);
-        this.containerDom.addEventListener("mouseleave", this.#registerMouseup);
     };
 
-    uninstallMousedownEvent() {
-        this.moverDom.removeEventListener("mousedown", this.#registerMousedown);
-    }
-
-    #mousemoveHander = (event: MouseEvent) => {
-        event.preventDefault();
-        // const x = event.x - this.offsetX;
-        // const y = event.y - this.offsetY;
-        // const x = event.pageX - this.offsetX;
-        // const y = event.pageY - this.offsetY;
-        // this.state.x = ToolManager.numberPrecision(x /*  + (window.pageXOffset || 0) */);
-        // this.state.y = ToolManager.numberPrecision(y /*  + (window.pageYOffset || 0) */);
-        console.log("--mousemoveHander-");
-
+    #moving = (event: MouseEvent) => {
         if (!this.state.moving) return;
         const x = event.x - this.offsetX;
         const y = event.y - this.offsetY;
@@ -136,13 +155,31 @@ export class MoveBaseEventManager {
         const _y = Math.min(Math.max(0, y - this.stageState.y), this.stageState.height - this.state.height);
         this.state.x = ToolManager.numberPrecision(_x);
         this.state.y = ToolManager.numberPrecision(_y);
-        this.mousemoveListener(event);
     };
 
-    #registerMouseup = (event: MouseEvent) => {
-        event.preventDefault();
+    #movEnd = (event) => {
         this.state.moving = false;
-        this.mouseupListener(event, false);
+    };
+
+    #resizeStart = (event) => {
+        //
+    };
+
+    #resizing = (event) => {
+        //
+    };
+
+    #resizeEnd = (event) => {
+        //
+    };
+
+    #addEventListener = (event: MouseEvent) => {
+        this.containerDom.addEventListener("mousemove", this.#registerMousemove);
+        this.containerDom.addEventListener("mouseup", this.#registerMouseup);
+        this.containerDom.addEventListener("mouseleave", this.#registerMouseup);
+    };
+
+    #removeEventListener = (event: MouseEvent) => {
         this.containerDom.removeEventListener("mousemove", this.#registerMousemove);
         this.containerDom.removeEventListener("mouseup", this.#registerMouseup);
         this.containerDom.removeEventListener("mouseleave", this.#registerMouseup);
@@ -156,7 +193,15 @@ export class MoveBaseEventManager {
         this.state = initialMoveState(state);
     }
 
-    mousedownContinue = (event: MouseEvent): boolean => true;
+    decideEventType = (event: MouseEvent): MoveBaseEventType => {
+        if (event.target === event.currentTarget) return "move";
+        return "resize";
+    };
+
+    uninstallMousedownEvent() {
+        this.moverDom.removeEventListener("mousedown", this.#registerMousedown);
+    }
+
     mousedownListener = (event: MouseEvent) => {};
     mousemoveListener = (event: MouseEvent) => {};
     mouseupListener = (event: MouseEvent, isWrap: boolean) => {};
