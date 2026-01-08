@@ -22,24 +22,36 @@ export class MoveEventManager extends MoveBaseEventManager {
     }
 
     mousedownListener = (event) => {
-        if (this.options.movStart) {
-            this.options.movStart(this.state);
+        if (this.eventType === "move") {
+            if (this.options.movStart) {
+                this.options.movStart(this.state);
+            }
+            this.printModule.moveEvent("start", { moving: true, spotlight: true }, this.state);
+        } else if (this.eventType === "resize") {
+            this.printModule.resizeEvent("start", { resizing: true }, this.state);
         }
-        this.printModule.moveEvent("start", { moving: true, spotlight: true }, this.state);
     };
 
     mousemoveListener = () => {
-        if (this.options.moving) {
-            this.options.moving(this.state);
+        if (this.eventType === "move") {
+            if (this.options.moving) {
+                this.options.moving(this.state);
+            }
+            this.printModule.moveEvent("moving", {}, this.state);
+        } else if (this.eventType === "resize") {
+            this.printModule.resizeEvent("resizing", {}, this.state);
         }
-        this.printModule.moveEvent("moving", {}, this.state);
     };
 
     mouseupListener = (event, isWrap) => {
-        if (this.options.movEnd) {
-            this.options.movEnd(this.state, isWrap);
+        if (this.eventType === "move") {
+            if (this.options.movEnd) {
+                this.options.movEnd(this.state, isWrap);
+            }
+            this.printModule.moveEvent("end", { moving: false }, this.state);
+        } else if (this.eventType === "resize") {
+            this.printModule.resizeEvent("end", { resizing: false }, this.state);
         }
-        this.printModule.moveEvent("end", { moving: false }, this.state);
     };
 
     // mousedownContinue = (event: MouseEvent) => {

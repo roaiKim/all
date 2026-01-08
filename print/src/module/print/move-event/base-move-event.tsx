@@ -1,5 +1,7 @@
+import type { MoveDirection } from "../event/spotlight-event";
 import type { BaseShape } from "../main/print";
 import { PositionManager } from "../utils/position-manager";
+import { ResizeManager } from "../utils/resize-manager";
 import { throttle } from "../utils/throttle";
 import { ToolManager } from "../utils/tool-manager";
 
@@ -56,6 +58,7 @@ export class MoveBaseEventManager {
     offsetY: number = 0;
     stageState: BaseShape;
     eventType: MoveBaseEventType;
+    direction: MoveDirection;
     constructor(props: MoveBaseEventManagerProps) {
         const { mover, container, frequency = 40, state, initMousedownEvent = false } = props;
 
@@ -106,20 +109,20 @@ export class MoveBaseEventManager {
 
         if (this.eventType === "move") {
             this.#movStart(event);
-        } else {
+        } else if (this.eventType === "resize") {
             this.#resizeStart(event);
         }
         this.mousedownListener(event);
-        this.#addEventListener(event);
+        this.#addEventListener();
     };
 
-    #registermoveHander = (event) => {
+    #registermoveHander = (event: MouseEvent) => {
         event.preventDefault();
         if (!this.eventType) return;
 
         if (this.eventType === "move") {
             this.#moving(event);
-        } else {
+        } else if (this.eventType === "resize") {
             this.#resizing(event);
         }
 
@@ -130,12 +133,12 @@ export class MoveBaseEventManager {
         event.preventDefault();
 
         if (this.eventType === "move") {
-            this.#movEnd(event);
-        } else {
-            this.#resizeEnd(event);
+            this.#movEnd();
+        } else if (this.eventType === "resize") {
+            this.#resizeEnd();
         }
         this.mouseupListener(event, false);
-        this.#removeEventListener(event);
+        this.#removeEventListener();
         this.eventType = null;
     };
 
@@ -157,29 +160,40 @@ export class MoveBaseEventManager {
         this.state.y = ToolManager.numberPrecision(_y);
     };
 
-    #movEnd = (event) => {
+    #movEnd = () => {
         this.state.moving = false;
     };
 
-    #resizeStart = (event) => {
-        //
+    #resizeStart = (event: MouseEvent) => {
+        this.state.resizing = true;
+        this.direction = this.calcDirection(event);
     };
 
-    #resizing = (event) => {
-        //
+    #resizing = (event: MouseEvent) => {
+        if (!this.state.resizing) return;
+
+        if (!this.direction) return;
+
+        const size = ResizeManager.controller(event, this.direction, this.state, this.stageState);
+
+        this.state = {
+            ...this.state,
+            ...size,
+        };
     };
 
-    #resizeEnd = (event) => {
-        //
+    #resizeEnd = () => {
+        this.state.resizing = false;
+        this.direction = null;
     };
 
-    #addEventListener = (event: MouseEvent) => {
+    #addEventListener = () => {
         this.containerDom.addEventListener("mousemove", this.#registerMousemove);
         this.containerDom.addEventListener("mouseup", this.#registerMouseup);
         this.containerDom.addEventListener("mouseleave", this.#registerMouseup);
     };
 
-    #removeEventListener = (event: MouseEvent) => {
+    #removeEventListener = () => {
         this.containerDom.removeEventListener("mousemove", this.#registerMousemove);
         this.containerDom.removeEventListener("mouseup", this.#registerMouseup);
         this.containerDom.removeEventListener("mouseleave", this.#registerMouseup);
@@ -196,6 +210,16 @@ export class MoveBaseEventManager {
     decideEventType = (event: MouseEvent): MoveBaseEventType => {
         if (event.target === event.currentTarget) return "move";
         return "resize";
+    };
+
+    calcDirection = (event: MouseEvent) => {
+        const target: any = event.target;
+        if (target) {
+            if (target.dataset?.fluctuateDirection) {
+                return target.dataset.fluctuateDirection as MoveDirection;
+            }
+        }
+        return null;
     };
 
     uninstallMousedownEvent() {

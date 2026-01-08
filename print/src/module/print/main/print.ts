@@ -301,7 +301,25 @@ export class WebPrint {
         return this.protagonist;
     }
 
-    resizeEvent(eventType: "" | "" | "") {}
+    resizeEvent(eventType: "start" | "resizing" | "end", protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
+        this.#upProtagonist(protagonistStatus, state);
+        this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
+
+        if (eventType === "end") {
+            const id = this.protagonist.dramaActor.id;
+            if (id) {
+                const index = this.dramaActors.findIndex((item) => item.id === id);
+                if (index > -1) {
+                    this.dramaActors[index] = {
+                        ...this.dramaActors[index],
+                        ...this.protagonist.dramaActor,
+                    };
+                }
+            }
+        }
+
+        return this.protagonist;
+    }
 
     // resizeStart(moveState: Partial<MovingState>) {
     //     if (!moveState) return;
