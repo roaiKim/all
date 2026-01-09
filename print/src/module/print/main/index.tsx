@@ -6,6 +6,7 @@ import TemporaryTemplate from "./temporary-template";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
 import Operate from "../operate";
+import Scenery from "../options";
 import PrintBody from "../print-body";
 import Rule from "../rule";
 import "./index.less";
@@ -59,7 +60,7 @@ export default function Assemble() {
                 <Rule></Rule>
                 <div className="print-main">
                     <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
-                    <div className="print-option"></div>
+                    <Scenery printModule={printModule} />
                 </div>
                 <TemporaryTemplate printModule={printModule} />
             </div>

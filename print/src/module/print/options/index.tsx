@@ -1,20 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "antd";
-// import { Controller } from "../controller";
-import { CustomerBodyEvent } from "../event/body-event";
-import { CustomerMovingEvent } from "../event/moving-event";
-import type { PrintElement } from "../main";
-import { initialMovingState, ListenerType, type MovingState, type WebPrint } from "../main/print";
-import { DramaActor } from "../shapes/text";
-import { dpiManager } from "../utils/dpi-manager";
+import MajorScenery from "./major-Scenery";
+import type { WebPrint } from "../main/print";
 import "./index.less";
 
-interface PrintBodyProps {
+interface SceneryProps {
     printModule: WebPrint;
 }
 
-export default function PrintBody(props: PrintBodyProps) {
+export default function Scenery(props: SceneryProps) {
     const { printModule } = props;
 
-    return <div className="print-option-contaienr">ssf</div>;
+    return (
+        <div className="scenery-option">
+            <div className="scenery-header">属性</div>
+            <MajorScenery printModule={printModule}></MajorScenery>
+        </div>
+    );
 }
