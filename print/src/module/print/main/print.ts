@@ -1,4 +1,5 @@
 // import { produce } from "immer";
+import { produce } from "immer";
 import { RolesName } from "./static";
 import { DomManger } from "../event/dom-manger";
 import type { MoveDirection } from "../event/spotlight-event";
@@ -79,18 +80,27 @@ export const initialProtagonist = (status?: Partial<ProtagonistStatus>, state?: 
     ...initialProtagonistStatus(status),
 });
 
-export interface CurtainState extends BaseShape {
+export enum StageType {
+    "A3" = "A3",
+    "A4" = "A4",
+}
+
+export interface Stage extends BaseShape {
+    type: StageType;
     color?: string;
 }
 
-export const initialCurtainState = () => ({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
+export const initialStage = (stageState: Partial<Stage>, stage?: HTMLElement) => ({
+    type: StageType.A4,
+    ...stageState,
+    ...PositionManager.getRectState(stage),
 });
 
 export enum IncidentalMusic {
+    /**
+     * 更改 stage
+     */
+    stageChange = "stageChange",
     /**
      * 拖拽结束
      */
@@ -141,7 +151,10 @@ export class WebPrint {
     stageDirections: StageDirections;
     // movingState: MovingState;
     // spotlightActor: PrintElement;
-    // curtainState: CurtainState;
+    /**
+     * 舞台
+     */
+    stage: Stage;
     /**
      * 主角
      */
@@ -175,7 +188,7 @@ export class WebPrint {
         this.excludeRoles = excludeRoles || [];
         this.protagonist = this.initialProtagonist();
         this.stageDirections = this.initialStageDirections();
-        // this.#initialCurtainState();
+        this.#initialStage();
         this.#registerDefaultShapes();
 
         // @ts-ignore
@@ -214,9 +227,9 @@ export class WebPrint {
         return this.stageDirections;
     }
 
-    // #initialCurtainState() {
-    //     this.curtainState = PositionManager.getRectState(this.domManger.printTemplateDom);
-    // }
+    #initialStage() {
+        this.stage = initialStage({});
+    }
 
     initialProtagonist(regain: boolean = false) {
         this.protagonist = initialProtagonist();
@@ -319,6 +332,15 @@ export class WebPrint {
         }
 
         return this.protagonist;
+    }
+
+    stageReact(stage: Partial<Stage>) {
+        this.stage = produce(this.stage, (draft) => {
+            for (const key in stage) {
+                draft[key] = stage[key];
+            }
+        });
+        this.#triggerListener(IncidentalMusic.stageChange, this.stage);
     }
 
     // resizeStart(moveState: Partial<MovingState>) {

@@ -11,4 +11,17 @@
     background-color: rgb(255 194 196 / 50%);
     padding: 3px;
   }
+
+  .scenery-box {
+    .scenery-row {
+      margin: 5px;
+      grid-template-columns: 60px 1fr;
+      display: grid;
+      align-items: center;
+
+      & > :first-child {
+        text-align: right;
+      }
+    }
+  }
 }

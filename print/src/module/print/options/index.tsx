@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import MajorScenery from "./major-Scenery";
+import MajorScenery from "./major-scenery";
 import type { WebPrint } from "../main/print";
 import "./index.less";
 

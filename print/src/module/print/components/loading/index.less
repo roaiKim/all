@@ -1,0 +1,65 @@
+// ClockLoader.less
+// 定义可复用变量，方便统一修改颜色、尺寸
+@loader-color:#00b96b; // rgb(54, 215, 183); // 加载器主色
+@loader-size: 50px; // 加载器整体尺寸
+@loader-border-width: 2px; // 内边框宽度
+@loader-hand-height: 2px; // 指针高度
+@loader-hand1-length: 20.8333px; // 短指针长度
+@loader-hand2-length: 16.6667px; // 长指针长度
+@loader-hand-position: 24px; // 指针定位坐标
+@loader-hand-transform-origin: 1px 1px; // 指针旋转原点
+
+// 动画关键帧（LESS 中直接兼容 CSS 关键帧写法
+@keyframes react-spinners-waiting-loader-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.waiting-stage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  place-items: center;
+
+  .waiting-text {
+    margin-top: 7px;
+  }
+
+  .waiting-loader {
+    display: inherit;
+    position: relative;
+    width: @loader-size;
+    height: @loader-size;
+    background-color: transparent;
+    box-shadow: @loader-color 0 0 0 @loader-border-width inset;
+    border-radius: 50%;
+  }
+
+  // 指针通用样式（嵌套写法，减少重复代码）
+  .waiting-loader-hand {
+    position: absolute;
+    background-color: @loader-color;
+    height: @loader-hand-height;
+    top: @loader-hand-position;
+    left: @loader-hand-position;
+    transform-origin: @loader-hand-transform-origin;
+  }
+
+  // 短指针（快旋转）
+  .waiting-loader-hand-short {
+    width: @loader-hand1-length;
+    animation: react-spinners-waiting-loader-rotate 2s linear 0s infinite normal none running;
+  }
+
+  // 长指针（慢旋转）
+  .waiting-loader-hand-long {
+    width: @loader-hand2-length;
+    animation: react-spinners-waiting-loader-rotate 8s linear 0s infinite normal none running;
+  }
+}

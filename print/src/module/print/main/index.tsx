@@ -3,6 +3,7 @@ import { message } from "antd";
 import { type BaseShape, IncidentalMusic, WebPrint } from "./print";
 import type { RolesName } from "./static";
 import TemporaryTemplate from "./temporary-template";
+import { Waiting } from "../components/loading";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
 import Operate from "../operate";
@@ -36,7 +37,7 @@ export default function Assemble() {
     useLayoutEffect(() => {
         const print = new WebPrint();
         customDragEvent.current = new CustomerDragingEvent(print);
-        setPrintModule(print);
+        // setPrintModule(print);
     }, []);
 
     useEffect(() => {
@@ -48,6 +49,10 @@ export default function Assemble() {
         }
     }, [printModule]);
 
+    if (!printModule) {
+        return <Waiting />;
+    }
+
     return (
         <StagePlayContext.Provider
             value={{
@@ -55,11 +60,11 @@ export default function Assemble() {
             }}
         >
             <div id="printContainerDom" className="print-container" ref={printContainer}>
-                <Header printModule={printModule} />
+                {/* <Header printModule={printModule} />
                 <Operate />
-                <Rule></Rule>
+                <Rule></Rule> */}
                 <div className="print-main">
-                    <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
+                    {/* <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} /> */}
                     <Scenery printModule={printModule} />
                 </div>
                 <TemporaryTemplate printModule={printModule} />
