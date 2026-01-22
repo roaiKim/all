@@ -1,132 +1,23 @@
 // import { produce } from "immer";
 import { produce } from "immer";
-import { RolesName } from "./static";
 import { DomManger } from "../event/dom-manger";
 import type { MoveDirection } from "../event/spotlight-event";
 import * as printPlugin from "../plugin";
 import { BasePrintPlugin } from "../plugin/base-print-plugin";
+import { initialProtagonist, initialStage, initialStageDirections } from "../storyboard";
+import {
+    type DramaActor,
+    IncidentalMusic,
+    type Protagonist,
+    type ProtagonistStatus,
+    RolesName,
+    type Stage,
+    type StageDirections,
+    StageType,
+} from "../type";
 import { PositionManager } from "../utils/position-manager";
 import { ResizeManager } from "../utils/resize-manager";
 import { ToolManager } from "../utils/tool-manager";
-
-import type { DramaActor } from ".";
-
-export interface Shapes {
-    base: any[];
-    auxiliary: any[];
-    other: any[];
-    custom: any[];
-}
-
-export interface BaseShape {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}
-
-export interface StageDirections extends BaseShape {
-    type: RolesName | null;
-    draging: boolean;
-}
-
-export const initialStageDirections = () => ({
-    x: 0,
-    y: 0,
-    type: null,
-    width: 280,
-    height: 100,
-    draging: false,
-});
-
-export interface ProtagonistStatus {
-    /**
-     * 是否在移动
-     */
-    moving: boolean;
-    /**
-     * 是否 在resize
-     */
-    resizing: boolean;
-    /**
-     * 是否聚焦
-     */
-    spotlight: boolean;
-}
-
-export interface Protagonist extends ProtagonistStatus {
-    dramaActor: DramaActor;
-}
-
-const initialDramaActor = (state?: Partial<DramaActor>) => ({
-    id: "",
-    x: 0,
-    y: 0,
-    type: null,
-    width: 280,
-    height: 100,
-    content: "",
-    ...state,
-});
-const initialProtagonistStatus = (status?: Partial<ProtagonistStatus>) => ({
-    moving: false,
-    resizing: false,
-    spotlight: false,
-    ...status,
-});
-
-export const initialProtagonist = (status?: Partial<ProtagonistStatus>, state?: DramaActor): Protagonist => ({
-    dramaActor: initialDramaActor(state),
-    ...initialProtagonistStatus(status),
-});
-
-export enum StageType {
-    "A3" = "A3",
-    "A4" = "A4",
-}
-
-export interface Stage extends BaseShape {
-    type: StageType;
-    color?: string;
-}
-
-export const initialStage = (stageState: Partial<Stage>, stage?: HTMLElement) => ({
-    type: StageType.A4,
-    ...stageState,
-    ...PositionManager.getRectState(stage),
-});
-
-export enum IncidentalMusic {
-    /**
-     * 更改 stage
-     */
-    stageChange = "stageChange",
-    /**
-     * 拖拽结束
-     */
-    dragEnd = "dragEnd",
-    /**
-     * 新增组件
-     */
-    addActor = "addActor",
-    /**
-     * 新增组件
-     */
-    actorChange = "actorChange",
-    /**
-     * drag 变化
-     */
-    dragStateChange = "dragStateChange",
-
-    /**
-     * 移动
-     */
-    movingStateChange = "movingStateChange",
-    /**
-     *
-     */
-    // spotlightChange = "spotlightChange",
-}
 
 type PrintListener = (...state: any[]) => void;
 
@@ -228,7 +119,8 @@ export class WebPrint {
     }
 
     #initialStage() {
-        this.stage = initialStage({});
+        this.stage = initialStage({}, this.domManger.printTemplateDom);
+        this.#triggerListener(IncidentalMusic.stageChange, this.stage);
     }
 
     initialProtagonist(regain: boolean = false) {

@@ -1,7 +1,7 @@
 import { DragBaseEventManager, type DragBaseEventManagerProps } from "./base-drag-event";
 import type { WebPrint } from "../main/print";
-import type { RolesName } from "../main/static";
 import type { BasePrintPlugin } from "../plugin/base-print-plugin";
+import type { RolesName } from "../type";
 import { PositionManager } from "../utils/position-manager";
 
 interface DragEventManagerProps extends DragBaseEventManagerProps {

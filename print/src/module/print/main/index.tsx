@@ -1,23 +1,16 @@
 import { createContext, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
-import { type BaseShape, IncidentalMusic, WebPrint } from "./print";
-import type { RolesName } from "./static";
+import { WebPrint } from "./print";
 import TemporaryTemplate from "./temporary-template";
-import { Waiting } from "../components/loading";
+import { Loading, Waiting } from "../components/loading";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
 import Operate from "../operate";
-import Scenery from "../options";
+import StageScenery from "../options";
 import PrintBody from "../print-body";
 import Rule from "../rule";
+import { type DramaActor, IncidentalMusic } from "../type";
 import "./index.less";
-
-export interface DramaActor extends BaseShape {
-    type: RolesName | null;
-    id: string;
-    content: string;
-    option?: any;
-}
 
 interface StagePlayState {
     stagePlay: WebPrint;
@@ -37,7 +30,7 @@ export default function Assemble() {
     useLayoutEffect(() => {
         const print = new WebPrint();
         customDragEvent.current = new CustomerDragingEvent(print);
-        // setPrintModule(print);
+        setPrintModule(print);
     }, []);
 
     useEffect(() => {
@@ -49,9 +42,9 @@ export default function Assemble() {
         }
     }, [printModule]);
 
-    if (!printModule) {
-        return <Waiting />;
-    }
+    // if (!printModule) {
+    //     return <Waiting />;
+    // }
 
     return (
         <StagePlayContext.Provider
@@ -64,8 +57,8 @@ export default function Assemble() {
                 <Operate />
                 <Rule></Rule> */}
                 <div className="print-main">
-                    {/* <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} /> */}
-                    <Scenery printModule={printModule} />
+                    <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
+                    <StageScenery printModule={printModule} />
                 </div>
                 <TemporaryTemplate printModule={printModule} />
             </div>

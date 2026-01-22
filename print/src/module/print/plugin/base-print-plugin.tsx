@@ -1,5 +1,4 @@
-import type { PrintElement } from "../main";
-import type { DragState, Shapes } from "../main/print";
+import type { DramaActor, Shapes, StageDirections } from "../type";
 
 export interface BasePrintPluginOption {
     type: keyof Shapes;
@@ -25,12 +24,12 @@ export class BasePrintPlugin {
         this.render.bind(this);
     }
 
-    dragRender(props: DragState) {
+    dragRender(props: StageDirections) {
         const { width = 0, height = 0 } = props;
         return <div style={{ width, height }}></div>;
     }
 
-    render(props: PrintElement): React.ReactNode {
+    render(props: DramaActor): React.ReactNode {
         const { content } = props || {};
         return content;
     }

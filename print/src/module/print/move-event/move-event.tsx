@@ -1,7 +1,7 @@
 import { MoveBaseEventManager, type MoveBaseEventManagerProps } from "./base-move-event";
-import type { DramaActor } from "../main";
 import type { WebPrint } from "../main/print";
 import type { BasePrintPlugin } from "../plugin/base-print-plugin";
+import type { DramaActor } from "../type";
 
 interface MoveEventManagerProps extends MoveBaseEventManagerProps {
     state: DramaActor;

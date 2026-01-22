@@ -1,5 +1,5 @@
 import type { MoveDirection } from "../event/spotlight-event";
-import type { BaseShape } from "../main/print";
+import type { BaseShape } from "../type";
 import { PositionManager } from "../utils/position-manager";
 import { ResizeManager } from "../utils/resize-manager";
 import { throttle } from "../utils/throttle";

@@ -1,5 +1,5 @@
 import { BasePrintPlugin } from "./base-print-plugin";
-import { RolesName } from "../main/static";
+import { RolesName } from "../type";
 
 export class TextPlugin extends BasePrintPlugin {
     constructor() {

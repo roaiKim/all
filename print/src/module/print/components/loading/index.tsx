@@ -16,3 +16,25 @@ export function Waiting(props: WaitingProps) {
         </div>
     );
 }
+
+interface LoadingProps {
+    text?: string;
+}
+
+export const Loading = (props: LoadingProps) => {
+    const { text = "加载中" } = props;
+    // 配置加载条数量和延迟
+    const barCount = 6;
+    const baseDelay = 0.1;
+
+    return (
+        <div className="scale-stage">
+            <span className="scale-loader">
+                {Array.from({ length: barCount }).map((_, index) => (
+                    <span key={index} className={`scale-loader-bar scale-loader-bar-${index + 1}`} />
+                ))}
+            </span>
+            <p className="scale-text">{text}</p>
+        </div>
+    );
+};

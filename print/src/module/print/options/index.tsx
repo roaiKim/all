@@ -7,7 +7,7 @@ interface SceneryProps {
     printModule: WebPrint;
 }
 
-export default function Scenery(props: SceneryProps) {
+export default function StageScenery(props: SceneryProps) {
     const { printModule } = props;
 
     return (

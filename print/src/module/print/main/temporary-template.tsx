@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { message } from "antd";
-import { IncidentalMusic, initialStageDirections, type StageDirections, WebPrint } from "./print";
+import { WebPrint } from "./print";
 import { CustomerDragingEvent } from "../event/draging-event";
 import Header from "../header";
 import Operate from "../operate";
 import PrintBody from "../print-body";
 import Rule from "../rule";
+import { initialStageDirections } from "../storyboard";
+import { IncidentalMusic, type StageDirections } from "../type";
 import "./index.less";
 
 export interface PrintElement extends StageDirections {

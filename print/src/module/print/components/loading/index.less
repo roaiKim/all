@@ -63,3 +63,67 @@
     animation: react-spinners-waiting-loader-rotate 8s linear 0s infinite normal none running;
   }
 }
+
+// ScaleLoader.less
+// 定义可复用变量
+@loader-bar-width: 4px; // 单根加载条宽度
+@loader-bar-height: 28px; // 加载条高度
+@loader-bar-margin: 2px; // 加载条间距
+@loader-bar-radius: 2px; // 加载条圆角
+@loader-animation-duration: 1s; // 动画时长
+@loader-animation-timing: cubic-bezier(0.2, 0.68, 0.18, 1.08); // 动画缓动曲线
+
+// 动画关键帧（ScaleLoader 核心缩放动画）
+@keyframes react-spinners-scale-loader-scale {
+  0% {
+    transform: scaleY(0.4);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.5;
+  }
+}
+
+.scale-stage {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  place-items: center;
+  // 加载器容器
+  .scale-loader {
+    display: flex;
+
+    // 加载条通用样式
+    .scale-loader-bar {
+      background-color: @loader-color;
+      width: @loader-bar-width;
+      height: @loader-bar-height;
+      margin: @loader-bar-margin;
+      border-radius: @loader-bar-radius;
+      display: inline-block;
+      animation:
+        react-spinners-scale-loader-scale
+        @loader-animation-duration @loader-animation-timing infinite normal both running;
+    }
+
+    // 为每根加载条设置不同的延迟（利用LESS循环简化）
+    .scale-loader-bar-1 { animation-delay: 0.1s; }
+    .scale-loader-bar-2 { animation-delay: 0.2s; }
+    .scale-loader-bar-3 { animation-delay: 0.3s; }
+    .scale-loader-bar-4 { animation-delay: 0.4s; }
+    .scale-loader-bar-5 { animation-delay: 0.5s; }
+    .scale-loader-bar-6 { animation-delay: 0.6s; }
+  }
+
+  .scale-text {
+    margin-top: 7px;
+  }
+}
