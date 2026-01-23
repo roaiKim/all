@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Input, InputNumber, Select } from "antd";
 import { stagePaginationRules, stageType } from "./options";
-import { Scenery } from "../components/input-port";
+import { MicrophoneType, Scenery } from "../components/input-port";
 import { type WebPrint } from "../main/print";
 import { initialStage } from "../storyboard";
 import { IncidentalMusic, type Stage } from "../type";
@@ -43,18 +43,12 @@ export default function MajorScenery(props: MajorSceneryProps) {
         <div className="major-scenery">
             <div className="scenery-box">
                 <Scenery
+                    port={MicrophoneType.NUMBER}
                     label="纸张列表"
                     value={stage.type}
                     onChange={(value) => {
                         stageChange({ type: value });
                     }}
-                    electric={
-                        {
-                            // onChange: (value: number) => {
-                            //     stageChange({ type: value });
-                            // },
-                        }
-                    }
                 />
                 <div className="scenery-row">
                     <div>纸张列表：</div>
@@ -69,28 +63,24 @@ export default function MajorScenery(props: MajorSceneryProps) {
                     </div>
                     <div>测测</div>
                 </div>
-                <div className="scenery-row">
-                    <div>宽：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.width}
-                            onChange={(value: number) => {
-                                stageChange({ width: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>高：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.height}
-                            onChange={(value: number) => {
-                                stageChange({ height: value });
-                            }}
-                        />
-                    </div>
-                </div>
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="宽"
+                    value={stage.width}
+                    onChange={(value: number) => {
+                        stageChange({ width: value });
+                    }}
+                />
+
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="高"
+                    value={stage.height}
+                    onChange={(value: number) => {
+                        stageChange({ height: value });
+                    }}
+                />
+
                 <div className="scenery-row">
                     <div>分页规则：</div>
                     <div>
@@ -103,94 +93,70 @@ export default function MajorScenery(props: MajorSceneryProps) {
                         />
                     </div>
                 </div>
-                <div className="scenery-row">
-                    <div>页眉位置：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.headerLine}
-                            onChange={(value: number) => {
-                                stageChange({ headerLine: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>页尾位置：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.footerLine}
-                            onChange={(value: number) => {
-                                stageChange({ footerLine: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>首页页眉：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.firstPageFooterLine}
-                            onChange={(value: number) => {
-                                stageChange({ firstPageFooterLine: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>尾页页尾：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.lastPageFooterLine}
-                            onChange={(value: number) => {
-                                stageChange({ lastPageFooterLine: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>偶数页页尾：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.evenPageFooterLine}
-                            onChange={(value: number) => {
-                                stageChange({ evenPageFooterLine: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>奇数页页尾：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.oddPageFooterLine}
-                            onChange={(value: number) => {
-                                stageChange({ oddPageFooterLine: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>左偏移：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.leftOffset}
-                            onChange={(value: number) => {
-                                stageChange({ leftOffset: value });
-                            }}
-                        />
-                    </div>
-                </div>
-                <div className="scenery-row">
-                    <div>顶部偏移：</div>
-                    <div>
-                        <InputNumber
-                            value={stage.topOffset}
-                            onChange={(value: number) => {
-                                stageChange({ topOffset: value });
-                            }}
-                        />
-                    </div>
-                </div>
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="页眉位置"
+                    value={stage.headerLine}
+                    onChange={(value: number) => {
+                        stageChange({ headerLine: value });
+                    }}
+                />
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="页尾位置"
+                    value={stage.footerLine}
+                    onChange={(value: number) => {
+                        stageChange({ footerLine: value });
+                    }}
+                />
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="首页页眉"
+                    value={stage.firstPageFooterLine}
+                    onChange={(value: number) => {
+                        stageChange({ firstPageFooterLine: value });
+                    }}
+                />
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="尾页页尾"
+                    value={stage.lastPageFooterLine}
+                    onChange={(value: number) => {
+                        stageChange({ lastPageFooterLine: value });
+                    }}
+                />
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="偶数页页尾"
+                    value={stage.evenPageFooterLine}
+                    onChange={(value: number) => {
+                        stageChange({ evenPageFooterLine: value });
+                    }}
+                />
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="奇数页页尾"
+                    value={stage.oddPageFooterLine}
+                    onChange={(value: number) => {
+                        stageChange({ oddPageFooterLine: value });
+                    }}
+                />
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="左偏移"
+                    value={stage.leftOffset}
+                    onChange={(value: number) => {
+                        stageChange({ leftOffset: value });
+                    }}
+                />
+                <Scenery
+                    port={MicrophoneType.NUMBER}
+                    label="顶部偏移"
+                    value={stage.topOffset}
+                    onChange={(value: number) => {
+                        stageChange({ topOffset: value });
+                    }}
+                />
             </div>
         </div>
     );

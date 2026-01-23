@@ -3,19 +3,24 @@ import "./index.less";
 
 export enum MicrophoneType {
     NUMBER = "NUMBER",
+    SELECT = "SELECT",
+    INPUT = "INPUT",
 }
 
 type SceneryElectricPower = InputNumberProps;
+type ValueType = string | number;
 
-interface SceneryProps<T = unknown> {
+interface SceneryProps<T> {
+    port: MicrophoneType | keyof typeof MicrophoneType;
     value: T;
     label: string | React.ReactNode;
     onChange: (value: T) => void;
-    electric: Omit<SceneryElectricPower, "value" | "onChange">;
+    electric?: Omit<SceneryElectricPower, "value" | "onChange">;
+    description?: string;
 }
 
-export function Scenery<T>(props: SceneryProps<T>) {
-    const { value, label, onChange, electric = {} } = props;
+export function Scenery<T extends ValueType = ValueType>(props: SceneryProps<T>) {
+    const { port, value, label, onChange, electric = {}, description } = props;
 
     return (
         <div className="scenery-row">
@@ -23,7 +28,12 @@ export function Scenery<T>(props: SceneryProps<T>) {
             <div>
                 <InputNumber value={value} onChange={onChange} {...electric} />
             </div>
-            <div>测测</div>
+            {!!description && (
+                <>
+                    <div></div>
+                    <div className="scenery-description">{description}</div>
+                </>
+            )}
         </div>
     );
 }

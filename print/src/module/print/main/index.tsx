@@ -57,7 +57,7 @@ export default function Assemble() {
                 <Operate />
                 <Rule></Rule> */}
                 <div className="print-main">
-                    <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
+                    {/* <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} /> */}
                     <StageScenery printModule={printModule} />
                 </div>
                 <TemporaryTemplate printModule={printModule} />
