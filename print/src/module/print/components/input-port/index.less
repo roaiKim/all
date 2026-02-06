@@ -4,6 +4,10 @@
   display: grid;
   align-items: center;
 
+  &.scenery-row-description {
+    grid-template-columns: 75px 1fr 25px;
+  }
+
   & > :first-child {
     text-align: right;
   }
@@ -19,5 +23,11 @@
       "Segoe UI Emoji",
       "Segoe UI Symbol",
       "Noto Color Emoji";
+  }
+
+  > span {
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
   }
 }

@@ -59,9 +59,11 @@ export const initialProtagonist = (status?: Partial<ProtagonistStatus>, state?: 
  * @param stage
  * @returns
  */
-export const initialStage = (stageState: Partial<Stage>, stage?: HTMLElement): Stage => ({
+export const initialStage = (stageState: Partial<Stage>, stage?: HTMLElement): Partial<Stage> => ({
     type: StageType.A4,
     paginationRule: 1,
+    showPageNo: 1,
+    showWatermark: 0,
     headerLine: null,
     footerLine: null,
     firstPageFooterLine: null,

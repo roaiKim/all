@@ -102,6 +102,32 @@ export interface Stage extends BaseShape {
      * 顶部偏移
      */
     topOffset: number;
+    /**
+     * 显示页码
+     */
+    showPageNo: number;
+
+    /**
+     * 页码格式
+     */
+    pageNoFormat: string;
+
+    /**
+     * 是否水印
+     */
+    showWatermark: number;
+    /**
+     * 水印
+     */
+    watermark: string;
+    /**
+     * 是否显示时间格式
+     */
+    showWatermarkTime: string;
+    /**
+     * 水印时间格式
+     */
+    watermarkTime: string;
 }
 
 export enum IncidentalMusic {
