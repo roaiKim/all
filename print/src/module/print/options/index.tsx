@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import MajorScenery from "./major-scenery";
+import SceneryController from "./scenery/controller";
 import type { WebPrint } from "../main/print";
 import "./index.less";
 
@@ -13,7 +14,9 @@ export default function StageScenery(props: SceneryProps) {
     return (
         <div className="scenery-option">
             <div className="scenery-header">属性</div>
-            <MajorScenery printModule={printModule}></MajorScenery>
+            {/* <MajorScenery printModule={printModule}></MajorScenery> */}
+
+            <SceneryController type="" />
         </div>
     );
 }
