@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Tabs } from "antd";
+import BaseScenery from "./base";
+import type { WebPrint } from "../../main/print";
+import type { Protagonist } from "../../type";
 
 interface SceneryControllerProps {
-    type: string;
+    printModule: WebPrint;
+    protagonist: Protagonist;
 }
 
 export default function SceneryController(props: SceneryControllerProps) {
-    const { type } = props;
+    const { printModule, protagonist } = props;
 
     return (
         <div className="scenery-controller">
@@ -17,7 +21,7 @@ export default function SceneryController(props: SceneryControllerProps) {
                     {
                         key: "base",
                         label: "基础",
-                        children: "Content of Tab Pane 1",
+                        children: <BaseScenery printModule={printModule} protagonist={protagonist} />,
                     },
                     {
                         key: "css",

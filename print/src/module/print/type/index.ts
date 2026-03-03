@@ -15,11 +15,26 @@ export enum StageType {
     "A4" = "A4",
 }
 
+export interface BaseProperty {
+    title: string;
+}
+
+export interface StyleProperty {}
+export interface AdvancedProperty {}
+export interface BorderProperty {}
+
+export interface DramaActorProperty {
+    base: BaseProperty;
+    style: StyleProperty;
+    border: BorderProperty;
+    advanced: AdvancedProperty;
+}
+
 export interface DramaActor extends BaseShape {
     type: RolesName | null;
     id: string;
     content: string;
-    option?: any;
+    option?: DramaActorProperty;
 }
 
 export interface Shapes {
@@ -157,7 +172,11 @@ export enum IncidentalMusic {
      */
     movingStateChange = "movingStateChange",
     /**
-     *
+     * 主角变更
      */
-    // spotlightChange = "spotlightChange",
+    protagonistChange = "protagonistChange",
+    /**
+     * 主角属性变更
+     */
+    protagonistPropertyChange = "protagonistPropertyChange",
 }

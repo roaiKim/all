@@ -45,11 +45,11 @@ export class WebPrint {
     /**
      * 舞台
      */
-    stage: Stage;
+    stage: Partial<Stage>;
     /**
      * 主角
      */
-    protagonist: Protagonist;
+    #protagonist: Protagonist;
     /**
      * 排除的 角色
      */
@@ -84,6 +84,19 @@ export class WebPrint {
 
         // @ts-ignore
         window.__WEB_PRINT__ = this;
+    }
+
+    set protagonist(protagonist: Protagonist) {
+        const same = this.#protagonist?.dramaActor?.id === protagonist.dramaActor?.id;
+        this.#protagonist = protagonist;
+        this.#triggerListener(IncidentalMusic.protagonistPropertyChange, this.#protagonist);
+        if (!same) {
+            this.#triggerListener(IncidentalMusic.protagonistChange, this.#protagonist);
+        }
+    }
+
+    get protagonist() {
+        return this.#protagonist;
     }
 
     getDragState() {

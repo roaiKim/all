@@ -6,11 +6,11 @@ import { type WebPrint } from "../main/print";
 import { initialStage } from "../storyboard";
 import { IncidentalMusic, type Stage } from "../type";
 
-interface MajorSceneryProps {
+interface MinSceneryProps {
     printModule: WebPrint;
 }
 
-export default function MinScenery(props: MajorSceneryProps) {
+export default function MinScenery(props: MinSceneryProps) {
     const { printModule } = props;
 
     const [stage, setStage] = useState<Partial<Stage>>(() => initialStage({}));

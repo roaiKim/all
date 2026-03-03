@@ -18,7 +18,7 @@ import Drager from "./drager";
 import IconButton from "./icon-button";
 import { CustomerDragEvent } from "../event/drag-event";
 import type { WebPrint } from "../main/print";
-import { RolesName } from "../main/static";
+import { RolesName } from "../type";
 import "./index.less";
 
 interface HeaderProps {

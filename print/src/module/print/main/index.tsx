@@ -53,11 +53,11 @@ export default function Assemble() {
             }}
         >
             <div id="printContainerDom" className="print-container" ref={printContainer}>
-                {/* <Header printModule={printModule} />
+                <Header printModule={printModule} />
                 <Operate />
-                <Rule></Rule> */}
+                <Rule></Rule>
                 <div className="print-main">
-                    {/* <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} /> */}
+                    <PrintBody ref={printCurtain} printElement={printElement} printModule={printModule} />
                     <StageScenery printModule={printModule} />
                 </div>
                 <TemporaryTemplate printModule={printModule} />
