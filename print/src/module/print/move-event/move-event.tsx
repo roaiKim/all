@@ -5,9 +5,10 @@ import type { DramaActor } from "../type";
 
 interface MoveEventManagerProps extends MoveBaseEventManagerProps {
     state: DramaActor;
-    movStart?: (state: MoveBaseEventManagerProps["state"]) => void;
-    moving?: (state: MoveBaseEventManagerProps["state"]) => void;
-    movEnd?: (state: MoveBaseEventManagerProps["state"], isWrap: boolean) => void;
+    onMoveStart?: (state: MoveBaseEventManagerProps["state"]) => void;
+    onMoving?: (state: MoveBaseEventManagerProps["state"]) => void;
+    onMoveEnd?: (state: MoveBaseEventManagerProps["state"], isWrap: boolean) => void;
+    onStateChange?: (state: MoveBaseEventManagerProps["state"], isWrap: boolean) => void;
 }
 
 export class MoveEventManager extends MoveBaseEventManager {
@@ -23,34 +24,34 @@ export class MoveEventManager extends MoveBaseEventManager {
 
     mousedownListener = (event) => {
         if (this.eventType === "move") {
-            if (this.options.movStart) {
-                this.options.movStart(this.state);
+            if (this.options.onMoveStart) {
+                this.options.onMoveStart(this.state);
             }
-            this.printModule.moveEvent("start", { moving: true, spotlight: true }, this.state);
+            this.printModule.moveEvent("start", this.state.id, { moving: true, spotlight: true }, this.state);
         } else if (this.eventType === "resize") {
-            this.printModule.resizeEvent("start", { resizing: true }, this.state);
+            this.printModule.resizeEvent("start", this.state.id, { resizing: true }, this.state);
         }
     };
 
     mousemoveListener = () => {
         if (this.eventType === "move") {
-            if (this.options.moving) {
-                this.options.moving(this.state);
+            if (this.options.onMoving) {
+                this.options.onMoving(this.state);
             }
-            this.printModule.moveEvent("moving", {}, this.state);
+            this.printModule.moveEvent("moving", this.state.id, {}, this.state);
         } else if (this.eventType === "resize") {
-            this.printModule.resizeEvent("resizing", {}, this.state);
+            this.printModule.resizeEvent("resizing", this.state.id, {}, this.state);
         }
     };
 
     mouseupListener = (event, isWrap) => {
         if (this.eventType === "move") {
-            if (this.options.movEnd) {
-                this.options.movEnd(this.state, isWrap);
+            if (this.options.onMoveEnd) {
+                this.options.onMoveEnd(this.state, isWrap);
             }
-            this.printModule.moveEvent("end", { moving: false }, this.state);
+            this.printModule.moveEvent("end", this.state.id, { moving: false }, this.state);
         } else if (this.eventType === "resize") {
-            this.printModule.resizeEvent("end", { resizing: false }, this.state);
+            this.printModule.resizeEvent("end", this.state.id, { resizing: false }, this.state);
         }
     };
 

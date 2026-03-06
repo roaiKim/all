@@ -12,6 +12,7 @@ export interface WebEventState {
     height: number;
     moving?: boolean;
     resizing?: boolean;
+    id?: string;
 }
 
 export const initialMoveState = (state?: Partial<WebEventState>) => ({
@@ -21,6 +22,7 @@ export const initialMoveState = (state?: Partial<WebEventState>) => ({
     height: 100,
     moving: false,
     resizing: false,
+    id: null,
     ...state,
 });
 

@@ -57,7 +57,7 @@ export class DragEventManager extends DragBaseEventManager {
         if (this.options.movEnd) {
             this.options.movEnd(this.state, isWrap);
         }
-        this.printModule.dragEvent("end", {}, isWrap);
+        this.printModule.dragEvent("end", this.state, isWrap);
         const { width, height } = this.shape.option || {};
         this.initialDragState({ width, height });
     };

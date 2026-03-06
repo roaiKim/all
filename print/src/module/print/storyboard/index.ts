@@ -48,8 +48,8 @@ export const initialProtagonistStatus = (status?: Partial<ProtagonistStatus>) =>
  * @param state
  * @returns
  */
-export const initialProtagonist = (status?: Partial<ProtagonistStatus>, state?: DramaActor): Protagonist => ({
-    dramaActor: initialDramaActor(state),
+export const initialProtagonist = (id?: string, status?: Partial<ProtagonistStatus>): Protagonist => ({
+    id,
     ...initialProtagonistStatus(status),
 });
 

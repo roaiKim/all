@@ -6,6 +6,7 @@ import * as printPlugin from "../plugin";
 import { BasePrintPlugin } from "../plugin/base-print-plugin";
 import { initialProtagonist, initialStage, initialStageDirections } from "../storyboard";
 import {
+    type BaseShape,
     type DramaActor,
     IncidentalMusic,
     type Protagonist,
@@ -49,7 +50,7 @@ export class WebPrint {
     /**
      * 主角
      */
-    #protagonist: Protagonist;
+    protagonist: Protagonist;
     /**
      * 排除的 角色
      */
@@ -86,18 +87,31 @@ export class WebPrint {
         window.__WEB_PRINT__ = this;
     }
 
-    set protagonist(protagonist: Protagonist) {
-        const same = this.#protagonist?.dramaActor?.id === protagonist.dramaActor?.id;
-        this.#protagonist = protagonist;
-        this.#triggerListener(IncidentalMusic.protagonistPropertyChange, this.#protagonist);
-        if (!same) {
-            this.#triggerListener(IncidentalMusic.protagonistChange, this.#protagonist);
-        }
-    }
+    // set dramaActors(dramaActor: Protagonist) {
+    //     const same = this.#protagonist?.dramaActor?.id === protagonist.dramaActor?.id;
+    //     this.#protagonist = protagonist;
+    //     this.#triggerListener(IncidentalMusic.protagonistPropertyChange, this.#protagonist);
+    //     if (!same) {
+    //         this.#triggerListener(IncidentalMusic.protagonistChange, this.#protagonist);
+    //     }
+    // }
 
-    get protagonist() {
-        return this.#protagonist;
-    }
+    // get dramaActors() {
+    //     return this.#protagonist;
+    // }
+
+    // set protagonist(protagonist: Protagonist) {
+    //     const same = this.#protagonist?.dramaActor?.id === protagonist.dramaActor?.id;
+    //     this.#protagonist = protagonist;
+    //     this.#triggerListener(IncidentalMusic.protagonistPropertyChange, this.#protagonist);
+    //     if (!same) {
+    //         this.#triggerListener(IncidentalMusic.protagonistChange, this.#protagonist);
+    //     }
+    // }
+
+    // get protagonist() {
+    //     return this.#protagonist;
+    // }
 
     getDragState() {
         return this.stageDirections;
@@ -138,12 +152,6 @@ export class WebPrint {
 
     initialProtagonist(regain: boolean = false) {
         this.protagonist = initialProtagonist();
-        // produce(this.protagonist, (draft) => {
-        //     draft.dramaActor = initialDramaActor();
-        //     draft.moving = false;
-        //     draft.resizing = false;
-        //     draft.spotlight = false;
-        // });
         if (regain) {
             this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
         }
@@ -180,6 +188,11 @@ export class WebPrint {
             // return this.stageDirections;
         } else if (eventType === "end") {
             if (!this.stageDirections.draging) return;
+            this.stageDirections = {
+                ...this.stageDirections,
+                ...state,
+            };
+            console.log("---this.stageDirections---", state, this.stageDirections);
             if (this.domManger.printTemplateDom) {
                 const temporaryTemplateDom = this.domManger.temporaryTemplateDom;
                 if (isWrap) {
@@ -195,47 +208,25 @@ export class WebPrint {
         }
     }
 
-    moveEvent(eventType: "start" | "moving" | "end", protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
-        this.#upProtagonist(protagonistStatus, state);
+    moveEvent(eventType: "start" | "moving" | "end", id: string, protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
+        this.#updateProtagonist(id, protagonistStatus);
         this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
 
         if (eventType === "end") {
-            const id = this.protagonist.dramaActor.id;
-
-            if (id) {
-                const index = this.dramaActors.findIndex((item) => item.id === id);
-                if (index > -1) {
-                    this.dramaActors[index] = {
-                        ...this.dramaActors[index],
-                        ...this.protagonist.dramaActor,
-                        // moving: false,
-                    };
-                }
-            }
-
-            // this.moveEndTimer = setTimeout(this.initialProtagonist.bind(this), 50);
-            return this.protagonist;
+            const id = this.protagonist.id;
+            this.#updateDramaActors(id, state);
         }
         return this.protagonist;
     }
 
-    resizeEvent(eventType: "start" | "resizing" | "end", protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
-        this.#upProtagonist(protagonistStatus, state);
+    resizeEvent(eventType: "start" | "resizing" | "end", id: string, protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
+        this.#updateProtagonist(id, protagonistStatus);
         this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
 
         if (eventType === "end") {
-            const id = this.protagonist.dramaActor.id;
-            if (id) {
-                const index = this.dramaActors.findIndex((item) => item.id === id);
-                if (index > -1) {
-                    this.dramaActors[index] = {
-                        ...this.dramaActors[index],
-                        ...this.protagonist.dramaActor,
-                    };
-                }
-            }
+            const id = this.protagonist.id;
+            this.#updateDramaActors(id, state);
         }
-
         return this.protagonist;
     }
 
@@ -321,16 +312,18 @@ export class WebPrint {
             content: this.stageDirections.type,
             ...state,
         };
-        this.dramaActors.push(dramaActor);
+        // this.dramaActors.push(dramaActor);
         // produce(this.dramaActors, (dramaActors) => {
         //     dramaActors.push(dramaActor);
         // });
+        this.#updateDramaActors(id, dramaActor);
+        this.#updateProtagonist(id, { spotlight: true });
 
-        this.protagonist = initialProtagonist({ spotlight: true }, dramaActor);
+        // this.protagonist = initialProtagonist(id, { spotlight: true });
 
         this.#triggerListener(IncidentalMusic.movingStateChange, this.protagonist);
-        this.#triggerListener(IncidentalMusic.addActor, dramaActor);
-        this.#triggerListener(IncidentalMusic.actorChange, this.getActor());
+        // this.#triggerListener(IncidentalMusic.addActor, dramaActor);
+        // this.#triggerListener(IncidentalMusic.actorChange, this.getActor());
     }
 
     // #initSize(curtain) {
@@ -398,15 +391,27 @@ export class WebPrint {
         });
     }
 
-    #upProtagonist(protagonistStatus: Partial<ProtagonistStatus>, state: Partial<DramaActor>) {
+    #updateProtagonist(id: string, protagonistStatus: Partial<ProtagonistStatus>) {
         this.protagonist = {
             ...this.protagonist,
+            id,
             ...protagonistStatus,
-            dramaActor: {
-                ...this.protagonist.dramaActor,
-                ...state,
-            },
         };
+        if (this.protagonist.id !== id) {
+            this.#triggerListener(IncidentalMusic.protagonistChange, this.protagonist);
+        }
+    }
+
+    #updateDramaActors(id: string, dramaActor: Partial<DramaActor>) {
+        if (!id) return;
+        const index = this.dramaActors.findIndex((item) => item.id === id);
+        if (index > -1) {
+            this.dramaActors[index] = Object.assign(this.dramaActors[index], dramaActor); //this.dramaActors[index];
+        } else {
+            this.dramaActors.push(dramaActor as DramaActor);
+            this.#triggerListener(IncidentalMusic.addActor, dramaActor);
+        }
+        this.#triggerListener(IncidentalMusic.actorChange, this.getActor());
     }
 
     // #variantStageDirections(stageDirections: Partial<StageDirections>) {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import type { DramaActor } from "../main";
 import type { WebPrint } from "../main/print";
+import type { DramaActor } from "../type";
 import "./index.less";
 
 interface DramaActorProps {

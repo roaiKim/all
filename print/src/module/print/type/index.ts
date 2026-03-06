@@ -72,7 +72,7 @@ export interface ProtagonistStatus {
 }
 
 export interface Protagonist extends ProtagonistStatus {
-    dramaActor: DramaActor;
+    id: string;
 }
 
 export interface Stage extends BaseShape {

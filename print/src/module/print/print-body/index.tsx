@@ -109,7 +109,7 @@ export default function PrintBody(props: PrintBodyProps) {
                             key={actor.id}
                             dramaActor={actor}
                             protagonist={protagonist}
-                            spotlighting={protagonist.dramaActor?.id === actor.id}
+                            spotlighting={protagonist?.id === actor.id}
                             stagePlay={printModule}
                         />
                         // <Controller

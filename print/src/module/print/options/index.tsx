@@ -16,7 +16,10 @@ export default function StageScenery(props: SceneryProps) {
 
     useEffect(() => {
         if (printModule) {
-            printModule.subscribe(IncidentalMusic.protagonistChange, (protagonist) => {
+            // printModule.subscribe(IncidentalMusic.protagonistChange, (protagonist) => {
+            //     setProtagonist(protagonist);
+            // });
+            printModule.subscribe(IncidentalMusic.protagonistPropertyChange, (protagonist) => {
                 setProtagonist(protagonist);
             });
         }

@@ -1,9 +1,9 @@
 import { type PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { CustomerSpotlightEvent, MoveDirection } from "../event/spotlight-event";
-import type { DramaActor } from "../main";
-import { type Protagonist, type WebPrint } from "../main/print";
+import { type WebPrint } from "../main/print";
 import { MoveEventManager } from "../move-event/move-event";
+import type { DramaActor, Protagonist } from "../type";
 import "./index.less";
 
 interface DirectorProps {
@@ -23,11 +23,11 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
 
     useEffect(() => {
         if (id) {
-            if (protagonist.dramaActor.id === id) {
-                const { dramaActor, moving, resizing } = protagonist;
-                const { x, y, width, height } = dramaActor;
-                // console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
-                setPosition(() => ({ left: x, top: y, width, height, moving, resizing }));
+            if (protagonist.id === id) {
+                // const { moving, resizing } = protagonist;
+                // const { x, y, width, height } = dramaActor;
+                // // console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
+                // setPosition(() => ({ left: x, top: y, width, height, moving, resizing }));
             }
         }
     }, [protagonist, id]);

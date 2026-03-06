@@ -1,7 +1,7 @@
 import { Director } from "../controller";
-import type { DramaActor } from "../main";
 import type { WebPrint } from "../main/print";
 import { Agent } from "../shapes/text";
+import type { DramaActor } from "../type";
 
 interface StageManagerProps {
     dramaActor: DramaActor;
