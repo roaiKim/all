@@ -3,6 +3,7 @@ import { connect, DispatchProp } from "react-redux";
 import { showLoading } from "@core";
 import { object, string } from "yup";
 import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
+import { BubbleField } from "components/bubble-field";
 import { ProxySelector } from "components/proxy-selector";
 import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
 import { actions } from "module/common/login";
@@ -23,9 +24,6 @@ function Login(props: LoginProps) {
     const { logo, headerLogo, platformName } = companyInfo || {};
     const brandLogo = logo || headerLogo;
     const brandName = platformName || "Rosen CI";
-    const bubbleList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-    const [bubbleVersions, setBubbleVersions] = useState<Record<number, number>>({});
-    const [poppedBubbles, setPoppedBubbles] = useState<Record<number, boolean>>({});
 
     const [state, setState] = useState<LoginState>(() => {
         const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
@@ -66,44 +64,9 @@ function Login(props: LoginProps) {
         }
     };
 
-    const onBubbleClick = (bubbleId: number) => {
-        if (poppedBubbles[bubbleId]) {
-            return;
-        }
-
-        setPoppedBubbles((prevState) => ({ ...prevState, [bubbleId]: true }));
-    };
-
-    const onBubbleAnimationEnd = (bubbleId: number, event: React.AnimationEvent<HTMLSpanElement>) => {
-        if (event.animationName !== "ro-bubble-pop") {
-            return;
-        }
-
-        setBubbleVersions((prevState) => ({
-            ...prevState,
-            [bubbleId]: (prevState[bubbleId] || 0) + 1,
-        }));
-        setPoppedBubbles((prevState) => ({ ...prevState, [bubbleId]: false }));
-    };
-
     return (
         <div className="ro-login-module">
-            <div className="ro-login-bubbles" aria-hidden="true">
-                {bubbleList.map((item) => (
-                    <span
-                        key={`${item}-${bubbleVersions[item] || 0}`}
-                        className={`ro-login-bubble ro-login-bubble-${item}${poppedBubbles[item] ? " is-popped" : ""}`}
-                        onAnimationEnd={(event) => {
-                            onBubbleAnimationEnd(item, event);
-                        }}
-                        onClick={() => {
-                            onBubbleClick(item);
-                        }}
-                    >
-                        <span className="ro-login-bubble-core"></span>
-                    </span>
-                ))}
-            </div>
+            <BubbleField bubbleCount={18} className="ro-login-bubble-field" density="normal" sidesOnly />
             <div className="ro-login-shell">
                 <div className="ro-login-window">
                     <div className="ro-window-toolbar">
