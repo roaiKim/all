@@ -8,6 +8,9 @@ interface MoveEventManagerProps extends MoveBaseEventManagerProps {
     onMoveStart?: (state: MoveBaseEventManagerProps["state"]) => void;
     onMoving?: (state: MoveBaseEventManagerProps["state"]) => void;
     onMoveEnd?: (state: MoveBaseEventManagerProps["state"], isWrap: boolean) => void;
+    onResizeStart?: (state: MoveBaseEventManagerProps["state"]) => void;
+    onResizing?: (state: MoveBaseEventManagerProps["state"]) => void;
+    onResizeEnd?: (state: MoveBaseEventManagerProps["state"], isWrap: boolean) => void;
     onStateChange?: (state: MoveBaseEventManagerProps["state"], isWrap: boolean) => void;
 }
 

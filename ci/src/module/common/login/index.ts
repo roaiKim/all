@@ -9,7 +9,7 @@ import { loading } from "utils/decorator";
 import { setLocalStorageWhenLogined } from "utils/framework";
 import { encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
-import Login from "./component";
+import Login from "./component/index";
 
 const initialLoginState = {
     companyInfo: null,

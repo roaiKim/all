@@ -5,11 +5,7 @@ import { ResizeManager } from "../utils/resize-manager";
 import { throttle } from "../utils/throttle";
 import { ToolManager } from "../utils/tool-manager";
 
-export interface WebEventState {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
+export interface WebEventState extends BaseShape {
     moving?: boolean;
     resizing?: boolean;
     id?: string;

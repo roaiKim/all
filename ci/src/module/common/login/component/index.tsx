@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { connect, DispatchProp } from "react-redux";
 import { showLoading } from "@core";
 import { object, string } from "yup";
+import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
 import { ProxySelector } from "components/proxy-selector";
-// import { LOGIN_REMEMBER_USERNAME, LOGIN_REMEMBER_PASSWORD } from "utils/function/staticEnvs";
 import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
 import { actions } from "module/common/login";
 import { RootState } from "type/state";
@@ -20,13 +20,19 @@ interface LoginState {
 
 function Login(props: LoginProps) {
     const { companyInfo, loginLoading } = props;
-    const { logo } = companyInfo || {};
+    const { logo, headerLogo, platformName } = companyInfo || {};
+    const brandLogo = logo || headerLogo;
+    const brandName = platformName || "Rosen CI";
+    const bubbleList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+    const [bubbleVersions, setBubbleVersions] = useState<Record<number, number>>({});
+    const [poppedBubbles, setPoppedBubbles] = useState<Record<number, boolean>>({});
 
     const [state, setState] = useState<LoginState>(() => {
         const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
         const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
         const un = decrypted(userName || "");
         const pw = decrypted(password || "");
+
         return {
             username: un,
             password: pw,
@@ -42,42 +48,170 @@ function Login(props: LoginProps) {
             password: string().required("请输入密码"),
             username: string().required("请输入用户名"),
         });
+
         longinSchema
             .validate(state)
             .then(() => {
                 const { dispatch } = props;
                 dispatch(actions.login(state.username, state.password));
             })
-            .catch((error) => {
+            .catch(() => {
                 // Toast.show((error.errors || [])[0] || error);
             });
     };
 
+    const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            onSubmit();
+        }
+    };
+
+    const onBubbleClick = (bubbleId: number) => {
+        if (poppedBubbles[bubbleId]) {
+            return;
+        }
+
+        setPoppedBubbles((prevState) => ({ ...prevState, [bubbleId]: true }));
+    };
+
+    const onBubbleAnimationEnd = (bubbleId: number, event: React.AnimationEvent<HTMLSpanElement>) => {
+        if (event.animationName !== "ro-bubble-pop") {
+            return;
+        }
+
+        setBubbleVersions((prevState) => ({
+            ...prevState,
+            [bubbleId]: (prevState[bubbleId] || 0) + 1,
+        }));
+        setPoppedBubbles((prevState) => ({ ...prevState, [bubbleId]: false }));
+    };
+
     return (
         <div className="ro-login-module">
-            <div className="ro-logo">{logo && <img src={logo} alt="logo"></img>}</div>
-            <div className="ro-login-container">
-                <input
-                    value={state.username}
-                    type="text"
-                    placeholder="用户名"
-                    onChange={(event) => {
-                        onChange({ username: event.target.value });
-                    }}
-                ></input>
-                <input
-                    value={state.password}
-                    type="password"
-                    placeholder="密码"
-                    onChange={(event) => {
-                        onChange({ password: event.target.value });
-                    }}
-                ></input>
-                <button disabled={loginLoading} style={{ cursor: "pointer" }} onClick={onSubmit}>
-                    登录
-                </button>
+            <div className="ro-login-bubbles" aria-hidden="true">
+                {bubbleList.map((item) => (
+                    <span
+                        key={`${item}-${bubbleVersions[item] || 0}`}
+                        className={`ro-login-bubble ro-login-bubble-${item}${poppedBubbles[item] ? " is-popped" : ""}`}
+                        onAnimationEnd={(event) => {
+                            onBubbleAnimationEnd(item, event);
+                        }}
+                        onClick={() => {
+                            onBubbleClick(item);
+                        }}
+                    >
+                        <span className="ro-login-bubble-core"></span>
+                    </span>
+                ))}
             </div>
-            <ProxySelector />
+            <div className="ro-login-shell">
+                <div className="ro-login-window">
+                    <div className="ro-window-toolbar">
+                        <div className="ro-window-controls">
+                            <span className="ro-window-control ro-window-close"></span>
+                            <span className="ro-window-control ro-window-minimize"></span>
+                            <span className="ro-window-control ro-window-zoom"></span>
+                        </div>
+                        <div className="ro-window-title">{brandName}</div>
+                    </div>
+                    <div className="ro-login-panel">
+                        <div className="ro-login-sidebar">
+                            <div className="ro-login-brand">
+                                <div className="ro-logo">{brandLogo ? <img src={brandLogo} alt={brandName}></img> : <span>{brandName.slice(0, 1)}</span>}</div>
+                                <div className="ro-login-brand-copy">
+                                    <span className="ro-login-eyebrow">macOS Workspace</span>
+                                    <h1>{brandName}</h1>
+                                    <p>像 Mac 桌面一样干净、柔和，登录后继续你的工作流。</p>
+                                </div>
+                            </div>
+                            <div className="ro-login-preview">
+                                <div className="ro-preview-header">
+                                    <span>今日工作台</span>
+                                    <span>09:41</span>
+                                </div>
+                                <div className="ro-preview-card ro-preview-card-primary">
+                                    <strong>已连接到协作空间</strong>
+                                    <p>项目、订单与关键流程将在登录后同步到你的桌面视图。</p>
+                                </div>
+                                <div className="ro-preview-grid">
+                                    <div className="ro-preview-card">
+                                        <span className="ro-login-highlight-icon">
+                                            <SafetyCertificateOutlined />
+                                        </span>
+                                        <div>
+                                            <strong>安全认证</strong>
+                                            <p>保持访问权限和账号校验统一管理。</p>
+                                        </div>
+                                    </div>
+                                    <div className="ro-preview-card">
+                                        <span className="ro-login-highlight-icon ro-login-highlight-icon-alt">
+                                            <ThunderboltOutlined />
+                                        </span>
+                                        <div>
+                                            <strong>高效协同</strong>
+                                            <p>快速进入任务、跟进节点、保持交付节奏。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="ro-login-main">
+                            <div className="ro-login-card">
+                                <div className="ro-login-card-header">
+                                    <span className="ro-login-tag">Sign In</span>
+                                    <h2>欢迎回来</h2>
+                                    <p>请使用你的账号登录，像打开 Mac 应用一样继续当前工作。</p>
+                                </div>
+                                <div className="ro-login-container">
+                                    <label className="ro-login-field">
+                                        <span className="ro-login-field-label">用户名</span>
+                                        <div className="ro-login-input">
+                                            <span className="ro-login-input-icon">
+                                                <UserOutlined />
+                                            </span>
+                                            <input
+                                                autoComplete="username"
+                                                value={state.username}
+                                                type="text"
+                                                placeholder="请输入用户名"
+                                                onChange={(event) => {
+                                                    onChange({ username: event.target.value });
+                                                }}
+                                                onKeyDown={onKeyDown}
+                                            ></input>
+                                        </div>
+                                    </label>
+                                    <label className="ro-login-field">
+                                        <span className="ro-login-field-label">密码</span>
+                                        <div className="ro-login-input">
+                                            <span className="ro-login-input-icon">
+                                                <LockOutlined />
+                                            </span>
+                                            <input
+                                                autoComplete="current-password"
+                                                value={state.password}
+                                                type="password"
+                                                placeholder="请输入密码"
+                                                onChange={(event) => {
+                                                    onChange({ password: event.target.value });
+                                                }}
+                                                onKeyDown={onKeyDown}
+                                            ></input>
+                                        </div>
+                                    </label>
+                                    <button disabled={loginLoading} type="button" onClick={onSubmit}>
+                                        {loginLoading ? "登录中..." : "登录"}
+                                    </button>
+                                </div>
+                                <div className="ro-login-footer">
+                                    <span>建议使用已开通权限的账号登录，如有异常请联系管理员。</span>
+                                </div>
+                                <ProxySelector />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
