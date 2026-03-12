@@ -8,6 +8,7 @@ import DragContainer from "@src/module/ai-print/4";
 import DragContainer1 from "@src/module/ai-print/5";
 import DragContainer6 from "@src/module/ai-print/6";
 import DragContainer7 from "@src/module/ai-print/7";
+import IosDesktop from "@src/module/ios";
 import WebContainer from "@src/module/move";
 
 export function AppRouter() {
@@ -23,6 +24,7 @@ export function AppRouter() {
             <Route path="6" element={<DragContainer6 />} />
             <Route path="7" element={<DragContainer7 />} />
             <Route path="web" element={<WebContainer />} />
+            <Route path="ios" element={<IosDesktop />} />
         </Routes>
     );
 }
