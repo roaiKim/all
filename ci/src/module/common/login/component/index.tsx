@@ -4,6 +4,7 @@ import { showLoading } from "@core";
 import { object, string } from "yup";
 import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
 import { BubbleField } from "components/bubble-field";
+import { LoginClock } from "components/login-clock";
 import { ProxySelector } from "components/proxy-selector";
 import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
 import { actions } from "module/common/login";
@@ -99,7 +100,7 @@ function Login(props: LoginProps) {
                             <div className="ro-login-preview">
                                 <div className="ro-preview-header">
                                     <span>今日工作台</span>
-                                    <span>09:41</span>
+                                    <span>实时同步</span>
                                 </div>
                                 <div className="ro-preview-card ro-preview-card-primary">
                                     <strong>已连接到协作空间</strong>
@@ -126,6 +127,7 @@ function Login(props: LoginProps) {
                                     </div>
                                 </div>
                             </div>
+                            <LoginClock />
                         </div>
                         <div className="ro-login-main">
                             <div className="ro-login-card">
