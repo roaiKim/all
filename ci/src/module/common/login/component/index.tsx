@@ -66,7 +66,16 @@ function Login(props: LoginProps) {
 
     return (
         <div className="ro-login-module">
-            <BubbleField bubbleCount={18} className="ro-login-bubble-field" density="normal" sidesOnly />
+            <BubbleField
+                bubbleCount={18}
+                className="ro-login-bubble-field"
+                density="normal"
+                horizontalRanges={[
+                    [4, 60],
+                    [80, 96],
+                ]}
+                sidesOnly
+            />
             <div className="ro-login-shell">
                 <div className="ro-login-window">
                     <div className="ro-window-toolbar">
