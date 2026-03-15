@@ -1,0 +1,198 @@
+import React, { useState } from "react";
+import { connect, DispatchProp } from "react-redux";
+import { showLoading } from "@core";
+import { object, string } from "yup";
+import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
+import { BubbleField } from "components/bubble-field";
+import { LoginClock } from "components/login-clock";
+import { ProxySelector } from "components/proxy-selector";
+import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
+import { actions } from "module/common/login";
+import { RootState } from "type/state";
+import { decrypted, encrypted } from "utils/function/crypto";
+import { StorageService } from "utils/StorageService";
+import "./index.less";
+
+interface LoginProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
+
+interface LoginState {
+    username: string;
+    password: string;
+}
+
+function Login(props: LoginProps) {
+    const { companyInfo, loginLoading } = props;
+    const { logo, headerLogo, platformName } = companyInfo || {};
+    const brandLogo = logo || headerLogo;
+    const brandName = platformName || "Rosen CI";
+
+    const [state, setState] = useState<LoginState>(() => {
+        const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
+        const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
+        const un = decrypted(userName || "");
+        const pw = decrypted(password || "");
+
+        return {
+            username: un,
+            password: pw,
+        };
+    });
+
+    const onChange = (record: Partial<LoginState>) => {
+        setState((prevState) => ({ ...prevState, ...record }));
+    };
+
+    const onSubmit = () => {
+        const longinSchema = object().shape({
+            password: string().required("请输入密码"),
+            username: string().required("请输入用户名"),
+        });
+
+        longinSchema
+            .validate(state)
+            .then(() => {
+                const { dispatch } = props;
+                dispatch(actions.login(state.username, state.password));
+            })
+            .catch(() => {
+                // Toast.show((error.errors || [])[0] || error);
+            });
+    };
+
+    const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter") {
+            onSubmit();
+        }
+    };
+
+    return (
+        <div className="ro-login-module">
+            <BubbleField
+                bubbleCount={18}
+                className="ro-login-bubble-field"
+                density="normal"
+                horizontalRanges={[
+                    [4, 60],
+                    [80, 96],
+                ]}
+                sidesOnly
+            />
+            <div className="ro-login-shell">
+                <div className="ro-login-window">
+                    <div className="ro-window-toolbar">
+                        <div className="ro-window-controls">
+                            <span className="ro-window-control ro-window-close"></span>
+                            <span className="ro-window-control ro-window-minimize"></span>
+                            <span className="ro-window-control ro-window-zoom"></span>
+                        </div>
+                        <div className="ro-window-title">{brandName}</div>
+                    </div>
+                    <div className="ro-login-panel">
+                        <div className="ro-login-sidebar">
+                            <div className="ro-login-brand">
+                                <div className="ro-logo">{brandLogo ? <img src={brandLogo} alt={brandName}></img> : <span>{brandName.slice(0, 1)}</span>}</div>
+                                <div className="ro-login-brand-copy">
+                                    <span className="ro-login-eyebrow">macOS Workspace</span>
+                                    <h1>{brandName}</h1>
+                                    <p>像 Mac 桌面一样干净、柔和，登录后继续你的工作流。</p>
+                                </div>
+                            </div>
+                            <LoginClock />
+                            <div className="ro-login-preview">
+                                <div className="ro-preview-header">
+                                    <span>今日工作台</span>
+                                    <span>实时同步</span>
+                                </div>
+                                <div className="ro-preview-card ro-preview-card-primary">
+                                    <strong>已连接到协作空间</strong>
+                                    <p>项目、订单与关键流程将在登录后同步到你的桌面视图。</p>
+                                </div>
+                                <div className="ro-preview-grid">
+                                    <div className="ro-preview-card">
+                                        <span className="ro-login-highlight-icon">
+                                            <SafetyCertificateOutlined />
+                                        </span>
+                                        <div>
+                                            <strong>安全认证</strong>
+                                            <p>保持访问权限和账号校验统一管理。</p>
+                                        </div>
+                                    </div>
+                                    <div className="ro-preview-card">
+                                        <span className="ro-login-highlight-icon ro-login-highlight-icon-alt">
+                                            <ThunderboltOutlined />
+                                        </span>
+                                        <div>
+                                            <strong>高效协同</strong>
+                                            <p>快速进入任务、跟进节点、保持交付节奏。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="ro-login-main">
+                            <div className="ro-login-card">
+                                <div className="ro-login-card-header">
+                                    <span className="ro-login-tag">Sign In</span>
+                                    <h2>欢迎回来</h2>
+                                    <p>请使用你的账号登录，像打开 Mac 应用一样继续当前工作。</p>
+                                </div>
+                                <div className="ro-login-container">
+                                    <label className="ro-login-field">
+                                        <span className="ro-login-field-label">用户名</span>
+                                        <div className="ro-login-input">
+                                            <span className="ro-login-input-icon">
+                                                <UserOutlined />
+                                            </span>
+                                            <input
+                                                autoComplete="username"
+                                                value={state.username}
+                                                type="text"
+                                                placeholder="请输入用户名"
+                                                onChange={(event) => {
+                                                    onChange({ username: event.target.value });
+                                                }}
+                                                onKeyDown={onKeyDown}
+                                            ></input>
+                                        </div>
+                                    </label>
+                                    <label className="ro-login-field">
+                                        <span className="ro-login-field-label">密码</span>
+                                        <div className="ro-login-input">
+                                            <span className="ro-login-input-icon">
+                                                <LockOutlined />
+                                            </span>
+                                            <input
+                                                autoComplete="current-password"
+                                                value={state.password}
+                                                type="password"
+                                                placeholder="请输入密码"
+                                                onChange={(event) => {
+                                                    onChange({ password: event.target.value });
+                                                }}
+                                                onKeyDown={onKeyDown}
+                                            ></input>
+                                        </div>
+                                    </label>
+                                    <button disabled={loginLoading} type="button" onClick={onSubmit}>
+                                        {loginLoading ? "登录中..." : "登录"}
+                                    </button>
+                                </div>
+                                <div className="ro-login-footer">
+                                    <span>建议使用已开通权限的账号登录，如有异常请联系管理员。</span>
+                                </div>
+                                <ProxySelector />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+const mapStateToProps = (state: RootState) => ({
+    companyInfo: state.app.login.companyInfo,
+    loginLoading: showLoading(state, "login-loading"),
+});
+
+export default connect(mapStateToProps)(Login);
