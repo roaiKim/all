@@ -1,12 +1,12 @@
 import { captureError, Module, register, roPushHistory } from "@core";
-import { LoginService } from "@api/LoginService";
-import { clearToken } from "@http";
+// import { LoginService } from "@api/LoginService";
+// import { clearToken } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
-import { GolbalService } from "service/api/GolbalService";
-import { RootState } from "type/state";
+// import { GolbalService } from "service/api/GolbalService";
+import type { RootState } from "type/rootState";
 import { getPagePermission, transformMeuns } from "utils/business/permission";
 import { confirm, loading } from "utils/decorator";
-import { clearLocalStorageWhenLogout } from "utils/framework";
+// import { clearLocalStorageWhenLogout } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
 
@@ -39,21 +39,21 @@ class MainModule extends Module<RootState, "main"> {
     // @RetryOnNetworkConnectionError()
     @loading("PERMISSION")
     async fetchPermission() {
-        const permission = await GolbalService.getByUserId().catch(
-            (error) => (this.setState({ PERMISSION_DONE: false }), captureError(error), Promise.reject(""))
-        );
-        const navPermission = transformMeuns(permission);
-        this.setState({
-            PERMISSION_DONE: true,
-            navPermission,
-            pagePermission: getPagePermission(),
-        });
-        const { location } = this.rootState.router;
-        const pathname = (location as any).pathname || "";
-        // 如果在 登录页 需要需要跳转到首页
-        if (pathname === "/login") {
-            roPushHistory("/");
-        }
+        // const permission = await GolbalService.getByUserId().catch(
+        //     (error) => (this.setState({ PERMISSION_DONE: false }), captureError(error), Promise.reject(""))
+        // );
+        // const navPermission = transformMeuns(permission);
+        // this.setState({
+        //     PERMISSION_DONE: true,
+        //     navPermission,
+        //     pagePermission: getPagePermission(),
+        // });
+        // const { location } = this.rootState.router;
+        // const pathname = (location as any).pathname || "";
+        // // 如果在 登录页 需要需要跳转到首页
+        // if (pathname === "/login") {
+        //     roPushHistory("/");
+        // }
     }
 
     @confirm("确定退出吗")
@@ -62,10 +62,10 @@ class MainModule extends Module<RootState, "main"> {
     }
 
     async logout() {
-        await LoginService.logout();
-        clearLocalStorageWhenLogout();
-        clearToken();
-        roPushHistory("/login");
+        // await LoginService.logout();
+        // // clearLocalStorageWhenLogout();
+        // clearToken();
+        // roPushHistory("/login");
     }
 
     @confirm("确定退出吗")
@@ -83,4 +83,4 @@ class MainModule extends Module<RootState, "main"> {
 
 const module = register(new MainModule("main", initialMainState));
 export const actions = module.getActions();
-export const MainComponent = module.connect(Main);
+export const MainComponent = Main; // module.connect(Main);
