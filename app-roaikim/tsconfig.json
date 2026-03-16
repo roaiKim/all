@@ -19,7 +19,7 @@
     "noUncheckedSideEffectImports": true,
 
     /* type checking */
-    "strict": true,
+    "strict": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {

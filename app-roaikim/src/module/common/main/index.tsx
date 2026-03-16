@@ -68,6 +68,7 @@ class MainModule extends Module<RootState, "main"> {
         roPushHistory("/login");
     }
 
+    @confirm("确定退出吗")
     calcPageHeight() {
         try {
             const container = document.querySelector(".ro-main-container");

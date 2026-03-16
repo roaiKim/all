@@ -12,7 +12,7 @@ import { createActionHandlerDecorator } from ".";
  * @returns
  */
 export function loading(identifier = "global") {
-    return createActionHandlerDecorator(async (handler, thisModule) => {
+    return createActionHandlerDecorator(async (handler) => {
         try {
             app.store.dispatch(loadingAction(true, identifier));
             await handler();

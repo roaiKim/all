@@ -12,7 +12,7 @@ export interface ErrorListener {
     onError: ErrorHandler;
 }
 
-export type ActionHandler = (...args: any[]) => any;
+export type ActionHandler = (...args: any[]) => any | Promise<any>;
 
 export type ErrorHandler = (error: Exception) => unknown;
 
