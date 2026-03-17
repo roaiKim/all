@@ -1,5 +1,5 @@
 import { createBrowserHistory, type History } from "history";
-import { applyMiddleware, compose, createStore, type Store, type StoreEnhancer } from "redux";
+import { applyMiddleware, compose, legacy_createStore as createStore, type Store, type StoreEnhancer } from "redux";
 // import { routerMiddleware } from "connected-react-router";
 import { type Logger, type LoggerConfig, LoggerImpl } from "./logger";
 import type { ActionHandler, ErrorHandler } from "./module";

@@ -1,5 +1,5 @@
-import { connect, type DispatchProp } from "react-redux";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { connect, type DispatchProp, useStore } from "react-redux";
+import { BrowserRouter, Route, Routes, useParams } from "react-router";
 import { showLoading } from "@core";
 import { ConfigProvider } from "antd";
 // import { Switch } from "react-router-dom";
@@ -15,6 +15,9 @@ import Login from "./login";
 interface MainProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 
 function Main(props: MainProps) {
+    const params = useParams();
+    const store = useStore().getState();
+    console.log("store-store", store);
     return (
         // <ConfigProvider
         //     theme={{
@@ -27,7 +30,7 @@ function Main(props: MainProps) {
         // >
         <div className="ro-main-container">
             <Routes>
-                <Route path="/login" element={<Login></Login>} />
+                <Route path="/login/:id?" element={<LoginComponent></LoginComponent>} />
                 <Route element={<div>main</div>} />
             </Routes>
         </div>

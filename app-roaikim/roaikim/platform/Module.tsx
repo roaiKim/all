@@ -1,6 +1,7 @@
 import { enablePatches, produce } from "immer";
 // import { push } from "redux-first-history";
 import type { Location } from "history";
+import type { Params } from "react-router";
 // import { put } from "redux-saga/effects";
 import { app } from "../app";
 import type { Logger } from "../Logger";
@@ -10,33 +11,31 @@ import { navigationPreventionAction, setStateAction, type State } from "../reduc
 
 if (process.env.NODE_ENV === "development") enablePatches();
 
-export type ModuleLocation<State> = Location;
+// export type ModuleLocation<State> = Location;
 
 export type PromiseGenerator<T = unknown> = T | Promise<T>;
 
-export interface ModuleLifecycleListener<RouteParam extends object = object, HistoryState extends object = object> {
-    onEnter: (entryComponentProps?: any) => PromiseGenerator;
+export interface ModuleLifecycleListener {
+    onEnter: (params: Params<string>, location: Location) => PromiseGenerator;
     onDestroy: () => PromiseGenerator;
-    onLocationMatched: (routeParameters: RouteParam, location: ModuleLocation<HistoryState>) => PromiseGenerator;
+    onLocationMatched: (params: Params<string>, location: Location) => PromiseGenerator;
     onTick: (() => PromiseGenerator) & TickIntervalDecoratorFlag;
 }
 
 export class Module<
     RootState extends State,
     ModuleName extends keyof RootState["app"] & string,
-    RouteParam extends object = object,
     HistoryState extends object = object,
-> implements ModuleLifecycleListener<RouteParam, HistoryState> {
+> implements ModuleLifecycleListener {
     constructor(
         readonly name: ModuleName,
         readonly initialState: RootState["app"][ModuleName]
     ) {}
 
-    onEnter(entryComponentProps: any) {
+    onEnter(params: Params<string>, location: Location) {
         /**
          * Called when the attached component is initially mounted.
          */
-        // return undefined;
     }
 
     onDestroy() {
@@ -45,7 +44,7 @@ export class Module<
          */
     }
 
-    onLocationMatched(routeParam: RouteParam, location: ModuleLocation<HistoryState>) {
+    onLocationMatched(params: Params<string>, location: Location) {
         /**
          * Called when the attached component is a React-Route component and its Route location matches
          * It is called each time the location changes, as long as it still matches

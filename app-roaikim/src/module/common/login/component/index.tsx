@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { connect, DispatchProp } from "react-redux";
-import { showLoading } from "@core";
-import { object, string } from "yup";
+import { connect, type DispatchProp } from "react-redux";
+import { showLoading, useLoadingStatus } from "@core";
+// import { object, string } from "yup";
 import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
 import { BubbleField } from "components/bubble-field";
 import { LoginClock } from "components/login-clock";
 import { ProxySelector } from "components/proxy-selector";
-import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
+// import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
 import { actions } from "module/common/login";
-import { RootState } from "type/state";
-import { decrypted, encrypted } from "utils/function/crypto";
-import { StorageService } from "utils/StorageService";
+import type { RootState } from "type/rootState";
+// import { decrypted, encrypted } from "utils/function/crypto";
+// import { StorageService } from "utils/StorageService";
 import "./index.less";
 
 interface LoginProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
@@ -26,15 +26,18 @@ function Login(props: LoginProps) {
     const brandLogo = logo || headerLogo;
     const brandName = platformName || "Rosen CI";
 
+    const loading = useLoadingStatus();
+    console.log("--loading--", loading);
+
     const [state, setState] = useState<LoginState>(() => {
-        const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
-        const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
-        const un = decrypted(userName || "");
-        const pw = decrypted(password || "");
+        // const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
+        // const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
+        // const un = decrypted(userName || "");
+        // const pw = decrypted(password || "");
 
         return {
-            username: un,
-            password: pw,
+            username: "un",
+            password: "pw",
         };
     });
 
@@ -43,20 +46,19 @@ function Login(props: LoginProps) {
     };
 
     const onSubmit = () => {
-        const longinSchema = object().shape({
-            password: string().required("请输入密码"),
-            username: string().required("请输入用户名"),
-        });
-
-        longinSchema
-            .validate(state)
-            .then(() => {
-                const { dispatch } = props;
-                dispatch(actions.login(state.username, state.password));
-            })
-            .catch(() => {
-                // Toast.show((error.errors || [])[0] || error);
-            });
+        // const longinSchema = object().shape({
+        //     password: string().required("请输入密码"),
+        //     username: string().required("请输入用户名"),
+        // });
+        // longinSchema
+        //     .validate(state)
+        //     .then(() => {
+        //         const { dispatch } = props;
+        //         dispatch(actions.login(state.username, state.password));
+        //     })
+        //     .catch(() => {
+        //         // Toast.show((error.errors || [])[0] || error);
+        //     });
     };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -90,7 +92,9 @@ function Login(props: LoginProps) {
                     <div className="ro-login-panel">
                         <div className="ro-login-sidebar">
                             <div className="ro-login-brand">
-                                <div className="ro-logo">{brandLogo ? <img src={brandLogo} alt={brandName}></img> : <span>{brandName.slice(0, 1)}</span>}</div>
+                                <div className="ro-logo">
+                                    {brandLogo ? <img src={brandLogo} alt={brandName}></img> : <span>{brandName.slice(0, 1)}</span>}
+                                </div>
                                 <div className="ro-login-brand-copy">
                                     <span className="ro-login-eyebrow">macOS Workspace</span>
                                     <h1>{brandName}</h1>

@@ -22,6 +22,7 @@ import "asset/styles/index.less";
 bootstrap({
     componentType: MainComponent,
     errorListener: new ErrorHandler(),
+    idleTimeoutInSecond: 600,
     // rootContainer: document.getElementById("react-app"),
     // browserConfig: {
     //     onLocationChange: locationListener,

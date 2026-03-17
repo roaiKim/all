@@ -1,4 +1,5 @@
 import { combineReducers, type Reducer, type UnknownAction as OriginalReduxAction } from "redux";
+import type { RouterState } from "./bridge";
 // import { type RouterState } from "redux-first-history";
 import { DEFAULT_IDLE_TIMEOUT } from "./util/IdleDetector";
 
@@ -14,7 +15,7 @@ export interface IdleState {
 
 export interface State {
     loading: LoadingState;
-    // router: RouterState;
+    router: RouterState;
     navigationPrevented: boolean;
     app: Record<string, any>;
     idle: IdleState;
@@ -145,9 +146,9 @@ export function idleReducer(
 }
 
 // Root Reducer
-export function rootReducer(/* routerReducer: Reducer<RouterState> */): Reducer<State, Action<any>, object> {
+export function rootReducer(routerReducer: Reducer<RouterState>): Reducer<State, Action<any>, object> {
     return combineReducers({
-        // router: routerReducer,
+        router: routerReducer,
         loading: loadingReducer,
         app: setStateReducer,
         navigationPrevented: navigationPreventionReducer,

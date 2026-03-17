@@ -7,6 +7,7 @@ import { type Logger, type LoggerConfig, LoggerImpl } from "./Logger";
 import { type ActionHandler, type ErrorHandler, executeAction } from "./module";
 import { type Action, LOADING_ACTION, rootReducer, type State } from "./reducer";
 import { captureError } from "./util/error-util";
+import { executeMethodMiddleware } from "./util/Middleware";
 
 declare const window: any;
 
@@ -44,8 +45,11 @@ function createApp(): App {
     // const sagaMiddleware = createSagaMiddleware({
     //     onError: (error, info) => captureError(error, "@@framework/detached-saga", { extraStacktrace: info.sagaStack }),
     // });
+    const history = createBrowserHistory();
+    console.log("-history-", history);
     // const store: Store<State> = createStore(rootReducer(), composeWithDevTools(/* applyMiddleware(routerMiddleware, sagaMiddleware) */));
-    const store: Store<State> = createStore(rootReducer());
+    const store: Store<State> = createStore(rootReducer(history), composeWithDevTools(applyMiddleware(executeMethodMiddleware)));
+    // const store: Store<State> = createStore(rootReducer());
 
     // createReduxHistory() will dispatch an action, it must be called before middleware takeEvery(*) takes effect
     // const reduxHistory = createReduxHistory(store);

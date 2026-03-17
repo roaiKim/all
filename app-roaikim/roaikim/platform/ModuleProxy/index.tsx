@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { useLocation, useParams } from "react-router";
+import { useLocation, useMatch, useParams } from "react-router";
 import type { Location } from "history";
 // import type { RouteComponentProps } from "react-router";
 // import type { Task } from "redux-saga";
@@ -38,7 +38,7 @@ export class ModuleProxy<M extends Module<any, any>> {
         return function (props) {
             const location = useLocation();
             const params = useParams();
-            console.log("------location-----", location, params);
+            console.log("-params--f-f-", params);
             useEffect(() => {
                 StartupModulePerformanceLogger.registerIfNotExist(moduleName);
             }, []);
@@ -79,7 +79,7 @@ export class ModuleProxy<M extends Module<any, any>> {
                 const enterActionName = `${moduleName}/@@ENTER`;
                 const startTime = Date.now();
 
-                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), props);
+                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), params, location);
 
                 app.logger.info({
                     action: enterActionName,
