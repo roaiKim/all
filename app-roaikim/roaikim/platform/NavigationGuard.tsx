@@ -3,9 +3,9 @@ import { connect, type DispatchProp, useSelector } from "react-redux";
 import { unstable_usePrompt } from "react-router";
 import type { State } from "../reducer";
 
-// interface OwnProps {
-//     message: string;
-// }
+interface NavigationGuardProps {
+    message: string;
+}
 
 // interface StateProps {
 //     isPrevented: boolean;
@@ -31,11 +31,11 @@ import type { State } from "../reducer";
 
 // export const NavigationGuard = connect(mapStateToProps)(Component);
 
-export function NavigationGuard() {
+export function NavigationGuard(props: NavigationGuardProps) {
     const navigationPrevented = useSelector((state: State) => state.navigationPrevented);
     unstable_usePrompt({
         when: navigationPrevented,
-        message: "您确定要离开吗？未保存的更改将丢失！",
+        message: props?.message || "您确定要离开吗？未保存的更改将丢失！",
     });
     return null;
 }

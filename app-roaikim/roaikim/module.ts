@@ -11,7 +11,7 @@ export interface TickIntervalDecoratorFlag {
     tickInterval?: number;
 }
 
-export type ActionHandler = (...args: any[]) => unknown;
+export type ActionHandler = (...args: any[]) => unknown | Promise<unknown>;
 
 export type ErrorHandler = (error: Exception) => unknown;
 

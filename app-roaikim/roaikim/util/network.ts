@@ -1,14 +1,14 @@
-import axios, {AxiosError, type AxiosRequestConfig, type Method} from "axios";
-import {APIException, NetworkConnectionException} from "../Exception";
-import {parseWithDate} from "./json-util";
+import axios, { AxiosError, type AxiosRequestConfig, type Method } from "axios";
+import { parseWithDate } from "./json-util";
+import { APIException, NetworkConnectionException } from "../Exception";
 
 export type PathParams<T extends string> = string extends T
-    ? {[key: string]: string | number}
+    ? { [key: string]: string | number }
     : T extends `${infer Start}:${infer Param}/${infer Rest}`
-      ? {[k in Param | keyof PathParams<Rest>]: string | number}
+      ? { [k in Param | keyof PathParams<Rest>]: string | number }
       : T extends `${infer Start}:${infer Param}`
-        ? {[k in Param]: string | number}
-        : {};
+        ? { [k in Param]: string | number }
+        : object;
 
 export interface APIErrorResponse {
     id?: string | null;
@@ -33,8 +33,8 @@ const ajaxClient = axios.create({
 });
 
 ajaxClient.interceptors.response.use(
-    response => response,
-    error => {
+    (response) => response,
+    (error) => {
         if (axios.isAxiosError(error)) {
             const typedError = error as AxiosError<APIErrorResponse | undefined>;
             const requestURL = typedError.config?.url || "-";
@@ -52,7 +52,11 @@ ajaxClient.interceptors.response.use(
                 }
             }
 
-            throw new NetworkConnectionException(`Failed to connect: ${requestURL}`, requestURL, `${typedError.code || "UNKNOWN"}: ${typedError.message}`);
+            throw new NetworkConnectionException(
+                `Failed to connect: ${requestURL}`,
+                requestURL,
+                `${typedError.code || "UNKNOWN"}: ${typedError.message}`
+            );
         } else if (error instanceof NetworkConnectionException) {
             throw error;
         } else {
@@ -69,7 +73,7 @@ export async function ajax<Request, Response, Path extends string>(
     extraConfig: Partial<AxiosRequestConfig> = {}
 ): Promise<Response> {
     const fullURL = urlParams(path, pathParams);
-    const config: AxiosRequestConfig = {...extraConfig, method, url: fullURL};
+    const config: AxiosRequestConfig = { ...extraConfig, method, url: fullURL };
 
     if (method === "GET" || method === "DELETE") {
         config.params = request;
@@ -88,7 +92,7 @@ export async function ajax<Request, Response, Path extends string>(
 }
 
 export function uri<Request>(path: string, request: Request): string {
-    const config: AxiosRequestConfig = {method: "GET", url: path, params: request};
+    const config: AxiosRequestConfig = { method: "GET", url: path, params: request };
     return ajaxClient.getUri(config);
 }
 

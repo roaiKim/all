@@ -25,14 +25,12 @@ function Main(props: MainProps) {
         //     locale={zhCN}
         //     componentSize="small"
         // >
-        <BrowserRouter>
-            <div className="ro-main-container">
-                <Routes>
-                    <Route path="/login" element={<Login></Login>} />
-                    <Route element={<div>main</div>} />
-                </Routes>
-            </div>
-        </BrowserRouter>
+        <div className="ro-main-container">
+            <Routes>
+                <Route path="/login" element={<Login></Login>} />
+                <Route element={<div>main</div>} />
+            </Routes>
+        </div>
     );
 }
 

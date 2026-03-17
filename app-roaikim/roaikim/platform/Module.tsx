@@ -12,11 +12,13 @@ if (process.env.NODE_ENV === "development") enablePatches();
 
 export type ModuleLocation<State> = Location;
 
+export type PromiseGenerator<T = unknown> = T | Promise<T>;
+
 export interface ModuleLifecycleListener<RouteParam extends object = object, HistoryState extends object = object> {
-    onEnter: (entryComponentProps?: any) => SagaGenerator;
-    onDestroy: () => SagaGenerator;
-    onLocationMatched: (routeParameters: RouteParam, location: ModuleLocation<HistoryState>) => SagaGenerator;
-    onTick: (() => SagaGenerator) & TickIntervalDecoratorFlag;
+    onEnter: (entryComponentProps?: any) => PromiseGenerator;
+    onDestroy: () => PromiseGenerator;
+    onLocationMatched: (routeParameters: RouteParam, location: ModuleLocation<HistoryState>) => PromiseGenerator;
+    onTick: (() => PromiseGenerator) & TickIntervalDecoratorFlag;
 }
 
 export class Module<
@@ -30,26 +32,27 @@ export class Module<
         readonly initialState: RootState["app"][ModuleName]
     ) {}
 
-    *onEnter(entryComponentProps: any): SagaGenerator {
+    onEnter(entryComponentProps: any) {
         /**
          * Called when the attached component is initially mounted.
          */
+        // return undefined;
     }
 
-    *onDestroy(): SagaGenerator {
+    onDestroy() {
         /**
          * Called when the attached component is going to unmount
          */
     }
 
-    *onLocationMatched(routeParam: RouteParam, location: ModuleLocation<HistoryState>): SagaGenerator {
+    onLocationMatched(routeParam: RouteParam, location: ModuleLocation<HistoryState>) {
         /**
          * Called when the attached component is a React-Route component and its Route location matches
          * It is called each time the location changes, as long as it still matches
          */
     }
 
-    *onTick(): SagaGenerator {
+    onTick() {
         /**
          * Called periodically during the lifecycle of attached component
          * Usually used together with @Interval decorator, to specify the period (in second)
@@ -120,23 +123,23 @@ export class Module<
      *
      * https://github.com/react-boilerplate/react-boilerplate/issues/1281
      */
-    pushHistory(url: string): SagaGenerator;
-    pushHistory(url: string, stateMode: "keep-state"): SagaGenerator;
-    pushHistory<T extends object>(url: string, state: T): SagaGenerator; // Recommended explicitly pass the generic type
-    pushHistory(state: HistoryState): SagaGenerator;
+    pushHistory(url: string): PromiseGenerator;
+    pushHistory(url: string, stateMode: "keep-state"): PromiseGenerator;
+    pushHistory<T extends object>(url: string, state: T): PromiseGenerator; // Recommended explicitly pass the generic type
+    pushHistory(state: HistoryState): PromiseGenerator;
 
-    *pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state"): SagaGenerator {
-        if (typeof urlOrState === "string") {
-            const url: string = urlOrState;
-            if (state) {
-                yield put(push(url, state === "keep-state" ? app.history.location.state : state));
-            } else {
-                yield put(push(url));
-            }
-        } else {
-            const currentURL = location.pathname + location.search;
-            const state: HistoryState = urlOrState;
-            yield put(push(currentURL, state));
-        }
+    pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state") {
+        // if (typeof urlOrState === "string") {
+        //     const url: string = urlOrState;
+        //     if (state) {
+        //         yield put(push(url, state === "keep-state" ? app.history.location.state : state));
+        //     } else {
+        //         yield put(push(url));
+        //     }
+        // } else {
+        //     const currentURL = location.pathname + location.search;
+        //     const state: HistoryState = urlOrState;
+        //     yield put(push(currentURL, state));
+        // }
     }
 }

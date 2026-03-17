@@ -26,12 +26,12 @@
         // "@src/*": ["src/*"],
         // "@module/*": ["src/module/*"],
         // "@asset/*": ["src/asset/*"],
-        "@core": ["../core"],
+        "@core": ["../roaikim"],
         "@http": ["./http"],
         "@icon": ["../node_modules/@ant-design/icons"],
         "@api/*": ["./service/api/*"]
     }
   },
-  "include": ["./src", "./core"],
+  "include": ["./src", "./roaikim"],
   "exclude": ["./webpack/**/*", "./z-files"]
 }

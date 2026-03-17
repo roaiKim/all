@@ -23,7 +23,7 @@ export { captureError } from "./util/error-util";
 export { ErrorBoundary } from "./util/ErrorBoundary";
 export { IdleDetector, IdleDetectorContext } from "./util/IdleDetector";
 export { ajax, uri } from "./util/network";
-export { Route } from "./util/Route";
+// export { Route } from "./util/Route";
 export { type SSE, sse, type SSEConfig } from "./util/sse";
 export type { Location } from "history";
 export * as immer from "immer";

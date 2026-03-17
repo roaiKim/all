@@ -1,10 +1,10 @@
-import {ErrorEvent, EventSource} from "eventsource";
-import type {Method} from "axios";
-import {parseWithDate} from "./json-util";
-import {uuid} from "./uuid";
-import type {APIErrorResponse} from "./network";
-import {app} from "../app";
-import {APIException, NetworkConnectionException} from "../Exception";
+import { ErrorEvent, EventSource } from "eventsource";
+import type { Method } from "axios";
+import { parseWithDate } from "./json-util";
+import type { APIErrorResponse } from "./network";
+import { uuid } from "./uuid";
+import { app } from "../app";
+import { APIException, NetworkConnectionException } from "../Exception";
 
 export interface SSEConfig<Request> {
     actionPrefix: string;
@@ -47,7 +47,8 @@ export function sse<Request, Response extends Record<string, any>>({
     const errorListeners: Array<ErrorListener> = [];
     const messageListeners: Map<keyof Response, Array<(data: NonNullable<Response[keyof Response]>) => void>> = new Map();
 
-    const errorEventToNetworkException = (e: ErrorEvent) => new NetworkConnectionException(`Failed to connect SSE: ${url}`, url, `${e.type || "UNKNOWN"}: ${e.message || "UNKNOWN"}`);
+    const errorEventToNetworkException = (e: ErrorEvent) =>
+        new NetworkConnectionException(`Failed to connect SSE: ${url}`, url, `${e.type || "UNKNOWN"}: ${e.message || "UNKNOWN"}`);
 
     const generalMessageListener = (e: MessageEvent) => {
         const data = safeParse<Response>(e.data);
@@ -55,22 +56,22 @@ export function sse<Request, Response extends Record<string, any>>({
             if (logResponse) {
                 app.logger.info({
                     action: `${actionPrefix}/@@SSE_RESPONSE`,
-                    context: {sse_url: url, trace_id: traceId || undefined},
-                    info: {message: e.data},
+                    context: { sse_url: url, trace_id: traceId || undefined },
+                    info: { message: e.data },
                 });
             }
             return;
         }
 
-        const validMessageFields = Object.keys(data).filter(_ => data[_] !== null) as (keyof Response)[];
+        const validMessageFields = Object.keys(data).filter((_) => data[_] !== null) as (keyof Response)[];
         if (validMessageFields.length > 0) {
-            validMessageFields.forEach(field => messageListeners.get(field)?.forEach(listener => listener(data[field])));
+            validMessageFields.forEach((field) => messageListeners.get(field)?.forEach((listener) => listener(data[field])));
 
             if (logResponse) {
                 app.logger.info({
                     action: `${actionPrefix}/@@SSE_RESPONSE`,
-                    context: {sse_url: url, trace_id: traceId || undefined},
-                    info: {message: validMessageFields.map(field => `${field.toString()}:${JSON.stringify(data[field])}`).join(`\n`)},
+                    context: { sse_url: url, trace_id: traceId || undefined },
+                    info: { message: validMessageFields.map((field) => `${field.toString()}:${JSON.stringify(data[field])}`).join(`\n`) },
                 });
             }
         }
@@ -88,9 +89,9 @@ export function sse<Request, Response extends Record<string, any>>({
 
         app.logger.exception(exception, {
             action: `${actionPrefix}/@@SSE_ERROR`,
-            context: {sse_url: url, trace_id: traceId || undefined},
+            context: { sse_url: url, trace_id: traceId || undefined },
         });
-        errorListeners.forEach(listener => listener(exception));
+        errorListeners.forEach((listener) => listener(exception));
         startTime = Date.now(); // reset startTime for next connection
     };
 
@@ -118,11 +119,11 @@ export function sse<Request, Response extends Record<string, any>>({
                         }),
                 });
 
-                eventSource.onopen = e => {
+                eventSource.onopen = (e) => {
                     app.logger.info({
                         action: `${actionPrefix}/@@SSE_CONNECTED`,
-                        context: {sse_url: url, trace_id: traceId || undefined},
-                        stats: {connecting_times: connectingTimes},
+                        context: { sse_url: url, trace_id: traceId || undefined },
+                        stats: { connecting_times: connectingTimes },
                         elapsedTime: startTime ? Date.now() - startTime : undefined,
                     });
 
@@ -134,12 +135,12 @@ export function sse<Request, Response extends Record<string, any>>({
                     eventSource!.addEventListener("message", generalMessageListener);
                     eventSource!.addEventListener("error", generalErrorListener);
 
-                    connectedListeners.forEach(listener => listener(connectingTimes));
+                    connectedListeners.forEach((listener) => listener(connectingTimes));
                     resolve();
                 };
 
                 // for create connection error
-                eventSource.onerror = e => {
+                eventSource.onerror = (e) => {
                     eventSource!.onopen = null;
                     eventSource!.onerror = null;
                     eventSource!.close();
@@ -147,7 +148,7 @@ export function sse<Request, Response extends Record<string, any>>({
                     const exception = errorEventToNetworkException(e);
                     app.logger.exception(exception, {
                         action: `${actionPrefix}/@@SSE_CONNECT_ERROR`,
-                        context: {sse_url: url, trace_id: traceId || undefined},
+                        context: { sse_url: url, trace_id: traceId || undefined },
                         elapsedTime: startTime ? Date.now() - startTime : undefined,
                     });
                     reject(exception);
@@ -167,14 +168,14 @@ export function sse<Request, Response extends Record<string, any>>({
                 eventSource = null;
             }
         },
-        onConnected: listener => {
+        onConnected: (listener) => {
             connectedListeners.push(listener);
             return () => {
                 const index = connectedListeners.indexOf(listener);
                 if (index !== -1) connectedListeners.splice(index, 1);
             };
         },
-        onError: listener => {
+        onError: (listener) => {
             errorListeners.push(listener);
             return () => {
                 const index = errorListeners.indexOf(listener);

@@ -154,7 +154,7 @@ function renderRoot(EntryComponent: React.ComponentType, rootContainer: HTMLElem
         <Provider store={app.store}>
             <IdleDetector>
                 <BrowserRouter>
-                    <NavigationGuard message={navigationPreventionMessage} />
+                    {/* <NavigationGuard message={navigationPreventionMessage} /> */}
                     <ErrorBoundary>
                         <EntryComponent />
                     </ErrorBoundary>

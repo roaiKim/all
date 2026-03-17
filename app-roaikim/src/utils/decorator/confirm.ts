@@ -6,7 +6,7 @@ import { createPromisedConfirmation } from "./asyncActionHandler";
  * @param text 显示文本
  * @returns null
  */
-export function confirm(text: string) {
+export function Confirm(text: string) {
     return createActionHandlerDecorator(async (hander, thisModule) => {
         const result = await createPromisedConfirmation(text);
         if (result === "ok") {

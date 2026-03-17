@@ -1,9 +1,9 @@
-import {Exception, JavaScriptException} from "../Exception";
-import {app} from "../app";
-import {isBrowserSupported} from "./navigator-util";
-import {spawn} from "../typed-saga";
-import {GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, sendEventLogs} from "../platform/bootstrap";
-import type {ErrorHandler} from "../module";
+import { isBrowserSupported } from "./navigator-util";
+import { app } from "../app";
+import { Exception, JavaScriptException } from "../Exception";
+import type { ErrorHandler } from "../module";
+import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, sendEventLogs } from "../platform/bootstrap";
+// import { spawn } from "../typed-saga";
 
 let errorHandlerRunning = false;
 
@@ -41,7 +41,7 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
 
     const exception = errorToException(error);
     const errorStacktrace = error instanceof Error ? error.stack : undefined;
-    const info: {[key: string]: string | undefined} = {
+    const info: { [key: string]: string | undefined } = {
         payload: extra.actionPayload,
         extra_stacktrace: extra.extraStacktrace,
         stacktrace: errorStacktrace,
@@ -57,21 +57,22 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
             errorCode,
         });
     } else {
-        app.logger.exception(exception, {action, info});
-        app.sagaMiddleware.run(runUserErrorHandler, app.errorHandler, exception);
+        app.logger.exception(exception, { action, info });
+        // app.sagaMiddleware.run();
+        runUserErrorHandler(app.errorHandler, exception);
     }
 
     return exception;
 }
 
-export function* runUserErrorHandler(handler: ErrorHandler, exception: Exception) {
+export async function runUserErrorHandler(handler: ErrorHandler, exception: Exception) {
     // For app, report errors to event server ASAP, in case of sudden termination
-    yield spawn(sendEventLogs);
+    // sendEventLogs();
     if (errorHandlerRunning) return;
 
     try {
         errorHandlerRunning = true;
-        yield* handler(exception);
+        await handler(exception);
     } catch (e) {
         console.warn("[framework] Fail to execute error handler", e);
     } finally {
@@ -85,28 +86,32 @@ function specialErrorCode(exception: Exception, action: string, stacktrace?: str
     const errorMessage = exception.message.toLowerCase();
     const ignoredPatterns = [
         // Network error while downloading JavaScript/CSS/assets
-        {pattern: "loading chunk", errorCode: "JS_CHUNK"},
-        {pattern: "loading css chunk", errorCode: "CSS_CHUNK"},
-        {pattern: "dom source error", errorCode: "DOM_ASSET"},
+        { pattern: "loading chunk", errorCode: "JS_CHUNK" },
+        { pattern: "loading css chunk", errorCode: "CSS_CHUNK" },
+        { pattern: "dom source error", errorCode: "DOM_ASSET" },
         // CORS or CSP issues
-        {pattern: "content security policy", errorCode: "CSP"},
-        {pattern: "script error", errorCode: "CORS"},
+        { pattern: "content security policy", errorCode: "CSP" },
+        { pattern: "script error", errorCode: "CORS" },
         // Vendor related, mostly still with stacktrace
-        {pattern: "ucbrowser", errorCode: "VENDOR"},
-        {pattern: "vivo", errorCode: "VENDOR"},
-        {pattern: "huawei", errorCode: "VENDOR"},
-        {pattern: "proxy: trap result did not include", errorCode: "PROXY_UNSUPPORTED"},
+        { pattern: "ucbrowser", errorCode: "VENDOR" },
+        { pattern: "vivo", errorCode: "VENDOR" },
+        { pattern: "huawei", errorCode: "VENDOR" },
+        { pattern: "proxy: trap result did not include", errorCode: "PROXY_UNSUPPORTED" },
         // Browser sandbox issues
-        {pattern: "the operation is insecure", errorCode: "BROWSER_LIMIT"},
-        {pattern: "access is denied for this document", errorCode: "BROWSER_LIMIT"},
+        { pattern: "the operation is insecure", errorCode: "BROWSER_LIMIT" },
+        { pattern: "access is denied for this document", errorCode: "BROWSER_LIMIT" },
     ];
 
-    const matchedPattern = ignoredPatterns.find(({pattern}) => errorMessage.includes(pattern));
+    const matchedPattern = ignoredPatterns.find(({ pattern }) => errorMessage.includes(pattern));
     if (matchedPattern) {
         return `IGNORED_${matchedPattern.errorCode}_ISSUE`;
     }
 
-    if (exception instanceof JavaScriptException && stacktrace?.includes("https://cdn.livechatinc.com/tracking.js") && [GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION].includes(action)) {
+    if (
+        exception instanceof JavaScriptException &&
+        // stacktrace?.includes("https://cdn.livechatinc.com/tracking.js") &&
+        [GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION].includes(action)
+    ) {
         return "IGNORED_LIVE_CHAT_PLUGIN_ISSUE";
     }
 
@@ -119,7 +124,11 @@ function specialErrorCode(exception: Exception, action: string, stacktrace?: str
         return "IGNORED_GOOGLE_RECAPTCHA_ISSUE";
     }
 
-    if (exception instanceof JavaScriptException && !isValidStacktrace(stacktrace) && [GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION].includes(action)) {
+    if (
+        exception instanceof JavaScriptException &&
+        !isValidStacktrace(stacktrace) &&
+        [GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION].includes(action)
+    ) {
         return "IGNORED_EXTERNAL_PLUGIN_ISSUE";
     }
 
@@ -128,8 +137,18 @@ function specialErrorCode(exception: Exception, action: string, stacktrace?: str
 
 function isValidStacktrace(stacktrace?: string): boolean {
     if (stacktrace) {
-        const ignoredPatterns = ["extension://", "@user-script", "@debugger", "eval code", "ucbrowser_script", "x-plugin-script", "<anonymous>:", "@FormMetadata.js", "image.uc.cn"];
-        if (ignoredPatterns.some(_ => stacktrace.includes(_))) {
+        const ignoredPatterns = [
+            "extension://",
+            "@user-script",
+            "@debugger",
+            "eval code",
+            "ucbrowser_script",
+            "x-plugin-script",
+            "<anonymous>:",
+            "@FormMetadata.js",
+            "image.uc.cn",
+        ];
+        if (ignoredPatterns.some((_) => stacktrace.includes(_))) {
             return false;
         }
         return stacktrace.includes(".js");

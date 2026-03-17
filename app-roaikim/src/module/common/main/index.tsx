@@ -1,11 +1,11 @@
-import { captureError, Module, register, roPushHistory } from "@core";
+import { captureError, Module, type ModuleLocation, register } from "@core";
 // import { LoginService } from "@api/LoginService";
 // import { clearToken } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
 // import { GolbalService } from "service/api/GolbalService";
 import type { RootState } from "type/rootState";
 import { getPagePermission, transformMeuns } from "utils/business/permission";
-import { confirm, loading } from "utils/decorator";
+import { Confirm, Loading } from "utils/decorator";
 // import { clearLocalStorageWhenLogout } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
@@ -17,8 +17,8 @@ const initialMainState = {
 };
 
 class MainModule extends Module<RootState, "main"> {
-    async onEnter() {
-        console.log("main-onEnter");
+    async onEnter(props) {
+        console.log("main-onEnter", props);
         // const isLogin = StorageService.get(WEB_ISLOGIN);
         // const webToken = StorageService.get(WEB_TOKEN);
         // if (isDevelopment) {
@@ -37,7 +37,7 @@ class MainModule extends Module<RootState, "main"> {
     }
 
     // @RetryOnNetworkConnectionError()
-    @loading("PERMISSION")
+    @Loading("PERMISSION")
     async fetchPermission() {
         // const permission = await GolbalService.getByUserId().catch(
         //     (error) => (this.setState({ PERMISSION_DONE: false }), captureError(error), Promise.reject(""))
@@ -56,8 +56,8 @@ class MainModule extends Module<RootState, "main"> {
         // }
     }
 
-    @confirm("确定退出吗")
-    async logoutWithConfirm() {
+    @Confirm("确定退出吗")
+    logoutWithConfirm() {
         this.logout();
     }
 
@@ -68,7 +68,11 @@ class MainModule extends Module<RootState, "main"> {
         // roPushHistory("/login");
     }
 
-    @confirm("确定退出吗")
+    // onLocationMatched(routeParam: object, location: ModuleLocation<object>): void {
+    //     console.log("onLocationMatched++", routeParam, location);
+    // }
+
+    @Confirm("确定退出吗")
     calcPageHeight() {
         try {
             const container = document.querySelector(".ro-main-container");
@@ -83,4 +87,4 @@ class MainModule extends Module<RootState, "main"> {
 
 const module = register(new MainModule("main", initialMainState));
 export const actions = module.getActions();
-export const MainComponent = Main; // module.connect(Main);
+export const MainComponent = module.connect(Main);
