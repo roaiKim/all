@@ -1,9 +1,15 @@
-import { app } from "../app";
 import type { Action } from "../reducer";
 
-export const executeMethodMiddleware = () => (next: any) => (action: Action<any>) => {
+interface ActionHandlerEntry {
+    handler: (...args: any[]) => unknown;
+    moduleName: string;
+}
+
+type ActionHandlerRegistry = Record<string, ActionHandlerEntry>;
+
+export const executeMethodMiddleware = (actionHandlers: ActionHandlerRegistry) => () => (next: any) => (action: Action<any>) => {
     const result = next(action);
-    const actionType = app.actionHandlers[action.type];
+    const actionType = actionHandlers[action.type];
     if (actionType) {
         actionType.handler(...action.payload);
     }

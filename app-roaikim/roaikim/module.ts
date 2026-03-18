@@ -22,7 +22,7 @@ export interface ErrorListener {
 type ActionCreator<H> = H extends (...args: infer P) => unknown ? (...args: P) => Action<P> : never;
 type HandlerKeys<H> = { [K in keyof H]: H[K] extends (...args: any[]) => unknown ? K : never }[Exclude<
     keyof H,
-    keyof ModuleLifecycleListener | keyof ErrorListener
+    keyof ModuleLifecycleListener | keyof ErrorListener | "setState"
 >];
 export type ActionCreators<H> = { readonly [K in HandlerKeys<H>]: ActionCreator<H[K]> };
 

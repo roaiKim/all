@@ -3,6 +3,7 @@ import { applyMiddleware, compose, legacy_createStore as createStore, type Store
 // import { createReduxHistoryContext } from "redux-first-history";
 // import createSagaMiddleware, { type SagaMiddleware } from "redux-saga";
 // import { call as rawCall, race as rawRace, take, takeEvery } from "redux-saga/effects";
+import { createReduxHistory, createRouterMiddleware, createRouterReducer, type RouterState } from "./bridge/enhanced-v2";
 import { type Logger, type LoggerConfig, LoggerImpl } from "./Logger";
 import { type ActionHandler, type ErrorHandler, executeAction } from "./module";
 import { type Action, LOADING_ACTION, rootReducer, type State } from "./reducer";
@@ -12,7 +13,7 @@ import { executeMethodMiddleware } from "./util/Middleware";
 declare const window: any;
 
 interface App {
-    // readonly history: History;
+    readonly history: History;
     readonly store: Store<State>;
     // readonly sagaMiddleware: SagaMiddleware<any>;
     readonly actionHandlers: { [actionType: string]: { handler: ActionHandler; moduleName: string } };
@@ -46,13 +47,21 @@ function createApp(): App {
     //     onError: (error, info) => captureError(error, "@@framework/detached-saga", { extraStacktrace: info.sagaStack }),
     // });
     const history = createBrowserHistory();
-    // console.log("-history-", history);
-    // const store: Store<State> = createStore(rootReducer(), composeWithDevTools(/* applyMiddleware(routerMiddleware, sagaMiddleware) */));
-    const store: Store<State> = createStore(rootReducer(history), composeWithDevTools(applyMiddleware(executeMethodMiddleware)));
+    const actionHandlers: App["actionHandlers"] = {};
+    const initialRouterState: RouterState = {
+        location: history.location,
+        action: history.action,
+    };
+    const store = createStore(
+        rootReducer(createRouterReducer(initialRouterState)),
+        composeWithDevTools(applyMiddleware(createRouterMiddleware(history), executeMethodMiddleware(actionHandlers)))
+    ) as Store<State>;
     // const store: Store<State> = createStore(rootReducer());
 
-    // createReduxHistory() will dispatch an action, it must be called before middleware takeEvery(*) takes effect
-    // const reduxHistory = createReduxHistory(store);
+    createReduxHistory(history, store, {
+        freezeSnapshots: false,
+        compareStateMode: "smart",
+    });
 
     // sagaMiddleware.run(function* () {
     //     yield takeEvery("*", function* (action: Action<any>) {
@@ -70,10 +79,10 @@ function createApp(): App {
     // });
 
     return {
-        // history: reduxHistory,
+        history,
         store,
         // sagaMiddleware,
-        actionHandlers: {},
+        actionHandlers,
         logger: new LoggerImpl(),
         loggerConfig: null,
         *errorHandler() {},

@@ -11,7 +11,7 @@ import type {
     Reducer, // Redux reducer 类型
     Store, // Redux store 类型
 } from "redux"; // 仅导入类型，避免运行时依赖
-
+// 把这个示例整理成 README 中文版 并给上详细的注释 并详细说明实现原理
 export interface RouterState {
     // Router 在 Redux 中的状态结构
     location: Location; // 当前 location

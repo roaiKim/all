@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect, type DispatchProp } from "react-redux";
+import { connect, type DispatchProp, useDispatch } from "react-redux";
 import { showLoading, useLoadingStatus } from "@core";
 // import { object, string } from "yup";
 import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
@@ -28,6 +28,8 @@ function Login(props: LoginProps) {
 
     const loading = useLoadingStatus("login-loading");
     console.log("--login-loading--", loading);
+
+    const dispatch = useDispatch();
 
     const [state, setState] = useState<LoginState>(() => {
         // const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
@@ -59,6 +61,9 @@ function Login(props: LoginProps) {
         //     .catch(() => {
         //         // Toast.show((error.errors || [])[0] || error);
         //     });
+        // dispatch(actions.login("1", "2"));
+        // dispatch(actions.setState({ companyInfo: 234443, userInfo: 45556 }));
+        // dispatch(actions);
     };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

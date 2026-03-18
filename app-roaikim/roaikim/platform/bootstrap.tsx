@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import axios from "axios";
-import { BrowserRouter, Router } from "react-router-dom";
+import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
 import type { Location } from "history";
 import { createRoot } from "react-dom/client";
 import { NavigationGuard } from "./NavigationGuard";
@@ -138,27 +138,15 @@ function setupGlobalErrorHandler(errorListener: ErrorListener) {
 
 function renderRoot(EntryComponent: React.ComponentType, rootContainer: HTMLElement, navigationPreventionMessage: string) {
     const root = createRoot(rootContainer);
-    // root.render(
-    //     <Provider store={app.store}>
-    //         <IdleDetector>
-    //             <Router history={app.history}>
-    //                 <NavigationGuard message={navigationPreventionMessage} />
-    //                 <ErrorBoundary>
-    //                     <EntryComponent />
-    //                 </ErrorBoundary>
-    //             </Router>
-    //         </IdleDetector>
-    //     </Provider>
-    // );
     root.render(
         <Provider store={app.store}>
             <IdleDetector>
-                <BrowserRouter>
+                <HistoryRouter history={app.history as any}>
                     {/* <NavigationGuard message={navigationPreventionMessage} /> */}
                     <ErrorBoundary>
                         <EntryComponent />
                     </ErrorBoundary>
-                </BrowserRouter>
+                </HistoryRouter>
             </IdleDetector>
         </Provider>
     );
@@ -197,7 +185,7 @@ function setupAppExitListener(eventServerURL?: string) {
 
 function setupLocationChangeListener(listener?: (location: Location) => void) {
     if (listener) {
-        // app.history.listen(listener);
+        app.history.listen(({ location }) => listener(location));
     }
 }
 
