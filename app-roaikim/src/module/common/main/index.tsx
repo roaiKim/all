@@ -1,7 +1,7 @@
 import { captureError, Module, type ModuleLocation, register } from "@core";
 // import { LoginService } from "@api/LoginService";
 // import { clearToken } from "@http";
-import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-envs";
+import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-constant";
 // import { GolbalService } from "service/api/GolbalService";
 import type { RootState } from "type/rootState";
 import { getPagePermission, transformMeuns } from "utils/business/permission";
@@ -18,7 +18,7 @@ const initialMainState = {
 
 class MainModule extends Module<RootState, "main"> {
     async onEnter(props) {
-        console.log("main-onEnter", props);
+        // console.log("main-onEnter", props);
         // const isLogin = StorageService.get(WEB_ISLOGIN);
         // const webToken = StorageService.get(WEB_TOKEN);
         // if (isDevelopment) {
