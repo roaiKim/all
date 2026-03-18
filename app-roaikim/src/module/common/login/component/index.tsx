@@ -26,8 +26,8 @@ function Login(props: LoginProps) {
     const brandLogo = logo || headerLogo;
     const brandName = platformName || "Rosen CI";
 
-    const loading = useLoadingStatus();
-    console.log("--loading--", loading);
+    const loading = useLoadingStatus("login-loading");
+    console.log("--login-loading--", loading);
 
     const [state, setState] = useState<LoginState>(() => {
         // const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));

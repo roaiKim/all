@@ -17,7 +17,7 @@ interface MainProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
 function Main(props: MainProps) {
     const params = useParams();
     const store = useStore().getState();
-    console.log("store-store", store);
+    // console.log("store-store", store);
     return (
         // <ConfigProvider
         //     theme={{

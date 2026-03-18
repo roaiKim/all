@@ -46,7 +46,7 @@ function createApp(): App {
     //     onError: (error, info) => captureError(error, "@@framework/detached-saga", { extraStacktrace: info.sagaStack }),
     // });
     const history = createBrowserHistory();
-    console.log("-history-", history);
+    // console.log("-history-", history);
     // const store: Store<State> = createStore(rootReducer(), composeWithDevTools(/* applyMiddleware(routerMiddleware, sagaMiddleware) */));
     const store: Store<State> = createStore(rootReducer(history), composeWithDevTools(applyMiddleware(executeMethodMiddleware)));
     // const store: Store<State> = createStore(rootReducer());

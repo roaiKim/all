@@ -1,4 +1,4 @@
-import { type Location, Module, register } from "@core";
+import { type Location, Log, Module, register } from "@core";
 import { message } from "antd";
 // import { v4 } from "uuid";
 // import { DEV_PROXY_HOST, isDevelopment } from "config/static-envs";
@@ -17,14 +17,29 @@ const initialLoginState = {
     userInfo: null,
 };
 
+const times = 0;
 class LoginModule extends Module<RootState, "login"> {
     onEnter(params: Params<string>, location: Location) {
         //
-        console.log("--d--params-location--", params, location);
+        console.log("--LoginModule-onEnter--", params, location);
+        this.login(1, 2);
     }
+
+    onLocationMatched(params: Params<string>, location: Location): void {
+        console.log("--LoginModule-onLocationMatched--", params, location);
+    }
+
+    // @Log()
+    // onTick(): void {
+    //     console.log("--LoginModule-onTick--", times);
+    //     times++;
+    // }
 
     @Loading("login-loading")
     async login(username: string, password: string) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, 3000);
+        });
         // const request = {
         //     grant_type: "password",
         //     username: username.trim(),
