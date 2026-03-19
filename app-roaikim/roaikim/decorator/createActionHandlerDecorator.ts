@@ -1,8 +1,7 @@
 import { app } from "../app";
 import type { ActionHandler } from "../module";
-import type { Module, PromiseGenerator } from "../platform/Module";
+import type { Module } from "../platform/Module";
 import type { State } from "../reducer";
-// import type { SagaGenerator } from "../typed-saga";
 import { stringifyWithMask } from "../util/json-util";
 
 type ActionHandlerWithMetaData = ActionHandler & { actionName: string; maskedParams: string };

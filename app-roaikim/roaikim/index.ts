@@ -15,7 +15,7 @@ export { useAction, useBinaryAction, useObjectKeyAction, useDefaultObjectAction 
 export { useLoadingStatus } from "./hooks/loading";
 export { type ErrorListener, register } from "./module";
 export { bootstrap } from "./platform/bootstrap";
-export { Module, type ModuleLifecycleListener, type ModuleLocation } from "./platform/Module";
+export { Module, type ModuleLifecycleListener } from "./platform/Module";
 export { idleStateAction, idleTimeoutAction, loadingAction, navigationPreventionAction, showLoading, type State } from "./reducer";
 // export { all, call, delay, fork, put, race, type SagaGenerator, spawn } from "./typed-saga";
 export { async, type AsyncErrorComponentProps, type AsyncOptions } from "./util/async";

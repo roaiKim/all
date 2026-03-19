@@ -1,4 +1,4 @@
-import { captureError, Module, type ModuleLocation, register } from "@core";
+import { captureError, Module, register } from "@core";
 // import { LoginService } from "@api/LoginService";
 // import { clearToken } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-constant";

@@ -1,5 +1,6 @@
 import { Select } from "antd";
 import DevProxy from "config/development.proxy";
+import { setHost } from "@http";
 import { DEV_PROXY_HOST, isDevelopment } from "config/static-constant";
 import { StorageService } from "utils/StorageService";
 
@@ -16,6 +17,8 @@ export function ProxySelector() {
         if (!proxyHost) {
             const { value } = options?.[0] || {};
             proxyHost = value;
+            StorageService.set(DEV_PROXY_HOST, value);
+            setHost();
         }
 
         return (
@@ -26,7 +29,7 @@ export function ProxySelector() {
                     style={{ width: 360 }}
                     onChange={(value) => {
                         StorageService.set(DEV_PROXY_HOST, value);
-                        // setHost();
+                        setHost();
                     }}
                     options={options}
                 />

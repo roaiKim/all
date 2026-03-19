@@ -9,12 +9,10 @@ import { loadingAction } from "../reducer";
 export function Loading(identifier = "global") {
     return createActionHandlerDecorator(async (handler) => {
         try {
-            console.log("---" + identifier, new Date());
             app.store.dispatch(loadingAction(true, identifier));
             await handler();
         } finally {
             app.store.dispatch(loadingAction(false, identifier));
-            console.log("---" + identifier, new Date());
         }
     });
 }

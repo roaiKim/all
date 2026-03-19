@@ -61,7 +61,7 @@ function Login(props: LoginProps) {
         //     .catch(() => {
         //         // Toast.show((error.errors || [])[0] || error);
         //     });
-        // dispatch(actions.login("1", "2"));
+        dispatch(actions.login("1", "2"));
         // dispatch(actions.setState({ companyInfo: 234443, userInfo: 45556 }));
         // dispatch(actions);
     };

@@ -1,20 +1,71 @@
-import React, { useCallback, useEffect } from "react";
-import { useLocation, useMatch, useParams } from "react-router";
+import React from "react";
+import { type Params, UNSAFE_LocationContext, UNSAFE_RouteContext } from "react-router";
 import type { Location } from "history";
-// import type { RouteComponentProps } from "react-router";
-// import type { Task } from "redux-saga";
-// import { call, call as rawCall, cancel, delay, fork, put, select, take } from "redux-saga/effects";
 import { StartupModulePerformanceLogger } from "./StartupModulePerformanceLogger";
 import { app } from "../../app";
 import { type ActionCreators, executeAction } from "../../module";
-import { IDLE_STATE_ACTION, navigationPreventionAction, type State } from "../../reducer";
+import { navigationPreventionAction, type State } from "../../reducer";
+import { stringifyWithMask } from "../../util/json-util";
 import { Module, type ModuleLifecycleListener } from "../Module";
 
-function hasOwnLifecycle<P, M>(
-    modulePrototype: React.ComponentType<P & { actions: ActionCreators<M> }>,
-    methodName: keyof ModuleLifecycleListener
-): boolean {
-    return Object.prototype.hasOwnProperty.call(modulePrototype, methodName);
+interface ResolvedRouteState {
+    isRouteComponent: boolean;
+    location: Location | null;
+    params: Params<string>;
+}
+
+interface CancelableTask {
+    cancel: () => void;
+}
+
+const MAX_LOG_LENGTH = 2000;
+
+function areLocationsEqual(a: Location, b: Location): boolean {
+    return a.pathname === b.pathname && a.search === b.search && a.hash === b.hash && a.key === b.key && a.state === b.state;
+}
+
+function stringifySafely(...values: unknown[]): string | undefined {
+    try {
+        const serialized = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...values);
+        if (!serialized) {
+            return undefined;
+        }
+
+        return serialized.length > MAX_LOG_LENGTH ? `${serialized.slice(0, MAX_LOG_LENGTH)}...[truncated]` : serialized;
+    } catch {
+        return '"[Unserializable]"';
+    }
+}
+
+function useResolvedRouteState(): ResolvedRouteState {
+    const locationContext = React.useContext(UNSAFE_LocationContext);
+    const routeContext = React.useContext(UNSAFE_RouteContext);
+    const matches = routeContext?.matches ?? [];
+    const currentMatch = matches.length > 0 ? matches[matches.length - 1] : null;
+
+    return React.useMemo(
+        () => ({
+            isRouteComponent: matches.length > 0,
+            location: (locationContext?.location ?? null) as Location | null,
+            params: (currentMatch?.params ?? {}) as Params<string>,
+        }),
+        [currentMatch, locationContext?.location, matches.length]
+    );
+}
+
+function createLegacyLifecycleProps<P extends object>(
+    props: P,
+    routeState: ResolvedRouteState
+): P & { location?: Location; match?: { params: Params<string> } } {
+    if (!routeState.location) {
+        return props;
+    }
+
+    return {
+        ...props,
+        location: routeState.location,
+        match: routeState.isRouteComponent ? { params: routeState.params } : undefined,
+    };
 }
 
 export class ModuleProxy<M extends Module<any, any>> {
@@ -28,99 +79,306 @@ export class ModuleProxy<M extends Module<any, any>> {
         return this.actions;
     }
 
-    connect<P extends object>(ComponentType: React.ComponentType<P & { actions: ActionCreators<M> }>): React.ComponentType<P> {
-        const moduleName = this.module.name as string;
+    connect<P extends object>(ComponentType: React.ComponentType<P>): React.ComponentType<P> {
+        return this.attachLifecycle(ComponentType);
+    }
+
+    attachLifecycle<P extends object>(ComponentType: React.ComponentType<P>): React.ComponentType<P> {
+        const moduleName = this.moduleName;
         const lifecycleListener = this.module as ModuleLifecycleListener;
         const modulePrototype = Object.getPrototypeOf(lifecycleListener);
-
         const actions = this.actions as any;
+        const WrappedComponent = ComponentType as React.ComponentType<P & { actions: ActionCreators<M> }>;
 
-        return function (props) {
-            const location = useLocation();
-            const params = useParams();
-            console.log("-params--f-f-", params);
-            useEffect(() => {
+        const ModuleWrapper: React.FC<P> = (props) => {
+            const routeState = useResolvedRouteState();
+            const mountedTimeRef = React.useRef(Date.now());
+            const tickCountRef = React.useRef(0);
+            const routeStateRef = React.useRef(routeState);
+            const tickTaskRef = React.useRef<CancelableTask | null>(null);
+            const initializedRef = React.useRef(false);
+            const disposedRef = React.useRef(false);
+            const lastMatchedLocationRef = React.useRef<Location | null>(null);
+            const pendingLocationRef = React.useRef<ResolvedRouteState | null>(null);
+            const locationRunnerActiveRef = React.useRef(false);
+
+            routeStateRef.current = routeState;
+
+            React.useEffect(() => {
                 StartupModulePerformanceLogger.registerIfNotExist(moduleName);
             }, []);
 
-            const onTickWatcher = useCallback(async () => {
-                // let runningIntervalTask: Task = yield fork(this.onTickSaga.bind(this));
-                // while (true) {
-                //     yield take(IDLE_STATE_ACTION);
-                //     yield cancel(runningIntervalTask); // no-op if already cancelled
-                //     const isActive: boolean = yield select((state: State) => state.idle.state === "active");
-                //     if (isActive) {
-                //         runningIntervalTask = yield fork(this.onTickSaga.bind(this));
-                //     }
-                // }
-                const tickIntervalInMillisecond = (lifecycleListener.onTick.tickInterval || 5) * 1000;
-                const boundTicker = lifecycleListener.onTick.bind(lifecycleListener);
-                const tickActionName = `${moduleName}/@@TICK`;
+            const hasOwnLifecycle = React.useCallback(
+                (methodName: keyof ModuleLifecycleListener): boolean => Object.prototype.hasOwnProperty.call(modulePrototype, methodName),
+                [modulePrototype]
+            );
 
-                // while (true) {
-                //     await executeAction(tickActionName, boundTicker);
-                //     this.tickCount++;
-                //     await new Promise((resolve, reject) => {
-                //         this.timer = setTimeout(resolve, tickIntervalInMillisecond);
-                //     });
-                // }
-            }, []);
-
-            const lifecycle = useCallback(async function () {
-                /**
-                 * CAVEAT:
-                 * Do not use <yield* executeAction> for lifecycle actions.
-                 * It will lead to cancellation issue, which cannot stop the lifecycleSaga as expected.
-                 *
-                 * https://github.com/redux-saga/redux-saga/issues/1986
-                 */
-                // const props = this.props as RouteComponentProps & P;
-
-                const enterActionName = `${moduleName}/@@ENTER`;
-                const startTime = Date.now();
-
-                await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), params, location);
-
-                app.logger.info({
-                    action: enterActionName,
-                    elapsedTime: Date.now() - startTime,
-                    info: {
-                        component_props: JSON.stringify(props),
-                    },
-                });
-
-                if (hasOwnLifecycle(modulePrototype, "onLocationMatched")) {
-                    if ("match" in props && "location" in props) {
-                        const initialRenderActionName = `${moduleName}/@@LOCATION_MATCHED`;
-                        const startTime = Date.now();
-
-                        executeAction(initialRenderActionName, lifecycleListener.onLocationMatched.bind(lifecycleListener), params, location);
-
-                        app.logger.info({
-                            action: initialRenderActionName,
-                            elapsedTime: Date.now() - startTime,
-                            info: {
-                                route_params: JSON.stringify(params),
-                                history_state: JSON.stringify(location.state),
-                            },
-                        });
-                    } else {
-                        console.error(`[framework] Module component [${moduleName}] is non-route, use onEnter() instead of onLocationMatched()`);
+            const runLocationMatched = React.useCallback(
+                async (nextRouteState: ResolvedRouteState): Promise<boolean> => {
+                    if (!hasOwnLifecycle("onLocationMatched")) {
+                        return false;
                     }
-                }
 
-                StartupModulePerformanceLogger.log(moduleName);
+                    if (!nextRouteState.isRouteComponent || !nextRouteState.location) {
+                        return false;
+                    }
 
-                if (hasOwnLifecycle(modulePrototype, "onTick")) {
-                    // yield rawCall(this.onTickWatcherSaga.bind(this));
-                }
+                    if (lastMatchedLocationRef.current && areLocationsEqual(nextRouteState.location, lastMatchedLocationRef.current)) {
+                        return false;
+                    }
+
+                    app.store.dispatch({ type: `@@${moduleName}/@@cancel-saga` });
+
+                    const action = `${moduleName}/@@LOCATION_MATCHED`;
+                    const startTime = Date.now();
+                    await executeAction(
+                        action,
+                        lifecycleListener.onLocationMatched.bind(lifecycleListener),
+                        nextRouteState.params,
+                        nextRouteState.location
+                    );
+
+                    if (disposedRef.current) {
+                        return false;
+                    }
+
+                    lastMatchedLocationRef.current = nextRouteState.location;
+                    app.logger.info({
+                        action,
+                        elapsedTime: Date.now() - startTime,
+                        info: {
+                            route_params: stringifySafely(nextRouteState.params),
+                            history_state: stringifySafely(nextRouteState.location.state),
+                        },
+                    });
+                    app.store.dispatch(navigationPreventionAction(false));
+                    return true;
+                },
+                [hasOwnLifecycle, lifecycleListener, moduleName]
+            );
+
+            const enqueueLocationMatched = React.useCallback(
+                (nextRouteState: ResolvedRouteState) => {
+                    if (!hasOwnLifecycle("onLocationMatched")) {
+                        return;
+                    }
+
+                    if (!nextRouteState.isRouteComponent || !nextRouteState.location) {
+                        return;
+                    }
+
+                    if (lastMatchedLocationRef.current && areLocationsEqual(nextRouteState.location, lastMatchedLocationRef.current)) {
+                        return;
+                    }
+
+                    if (pendingLocationRef.current?.location && areLocationsEqual(nextRouteState.location, pendingLocationRef.current.location)) {
+                        return;
+                    }
+
+                    pendingLocationRef.current = nextRouteState;
+                    if (locationRunnerActiveRef.current) {
+                        return;
+                    }
+
+                    locationRunnerActiveRef.current = true;
+                    void (async () => {
+                        try {
+                            while (!disposedRef.current && pendingLocationRef.current) {
+                                const currentRouteState = pendingLocationRef.current;
+                                pendingLocationRef.current = null;
+                                await runLocationMatched(currentRouteState);
+                            }
+                        } finally {
+                            locationRunnerActiveRef.current = false;
+                            if (!disposedRef.current && pendingLocationRef.current) {
+                                enqueueLocationMatched(pendingLocationRef.current);
+                            }
+                        }
+                    })();
+                },
+                [hasOwnLifecycle, runLocationMatched]
+            );
+
+            React.useEffect(() => {
+                disposedRef.current = false;
+                const controller = new AbortController();
+                const signal = controller.signal;
+                const initialRouteState = routeState;
+
+                const logAction = (action: string, startTime: number, info?: Record<string, string>) => {
+                    if (signal.aborted) {
+                        return;
+                    }
+
+                    app.logger.info({
+                        action,
+                        elapsedTime: Date.now() - startTime,
+                        ...(info ? { info } : {}),
+                    });
+                };
+
+                const runEnterLifecycle = async () => {
+                    const legacyLifecycleProps = createLegacyLifecycleProps(props, initialRouteState);
+                    const enterActionName = `${moduleName}/@@ENTER`;
+                    const startTime = Date.now();
+                    const onEnterArgs =
+                        lifecycleListener.onEnter.length <= 1
+                            ? [legacyLifecycleProps]
+                            : [initialRouteState.params, initialRouteState.location as Location];
+
+                    await executeAction(enterActionName, lifecycleListener.onEnter.bind(lifecycleListener), ...onEnterArgs);
+                    const componentProps = stringifySafely(legacyLifecycleProps);
+                    logAction(enterActionName, startTime, componentProps ? { component_props: componentProps } : undefined);
+                };
+
+                const startTickTask = () => {
+                    if (!hasOwnLifecycle("onTick")) {
+                        return;
+                    }
+
+                    const tickIntervalInMillisecond = (lifecycleListener.onTick.tickInterval || 5) * 1000;
+                    const boundTicker = lifecycleListener.onTick.bind(lifecycleListener);
+                    const tickActionName = `${moduleName}/@@TICK`;
+                    const tickController = new AbortController();
+                    const tickSignal = tickController.signal;
+                    let timerId: ReturnType<typeof window.setTimeout> | null = null;
+                    let running = false;
+                    let idleState = (app.store.getState() as State).idle.state;
+
+                    const clearTimer = () => {
+                        if (timerId !== null) {
+                            window.clearTimeout(timerId);
+                            timerId = null;
+                        }
+                    };
+
+                    function scheduleTick(delayInMillisecond: number) {
+                        if (tickSignal.aborted || idleState !== "active" || running || timerId !== null) {
+                            return;
+                        }
+
+                        timerId = window.setTimeout(() => {
+                            timerId = null;
+                            void runTick();
+                        }, delayInMillisecond);
+                    }
+
+                    async function runTick() {
+                        if (tickSignal.aborted || idleState !== "active" || running) {
+                            return;
+                        }
+
+                        running = true;
+                        try {
+                            await executeAction(tickActionName, boundTicker);
+                            if (!tickSignal.aborted) {
+                                tickCountRef.current += 1;
+                            }
+                        } finally {
+                            running = false;
+                            if (!tickSignal.aborted && idleState === "active") {
+                                scheduleTick(tickIntervalInMillisecond);
+                            }
+                        }
+                    }
+
+                    const unsubscribe = app.store.subscribe(() => {
+                        const nextIdleState = (app.store.getState() as State).idle.state;
+                        if (nextIdleState === idleState) {
+                            return;
+                        }
+
+                        idleState = nextIdleState;
+                        clearTimer();
+
+                        if (idleState === "active" && !running) {
+                            scheduleTick(0);
+                        }
+                    });
+
+                    void runTick();
+
+                    tickTaskRef.current = {
+                        cancel: () => {
+                            tickController.abort();
+                            clearTimer();
+                            unsubscribe();
+                        },
+                    };
+                };
+
+                void (async () => {
+                    await runEnterLifecycle();
+                    if (signal.aborted || disposedRef.current) {
+                        return;
+                    }
+
+                    if (hasOwnLifecycle("onLocationMatched")) {
+                        const currentRouteState = routeStateRef.current;
+                        if (!currentRouteState.isRouteComponent || !currentRouteState.location) {
+                            console.error(`[framework] Module component [${moduleName}] is non-route, use onEnter() instead of onLocationMatched()`);
+                        } else {
+                            await runLocationMatched(currentRouteState);
+                        }
+                    }
+
+                    if (signal.aborted || disposedRef.current) {
+                        return;
+                    }
+
+                    StartupModulePerformanceLogger.log(moduleName);
+                    initializedRef.current = true;
+                    startTickTask();
+
+                    if (
+                        routeStateRef.current.isRouteComponent &&
+                        routeStateRef.current.location &&
+                        (!lastMatchedLocationRef.current || !areLocationsEqual(routeStateRef.current.location, lastMatchedLocationRef.current))
+                    ) {
+                        enqueueLocationMatched(routeStateRef.current);
+                    }
+                })();
+
+                return () => {
+                    controller.abort();
+                    disposedRef.current = true;
+                    pendingLocationRef.current = null;
+
+                    if (hasOwnLifecycle("onDestroy")) {
+                        app.store.dispatch(actions.onDestroy());
+                    }
+
+                    if (routeStateRef.current.location) {
+                        app.store.dispatch(navigationPreventionAction(false));
+                    }
+
+                    app.store.dispatch({ type: `@@${moduleName}/@@cancel-saga` });
+
+                    app.logger.info({
+                        action: `${moduleName}/@@DESTROY`,
+                        stats: {
+                            tick_count: tickCountRef.current,
+                            staying_second: (Date.now() - mountedTimeRef.current) / 1000,
+                        },
+                    });
+
+                    tickTaskRef.current?.cancel();
+                };
             }, []);
 
-            useEffect(() => {
-                lifecycle();
-            }, []);
+            React.useEffect(() => {
+                if (!initializedRef.current || !hasOwnLifecycle("onLocationMatched") || !routeState.isRouteComponent || !routeState.location) {
+                    return;
+                }
 
-            return <ComponentType actions={actions} {...props} />;
+                enqueueLocationMatched(routeState);
+            }, [enqueueLocationMatched, hasOwnLifecycle, routeState]);
+
+            return <WrappedComponent {...props} actions={actions} />;
         };
+
+        ModuleWrapper.displayName = `Module[${moduleName}]`;
+
+        return ModuleWrapper;
     }
 }

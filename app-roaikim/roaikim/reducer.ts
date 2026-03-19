@@ -1,5 +1,5 @@
 import { combineReducers, type Reducer, type UnknownAction as OriginalReduxAction } from "redux";
-import type { RouterState } from "./bridge/enhanced-v2";
+import type { RouterState } from "redux-router-bridge";
 // import { type RouterState } from "redux-first-history";
 import { DEFAULT_IDLE_TIMEOUT } from "./util/IdleDetector";
 

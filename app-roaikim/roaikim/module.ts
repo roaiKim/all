@@ -1,9 +1,8 @@
 import { app } from "./app";
 import { Exception } from "./Exception";
 import { Module, type ModuleLifecycleListener } from "./platform/Module";
-import { ModuleProxy } from "./platform/ModuleProxy/function-proxy";
+import { ModuleProxy } from "./platform/ModuleProxy";
 import { type Action, setStateAction } from "./reducer";
-// import { type SagaGenerator } from "./typed-saga";
 import { captureError } from "./util/error-util";
 import { stringifyWithMask } from "./util/json-util";
 
@@ -50,21 +49,12 @@ export function register<M extends Module<any, any>>(module: M): ModuleProxy<M> 
     return new ModuleProxy(module, actions, moduleName);
 }
 
-// export function* executeAction(actionName: string, handler: ActionHandler, ...payload: any[]) {
-//     try {
-//         yield* handler(...payload);
-//     } catch (error) {
-//         const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
-//         captureError(error, actionName, { actionPayload });
-//     }
-// }
-
 export async function executeAction(actionName: string, handler: ActionHandler, ...payload: any[]) {
     try {
         await handler(...payload);
     } catch (error) {
-        // const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
-        // captureError(error, actionName, { actionPayload });
+        const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
+        captureError(error, actionName, { actionPayload });
     }
 }
 

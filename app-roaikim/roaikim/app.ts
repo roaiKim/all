@@ -3,7 +3,7 @@ import { applyMiddleware, compose, legacy_createStore as createStore, type Store
 // import { createReduxHistoryContext } from "redux-first-history";
 // import createSagaMiddleware, { type SagaMiddleware } from "redux-saga";
 // import { call as rawCall, race as rawRace, take, takeEvery } from "redux-saga/effects";
-import { createReduxHistory, createRouterMiddleware, createRouterReducer, type RouterState } from "./bridge/enhanced-v2";
+import { createReduxHistory, createRouterMiddleware, createRouterReducer, type RouterState } from "redux-router-bridge";
 import { type Logger, type LoggerConfig, LoggerImpl } from "./Logger";
 import { type ActionHandler, type ErrorHandler, executeAction } from "./module";
 import { type Action, LOADING_ACTION, rootReducer, type State } from "./reducer";
