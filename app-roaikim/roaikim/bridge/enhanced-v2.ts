@@ -1,5 +1,5 @@
 import type { Action, History, Location, To, Update } from "history";
-import type { AnyAction, Middleware, Reducer, Store } from "redux";
+import type { Middleware, Reducer, Store, UnknownAction } from "redux";
 
 /**
  * Redux 中保存的路由快照。
@@ -21,7 +21,7 @@ export const ROUTER_NAVIGATE = "@@redux-router/NAVIGATE";
 /**
  * history -> Redux 的同步 action。
  */
-export interface RouterLocationChangedAction {
+export interface RouterLocationChangedAction extends UnknownAction {
     type: typeof ROUTER_LOCATION_CHANGED;
     payload: RouterState;
 }
@@ -29,7 +29,7 @@ export interface RouterLocationChangedAction {
 /**
  * Redux -> history 的导航意图 action。
  */
-export interface RouterNavigateAction {
+export interface RouterNavigateAction extends UnknownAction {
     type: typeof ROUTER_NAVIGATE;
     payload: {
         to: To;
@@ -89,7 +89,7 @@ export interface CreateReduxHistoryOptions<S = unknown> {
     /**
      * 自定义“history 变化 -> Redux action”这一步的 action 构造方式。
      *
-     * 默认使用 `routerLocationChanged(update)`，
+     * 默认使用 `routerLocationAction(update)`，
      * 也就是直接生成一个标准的 `ROUTER_LOCATION_CHANGED` action。
      *
      * 适合自定义的场景：
@@ -224,7 +224,7 @@ interface SyncRegistration {
  * 结构为：
  * history -> store -> registration
  */
-const syncRegistry = new WeakMap<History, WeakMap<Store<any, AnyAction>, SyncRegistration>>();
+const syncRegistry = new WeakMap<History, WeakMap<Store<any, UnknownAction>, SyncRegistration>>();
 
 /**
  * 标记已经标准化过的 RouterState，命中后可跳过重复 clone。
@@ -242,7 +242,7 @@ const normalizedLocationRegistry = new WeakSet<object>();
  * 这里默认生成“冻结快照”，因为这个 action creator 是通用导出函数，
  * 更适合作为安全默认值。
  */
-export const routerLocationChanged = (update: Update): RouterLocationChangedAction => ({
+export const routerLocationAction = (update: Update): RouterLocationChangedAction => ({
     type: ROUTER_LOCATION_CHANGED,
     payload: createNormalizedRouterState(update.location, update.action, true),
 });
@@ -253,7 +253,7 @@ export const routerLocationChanged = (update: Update): RouterLocationChangedActi
  * 这里只描述“要去哪里”，不在这里做深度标准化，
  * 真正的 payload 规范化统一放到 middleware 里做一次。
  */
-export const routerNavigate = (to: To, options?: { replace?: boolean; state?: unknown }): RouterNavigateAction => ({
+export const routerNavigateAction = (to: To, options?: { replace?: boolean; state?: unknown }): RouterNavigateAction => ({
     type: ROUTER_NAVIGATE,
     payload: {
         to,
@@ -294,7 +294,7 @@ export const createRouterReducer = (initialState: RouterState): Reducer<RouterSt
 export const createRouterMiddleware = (history: History): Middleware<object, any> => {
     assertHistory(history);
 
-    return () => (next) => (action: AnyAction) => {
+    return () => (next) => (action: UnknownAction) => {
         if (action?.type !== ROUTER_NAVIGATE) {
             return next(action);
         }
@@ -333,7 +333,7 @@ export const createRouterMiddleware = (history: History): Middleware<object, any
  * - 这样即使业务代码误改 router 状态，也尽量不会因为写冻结对象而抛错
  * - 如果你希望更严格地暴露误改问题，可显式传 `true`
  */
-export const createReduxHistory = <S = unknown>(history: History, store: Store<S, AnyAction>, options: CreateReduxHistoryOptions<S> = {}) => {
+export const createReduxHistory = <S = unknown>(history: History, store: Store<S, UnknownAction>, options: CreateReduxHistoryOptions<S> = {}) => {
     assertHistory(history);
     assertStore(store);
 
@@ -345,7 +345,7 @@ export const createReduxHistory = <S = unknown>(history: History, store: Store<S
     }
 
     const selectRouterState = options.selectRouterState ?? ((state: S) => (state as any).router as RouterState);
-    const createLocationChangedAction = options.createLocationChangedAction ?? routerLocationChanged;
+    const createLocationChangedAction = options.createLocationChangedAction ?? routerLocationAction;
     const compareStateMode = options.compareStateMode ?? "smart";
     const equalityFn = options.equalityFn ?? ((a: Location, b: Location) => locationsEqual(a, b, compareStateMode));
     const onLocationChange = options.onLocationChange;
@@ -370,7 +370,7 @@ export const createReduxHistory = <S = unknown>(history: History, store: Store<S
         }
 
         isDispatchingFromHistory = true;
-        store.dispatch(action as AnyAction);
+        store.dispatch(action as UnknownAction);
         const syncedRouterState = selectRouterState(store.getState());
         lastRouterLocation = isRouterState(syncedRouterState) ? syncedRouterState.location : action.payload.location;
         isDispatchingFromHistory = false;
@@ -450,10 +450,10 @@ export const createReduxHistory = <S = unknown>(history: History, store: Store<S
  * 获取某个 history 对应的 store 注册表。
  * 不存在时懒创建。
  */
-function getHistoryRegistry(history: History): WeakMap<Store<any, AnyAction>, SyncRegistration> {
+function getHistoryRegistry(history: History): WeakMap<Store<any, UnknownAction>, SyncRegistration> {
     let historyRegistry = syncRegistry.get(history);
     if (!historyRegistry) {
-        historyRegistry = new WeakMap<Store<any, AnyAction>, SyncRegistration>();
+        historyRegistry = new WeakMap<Store<any, UnknownAction>, SyncRegistration>();
         syncRegistry.set(history, historyRegistry);
     }
     return historyRegistry;
@@ -464,8 +464,8 @@ function getHistoryRegistry(history: History): WeakMap<Store<any, AnyAction>, Sy
  * 只有引用计数归零时才真正移除监听。
  */
 function releaseRegistration(
-    historyRegistry: WeakMap<Store<any, AnyAction>, SyncRegistration>,
-    store: Store<any, AnyAction>,
+    historyRegistry: WeakMap<Store<any, UnknownAction>, SyncRegistration>,
+    store: Store<any, UnknownAction>,
     registration: SyncRegistration
 ) {
     const current = historyRegistry.get(store);
@@ -491,7 +491,7 @@ function assertHistory(history: unknown): asserts history is History {
 /**
  * 校验 store 是否具备 bridge 所需的最小能力。
  */
-function assertStore(store: unknown): asserts store is Store<any, AnyAction> {
+function assertStore(store: unknown): asserts store is Store<any, UnknownAction> {
     if (!isStoreLike(store)) {
         throw new TypeError("A valid Redux store is required");
     }
@@ -508,8 +508,8 @@ function isHistoryLike(value: unknown): value is History {
 /**
  * 判断一个值是否“像” Redux store。
  */
-function isStoreLike(value: unknown): value is Store<any, AnyAction> {
-    const store = value as Store<any, AnyAction>;
+function isStoreLike(value: unknown): value is Store<any, UnknownAction> {
+    const store = value as Store<any, UnknownAction>;
     return !!store && typeof store.getState === "function" && typeof store.dispatch === "function" && typeof store.subscribe === "function";
 }
 

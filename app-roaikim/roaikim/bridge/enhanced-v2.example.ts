@@ -4,7 +4,7 @@ import {
     createReduxHistory,
     createRouterMiddleware,
     createRouterReducer,
-    routerNavigate,
+    routerNavigateAction,
     type RouterState,
 } from "./enhanced-v2";
 
@@ -52,8 +52,8 @@ const stopSync = createReduxHistory(history, store, {
 
 // 6. 通过 Redux 发起导航。
 // 这种方式适合把“导航”也纳入统一 action 流。
-store.dispatch(routerNavigate("/settings", { state: { from: "dashboard" } }));
-store.dispatch(routerNavigate("/login", { replace: true }));
+store.dispatch(routerNavigateAction("/settings", { state: { from: "dashboard" } }));
+store.dispatch(routerNavigateAction("/login", { replace: true }));
 
 // 7. 当不再需要同步时，调用 stopSync() 解除监听。
 // 一般单页应用生命周期内只初始化一次，不需要主动 stop。

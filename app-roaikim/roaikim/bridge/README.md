@@ -63,11 +63,11 @@
   - 建立 `history <-> Redux` 双向同步
   - 返回一个停止同步的函数
 
-- `routerNavigate(to, options?)`
+- `routerNavigateAction(to, options?)`
   - 创建导航意图 action
   - 适合在业务里统一 dispatch
 
-- `routerLocationChanged(update)`
+- `routerLocationAction(update)`
   - 创建 `history -> Redux` 的路由变更 action
 
 ## 4. 快速接入
@@ -124,13 +124,13 @@ export const stopSync = createReduxHistory(history, store, {
 ### 4.5 在业务里发起导航
 
 ```ts
-import { routerNavigate } from "./enhanced-v2";
+import { routerNavigateAction } from "./enhanced-v2";
 import { store } from "./store";
 
-store.dispatch(routerNavigate("/settings"));
-store.dispatch(routerNavigate("/login", { replace: true }));
+store.dispatch(routerNavigateAction("/settings"));
+store.dispatch(routerNavigateAction("/login", { replace: true }));
 store.dispatch(
-    routerNavigate("/detail", {
+    routerNavigateAction("/detail", {
         state: { from: "dashboard", id: 123 },
     })
 );
@@ -164,7 +164,7 @@ import {
     createReduxHistory,
     createRouterMiddleware,
     createRouterReducer,
-    routerNavigate,
+    routerNavigateAction,
     type RouterState,
 } from "./enhanced-v2";
 
@@ -194,8 +194,8 @@ const stopSync = createReduxHistory(history, store, {
     },
 });
 
-store.dispatch(routerNavigate("/settings", { state: { from: "dashboard" } }));
-store.dispatch(routerNavigate("/login", { replace: true }));
+store.dispatch(routerNavigateAction("/settings", { state: { from: "dashboard" } }));
+store.dispatch(routerNavigateAction("/login", { replace: true }));
 
 void stopSync;
 ```
@@ -240,7 +240,7 @@ createReduxHistory(history, store, {
 默认使用：
 
 ```ts
-routerLocationChanged(update)
+routerLocationAction(update)
 ```
 
 约束：
@@ -375,7 +375,7 @@ false
 
 #### 链路 B：Redux -> history
 
-1. 业务 dispatch `routerNavigate(...)`
+1. 业务 dispatch `routerNavigateAction(...)`
 2. middleware 拦截后调用 `history.push/replace`
 3. history 发生真实变化
 4. `history.listen` 再把结果回写 Redux
@@ -452,7 +452,7 @@ false
 
 不同路径次数不同。
 
-#### 情况 1：dispatch `routerNavigate`
+#### 情况 1：dispatch `routerNavigateAction`
 
 通常会发生两次主要克隆：
 
@@ -609,10 +609,10 @@ false
 
 ## 11. 常见问题
 
-### Q1：为什么 dispatch `routerNavigate` 后，还是由 history 回写 Redux？
+### Q1：为什么 dispatch `routerNavigateAction` 后，还是由 history 回写 Redux？
 
 因为真正的导航结果必须以 history 为准。  
-`routerNavigate` 只是“导航意图”，不是最终生效快照。
+`routerNavigateAction` 只是“导航意图”，不是最终生效快照。
 
 ### Q2：为什么默认不冻结？
 
@@ -641,7 +641,7 @@ false
 - `location.state` 尽量只放轻量 plain data
 - Router、bridge、业务代码统一复用同一个 `history` 实例
 - 不要直接手改 Redux 中的 router 状态
-- 如果只是导航，优先 dispatch `routerNavigate`
+- 如果只是导航，优先 dispatch `routerNavigateAction`
 
 ## 13. 文件关系建议
 
