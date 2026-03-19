@@ -6,5 +6,5 @@ export default function (props) {
     const location = useLocation();
     console.log("----------location--------props", location);
     // console.log("----------params--------params", params);
-    return <div>login</div>;
+    return <div>MainLayout</div>;
 }

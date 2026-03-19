@@ -40,51 +40,19 @@ function composeWithDevTools(enhancer: StoreEnhancer): StoreEnhancer {
 }
 
 function createApp(): App {
-    // const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({
-    //     history: createBrowserHistory(),
-    // });
-    // const sagaMiddleware = createSagaMiddleware({
-    //     onError: (error, info) => captureError(error, "@@framework/detached-saga", { extraStacktrace: info.sagaStack }),
-    // });
     const history = createBrowserHistory();
-    const actionHandlers: App["actionHandlers"] = {};
-    const initialRouterState: RouterState = {
-        location: history.location,
-        action: history.action,
-    };
+
     const store = createStore(
-        rootReducer(createRouterReducer(initialRouterState)),
-        composeWithDevTools(applyMiddleware(createRouterMiddleware(history), executeMethodMiddleware(actionHandlers)))
+        rootReducer(createRouterReducer(history)),
+        composeWithDevTools(applyMiddleware(createRouterMiddleware(history), executeMethodMiddleware))
     ) as Store<State>;
-    // const store: Store<State> = createStore(rootReducer());
-
-    createReduxHistory(history, store, {
-        freezeSnapshots: false,
-        compareStateMode: "smart",
-    });
-
-    // sagaMiddleware.run(function* () {
-    //     yield takeEvery("*", function* (action: Action<any>) {
-    //         const actionHandler = app.actionHandlers[action.type];
-    //         if (actionHandler) {
-    //             const { handler, moduleName } = actionHandler;
-    //             // Cancel all saga when related module destroy
-    //             // @see https://stackoverflow.com/a/45806187
-    //             yield rawRace({
-    //                 task: rawCall(executeAction, action.type, handler, ...action.payload),
-    //                 cancel: take(`@@${moduleName}/@@cancel-saga`),
-    //             });
-    //         }
-    //     });
-    // });
 
     return {
         history,
         store,
-        // sagaMiddleware,
-        actionHandlers,
+        actionHandlers: {},
         logger: new LoggerImpl(),
         loggerConfig: null,
-        *errorHandler() {},
+        errorHandler() {},
     };
 }

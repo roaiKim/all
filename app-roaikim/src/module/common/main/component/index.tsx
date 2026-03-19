@@ -8,7 +8,7 @@ import zhCN from "antd/locale/zh_CN";
 // import { antdCSSToken } from "asset/theme/antd-token";
 import { LoginComponent } from "module/common/login/type";
 import type { RootState } from "type/rootState";
-import Login from "./login";
+import MainLayout from "./main";
 // import BodyContainer from "./main";
 // import "./index.less";
 
@@ -31,7 +31,7 @@ function Main(props: MainProps) {
         <div className="ro-main-container">
             <Routes>
                 <Route path="/login/:id?" element={<LoginComponent></LoginComponent>} />
-                <Route element={<div>main</div>} />
+                <Route path="*" element={<MainLayout></MainLayout>} />
             </Routes>
         </div>
     );

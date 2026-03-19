@@ -6,6 +6,7 @@ import type { Location } from "history";
 import { createRoot } from "react-dom/client";
 import { NavigationGuard } from "./NavigationGuard";
 import { app } from "../app";
+import { createReduxHistory } from "../bridge/enhanced-v2";
 import { APIException } from "../Exception";
 import type { LoggerConfig } from "../Logger";
 import { type ErrorListener, executeAction } from "../module";
@@ -61,6 +62,10 @@ export function bootstrap(option: BootstrapOption): void {
     setupLocationChangeListener(option.browserConfig?.onLocationChange);
     setupIdleTimeout(option.idleTimeoutInSecond ?? DEFAULT_IDLE_TIMEOUT);
     runBackgroundLoop(option.loggerConfig, option.versionConfig);
+    createReduxHistory(app.history, app.store, {
+        freezeSnapshots: false,
+        compareStateMode: "smart",
+    });
     renderRoot(
         option.componentType,
         option.rootContainer || injectRootContainer(),
