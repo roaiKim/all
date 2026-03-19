@@ -17,16 +17,13 @@ const initialLoginState = {
     userInfo: null,
 };
 
-const times = 0;
 class LoginModule extends Module<RootState, "login"> {
     onEnter(params: Params<string>, location: Location) {
         //
-        console.log("--LoginModule-onEnter--", params, location);
-        this.login(1, 2);
     }
 
     onLocationMatched(params: Params<string>, location: Location): void {
-        console.log("--LoginModule-onLocationMatched--", params, location);
+        //
     }
 
     // @Log()

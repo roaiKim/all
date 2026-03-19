@@ -19,15 +19,6 @@ function Main(props: MainProps) {
     const store = useStore().getState();
     // console.log("store-store", store);
     return (
-        // <ConfigProvider
-        //     theme={{
-        //         // cssVar: { prefix: "ro" },
-        //         token: antdCSSToken,
-        //         components: antdCSSComponentToken,
-        //     }}
-        //     locale={zhCN}
-        //     componentSize="small"
-        // >
         <div className="ro-main-container">
             <Routes>
                 <Route path="/login/:id?" element={<LoginComponent></LoginComponent>} />
