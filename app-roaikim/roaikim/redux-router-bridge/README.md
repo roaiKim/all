@@ -9,7 +9,6 @@ A lightweight `history <-> Redux` synchronization bridge for applications that w
 - Redux-driven navigation actions without saga-based router libraries
 - compatibility with React Router v7 style applications that reuse the same `history`
 
-This package is built from the implementation in `D:\3_e\all\app-roaikim\roaikim\bridge\enhanced-v2.ts`.
 
 ## Features
 
@@ -45,13 +44,8 @@ import {
 
 const history = createBrowserHistory();
 
-const initialRouterState: RouterState = {
-    location: history.location,
-    action: history.action,
-};
-
 const rootReducer = combineReducers({
-    router: createRouterReducer(initialRouterState),
+    router: createRouterReducer(history),
 });
 
 const store = createStore(rootReducer, undefined, applyMiddleware(createRouterMiddleware(history)));
@@ -73,6 +67,28 @@ store.dispatch(routerNavigateAction("/settings", { state: { from: "dashboard" } 
 store.dispatch(routerNavigateAction("/login", { replace: true }));
 
 void stopSync;
+```
+
+
+```tsx
+// Navigate.tsx
+export default function () {
+    // const dispatch = useDispatch(); // form react-redux
+    return (
+        <div>
+            <button
+                onClick={() => {
+                    // dispatch(routerNavigateAction("/settings", { state: { from: "dashboard" } }));
+                    // dispatch(routerNavigateAction("/login", { replace: true }));
+                    store.dispatch(routerNavigateAction("/settings", { state: { from: "dashboard" } }));
+                    store.ddispatch(routerNavigateAction("/login", { replace: true }));
+                }}
+            >
+                navigationTo
+            </button>
+        </div>
+    );
+}
 ```
 
 ## React Router v7 Notes
@@ -239,13 +255,6 @@ This is intentional. The bridge avoids inventing copy semantics for complex valu
 
 This package uses [Rslib](https://rslib.rs/).
 
-```bash
-cd D:\3_e\all\app-roaikim\roaikim\redux-router-bridge
-npm install
-npm run build
-```
-
 ## More
 
 - Chinese documentation: [readme-ch.md](./readme-ch.md)
-- Source implementation: `D:\3_e\all\app-roaikim\roaikim\bridge\enhanced-v2.ts`
