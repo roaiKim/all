@@ -1,4 +1,4 @@
-import { type Location, Log, Module, register } from "@core";
+import { dispatchAction, dispatchFunctionAction, Log, Module, register } from "@core";
 import { message } from "antd";
 import { v4 } from "uuid";
 import { DEV_PROXY_HOST, isDevelopment } from "config/static-constant";
@@ -9,6 +9,7 @@ import type { Params } from "react-router";
 import { LoginService } from "service/global-api/LoginService";
 import type { RootState } from "type/rootState";
 import { Loading } from "utils/decorator";
+import { setLocalStorageWhenLogined } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 // import { setLocalStorageWhenLogined } from "utils/framework";
 // import { encrypted } from "utils/function/crypto";
@@ -21,18 +22,12 @@ const initialLoginState = {
 };
 
 class LoginModule extends Module<RootState, "login"> {
-    // @Log()
-    // onTick(): void {
-    //     console.log("--LoginModule-onTick--", times);
-    //     times++;
-    // }
-
     @Loading("login-loading")
     async login(username: string, password: string) {
         const request = {
             grant_type: "password",
             username: username.trim(),
-            password: password + 1, //`${encrypted(password)}`,
+            password,
             randomStr: v4(),
             code: "0000",
             imgCode: "0000",
@@ -52,10 +47,10 @@ class LoginModule extends Module<RootState, "login"> {
             return Promise.reject("ignore");
         });
         this.setState({ userInfo: response });
-        // roPushHistory("/");
-        // message.success("登录成功");
-        // setLocalStorageWhenLogined(response, username, password);
-        // this.dispatch(() => MainActions.fetchPermission());
+        this.pushHistory("/");
+        message.success("登录成功");
+        setLocalStorageWhenLogined(response, username, password);
+        dispatchAction(MainActions.fetchPermission());
     }
 }
 

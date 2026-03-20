@@ -43,6 +43,8 @@ export async function ajax<Request, Response, Path extends string>(
             "Content-Type": ContentType[contentType],
             Authorization: getAuthorization(),
             ...headers,
+            // locale: "zh-CN",
+            "Comma-Tenant-Id": "000000",
         },
         globalHold,
         ...config,

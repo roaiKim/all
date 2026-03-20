@@ -2488,6 +2488,11 @@ js-yaml@^4.1.1:
   dependencies:
     argparse "^2.0.1"
 
+jsencrypt@^3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/jsencrypt/-/jsencrypt-3.5.4.tgz#8db335ab164359449dd200d120f125f459476b25"
+  integrity sha512-kNjfYEMNASxrDGsmcSQh/rUTmcoRfSUkxnAz+MMywM8jtGu+fFEZ3nJjHM58zscVnwR0fYmG9sGkTDjqUdpiwA==
+
 json-buffer@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/json-buffer/-/json-buffer-3.0.1.tgz#9338802a30d3b6605fbe0613e094008ca8c05a13"

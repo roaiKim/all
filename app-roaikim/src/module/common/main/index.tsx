@@ -22,7 +22,7 @@ const initialMainState = {
 
 class MainModule extends Module<RootState, "main"> {
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
-        console.log("main-onEnter", routeParam, location);
+        // debugger;
         const isLogin = StorageService.get(WEB_IS_LOGIN);
         const webToken = StorageService.get(WEB_TOKEN);
         if (isDevelopment) {
@@ -34,14 +34,14 @@ class MainModule extends Module<RootState, "main"> {
             }
         }
         if (webToken && isLogin) {
-            this.fetchPermission(routeParam);
+            this.fetchPermission();
         } else {
             this.logout();
         }
     }
 
     @Loading("PERMISSION")
-    async fetchPermission(routeParam) {
+    async fetchPermission() {
         const permission = await GolbalService.getByUserId().catch((error) => {
             this.setState({ PERMISSION_DONE: false });
             return Promise.reject(error);
@@ -53,7 +53,8 @@ class MainModule extends Module<RootState, "main"> {
         //     pagePermission: getPagePermission(),
         // });
         console.log("main-fetchPermission", permission);
-        const pathname = routeParam.pathname || "";
+        const { location } = this.rootState.router;
+        const pathname = location.pathname || "";
         // 如果在 登录页 需要需要跳转到首页
         if (pathname === "/login") {
             this.pushHistory("/");

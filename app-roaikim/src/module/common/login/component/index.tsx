@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { connect, type DispatchProp, useDispatch } from "react-redux";
-import { showLoading, useLoadingStatus } from "@core";
+import { useLoadingStatus } from "@core";
+import { message } from "antd";
 // import { object, string } from "yup";
 import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
 import { BubbleField } from "components/bubble-field";
 import { LoginClock } from "components/login-clock";
 import { ProxySelector } from "components/proxy-selector";
-// import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-envs";
+import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-constant";
 import { actions } from "module/common/login";
 import type { RootState } from "type/rootState";
-// import { decrypted, encrypted } from "utils/function/crypto";
-// import { StorageService } from "utils/StorageService";
+import { decrypted, encrypted, passwordEncrypted } from "utils/function/crypto";
+import { StorageService } from "utils/StorageService";
 import "./index.less";
 
 interface LoginProps extends DispatchProp, ReturnType<typeof mapStateToProps> {}
@@ -21,26 +22,22 @@ interface LoginState {
 }
 
 function Login(props: LoginProps) {
-    const { companyInfo, loginLoading } = props;
+    const { companyInfo } = props;
     const { logo, headerLogo, platformName } = companyInfo || {};
     const brandLogo = logo || headerLogo;
     const brandName = platformName || "Rosen CI";
 
     const loading = useLoadingStatus("login-loading");
-    console.log("--login-loading--", loading);
 
     const dispatch = useDispatch();
 
     const [state, setState] = useState<LoginState>(() => {
-        // const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
-        // const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
-        // const un = decrypted(userName || "");
-        // const pw = decrypted(password || "");
+        const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
+        const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
+        const un = decrypted(userName || "");
+        const pw = decrypted(password || "");
 
-        return {
-            username: "un",
-            password: "pw",
-        };
+        return { username: un, password: pw };
     });
 
     const onChange = (record: Partial<LoginState>) => {
@@ -48,22 +45,13 @@ function Login(props: LoginProps) {
     };
 
     const onSubmit = () => {
-        // const longinSchema = object().shape({
-        //     password: string().required("请输入密码"),
-        //     username: string().required("请输入用户名"),
-        // });
-        // longinSchema
-        //     .validate(state)
-        //     .then(() => {
-        //         const { dispatch } = props;
-        //         dispatch(actions.login(state.username, state.password));
-        //     })
-        //     .catch(() => {
-        //         // Toast.show((error.errors || [])[0] || error);
-        //     });
-        dispatch(actions.login("1", "2"));
-        // dispatch(actions.setState({ companyInfo: 234443, userInfo: 45556 }));
-        // dispatch(actions);
+        if (!state.username || !state.password) {
+            message.success("请输入账号和密码");
+            return;
+        }
+        StorageService.set<string>(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(state.username));
+        StorageService.set<string>(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(state.password));
+        dispatch(actions.login(state.username, passwordEncrypted(state.password)));
     };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -182,8 +170,8 @@ function Login(props: LoginProps) {
                                             ></input>
                                         </div>
                                     </label>
-                                    <button disabled={loginLoading} type="button" onClick={onSubmit}>
-                                        {loginLoading ? "登录中..." : "登录"}
+                                    <button disabled={loading} type="button" onClick={onSubmit}>
+                                        {loading ? "登录中..." : "登录"}
                                     </button>
                                 </div>
                                 <div className="ro-login-footer">
@@ -201,7 +189,6 @@ function Login(props: LoginProps) {
 
 const mapStateToProps = (state: RootState) => ({
     companyInfo: state.app.login.companyInfo,
-    loginLoading: showLoading(state, "login-loading"),
 });
 
 export default connect(mapStateToProps)(Login);
