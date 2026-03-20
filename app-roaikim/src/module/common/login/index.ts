@@ -21,14 +21,6 @@ const initialLoginState = {
 };
 
 class LoginModule extends Module<RootState, "login"> {
-    onEnter(params: Params<string>, location: Location) {
-        //
-    }
-
-    onLocationMatched(params: Params<string>, location: Location): void {
-        //
-    }
-
     // @Log()
     // onTick(): void {
     //     console.log("--LoginModule-onTick--", times);

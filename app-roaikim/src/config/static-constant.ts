@@ -5,17 +5,17 @@ export const noProduntion = process.env.NODE_ENV !== "production";
 
 export const BASIC_AUTH_TOKEN = "Basic Y29tbWE6Y29tbWE=";
 
-export const APP_NAME = "RO_APP";
+export const APP_NAME = "TG_APP";
 
-export const DEV_PROXY_HOST = `${APP_NAME}_DEVELOPMENT_NETWORK_PROXY`;
-export const WEB_TOKEN = `${APP_NAME}_TOKEN`;
-export const WEB_USERID = `${APP_NAME}_USERID`;
-export const WEB_ISLOGIN = `${APP_NAME}_ISLOGIN`;
-export const WEB_REFRESHTOKEN = `${APP_NAME}_REFRESHTOKEN`;
-export const WEB_USERNAME = `${APP_NAME}_USERNAME`;
-export const WEB_GETTOKENTIME = `${APP_NAME}_GETTOKENTIME`;
-export const WEB_USER_INFO = `${APP_NAME}_USER_INFO`;
-export const WEB_DEPARTMENT_ID = `${APP_NAME}_DEPARTMENT_ID`;
-export const WEB_NEW_USER = `${APP_NAME}_NEW_USER`;
-export const LOGIN_REMEMBER_USERNAME = `${APP_NAME}_LOGIN_USERNAME`;
-export const LOGIN_REMEMBER_PASSWORD = `${APP_NAME}_LOGIN_PASSWORD`;
+export const DEV_PROXY_HOST = "DEV_PROXY_HOST";
+export const WEB_TOKEN = "WEB_TOKEN";
+export const WEB_USERID = "WEB_USERID";
+export const WEB_IS_LOGIN = "WEB_IS_LOGIN";
+export const WEB_REFRESH_TOKEN = "WEB_REFRESH_TOKEN";
+export const WEB_USERNAME = "WEB_USERNAME";
+export const WEB_GET_TOKEN_TIME = "WEB_GET_TOKEN_TIME";
+export const WEB_USER_INFO = "WEB_USER_INFO";
+export const WEB_DEPARTMENT_ID = "WEB_DEPARTMENT_ID";
+export const WEB_NEW_USER = "WEB_NEW_USER";
+export const LOGIN_REMEMBER_USERNAME = "LOGIN_REMEMBER_USERNAME";
+export const LOGIN_REMEMBER_PASSWORD = "LOGIN_REMEMBER_PASSWORD";

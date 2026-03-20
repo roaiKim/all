@@ -1,4 +1,5 @@
 import { enablePatches, produce } from "immer";
+import { routerNavigateAction } from "redux-router-bridge";
 // import { push } from "redux-first-history";
 import type { Location } from "history";
 import type { Params } from "react-router";
@@ -15,10 +16,13 @@ if (process.env.NODE_ENV === "development") enablePatches();
 
 export type PromiseGenerator<T = unknown> = T | Promise<T>;
 
+export type RouterLocation = Location;
+export type RouterParams<T extends string = string> = Params<T>;
+
 export interface ModuleLifecycleListener {
-    onEnter: (params: Params<string>, location: Location) => PromiseGenerator;
+    onEnter: (params: RouterParams, location: RouterLocation) => PromiseGenerator;
     onDestroy: () => PromiseGenerator;
-    onLocationMatched: (params: Params<string>, location: Location) => PromiseGenerator;
+    onLocationMatched: (params: RouterParams, location: RouterLocation) => PromiseGenerator;
     onTick: (() => PromiseGenerator) & TickIntervalDecoratorFlag;
 }
 
@@ -32,7 +36,7 @@ export class Module<
         readonly initialState: RootState["app"][ModuleName]
     ) {}
 
-    onEnter(params: Params<string>, location: Location) {
+    onEnter(routeParam: RouterParams, location: RouterLocation) {
         /**
          * Called when the attached component is initially mounted.
          */
@@ -44,7 +48,7 @@ export class Module<
          */
     }
 
-    onLocationMatched(params: Params<string>, location: Location) {
+    onLocationMatched(routeParam: RouterParams, location: RouterLocation) {
         /**
          * Called when the attached component is a React-Route component and its Route location matches
          * It is called each time the location changes, as long as it still matches
@@ -128,17 +132,17 @@ export class Module<
     pushHistory(state: HistoryState): PromiseGenerator;
 
     pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state") {
-        // if (typeof urlOrState === "string") {
-        //     const url: string = urlOrState;
-        //     if (state) {
-        //         yield put(push(url, state === "keep-state" ? app.history.location.state : state));
-        //     } else {
-        //         yield put(push(url));
-        //     }
-        // } else {
-        //     const currentURL = location.pathname + location.search;
-        //     const state: HistoryState = urlOrState;
-        //     yield put(push(currentURL, state));
-        // }
+        if (typeof urlOrState === "string") {
+            const url: string = urlOrState;
+            if (state) {
+                app.store.dispatch(routerNavigateAction(url, { state: state === "keep-state" ? app.history.location.state : state }));
+            } else {
+                app.store.dispatch(routerNavigateAction(url));
+            }
+        } else {
+            const currentURL = location.pathname + location.search;
+            const state: HistoryState = urlOrState;
+            app.store.dispatch(routerNavigateAction(currentURL, { state }));
+        }
     }
 }

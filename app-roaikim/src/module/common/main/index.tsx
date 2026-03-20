@@ -1,12 +1,16 @@
-import { captureError, Module, register } from "@core";
+import { captureError, createModuleMethodErrorAction, Module, register, type RouterLocation, type RouterParams } from "@core";
+import { clearToken } from "@http";
 // import { LoginService } from "@api/LoginService";
 // import { clearToken } from "@http";
-import { DEV_PROXY_HOST, isDevelopment, WEB_ISLOGIN, WEB_TOKEN } from "config/static-constant";
+import { DEV_PROXY_HOST, isDevelopment, WEB_IS_LOGIN, WEB_TOKEN } from "config/static-constant";
+// import { clearLocalStorageWhenLogout } from "utils/framework";
+import { GolbalService } from "service/global-api/GolbalService";
+import { LoginService } from "service/global-api/LoginService";
 // import { GolbalService } from "service/api/GolbalService";
 import type { RootState } from "type/rootState";
-import { getPagePermission, transformMeuns } from "utils/business/permission";
+// import { getPagePermission, transformMeuns } from "utils/business/permission";
 import { Confirm, Loading } from "utils/decorator";
-// import { clearLocalStorageWhenLogout } from "utils/framework";
+import { clearLocalStorageWhenLogout } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
 
@@ -17,43 +21,43 @@ const initialMainState = {
 };
 
 class MainModule extends Module<RootState, "main"> {
-    async onEnter(props) {
-        // console.log("main-onEnter", props);
-        // const isLogin = StorageService.get(WEB_ISLOGIN);
-        // const webToken = StorageService.get(WEB_TOKEN);
-        // if (isDevelopment) {
-        //     const proxyHost = StorageService.get(DEV_PROXY_HOST);
-        //     if (!proxyHost) {
-        //         clearLocalStorageWhenLogout();
-        //         roPushHistory("/login");
-        //         return;
-        //     }
-        // }
-        // if (webToken && isLogin) {
-        //     this.fetchPermission();
-        // } else {
-        //     this.logout();
-        // }
+    async onEnter(routeParam: RouterParams, location: RouterLocation) {
+        console.log("main-onEnter", routeParam, location);
+        const isLogin = StorageService.get(WEB_IS_LOGIN);
+        const webToken = StorageService.get(WEB_TOKEN);
+        if (isDevelopment) {
+            const proxyHost = StorageService.get(DEV_PROXY_HOST);
+            if (!proxyHost) {
+                clearLocalStorageWhenLogout();
+                this.pushHistory("/login");
+                return;
+            }
+        }
+        if (webToken && isLogin) {
+            this.fetchPermission(routeParam);
+        } else {
+            this.logout();
+        }
     }
 
-    // @RetryOnNetworkConnectionError()
     @Loading("PERMISSION")
-    async fetchPermission() {
-        // const permission = await GolbalService.getByUserId().catch(
-        //     (error) => (this.setState({ PERMISSION_DONE: false }), captureError(error), Promise.reject(""))
-        // );
+    async fetchPermission(routeParam) {
+        const permission = await GolbalService.getByUserId().catch((error) => {
+            this.setState({ PERMISSION_DONE: false });
+            return Promise.reject(error);
+        });
         // const navPermission = transformMeuns(permission);
         // this.setState({
         //     PERMISSION_DONE: true,
         //     navPermission,
         //     pagePermission: getPagePermission(),
         // });
-        // const { location } = this.rootState.router;
-        // const pathname = (location as any).pathname || "";
-        // // 如果在 登录页 需要需要跳转到首页
-        // if (pathname === "/login") {
-        //     roPushHistory("/");
-        // }
+        console.log("main-fetchPermission", permission);
+        const pathname = routeParam.pathname || "";
+        // 如果在 登录页 需要需要跳转到首页
+        if (pathname === "/login") {
+            this.pushHistory("/");
+        }
     }
 
     @Confirm("确定退出吗")
@@ -62,15 +66,11 @@ class MainModule extends Module<RootState, "main"> {
     }
 
     async logout() {
-        // await LoginService.logout();
-        // // clearLocalStorageWhenLogout();
-        // clearToken();
-        // roPushHistory("/login");
+        await LoginService.logout();
+        clearLocalStorageWhenLogout();
+        clearToken();
+        this.pushHistory("/login");
     }
-
-    // onLocationMatched(routeParam: object, location: ModuleLocation<object>): void {
-    //     console.log("onLocationMatched++", routeParam, location);
-    // }
 
     @Confirm("确定退出吗")
     calcPageHeight() {

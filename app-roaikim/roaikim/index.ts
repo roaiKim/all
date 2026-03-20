@@ -15,11 +15,11 @@ export { useAction, useBinaryAction, useObjectKeyAction, useDefaultObjectAction 
 export { useLoadingStatus } from "./hooks/loading";
 export { type ErrorListener, register } from "./module";
 export { bootstrap } from "./platform/bootstrap";
-export { Module, type ModuleLifecycleListener } from "./platform/Module";
+export { Module, type ModuleLifecycleListener, type RouterLocation, type RouterParams } from "./platform/Module";
 export { idleStateAction, idleTimeoutAction, loadingAction, navigationPreventionAction, showLoading, type State } from "./reducer";
 // export { all, call, delay, fork, put, race, type SagaGenerator, spawn } from "./typed-saga";
 export { async, type AsyncErrorComponentProps, type AsyncOptions } from "./util/async";
-export { captureError } from "./util/error-util";
+export { captureError, createModuleMethodErrorAction } from "./util/error-util";
 export { ErrorBoundary } from "./util/ErrorBoundary";
 export { IdleDetector, IdleDetectorContext } from "./util/IdleDetector";
 export { ajax, uri } from "./util/network";

@@ -6,7 +6,7 @@ import { errorToException } from "./util/error-util";
 type LogResult = "OK" | "WARN" | "ERROR";
 
 interface Log {
-    date: Date;
+    date: string;
     action: string;
     result: LogResult;
     elapsedTime: number;
@@ -188,7 +188,8 @@ export class LoggerImpl implements Logger {
             Object.entries(entry.info).forEach(([key, value]) => {
                 if (value !== undefined) {
                     const isBuiltinInfo = ["app_state", "stacktrace", "extra_stacktrace"].includes(key);
-                    info[key] = isBuiltinInfo ? value.substring(0, 500000) : value.substring(0, 500);
+                    const stringValue = value.toString();
+                    info[key] = isBuiltinInfo ? stringValue.substring(0, 500000) : stringValue.substring(0, 500);
                 }
             });
         }
@@ -204,7 +205,7 @@ export class LoggerImpl implements Logger {
         }
 
         const event: Log = {
-            date: new Date(),
+            date: new Date().toISOString(),
             action: entry.action,
             elapsedTime: entry.elapsedTime || 0,
             result,
@@ -221,7 +222,7 @@ export class LoggerImpl implements Logger {
         if (this.logQueue.length > 0) {
             const lastLog = this.logQueue[this.logQueue.length - 1];
             return (
-                new Date().getTime() - lastLog.date.getTime() <= 1000 && // only 1 same error log per 1s
+                new Date().getTime() - new Date(lastLog.date).getTime() <= 1000 && // only 1 same error log per 1s
                 lastLog.action === action &&
                 lastLog.errorCode === errorCode &&
                 lastLog.errorMessage === errorMessage

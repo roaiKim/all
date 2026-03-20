@@ -5,9 +5,9 @@ import developmentProxy from "./src/config/development.proxy";
 import { isProduntion } from "./src/config/static-constant";
 
 function startProxy() {
-    const s = Object.entries(developmentProxy).reduce(
+   return Object.entries(developmentProxy).reduce(
         (prev, [key, value]) => (
-            (prev[key] = {
+            (prev[`/${key}`] = {
                 pathRewrite: { [`^/${key}`]: "" },
                 target: value,
                 changeOrigin: true,
@@ -18,10 +18,8 @@ function startProxy() {
             }),
             prev
         ),
-        {}
+        {} as Record<string, any>
     );
-    console.log(s);
-    return s;
 }
 
 // Docs: https://rsbuild.rs/config/

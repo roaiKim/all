@@ -3,6 +3,7 @@ import { app } from "../app";
 import { Exception, JavaScriptException } from "../Exception";
 import type { ErrorHandler } from "../module";
 import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, sendEventLogs } from "../platform/bootstrap";
+import type { Module } from "../platform/Module";
 // import { spawn } from "../typed-saga";
 
 let errorHandlerRunning = false;
@@ -10,6 +11,10 @@ let errorHandlerRunning = false;
 interface ErrorExtra {
     actionPayload?: string; // masked
     extraStacktrace?: string;
+}
+
+export function createModuleMethodErrorAction(error: unknown, name: any, extra: ErrorExtra = {}) {
+    return captureError(error, `1_Module_Method_Error`, extra);
 }
 
 export function errorToException(error: unknown): Exception {
