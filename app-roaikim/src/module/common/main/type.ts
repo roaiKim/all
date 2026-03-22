@@ -1,6 +1,12 @@
+interface NavPermission {
+    key: string;
+    label: string;
+    children?: NavPermission[];
+}
+
 export interface State {
     name?: string;
-    PERMISSION_DONE: boolean;
-    navPermission: boolean;
-    pagePermission: boolean;
+    appLoadingStatus: "loading" | "done" | "error";
+    navPermission: NavPermission[];
+    pagePermission: Record<string, string>;
 }

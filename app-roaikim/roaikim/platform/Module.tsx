@@ -1,18 +1,13 @@
 import { enablePatches, produce } from "immer";
-import { routerNavigateAction } from "redux-router-bridge";
-// import { push } from "redux-first-history";
 import type { Location } from "history";
 import type { Params } from "react-router";
-// import { put } from "redux-saga/effects";
 import { app } from "../app";
+import { pushHistory } from "../dispatch";
 import type { Logger } from "../Logger";
 import type { TickIntervalDecoratorFlag } from "../module";
 import { navigationPreventionAction, setStateAction, type State } from "../reducer";
-// import type { SagaGenerator } from "../typed-saga";
 
 if (process.env.NODE_ENV === "development") enablePatches();
-
-// export type ModuleLocation<State> = Location;
 
 export type PromiseGenerator<T = unknown> = T | Promise<T>;
 
@@ -132,17 +127,6 @@ export class Module<
     pushHistory(state: HistoryState): PromiseGenerator;
 
     pushHistory(urlOrState: HistoryState | string, state?: object | "keep-state") {
-        if (typeof urlOrState === "string") {
-            const url: string = urlOrState;
-            if (state) {
-                app.store.dispatch(routerNavigateAction(url, { state: state === "keep-state" ? app.history.location.state : state }));
-            } else {
-                app.store.dispatch(routerNavigateAction(url));
-            }
-        } else {
-            const currentURL = location.pathname + location.search;
-            const state: HistoryState = urlOrState;
-            app.store.dispatch(routerNavigateAction(currentURL, { state }));
-        }
+        pushHistory(urlOrState, state);
     }
 }

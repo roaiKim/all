@@ -1,4 +1,3 @@
-// import { put } from "redux-saga/effects";
 import { createActionHandlerDecorator } from "./createActionHandlerDecorator";
 import { app } from "../app";
 import { loadingAction } from "../reducer";

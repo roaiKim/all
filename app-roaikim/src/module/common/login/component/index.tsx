@@ -51,7 +51,7 @@ function Login(props: LoginProps) {
         }
         StorageService.set<string>(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(state.username));
         StorageService.set<string>(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(state.password));
-        dispatch(actions.login(state.username, passwordEncrypted(state.password)));
+        dispatch(actions.login(state.username, state.password));
     };
 
     const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

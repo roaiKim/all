@@ -1,21 +1,7 @@
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import App from "./App";
-
-// const rootEl = document.getElementById("app");
-// if (rootEl) {
-//     const root = ReactDOM.createRoot(rootEl);
-//     root.render(
-//         <React.StrictMode>
-//             <App />
-//         </React.StrictMode>
-//     );
-// }
-
 import { bootstrap } from "@core";
-import ErrorHandler from "errorListener";
 // import locationListener from "locationListener";
 import { MainComponent } from "module/common/main";
+import ErrorHandler from "utils/ArrorListener";
 // import "./utils/function/devtowindowenv";
 import "asset/styles/index.less";
 
@@ -23,7 +9,7 @@ bootstrap({
     componentType: MainComponent,
     errorListener: new ErrorHandler(),
     idleTimeoutInSecond: 600,
-    // rootContainer: document.getElementById("react-app"),
+    rootContainer: document.getElementById("app-root"),
     // browserConfig: {
     //     onLocationChange: locationListener,
     // },

@@ -1,4 +1,3 @@
-// import { delay } from "redux-saga/effects";
 import { createActionHandlerDecorator } from "./createActionHandlerDecorator";
 import { app } from "../app";
 import { NetworkConnectionException } from "../Exception";

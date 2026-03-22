@@ -18,7 +18,7 @@ export function useAction<P extends Array<string | number | boolean | null | und
 
 /**
  * For actions like:
- * *foo(a: number, b: string, c: boolean): SagaGenerator {..}
+ * *foo(a: number, b: string, c: boolean)
  *
  * useUnaryAction(foo, 100, "") will return:
  * (c: boolean) => void;
@@ -33,7 +33,7 @@ export function useUnaryAction<P extends any[], U>(
 
 /**
  * For actions like:
- * *foo(a: number, b: string, c: boolean): SagaGenerator {..}
+ * *foo(a: number, b: string, c: boolean)
  *
  * useBinaryAction(foo, 100) will return:
  * (b: string, c: boolean) => void;
@@ -48,9 +48,9 @@ export function useBinaryAction<P extends any[], U, K>(
 
 /**
  * For actions like:
- * *foo(data: {key: number}): SagaGenerator {..}
+ * *foo(data: {key: number})
  * or
- * *foo(data: {key: number} = {}): SagaGenerator {..}
+ * *foo(data: {key: number} = {})
  *
  * useObjectKeyAction(foo, "key") will return:
  * (objectValue: number) => void;
@@ -73,9 +73,9 @@ export function useObjectKeyAction<T extends object, K extends keyof T>(
 
 /**
  * For actions like:
- * *foo(data: {key: number} = {}): SagaGenerator {..}
+ * *foo(data: {key: number} = {})
  * or
- * *foo(data?: {key: number}): SagaGenerator {..}
+ * *foo(data?: {key: number})
  *
  * useDefaultObjectAction(foo) will return:
  * () => void;

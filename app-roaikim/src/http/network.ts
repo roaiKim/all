@@ -1,5 +1,7 @@
 import { APIException, NetworkConnectionException } from "@core";
 import axios, { AxiosError } from "axios";
+import { WEB_COMMA_TENANT_ID } from "config/static-constant";
+import { StorageService } from "utils/StorageService";
 import { ContentType, type RequestMethod, whitelistUrl } from "./config";
 import { getAuthorization, joinUrl } from "./tools";
 
@@ -44,7 +46,7 @@ export async function ajax<Request, Response, Path extends string>(
             Authorization: getAuthorization(),
             ...headers,
             // locale: "zh-CN",
-            "Comma-Tenant-Id": "000000",
+            "Comma-Tenant-Id": StorageService.get(WEB_COMMA_TENANT_ID),
         },
         globalHold,
         ...config,

@@ -10,17 +10,20 @@ import { LoginService } from "service/global-api/LoginService";
 import type { RootState } from "type/rootState";
 // import { getPagePermission, transformMeuns } from "utils/business/permission";
 import { Confirm, Loading } from "utils/decorator";
-import { clearLocalStorageWhenLogout } from "utils/framework";
+import { clearLocalStorageWhenLogout } from "utils/framework/login-storage";
+import { getPagePermission, transformMeuns } from "utils/framework/permission";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
+import type { State } from "./type";
 
-const initialMainState = {
-    PERMISSION_DONE: null,
+const initialMainState: State = {
+    appLoadingStatus: "loading",
     navPermission: null,
     pagePermission: null,
 };
 
 class MainModule extends Module<RootState, "main"> {
+    @Loading("main")
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
         // debugger;
         const isLogin = StorageService.get(WEB_IS_LOGIN);
@@ -34,25 +37,24 @@ class MainModule extends Module<RootState, "main"> {
             }
         }
         if (webToken && isLogin) {
-            this.fetchPermission();
+            this.fetchUser();
         } else {
             this.logout();
         }
     }
 
-    @Loading("PERMISSION")
-    async fetchPermission() {
+    @Loading("main")
+    async fetchUser() {
         const permission = await GolbalService.getByUserId().catch((error) => {
-            this.setState({ PERMISSION_DONE: false });
+            this.setState({ appLoadingStatus: "error" });
             return Promise.reject(error);
         });
-        // const navPermission = transformMeuns(permission);
-        // this.setState({
-        //     PERMISSION_DONE: true,
-        //     navPermission,
-        //     pagePermission: getPagePermission(),
-        // });
-        console.log("main-fetchPermission", permission);
+        const navPermission = transformMeuns(permission);
+        this.setState({
+            appLoadingStatus: "done",
+            navPermission,
+            pagePermission: getPagePermission(),
+        });
         const { location } = this.rootState.router;
         const pathname = location.pathname || "";
         // 如果在 登录页 需要需要跳转到首页

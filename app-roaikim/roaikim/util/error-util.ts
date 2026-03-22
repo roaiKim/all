@@ -3,8 +3,6 @@ import { app } from "../app";
 import { Exception, JavaScriptException } from "../Exception";
 import type { ErrorHandler } from "../module";
 import { GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, sendEventLogs } from "../platform/bootstrap";
-import type { Module } from "../platform/Module";
-// import { spawn } from "../typed-saga";
 
 let errorHandlerRunning = false;
 
@@ -63,7 +61,6 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
         });
     } else {
         app.logger.exception(exception, { action, info });
-        // app.sagaMiddleware.run();
         runUserErrorHandler(app.errorHandler, exception);
     }
 
@@ -72,7 +69,7 @@ export function captureError(error: unknown, action: string, extra: ErrorExtra =
 
 export async function runUserErrorHandler(handler: ErrorHandler, exception: Exception) {
     // For app, report errors to event server ASAP, in case of sudden termination
-    // sendEventLogs();
+    sendEventLogs();
     if (errorHandlerRunning) return;
 
     try {

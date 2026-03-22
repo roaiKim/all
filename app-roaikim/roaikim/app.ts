@@ -1,8 +1,5 @@
 import { createBrowserHistory, type History } from "history";
 import { applyMiddleware, compose, legacy_createStore as createStore, type Store, type StoreEnhancer } from "redux";
-// import { createReduxHistoryContext } from "redux-first-history";
-// import createSagaMiddleware, { type SagaMiddleware } from "redux-saga";
-// import { call as rawCall, race as rawRace, take, takeEvery } from "redux-saga/effects";
 import { createReduxHistory, createRouterMiddleware, createRouterReducer, type RouterState } from "redux-router-bridge";
 import { type Logger, type LoggerConfig, LoggerImpl } from "./Logger";
 import { type ActionHandler, type ErrorHandler, executeAction } from "./module";

@@ -11,7 +11,6 @@ import { APIException } from "../Exception";
 import type { LoggerConfig } from "../Logger";
 import { type ErrorListener, executeAction } from "../module";
 import { type Action, idleTimeoutAction } from "../reducer";
-// import { call, delay, type SagaGenerator } from "../typed-saga";
 import { captureError, errorToException } from "../util/error-util";
 import { ErrorBoundary } from "../util/ErrorBoundary";
 import { DEFAULT_IDLE_TIMEOUT, IdleDetector } from "../util/IdleDetector";
@@ -147,7 +146,7 @@ function renderRoot(EntryComponent: React.ComponentType, rootContainer: HTMLElem
         <Provider store={app.store}>
             <IdleDetector>
                 <HistoryRouter history={app.history as any}>
-                    {/* <NavigationGuard message={navigationPreventionMessage} /> */}
+                    <NavigationGuard message={navigationPreventionMessage} />
                     <ErrorBoundary>
                         <EntryComponent />
                     </ErrorBoundary>

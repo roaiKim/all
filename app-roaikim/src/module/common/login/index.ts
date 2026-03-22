@@ -9,7 +9,8 @@ import type { Params } from "react-router";
 import { LoginService } from "service/global-api/LoginService";
 import type { RootState } from "type/rootState";
 import { Loading } from "utils/decorator";
-import { setLocalStorageWhenLogined } from "utils/framework";
+import { setLocalStorageWhenLogined } from "utils/framework/login-storage";
+import { passwordEncrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 // import { setLocalStorageWhenLogined } from "utils/framework";
 // import { encrypted } from "utils/function/crypto";
@@ -27,7 +28,7 @@ class LoginModule extends Module<RootState, "login"> {
         const request = {
             grant_type: "password",
             username: username.trim(),
-            password,
+            password: passwordEncrypted(password),
             randomStr: v4(),
             code: "0000",
             imgCode: "0000",
@@ -50,7 +51,7 @@ class LoginModule extends Module<RootState, "login"> {
         this.pushHistory("/");
         message.success("登录成功");
         setLocalStorageWhenLogined(response, username, password);
-        dispatchAction(MainActions.fetchPermission());
+        dispatchAction(MainActions.fetchUser());
     }
 }
 

@@ -1,0 +1,143 @@
+﻿.ro-solar-loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ro-solar-bg);
+  z-index: 999;
+  color: var(--ro-solar-text);
+  font-family: "ZCOOL KuaiLe", "Alibaba PuHuiTi", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  --ro-solar-bg:
+    radial-gradient(circle at 50% 20%, rgb(255 210 120 / 15%), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgb(110 170 255 / 18%), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgb(190 140 255 / 16%), transparent 42%),
+    #07080f;
+  --ro-solar-text: #e7ebff;
+  --ro-solar-shell: rgb(10 12 20 / 72%);
+  --ro-solar-border: rgb(255 255 255 / 8%);
+  --ro-solar-ring: rgb(255 255 255 / 8%);
+  --ro-solar-sun: radial-gradient(circle, #fff6d6 0%, #ffd26c 40%, rgb(255 166 61 / 95%) 70%);
+  --ro-solar-sun-glow: 0 0 30px rgb(255 200 120 / 80%), 0 0 80px rgb(255 120 40 / 50%);
+}
+
+.ro-solar-loading-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 32px 28px;
+  border-radius: 26px;
+  // background: var(--ro-solar-shell);
+  // border: 1px solid var(--ro-solar-border);
+  // box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+}
+
+.ro-solar-loading-system {
+  position: relative;
+  width: 420px;
+  height: 420px;
+}
+
+.ro-solar-loading-sun {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--ro-solar-sun);
+  box-shadow: var(--ro-solar-sun-glow);
+  animation: ro-solar-loading-sun-pulse 2.6s ease-in-out infinite;
+}
+
+.ro-solar-loading-orbit {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: calc(var(--ro-orbit-radius) * 2);
+  height: calc(var(--ro-orbit-radius) * 2);
+  border-radius: 50%;
+  border: 1px dashed var(--ro-solar-ring);
+  animation: ro-solar-loading-orbit var(--ro-orbit-duration) linear infinite;
+}
+
+.ro-solar-loading-planet {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: var(--ro-planet-size);
+  height: var(--ro-planet-size);
+  border-radius: 50%;
+  background: var(--ro-planet-color);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgb(255 255 255 / 20%);
+}
+
+.ro-solar-loading-planet.has-ring::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: calc(var(--ro-planet-size) * 1.8);
+  height: calc(var(--ro-planet-size) * 0.65);
+  border-radius: 50%;
+  border: 1px solid rgb(255 230 180 / 70%);
+  transform: translate(-50%, -50%) rotate(-18deg);
+}
+
+.ro-solar-loading-text {
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 14px;
+  opacity: 0.78;
+}
+
+.ro-solar-loading.is-light {
+  --ro-solar-bg:
+    radial-gradient(circle at 50% 0%, rgb(255 220 170 / 25%), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgb(150 200 255 / 25%), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgb(210 170 255 / 22%), transparent 42%),
+    #f6f7fb;
+  --ro-solar-text: #3b3f5c;
+  --ro-solar-shell: rgb(255 255 255 / 90%);
+  --ro-solar-border: rgb(60 72 120 / 12%);
+  --ro-solar-ring: rgb(60 72 120 / 8%);
+  --ro-solar-sun: radial-gradient(circle, #fff3d4 0%, #ffd89a 45%, rgb(255 179 78 / 95%) 75%);
+  --ro-solar-sun-glow: 0 0 24px rgb(255 198 120 / 60%), 0 0 50px rgb(255 140 40 / 35%);
+}
+
+@keyframes ro-solar-loading-orbit {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--ro-orbit-offset, 0deg));
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(calc(var(--ro-orbit-offset, 0deg) + 360deg));
+  }
+}
+
+@keyframes ro-solar-loading-sun-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.85;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .ro-solar-loading-system {
+    width: 300px;
+    height: 300px;
+  }
+
+  .ro-solar-loading-text {
+    letter-spacing: 0.18em;
+  }
+}
