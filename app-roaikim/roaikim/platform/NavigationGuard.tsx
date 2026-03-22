@@ -32,10 +32,10 @@ interface NavigationGuardProps {
 // export const NavigationGuard = connect(mapStateToProps)(Component);
 
 export function NavigationGuard(props: NavigationGuardProps) {
-    const navigationPrevented = useSelector((state: State) => state.navigationPrevented);
-    unstable_usePrompt({
-        when: navigationPrevented,
-        message: props?.message || "您确定要离开吗？未保存的更改将丢失！",
-    });
+    // const navigationPrevented = useSelector((state: State) => state.navigationPrevented);
+    // unstable_usePrompt({
+    //     when: navigationPrevented,
+    //     message: props?.message || "您确定要离开吗？未保存的更改将丢失！",
+    // });
     return null;
 }
