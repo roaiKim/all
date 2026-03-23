@@ -1,5 +1,6 @@
 import { APIException, dispatchAction, type ErrorListener, Exception, NetworkConnectionException, replaceHistory } from "@core";
 import { message } from "antd";
+import { shouldIgnoreLogin } from "@project/config";
 import { actions as MainActions } from "module/common/main";
 
 export default class ErrorHandler implements ErrorListener {
@@ -7,6 +8,9 @@ export default class ErrorHandler implements ErrorListener {
         if (error instanceof APIException) {
             if (error.statusCode === 401 || error.statusCode === 403) {
                 message.error(`未登录或登录已过期, 请重新登录。错误码: ${error.statusCode}`);
+                if (shouldIgnoreLogin) {
+                    return;
+                }
                 dispatchAction(MainActions.logout());
                 replaceHistory("/login");
             } else if (error.statusCode === 404) {

@@ -29,9 +29,10 @@
         "@core": ["../roaikim"],
         "@http": ["./http"],
         "@icon": ["../node_modules/@ant-design/icons"],
+        "@project/*": ["../project/*"],
         "@api/*": ["./service/api/*"]
     }
   },
-  "include": ["./src", "./roaikim"],
+  "include": ["./src", "./roaikim", "./project"],
   "exclude": ["./webpack/**/*", "./z-files"]
 }

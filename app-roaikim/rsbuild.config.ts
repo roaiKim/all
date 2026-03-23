@@ -30,8 +30,8 @@ export default defineConfig({
     },
     html: {
         title: "Home",
-        template: "./src/index.html",
-        favicon: "./src/favicon.ico",
+        template: "./public/index.html",
+        favicon: "./public/avatar.png",
     },
     plugins: [pluginReact(), pluginLess()],
     performance: {

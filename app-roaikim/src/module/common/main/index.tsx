@@ -1,5 +1,6 @@
 import { captureError, createModuleMethodErrorAction, Module, register, type RouterLocation, type RouterParams } from "@core";
 import { clearToken } from "@http";
+import { shouldIgnoreLogin } from "@project/config";
 // import { LoginService } from "@api/LoginService";
 // import { clearToken } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, WEB_IS_LOGIN, WEB_TOKEN } from "config/static-constant";
@@ -12,6 +13,7 @@ import type { RootState } from "type/rootState";
 import { Confirm, Loading } from "utils/decorator";
 import { clearLocalStorageWhenLogout } from "utils/framework/login-storage";
 import { getPagePermission, transformMeuns } from "utils/framework/permission";
+import { removeMainLoading } from "utils/framework/remove-main-loading";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
 import type { State } from "./type";
@@ -25,7 +27,11 @@ const initialMainState: State = {
 class MainModule extends Module<RootState, "main"> {
     @Loading("main")
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
-        // debugger;
+        console.log("------", shouldIgnoreLogin);
+        if (shouldIgnoreLogin) {
+            removeMainLoading();
+            return;
+        }
         const isLogin = StorageService.get(WEB_IS_LOGIN);
         const webToken = StorageService.get(WEB_TOKEN);
         if (isDevelopment) {
