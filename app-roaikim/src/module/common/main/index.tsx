@@ -27,9 +27,9 @@ const initialMainState: State = {
 class MainModule extends Module<RootState, "main"> {
     @Loading("main")
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
-        console.log("------", shouldIgnoreLogin);
+        // 忽略登录 仅在dev生效
         if (shouldIgnoreLogin) {
-            removeMainLoading();
+            this.setState({ appLoadingStatus: "done" });
             return;
         }
         const isLogin = StorageService.get(WEB_IS_LOGIN);

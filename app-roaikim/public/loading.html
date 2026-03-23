@@ -351,7 +351,7 @@
       <div class="ro-solar-loading-text">
         <div class="ro-douyin-loading">
           <span class="ro-douyin-loading-scanlines" aria-hidden="true"></span>
-          <span class="ro-douyin-loading-text" data-text="正在启动">正在启动</span>
+          <span class="ro-douyin-loading-text" data-text="Starting up"></span>
         </div>
       </div>
     </div>
@@ -359,5 +359,17 @@
 
   <!-- 需要亮色主题时，把上面的 ro-solar-loading 改成 ro-solar-loading is-light -->
   <!-- To enable the light theme, change the root class above to: ro-solar-loading is-light -->
+  <script>
+    (function () {
+      var textNode = document.querySelector(".ro-douyin-loading-text");
+      if (!textNode) return;
+
+      var language = (navigator.language || "").toLowerCase();
+      var zh = language.startsWith("zh");
+      var text = zh ? "正在启动" : "Starting up";
+
+      textNode.textContent = text; 
+    })();
+  </script>
 </body>
 </html>
