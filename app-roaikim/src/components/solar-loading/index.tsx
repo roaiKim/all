@@ -69,9 +69,9 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                                 className={prefixCls("solar-loading-orbit")}
                                 style={
                                     {
-                                        ["--chameleon-orbit-radius"]: `${planet.radius}px`,
-                                        ["--chameleon-orbit-duration"]: duration,
-                                        ["--chameleon-orbit-offset"]: `${offset}deg`,
+                                        "--chameleon-orbit-radius": `${planet.radius}px`,
+                                        "--chameleon-orbit-duration": duration,
+                                        "--chameleon-orbit-offset": `${offset}deg`,
                                     } as React.CSSProperties
                                 }
                             >
@@ -81,8 +81,8 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                                     })}
                                     style={
                                         {
-                                            ["--chameleon-planet-size"]: `${planet.size}px`,
-                                            ["--chameleon-planet-color"]: planet.color,
+                                            "--chameleon-planet-size": `${planet.size}px`,
+                                            "--chameleon-planet-color": planet.color,
                                         } as React.CSSProperties
                                     }
                                 ></span>

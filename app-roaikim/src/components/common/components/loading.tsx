@@ -20,4 +20,3 @@ export function Spinning(props: SpinningProps) {
         </div>
     );
 }
-

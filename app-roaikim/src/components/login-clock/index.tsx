@@ -81,10 +81,14 @@ export function LoginClock() {
                                 })}
                             >
                                 <span className={`${prefixCls("login-clock-digit-face")} ${prefixCls("login-clock-digit-face-top")}`}>
-                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>{char}</span>
+                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>
+                                        {char}
+                                    </span>
                                 </span>
                                 <span className={`${prefixCls("login-clock-digit-face")} ${prefixCls("login-clock-digit-face-bottom")}`}>
-                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}>{char}</span>
+                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}>
+                                        {char}
+                                    </span>
                                 </span>
                                 {isFlipping ? (
                                     <>
@@ -93,17 +97,29 @@ export function LoginClock() {
                                             className={`${prefixCls("login-clock-digit-flap")} ${prefixCls("login-clock-digit-flap-front")}`}
                                             aria-hidden="true"
                                         >
-                                            <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>{previousChar}</span>
+                                            <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>
+                                                {previousChar}
+                                            </span>
                                         </span>
                                         <span
                                             key={`back-${index}-${previousChar}-${char}-${clock.currentTimeText}`}
                                             className={`${prefixCls("login-clock-digit-flap")} ${prefixCls("login-clock-digit-flap-back")}`}
                                             aria-hidden="true"
                                         >
-                                            <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}>{char}</span>
+                                            <span
+                                                className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}
+                                            >
+                                                {char}
+                                            </span>
                                         </span>
-                                        <span className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-top")}`} aria-hidden="true"></span>
-                                        <span className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-bottom")}`} aria-hidden="true"></span>
+                                        <span
+                                            className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-top")}`}
+                                            aria-hidden="true"
+                                        ></span>
+                                        <span
+                                            className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-bottom")}`}
+                                            aria-hidden="true"
+                                        ></span>
                                     </>
                                 ) : null}
                             </span>

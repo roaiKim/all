@@ -23,7 +23,7 @@ function Main(props: MainProps) {
 
     return (
         <div className={`${prefixCls("page")} ${prefixCls("main-container")}`}>
-            <PageLoading show={true} theme="light" />
+            <PageLoading show={mainLoading} theme="light" />
             <Routes>
                 <Route path="/login/:id?" element={<LoginComponent></LoginComponent>} />
                 <Route path="*" element={<MainLayout></MainLayout>} />

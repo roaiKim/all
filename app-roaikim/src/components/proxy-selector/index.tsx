@@ -1,6 +1,6 @@
 import { Select } from "antd";
-import { setHost } from "@http";
 import DevProxy from "config/development.proxy";
+import { setHost } from "@http";
 import { DEV_PROXY_HOST, isDevelopment, prefixCls } from "config/static-constant";
 import { StorageService } from "utils/StorageService";
 
