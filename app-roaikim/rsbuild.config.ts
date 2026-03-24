@@ -49,7 +49,7 @@ export default defineConfig({
         bundleAnalyze: isProduntion
             ? {
                 analyzerMode: "static",
-                openAnalyzer: true,
+                openAnalyzer: false,
                 generateStatsFile: true,
             }
             : {},

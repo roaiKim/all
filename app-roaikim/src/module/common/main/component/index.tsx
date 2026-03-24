@@ -35,7 +35,7 @@ function Main(props: MainProps) {
         <div className={`${lessPrefixName}-page ro-main-container`}>
             {/* <Spinning text={"加载中"} loading={mainLoading} /> */}
             {/* <SolarLoading text="正在启动" loading={mainLoading} theme="light" /> */}
-            {/* <PageLoading text={"加载中"} show={true} /> */}
+            <PageLoading show={mainLoading} theme="light" />
             <Routes>
                 <Route path="/login/:id?" element={<LoginComponent></LoginComponent>} />
                 <Route path="*" element={<MainLayout></MainLayout>} />
