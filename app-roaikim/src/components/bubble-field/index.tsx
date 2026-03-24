@@ -1,6 +1,6 @@
 ﻿import React, { useState } from "react";
 import classNames from "classnames";
-import { lessPrefixName, prefixCls } from "config/static-constant";
+import { prefixCls } from "config/static-constant";
 import "./index.less";
 
 type BubbleFieldDensity = "sparse" | "normal" | "dense";
@@ -99,7 +99,7 @@ export function BubbleField(props: BubbleFieldProps) {
     };
 
     const onBubbleAnimationEnd = (bubbleId: number, event: React.AnimationEvent<HTMLSpanElement>) => {
-        if (event.animationName !== `${lessPrefixName}-bubble-pop`) {
+        if (event.animationName !== "ball-bubble-pop") {
             return;
         }
 
@@ -130,10 +130,10 @@ export function BubbleField(props: BubbleFieldProps) {
                         })}
                         style={
                             {
-                                [`--${lessPrefixName}-bubble-border`]: bubbleTint.border,
-                                [`--${lessPrefixName}-bubble-glow`]: bubbleTint.glow,
-                                [`--${lessPrefixName}-bubble-fill`]: bubbleTint.fill,
-                                [`--${lessPrefixName}-bubble-ring`]: bubbleTint.ring,
+                                ["--chameleon-bubble-border"]: bubbleTint.border,
+                                ["--chameleon-bubble-glow"]: bubbleTint.glow,
+                                ["--chameleon-bubble-fill"]: bubbleTint.fill,
+                                ["--chameleon-bubble-ring"]: bubbleTint.ring,
                                 left: bubbleLeft === undefined ? undefined : `${bubbleLeft}%`,
                             } as React.CSSProperties
                         }

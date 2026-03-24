@@ -1,6 +1,6 @@
 .@{less-name}-login-clock {
-  --@{less-name}-clock-digit-height: 54px;
-  --@{less-name}-clock-digit-half: calc(var(~"--@{less-name}-clock-digit-height") / 2);
+  --chameleon-clock-digit-height: 54px;
+  --chameleon-clock-digit-half: calc(var(--chameleon-clock-digit-height) / 2);
 
   display: flex;
   flex-direction: column;
@@ -28,7 +28,7 @@
   position: relative;
   display: block;
   width: 40px;
-  height: var(~"--@{less-name}-clock-digit-height");
+  height: var(--chameleon-clock-digit-height);
   perspective: 340px;
   border: 1px solid rgb(71 85 105 / 42%);
   border-radius: 10px;
@@ -117,7 +117,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  height: var(~"--@{less-name}-clock-digit-half");
+  height: var(--chameleon-clock-digit-half);
   overflow: hidden;
   backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -148,7 +148,7 @@
   left: 0;
   display: flex;
   width: 100%;
-  height: var(~"--@{less-name}-clock-digit-height");
+  height: var(--chameleon-clock-digit-height);
   align-items: center;
   justify-content: center;
   font-size: 29px;
@@ -166,7 +166,7 @@
 }
 
 .@{less-name}-login-clock-digit-value-bottom {
-  top: calc(-1 * var(~"--@{less-name}-clock-digit-half"));
+  top: calc(-1 * var(--chameleon-clock-digit-half));
 }
 
 .@{less-name}-login-clock-digit-flap {
@@ -185,7 +185,7 @@
     repeating-linear-gradient(90deg, rgb(255 255 255 / 2%) 0 1px, transparent 1px 4px),
     linear-gradient(180deg, #8196ad, #607286 34%, #445366 86%);
   transform-origin: center bottom;
-  animation: ~"@{less-name}-clock-flip-front 0.64s cubic-bezier(0.37, 0.01, 0.2, 1) both";
+  animation: ball-clock-flip-front 0.64s cubic-bezier(0.37, 0.01, 0.2, 1) both;
 }
 
 .@{less-name}-login-clock-digit-flap-back {
@@ -199,7 +199,7 @@
     0 10px 18px rgb(71 85 105 / 20%);
   transform: rotateX(88deg);
   transform-origin: center top;
-  animation: ~"@{less-name}-clock-flip-back 0.64s cubic-bezier(0.22, 0.61, 0.36, 1) both";
+  animation: ball-clock-flip-back 0.64s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-face-top {
@@ -239,7 +239,7 @@
   position: absolute;
   left: 0;
   width: 100%;
-  height: var(~"--@{less-name}-clock-digit-half");
+  height: var(--chameleon-clock-digit-half);
   pointer-events: none;
   z-index: 4;
 }
@@ -248,14 +248,14 @@
   top: 0;
   background: linear-gradient(180deg, transparent, rgb(51 65 85 / 16%) 72%, rgb(30 41 59 / 30%));
   opacity: 0;
-  animation: ~"@{less-name}-clock-shadow-top 0.64s ease-out both";
+  animation: ball-clock-shadow-top 0.64s ease-out both;
 }
 
 .@{less-name}-login-clock-digit-shadow-bottom {
   bottom: 0;
   background: linear-gradient(180deg, rgb(255 255 255 / 18%), rgb(219 234 254 / 8%) 24%, transparent);
   opacity: 0;
-  animation: ~"@{less-name}-clock-shadow-bottom 0.64s ease-out both";
+  animation: ball-clock-shadow-bottom 0.64s ease-out both;
 }
 
 .@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-shadow-top {
@@ -276,7 +276,7 @@
   justify-content: center;
   gap: 8px;
   padding: 0 2px;
-  animation: ~"@{less-name}-clock-separator-blink 1.5s ease-in-out infinite";
+  animation: ball-clock-separator-blink 1.5s ease-in-out infinite;
 }
 
 .@{less-name}-login-clock-separator-dot {
@@ -296,7 +296,7 @@
   letter-spacing: 0.02em;
 }
 
-@keyframes ~"@{less-name}-clock-flip-front" {
+@keyframes ball-clock-flip-front {
   0% {
     filter: brightness(1);
     transform: rotateX(0deg) translateZ(0);
@@ -316,7 +316,7 @@
   }
 }
 
-@keyframes ~"@{less-name}-clock-flip-back" {
+@keyframes ball-clock-flip-back {
   0% {
     filter: brightness(0.72);
     transform: rotateX(88deg) translateZ(0.5px);
@@ -336,7 +336,7 @@
   }
 }
 
-@keyframes ~"@{less-name}-clock-shadow-top" {
+@keyframes ball-clock-shadow-top {
   0% {
     opacity: 0;
   }
@@ -351,7 +351,7 @@
   }
 }
 
-@keyframes ~"@{less-name}-clock-shadow-bottom" {
+@keyframes ball-clock-shadow-bottom {
   0%,
   28% {
     opacity: 0;
@@ -366,7 +366,7 @@
   }
 }
 
-@keyframes ~"@{less-name}-clock-separator-blink" {
+@keyframes ball-clock-separator-blink {
   0%,
   100% {
     opacity: 0.95;
@@ -379,7 +379,7 @@
 
 @media (max-width: 640px) {
   .@{less-name}-login-clock {
-    --@{less-name}-clock-digit-height: 48px;
+    --chameleon-clock-digit-height: 48px;
   }
 
   .@{less-name}-login-clock-digit {

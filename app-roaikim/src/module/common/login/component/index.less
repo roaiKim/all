@@ -28,7 +28,7 @@
     width: 280px;
     height: 280px;
     background: rgb(255 255 255 / 58%);
-    animation: ~"@{less-name}-login-float 12s ease-in-out infinite";
+    animation: ball-login-float 12s ease-in-out infinite;
   }
 
   &::after {
@@ -37,7 +37,7 @@
     width: 360px;
     height: 360px;
     background: rgb(191 219 254 / 46%);
-    animation: ~"@{less-name}-login-float 16s ease-in-out infinite reverse";
+    animation: ball-login-float 16s ease-in-out infinite reverse;
   }
 
   .@{less-name}-login-shell {
@@ -73,7 +73,7 @@
       filter: blur(18px);
       opacity: 0.9;
       transform: translateX(-50%);
-      animation: ~"@{less-name}-aurora-drift 24s ease-in-out infinite";
+      animation: ball-aurora-drift 24s ease-in-out infinite;
     }
 
     &::after {
@@ -88,7 +88,7 @@
       mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 56%) 16%, rgb(0 0 0 / 56%) 84%, transparent);
       opacity: 0.3;
       transform: translateX(-50%);
-      animation: ~"@{less-name}-pattern-pan 18s linear infinite";
+      animation: ball-pattern-pan 18s linear infinite;
     }
   }
 
@@ -104,7 +104,7 @@
       0 24px 64px rgb(15 23 42 / 14%),
       inset 0 1px 0 rgb(255 255 255 / 58%);
     backdrop-filter: blur(24px);
-    animation: ~"@{less-name}-window-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1)";
+    animation: ball-window-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .@{less-name}-window-toolbar {
@@ -161,7 +161,7 @@
     background:
       linear-gradient(180deg, rgb(255 255 255 / 52%), rgb(248 250 252 / 24%)),
       linear-gradient(140deg, rgb(255 255 255 / 34%), rgb(219 234 254 / 38%));
-    animation: ~"@{less-name}-content-rise 0.8s ease-out";
+    animation: ball-content-rise 0.8s ease-out;
   }
 
   .@{less-name}-login-brand {
@@ -263,7 +263,7 @@
       inset 0 1px 0 rgb(255 255 255 / 92%);
     backdrop-filter: blur(16px);
     transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-    animation: ~"@{less-name}-card-rise 0.7s ease-out both";
+    animation: ball-card-rise 0.7s ease-out both;
 
     &:hover {
       transform: translateY(-3px);
@@ -339,7 +339,7 @@
     justify-content: center;
     padding: 34px;
     background: linear-gradient(180deg, rgb(255 255 255 / 76%), rgb(248 250 252 / 88%));
-    animation: ~"@{less-name}-content-rise 0.95s ease-out";
+    animation: ball-content-rise 0.95s ease-out;
   }
 
   .@{less-name}-login-card {
@@ -353,7 +353,7 @@
       0 18px 40px rgb(148 163 184 / 18%),
       inset 0 1px 0 rgb(255 255 255 / 92%);
     backdrop-filter: blur(18px);
-    animation: ~"@{less-name}-card-rise 0.85s ease-out 0.18s both";
+    animation: ball-card-rise 0.85s ease-out 0.18s both;
   }
 
   .@{less-name}-login-card-header {
@@ -470,7 +470,7 @@
       content: "";
       background: linear-gradient(90deg, transparent, rgb(255 255 255 / 30%), transparent);
       transform: skewX(-18deg);
-      animation: ~"@{less-name}-button-sheen 3.2s ease-in-out infinite";
+      animation: ball-button-sheen 3.2s ease-in-out infinite;
     }
 
     &:hover:not(:disabled) {
@@ -496,7 +496,7 @@
 
   .@{less-name}-proxy {
     margin-top: 20px;
-    animation: ~"@{less-name}-card-rise 1s ease-out 0.28s both";
+    animation: ball-card-rise 1s ease-out 0.28s both;
 
     .ant-select {
       width: 100% !important;
@@ -573,7 +573,7 @@
     }
   }
 
-  @keyframes ~"@{less-name}-window-enter" {
+  @keyframes ball-window-enter {
     0% {
       opacity: 0;
       transform: translateY(22px) scale(0.98);
@@ -585,7 +585,7 @@
     }
   }
 
-  @keyframes ~"@{less-name}-content-rise" {
+  @keyframes ball-content-rise {
     0% {
       opacity: 0;
       transform: translateY(18px);
@@ -597,7 +597,7 @@
     }
   }
 
-  @keyframes ~"@{less-name}-card-rise" {
+  @keyframes ball-card-rise {
     0% {
       opacity: 0;
       transform: translateY(16px);
@@ -609,7 +609,7 @@
     }
   }
 
-  @keyframes ~"@{less-name}-login-float" {
+  @keyframes ball-login-float {
     0%,
     100% {
       transform: translate3d(0, 0, 0) scale(1);
@@ -620,7 +620,7 @@
     }
   }
 
-  @keyframes ~"@{less-name}-button-sheen" {
+  @keyframes ball-button-sheen {
     0%,
     100% {
       left: -120%;
@@ -631,7 +631,7 @@
     }
   }
 
-  @keyframes ~"@{less-name}-aurora-drift" {
+  @keyframes ball-aurora-drift {
     0%,
     100% {
       transform: translateX(-50%) rotate(0deg) scale(1);
@@ -646,7 +646,7 @@
     }
   }
 
-  @keyframes ~"@{less-name}-pattern-pan" {
+  @keyframes ball-pattern-pan {
     0% {
       background-position: 0 0, 0 0;
     }

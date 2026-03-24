@@ -27,7 +27,7 @@
   text-transform: uppercase;
   letter-spacing: 0.24em;
   text-shadow: 0 0 12px rgb(0 242 234 / 35%), 0 0 16px rgb(255 0 80 / 30%);
-  animation: ~"@{less-name}-douyin-loading-text-flicker 2s infinite steps(2, end)";
+  animation: ball-douyin-loading-text-flicker 2s infinite steps(2, end);
 }
 
 .@{less-name}-douyin-loading-text::before,
@@ -45,14 +45,14 @@
   color: rgb(0 242 234 / 90%);
   transform: translate(-2px, -1px);
   clip-path: inset(0 0 55% 0);
-  animation: ~"@{less-name}-douyin-loading-glitch-1 1.7s infinite linear";
+  animation: ball-douyin-loading-glitch-1 1.7s infinite linear;
 }
 
 .@{less-name}-douyin-loading-text::after {
   color: rgb(255 0 80 / 88%);
   transform: translate(2px, 1px);
   clip-path: inset(45% 0 0 0);
-  animation: ~"@{less-name}-douyin-loading-glitch-2 2.1s infinite linear";
+  animation: ball-douyin-loading-glitch-2 2.1s infinite linear;
 }
 
 .@{less-name}-douyin-loading-subtext {
@@ -76,11 +76,11 @@
     );
   opacity: 0.35;
   mix-blend-mode: overlay;
-  animation: ~"@{less-name}-douyin-loading-jitter 0.9s steps(2, end) infinite";
+  animation: ball-douyin-loading-jitter 0.9s steps(2, end) infinite;
   z-index: 1;
 }
 
-@keyframes ~"@{less-name}-douyin-loading-text-flicker" {
+@keyframes ball-douyin-loading-text-flicker {
   0%,
   100% {
     opacity: 0.75;
@@ -107,7 +107,7 @@
   }
 }
 
-@keyframes ~"@{less-name}-douyin-loading-jitter" {
+@keyframes ball-douyin-loading-jitter {
   0% {
     transform: translateY(0);
     opacity: 0.25;
@@ -124,7 +124,7 @@
   }
 }
 
-@keyframes ~"@{less-name}-douyin-loading-glitch-1" {
+@keyframes ball-douyin-loading-glitch-1 {
   0%,
   100% {
     clip-path: inset(0 0 55% 0);
@@ -157,7 +157,7 @@
   }
 }
 
-@keyframes ~"@{less-name}-douyin-loading-glitch-2" {
+@keyframes ball-douyin-loading-glitch-2 {
   0%,
   100% {
     clip-path: inset(45% 0 0 0);

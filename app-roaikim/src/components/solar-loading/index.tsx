@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import classNames from "classnames";
 import { DouyinLoading } from "components/douyin-loading";
-import { lessPrefixName, prefixCls } from "config/static-constant";
+import { prefixCls } from "config/static-constant";
 import "./index.less";
 
 interface SolarLoadingProps {
@@ -69,9 +69,9 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                                 className={prefixCls("solar-loading-orbit")}
                                 style={
                                     {
-                                        [`--${lessPrefixName}-orbit-radius`]: `${planet.radius}px`,
-                                        [`--${lessPrefixName}-orbit-duration`]: duration,
-                                        [`--${lessPrefixName}-orbit-offset`]: `${offset}deg`,
+                                        ["--chameleon-orbit-radius"]: `${planet.radius}px`,
+                                        ["--chameleon-orbit-duration"]: duration,
+                                        ["--chameleon-orbit-offset"]: `${offset}deg`,
                                     } as React.CSSProperties
                                 }
                             >
@@ -81,8 +81,8 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                                     })}
                                     style={
                                         {
-                                            [`--${lessPrefixName}-planet-size`]: `${planet.size}px`,
-                                            [`--${lessPrefixName}-planet-color`]: planet.color,
+                                            ["--chameleon-planet-size"]: `${planet.size}px`,
+                                            ["--chameleon-planet-color"]: planet.color,
                                         } as React.CSSProperties
                                     }
                                 ></span>
