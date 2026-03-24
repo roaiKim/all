@@ -1,4 +1,4 @@
-// import { useEffect, useRef, useState } from "react";
+﻿// import { useEffect, useRef, useState } from "react";
 // import { roDispatchAction, roPushHistory } from "@core";
 // import { actions } from "module/common/header";
 // import { HeaderTab, HeaderTabType } from "module/common/header/type";
@@ -36,7 +36,7 @@
 
 //     return (
 //         <h2>
-//             页面不存在, {ms}秒后
+//             页面不存在 {ms} 秒后
 //             <a
 //                 onClick={() => {
 //                     roDispatchAction(actions.closeTabByKey(keyPath, "/home"));
@@ -54,8 +54,8 @@
 //     const { type, key, label } = tabItem;
 
 //     return (
-//         <div className={`ro-g-developing-container-module ${hidden ? "" : "active-module"}`}>
-//             <div className="ro-develop-module ro-flex ro-center ro-height-100">
+//         <div className={`${prefixCls("g-developing-container-module")} ${hidden ? "" : "active-module"}`}>
+//             <div className="${prefixCls("develop-module")} ${prefixCls("flex")} ${prefixCls("center")} ${prefixCls("height-100")}">
 //                 <h2></h2>
 //                 {type === HeaderTabType.B ? (
 //                     <h2>
@@ -80,3 +80,8 @@
 //         </div>
 //     );
 // }
+
+
+
+
+

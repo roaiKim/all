@@ -1,5 +1,6 @@
-import React, { type PropsWithChildren } from "react";
+import React from "react";
 import { DouyinLoading } from "components/douyin-loading";
+import { prefixCls } from "config/static-constant";
 import { LoadingSVG } from "./loading-svg";
 
 interface SpinningProps {
@@ -12,12 +13,11 @@ export function Spinning(props: SpinningProps) {
     const { text, loading, backgroundColor = "#fff" } = props;
 
     return (
-        <div className="ro-spaning" style={{ backgroundColor, display: loading ? "block" : "none" }}>
-            {/* <div className="ro-develop-module ro-flex ro-center ro-height-100"> */}
+        <div className={prefixCls("spaning")} style={{ backgroundColor, display: loading ? "block" : "none" }}>
             <LoadingSVG>
                 <DouyinLoading text={text}></DouyinLoading>
             </LoadingSVG>
-            {/* </div> */}
         </div>
     );
 }
+

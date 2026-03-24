@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+﻿import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
+import { prefixCls } from "config/static-constant";
 import "./index.less";
 
 type PageLoadingContainerTarget = HTMLElement | string | null | undefined;
@@ -77,7 +78,7 @@ export function PageLoading({
     const loadingNode = useMemo(
         () => (
             <div
-                className={classNames("ro-page-loading", className, {
+                className={classNames(prefixCls("page-loading"), className, {
                     "is-light": theme === "light",
                     "is-dark": theme === "dark",
                     "is-fullscreen": isFullscreen,
@@ -86,26 +87,26 @@ export function PageLoading({
                 role="status"
                 aria-live="polite"
             >
-                <div className="ro-page-loading-shell">
-                    <div className="ro-page-loading-visual" aria-hidden="true">
-                        <span className="ro-page-loading-halo ro-page-loading-halo-outer"></span>
-                        <span className="ro-page-loading-halo ro-page-loading-halo-inner"></span>
-                        <span className="ro-page-loading-ring ro-page-loading-ring-track"></span>
-                        <span className="ro-page-loading-ring ro-page-loading-ring-primary"></span>
-                        <span className="ro-page-loading-ring ro-page-loading-ring-secondary"></span>
-                        <span className="ro-page-loading-core"></span>
-                        <span className="ro-page-loading-pulse"></span>
-                        <div className="ro-page-loading-dots">
-                            <span className="ro-page-loading-dot"></span>
-                            <span className="ro-page-loading-dot"></span>
-                            <span className="ro-page-loading-dot"></span>
+                <div className={prefixCls("page-loading-shell")}>
+                    <div className={prefixCls("page-loading-visual")} aria-hidden="true">
+                        <span className={`${prefixCls("page-loading-halo")} ${prefixCls("page-loading-halo-outer")}`}></span>
+                        <span className={`${prefixCls("page-loading-halo")} ${prefixCls("page-loading-halo-inner")}`}></span>
+                        <span className={`${prefixCls("page-loading-ring")} ${prefixCls("page-loading-ring-track")}`}></span>
+                        <span className={`${prefixCls("page-loading-ring")} ${prefixCls("page-loading-ring-primary")}`}></span>
+                        <span className={`${prefixCls("page-loading-ring")} ${prefixCls("page-loading-ring-secondary")}`}></span>
+                        <span className={prefixCls("page-loading-core")}></span>
+                        <span className={prefixCls("page-loading-pulse")}></span>
+                        <div className={prefixCls("page-loading-dots")}>
+                            <span className={prefixCls("page-loading-dot")}></span>
+                            <span className={prefixCls("page-loading-dot")}></span>
+                            <span className={prefixCls("page-loading-dot")}></span>
                         </div>
                     </div>
-                    <div className="ro-page-loading-text">
-                        <span className="ro-page-loading-title">{text}</span>
-                        <span className="ro-page-loading-tip">{tip}</span>
-                        <span className="ro-page-loading-progress" aria-hidden="true">
-                            <span className="ro-page-loading-progress-bar"></span>
+                    <div className={prefixCls("page-loading-text")}>
+                        <span className={prefixCls("page-loading-title")}>{text}</span>
+                        <span className={prefixCls("page-loading-tip")}>{tip}</span>
+                        <span className={prefixCls("page-loading-progress")} aria-hidden="true">
+                            <span className={prefixCls("page-loading-progress-bar")}></span>
                         </span>
                     </div>
                 </div>
@@ -124,7 +125,7 @@ export function PageLoading({
 
     return (
         <>
-            <span ref={anchorRef} className="ro-page-loading-anchor" aria-hidden="true"></span>
+            <span ref={anchorRef} className={prefixCls("page-loading-anchor")} aria-hidden="true"></span>
             {portalHost ? createPortal(loadingNode, portalHost) : null}
         </>
     );

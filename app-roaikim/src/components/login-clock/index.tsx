@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import classNames from "classnames";
+import { prefixCls } from "config/static-constant";
 import "./index.less";
 
 function formatTime(date: Date) {
@@ -48,8 +50,8 @@ export function LoginClock() {
     }, []);
 
     return (
-        <div className="ro-login-clock">
-            <div className="ro-login-clock-time" aria-label={clock.currentTimeText}>
+        <div className={prefixCls("login-clock")}>
+            <div className={prefixCls("login-clock-time")} aria-label={clock.currentTimeText}>
                 {(() => {
                     let digitOrder = -1;
 
@@ -60,9 +62,9 @@ export function LoginClock() {
 
                         if (isSeparator) {
                             return (
-                                <span key={`separator-${index}`} className="ro-login-clock-separator" aria-hidden="true">
-                                    <span className="ro-login-clock-separator-dot"></span>
-                                    <span className="ro-login-clock-separator-dot"></span>
+                                <span key={`separator-${index}`} className={prefixCls("login-clock-separator")} aria-hidden="true">
+                                    <span className={prefixCls("login-clock-separator-dot")}></span>
+                                    <span className={prefixCls("login-clock-separator-dot")}></span>
                                 </span>
                             );
                         }
@@ -73,32 +75,35 @@ export function LoginClock() {
                         return (
                             <span
                                 key={`digit-${index}`}
-                                className={`ro-login-clock-digit${isFlipping ? " is-flipping" : ""}${isSecondDigit ? " is-second" : ""}`}
+                                className={classNames(prefixCls("login-clock-digit"), {
+                                    "is-flipping": isFlipping,
+                                    "is-second": isSecondDigit,
+                                })}
                             >
-                                <span className="ro-login-clock-digit-face ro-login-clock-digit-face-top">
-                                    <span className="ro-login-clock-digit-value ro-login-clock-digit-value-top">{char}</span>
+                                <span className={`${prefixCls("login-clock-digit-face")} ${prefixCls("login-clock-digit-face-top")}`}>
+                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>{char}</span>
                                 </span>
-                                <span className="ro-login-clock-digit-face ro-login-clock-digit-face-bottom">
-                                    <span className="ro-login-clock-digit-value ro-login-clock-digit-value-bottom">{char}</span>
+                                <span className={`${prefixCls("login-clock-digit-face")} ${prefixCls("login-clock-digit-face-bottom")}`}>
+                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}>{char}</span>
                                 </span>
                                 {isFlipping ? (
                                     <>
                                         <span
                                             key={`front-${index}-${previousChar}-${char}-${clock.currentTimeText}`}
-                                            className="ro-login-clock-digit-flap ro-login-clock-digit-flap-front"
+                                            className={`${prefixCls("login-clock-digit-flap")} ${prefixCls("login-clock-digit-flap-front")}`}
                                             aria-hidden="true"
                                         >
-                                            <span className="ro-login-clock-digit-value ro-login-clock-digit-value-top">{previousChar}</span>
+                                            <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>{previousChar}</span>
                                         </span>
                                         <span
                                             key={`back-${index}-${previousChar}-${char}-${clock.currentTimeText}`}
-                                            className="ro-login-clock-digit-flap ro-login-clock-digit-flap-back"
+                                            className={`${prefixCls("login-clock-digit-flap")} ${prefixCls("login-clock-digit-flap-back")}`}
                                             aria-hidden="true"
                                         >
-                                            <span className="ro-login-clock-digit-value ro-login-clock-digit-value-bottom">{char}</span>
+                                            <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}>{char}</span>
                                         </span>
-                                        <span className="ro-login-clock-digit-shadow ro-login-clock-digit-shadow-top" aria-hidden="true"></span>
-                                        <span className="ro-login-clock-digit-shadow ro-login-clock-digit-shadow-bottom" aria-hidden="true"></span>
+                                        <span className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-top")}`} aria-hidden="true"></span>
+                                        <span className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-bottom")}`} aria-hidden="true"></span>
                                     </>
                                 ) : null}
                             </span>
@@ -106,7 +111,7 @@ export function LoginClock() {
                     });
                 })()}
             </div>
-            <span className="ro-login-clock-date">{clock.dateText}</span>
+            <span className={prefixCls("login-clock-date")}>{clock.dateText}</span>
         </div>
     );
 }

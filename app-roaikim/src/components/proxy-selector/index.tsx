@@ -1,7 +1,7 @@
 import { Select } from "antd";
-import DevProxy from "config/development.proxy";
 import { setHost } from "@http";
-import { DEV_PROXY_HOST, isDevelopment } from "config/static-constant";
+import DevProxy from "config/development.proxy";
+import { DEV_PROXY_HOST, isDevelopment, prefixCls } from "config/static-constant";
 import { StorageService } from "utils/StorageService";
 
 function ProxyConfigDataSource() {
@@ -22,7 +22,7 @@ export function ProxySelector() {
         }
 
         return (
-            <div className="ro-proxy">
+            <div className={prefixCls("proxy")}>
                 <Select
                     defaultValue={proxyHost}
                     size="small"
@@ -36,5 +36,6 @@ export function ProxySelector() {
             </div>
         );
     }
+
     return null;
 }

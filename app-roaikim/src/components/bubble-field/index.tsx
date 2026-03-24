@@ -1,27 +1,18 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import classNames from "classnames";
+import { lessPrefixName, prefixCls } from "config/static-constant";
 import "./index.less";
 
 type BubbleFieldDensity = "sparse" | "normal" | "dense";
 type BubbleHorizontalRange = [number, number];
 
-/**
- * BubbleField 组件参数，控制布局、密度和交互范围。
- */
 interface BubbleFieldProps {
-    /** 容器额外类名。 */
     className?: string;
-    /** 指定要渲染的泡泡 id 列表。 */
     bubbleIds?: number[];
-    /** 从最终 id 列表里截取前多少个泡泡进行渲染。 */
     bubbleCount?: number;
-    /** 控制泡泡整体速度和视觉强度。 */
     density?: BubbleFieldDensity;
-    /** 控制泡泡横向初始生成范围，单位为百分比，例如 [[0, 20], [80, 100]]。 */
     horizontalRanges?: BubbleHorizontalRange[];
-    /** 是否启用仅两侧显示的快捷模式。 */
     sidesOnly?: boolean;
-    /** 预设布局模式。 */
     variant?: "default" | "sides";
 }
 
@@ -38,9 +29,6 @@ function getBubbleTint(bubbleId: number, version: number) {
     return BUBBLE_TINTS[(bubbleId + version) % BUBBLE_TINTS.length];
 }
 
-/**
- * 将用户传入的横向范围限制在 0-100 之间，并过滤掉无效区间。
- */
 function normalizeHorizontalRanges(ranges?: BubbleHorizontalRange[]): BubbleHorizontalRange[] {
     return (ranges || []).reduce<BubbleHorizontalRange[]>((result, [start, end]) => {
         const normalizedStart = Math.max(0, Math.min(100, start));
@@ -56,9 +44,6 @@ function normalizeHorizontalRanges(ranges?: BubbleHorizontalRange[]): BubbleHori
     }, []);
 }
 
-/**
- * 按多个区间的总宽度比例，把泡泡平均分配到这些横向范围内。
- */
 function getBubbleLeft(index: number, total: number, ranges: BubbleHorizontalRange[]) {
     if (!ranges.length || total <= 0) {
         return undefined;
@@ -105,9 +90,6 @@ export function BubbleField(props: BubbleFieldProps) {
     const isSidesMode = sidesOnly || variant === "sides";
     const resolvedHorizontalRanges = normalizeHorizontalRanges(horizontalRanges);
 
-    /**
-     * 标记某个泡泡进入破裂状态，由 CSS 动画驱动破裂效果。
-     */
     const onBubbleClick = (bubbleId: number) => {
         if (poppedBubbles[bubbleId]) {
             return;
@@ -116,11 +98,8 @@ export function BubbleField(props: BubbleFieldProps) {
         setPoppedBubbles((prevState) => ({ ...prevState, [bubbleId]: true }));
     };
 
-    /**
-     * 在破裂动画结束后重建泡泡，让它重新参与漂浮动画。
-     */
     const onBubbleAnimationEnd = (bubbleId: number, event: React.AnimationEvent<HTMLSpanElement>) => {
-        if (event.animationName !== "ro-bubble-pop") {
+        if (event.animationName !== `${lessPrefixName}-bubble-pop`) {
             return;
         }
 
@@ -133,8 +112,8 @@ export function BubbleField(props: BubbleFieldProps) {
 
     return (
         <div
-            className={classNames("ro-bubble-field", className, `ro-bubble-field-density-${density}`, {
-                "ro-bubble-field-sides": isSidesMode,
+            className={classNames(prefixCls("bubble-field"), className, prefixCls(`bubble-field-density-${density}`), {
+                [prefixCls("bubble-field-sides")]: isSidesMode,
             })}
             aria-hidden="true"
         >
@@ -146,15 +125,15 @@ export function BubbleField(props: BubbleFieldProps) {
                 return (
                     <span
                         key={`${item}-${bubbleVersion}`}
-                        className={classNames("ro-bubble-field-item", `ro-bubble-field-item-${item}`, {
+                        className={classNames(prefixCls("bubble-field-item"), prefixCls(`bubble-field-item-${item}`), {
                             "is-popped": poppedBubbles[item],
                         })}
                         style={
                             {
-                                "--ro-bubble-border": bubbleTint.border,
-                                "--ro-bubble-glow": bubbleTint.glow,
-                                "--ro-bubble-fill": bubbleTint.fill,
-                                "--ro-bubble-ring": bubbleTint.ring,
+                                [`--${lessPrefixName}-bubble-border`]: bubbleTint.border,
+                                [`--${lessPrefixName}-bubble-glow`]: bubbleTint.glow,
+                                [`--${lessPrefixName}-bubble-fill`]: bubbleTint.fill,
+                                [`--${lessPrefixName}-bubble-ring`]: bubbleTint.ring,
                                 left: bubbleLeft === undefined ? undefined : `${bubbleLeft}%`,
                             } as React.CSSProperties
                         }
@@ -165,7 +144,7 @@ export function BubbleField(props: BubbleFieldProps) {
                             onBubbleClick(item);
                         }}
                     >
-                        <span className="ro-bubble-field-core"></span>
+                        <span className={prefixCls("bubble-field-core")}></span>
                     </span>
                 );
             })}

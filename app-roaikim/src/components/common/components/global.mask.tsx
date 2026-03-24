@@ -1,11 +1,12 @@
-import React, { type PropsWithChildren } from "react";
+﻿import React, { type PropsWithChildren } from "react";
+import { prefixCls } from "config/static-constant";
 import { LoadingSVG } from "./loading-svg";
 
 interface Props {
     title?: string | React.ReactNode;
     loading?: boolean;
     backgroundColor?: string;
-    initialized?: boolean; // loading时 是否渲染 children
+    initialized?: boolean;
     refresh?: () => void;
 }
 
@@ -14,13 +15,13 @@ export function GlobalMask(props: PropsWithChildren<Props>) {
 
     return (
         <React.Fragment>
-            <div className="ro-global-mask" style={{ backgroundColor, display: loading ? "block" : "none" }}>
-                <div className="ro-develop-module ro-flex ro-center ro-height-100">
+            <div className={prefixCls("global-mask")} style={{ backgroundColor, display: loading ? "block" : "none" }}>
+                <div className={`${prefixCls("develop-module")} ${prefixCls("flex")} ${prefixCls("center")} ${prefixCls("height-100")}`}>
                     <LoadingSVG>
                         <div>
                             {title}
                             {refresh && (
-                                <p onClick={refresh} className="ro-a-action">
+                                <p onClick={refresh} className={prefixCls("a-action")}>
                                     重试
                                 </p>
                             )}
@@ -28,7 +29,6 @@ export function GlobalMask(props: PropsWithChildren<Props>) {
                     </LoadingSVG>
                 </div>
             </div>
-            {/* {loading ? (loadingRender ? children : null) : children} */}
             {initialized ? children : null}
         </React.Fragment>
     );

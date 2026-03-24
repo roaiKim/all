@@ -6,6 +6,7 @@ export const noProduntion = process.env.NODE_ENV !== "production";
 export const BASIC_AUTH_TOKEN = "Basic Y29tbWE6Y29tbWE=";
 
 export const lessPrefixName = "TG-WEB";
+export const prefixCls = (suffix: string) => `${lessPrefixName}-${suffix}`;
 
 export const APP_NAME = "TG_APP";
 

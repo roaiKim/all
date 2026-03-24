@@ -1,4 +1,4 @@
-.ro-login-module {
+.@{less-name}-login-module {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
@@ -28,7 +28,7 @@
     width: 280px;
     height: 280px;
     background: rgb(255 255 255 / 58%);
-    animation: ro-login-float 12s ease-in-out infinite;
+    animation: ~"@{less-name}-login-float 12s ease-in-out infinite";
   }
 
   &::after {
@@ -37,10 +37,10 @@
     width: 360px;
     height: 360px;
     background: rgb(191 219 254 / 46%);
-    animation: ro-login-float 16s ease-in-out infinite reverse;
+    animation: ~"@{less-name}-login-float 16s ease-in-out infinite reverse";
   }
 
-  .ro-login-shell {
+  .@{less-name}-login-shell {
     position: relative;
     z-index: 2;
     display: flex;
@@ -73,7 +73,7 @@
       filter: blur(18px);
       opacity: 0.9;
       transform: translateX(-50%);
-      animation: ro-aurora-drift 24s ease-in-out infinite;
+      animation: ~"@{less-name}-aurora-drift 24s ease-in-out infinite";
     }
 
     &::after {
@@ -88,11 +88,11 @@
       mask-image: linear-gradient(180deg, transparent, rgb(0 0 0 / 56%) 16%, rgb(0 0 0 / 56%) 84%, transparent);
       opacity: 0.3;
       transform: translateX(-50%);
-      animation: ro-pattern-pan 18s linear infinite;
+      animation: ~"@{less-name}-pattern-pan 18s linear infinite";
     }
   }
 
-  .ro-login-window {
+  .@{less-name}-login-window {
     position: relative;
     z-index: 1;
     width: min(1120px, 100%);
@@ -104,10 +104,10 @@
       0 24px 64px rgb(15 23 42 / 14%),
       inset 0 1px 0 rgb(255 255 255 / 58%);
     backdrop-filter: blur(24px);
-    animation: ro-window-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: ~"@{less-name}-window-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1)";
   }
 
-  .ro-window-toolbar {
+  .@{less-name}-window-toolbar {
     display: flex;
     height: 54px;
     align-items: center;
@@ -117,60 +117,60 @@
     background: linear-gradient(180deg, rgb(255 255 255 / 78%), rgb(243 244 246 / 72%));
   }
 
-  .ro-window-controls {
+  .@{less-name}-window-controls {
     position: absolute;
     left: 22px;
     display: flex;
     gap: 4px;
   }
 
-  .ro-window-control {
+  .@{less-name}-window-control {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
   }
 
-  .ro-window-close {
+  .@{less-name}-window-close {
     background: #ff5f57;
   }
 
-  .ro-window-minimize {
+  .@{less-name}-window-minimize {
     background: #febc2e;
   }
 
-  .ro-window-zoom {
+  .@{less-name}-window-zoom {
     background: #28c840;
   }
 
-  .ro-window-title {
+  .@{less-name}-window-title {
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.02em;
     color: #475569;
   }
 
-  .ro-login-panel {
+  .@{less-name}-login-panel {
     display: grid;
     grid-template-columns: minmax(0, 1.08fr) minmax(360px, 420px);
     min-height: 680px;
   }
 
-  .ro-login-sidebar {
+  .@{less-name}-login-sidebar {
     padding: 42px;
     background:
       linear-gradient(180deg, rgb(255 255 255 / 52%), rgb(248 250 252 / 24%)),
       linear-gradient(140deg, rgb(255 255 255 / 34%), rgb(219 234 254 / 38%));
-    animation: ro-content-rise 0.8s ease-out;
+    animation: ~"@{less-name}-content-rise 0.8s ease-out";
   }
 
-  .ro-login-brand {
+  .@{less-name}-login-brand {
     display: flex;
     align-items: center;
     gap: 18px;
   }
 
-  .ro-logo {
+  .@{less-name}-logo {
     display: flex;
     width: 72px;
     height: 72px;
@@ -197,7 +197,7 @@
     }
   }
 
-  .ro-login-brand-copy {
+  .@{less-name}-login-brand-copy {
     h1 {
       margin: 8px 0 10px;
       font-size: 38px;
@@ -215,7 +215,7 @@
     }
   }
 
-  .ro-login-eyebrow {
+  .@{less-name}-login-eyebrow {
     display: inline-flex;
     padding: 6px 12px;
     border: 1px solid rgb(255 255 255 / 74%);
@@ -229,14 +229,14 @@
     text-transform: uppercase;
   }
 
-  .ro-login-preview {
+  .@{less-name}-login-preview {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin-top: 38px;
   }
 
-  .ro-preview-header {
+  .@{less-name}-preview-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -245,13 +245,13 @@
     color: #64748b;
   }
 
-  .ro-preview-grid {
+  .@{less-name}-preview-grid {
     display: grid;
     gap: 16px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .ro-preview-card {
+  .@{less-name}-preview-card {
     display: flex;
     gap: 14px;
     padding: 20px;
@@ -263,7 +263,7 @@
       inset 0 1px 0 rgb(255 255 255 / 92%);
     backdrop-filter: blur(16px);
     transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-    animation: ro-card-rise 0.7s ease-out both;
+    animation: ~"@{less-name}-card-rise 0.7s ease-out both";
 
     &:hover {
       transform: translateY(-3px);
@@ -288,7 +288,7 @@
     }
   }
 
-  .ro-preview-card-primary {
+  .@{less-name}-preview-card-primary {
     display: block;
     padding: 24px;
     background:
@@ -306,16 +306,16 @@
     }
   }
 
-  .ro-preview-card-primary,
-  .ro-preview-grid .ro-preview-card:nth-child(1) {
+  .@{less-name}-preview-card-primary,
+  .@{less-name}-preview-grid .@{less-name}-preview-card:nth-child(1) {
     animation-delay: 0.1s;
   }
 
-  .ro-preview-grid .ro-preview-card:nth-child(2) {
+  .@{less-name}-preview-grid .@{less-name}-preview-card:nth-child(2) {
     animation-delay: 0.2s;
   }
 
-  .ro-login-highlight-icon {
+  .@{less-name}-login-highlight-icon {
     display: inline-flex;
     width: 42px;
     height: 42px;
@@ -328,21 +328,21 @@
     font-size: 18px;
   }
 
-  .ro-login-highlight-icon-alt {
+  .@{less-name}-login-highlight-icon-alt {
     background: linear-gradient(180deg, #f5f3ff, #ede9fe);
     color: #7c3aed;
   }
 
-  .ro-login-main {
+  .@{less-name}-login-main {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 34px;
     background: linear-gradient(180deg, rgb(255 255 255 / 76%), rgb(248 250 252 / 88%));
-    animation: ro-content-rise 0.95s ease-out;
+    animation: ~"@{less-name}-content-rise 0.95s ease-out";
   }
 
-  .ro-login-card {
+  .@{less-name}-login-card {
     width: 100%;
     max-width: 360px;
     padding: 28px;
@@ -353,10 +353,10 @@
       0 18px 40px rgb(148 163 184 / 18%),
       inset 0 1px 0 rgb(255 255 255 / 92%);
     backdrop-filter: blur(18px);
-    animation: ro-card-rise 0.85s ease-out 0.18s both;
+    animation: ~"@{less-name}-card-rise 0.85s ease-out 0.18s both";
   }
 
-  .ro-login-card-header {
+  .@{less-name}-login-card-header {
     h2 {
       margin: 12px 0 10px;
       font-size: 30px;
@@ -373,7 +373,7 @@
     }
   }
 
-  .ro-login-tag {
+  .@{less-name}-login-tag {
     display: inline-flex;
     padding: 6px 12px;
     border: 1px solid rgb(255 255 255 / 70%);
@@ -384,18 +384,18 @@
     color: #6b7280;
   }
 
-  .ro-login-container {
+  .@{less-name}-login-container {
     display: flex;
     flex-direction: column;
     gap: 18px;
     margin-top: 26px;
   }
 
-  .ro-login-field {
+  .@{less-name}-login-field {
     display: block;
   }
 
-  .ro-login-field-label {
+  .@{less-name}-login-field-label {
     display: inline-block;
     margin-bottom: 10px;
     font-size: 13px;
@@ -403,7 +403,7 @@
     color: #475569;
   }
 
-  .ro-login-input {
+  .@{less-name}-login-input {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -438,7 +438,7 @@
     }
   }
 
-  .ro-login-input-icon {
+  .@{less-name}-login-input-icon {
     color: #94a3b8;
     font-size: 16px;
   }
@@ -470,7 +470,7 @@
       content: "";
       background: linear-gradient(90deg, transparent, rgb(255 255 255 / 30%), transparent);
       transform: skewX(-18deg);
-      animation: ro-button-sheen 3.2s ease-in-out infinite;
+      animation: ~"@{less-name}-button-sheen 3.2s ease-in-out infinite";
     }
 
     &:hover:not(:disabled) {
@@ -487,16 +487,16 @@
     }
   }
 
-  .ro-login-footer {
+  .@{less-name}-login-footer {
     margin-top: 18px;
     font-size: 13px;
     line-height: 1.7;
     color: #6b7280;
   }
 
-  .ro-proxy {
+  .@{less-name}-proxy {
     margin-top: 20px;
-    animation: ro-card-rise 1s ease-out 0.28s both;
+    animation: ~"@{less-name}-card-rise 1s ease-out 0.28s both";
 
     .ant-select {
       width: 100% !important;
@@ -509,71 +509,71 @@
   }
 
   @media (max-width: 980px) {
-    .ro-login-panel {
+    .@{less-name}-login-panel {
       grid-template-columns: 1fr;
     }
 
-    .ro-login-sidebar {
+    .@{less-name}-login-sidebar {
       padding: 34px;
     }
 
-    .ro-preview-grid {
+    .@{less-name}-preview-grid {
       grid-template-columns: 1fr 1fr;
     }
 
-    .ro-login-main {
+    .@{less-name}-login-main {
       padding-top: 0;
     }
 
-    .ro-login-card {
+    .@{less-name}-login-card {
       max-width: none;
     }
   }
 
   @media (max-width: 640px) {
-    .ro-login-shell {
+    .@{less-name}-login-shell {
       padding: 18px 14px;
     }
 
-    .ro-login-window {
+    .@{less-name}-login-window {
       border-radius: 24px;
     }
 
-    .ro-window-toolbar {
+    .@{less-name}-window-toolbar {
       padding: 0 18px;
     }
 
-    .ro-window-controls {
+    .@{less-name}-window-controls {
       left: 18px;
     }
 
-    .ro-login-sidebar,
-    .ro-login-main {
+    .@{less-name}-login-sidebar,
+    .@{less-name}-login-main {
       padding: 22px;
     }
 
-    .ro-login-brand {
+    .@{less-name}-login-brand {
       align-items: flex-start;
       flex-direction: column;
     }
 
-    .ro-login-brand-copy {
+    .@{less-name}-login-brand-copy {
       h1 {
         font-size: 30px;
       }
     }
 
-    .ro-preview-grid {
+    .@{less-name}-preview-grid {
       grid-template-columns: 1fr;
     }
 
-    .ro-login-card {
+    .@{less-name}-login-card {
       padding: 22px 20px;
       border-radius: 22px;
     }
   }
 
-  @keyframes ro-window-enter {
+  @keyframes ~"@{less-name}-window-enter" {
     0% {
       opacity: 0;
       transform: translateY(22px) scale(0.98);
@@ -585,7 +585,7 @@
     }
   }
 
-  @keyframes ro-content-rise {
+  @keyframes ~"@{less-name}-content-rise" {
     0% {
       opacity: 0;
       transform: translateY(18px);
@@ -597,7 +597,7 @@
     }
   }
 
-  @keyframes ro-card-rise {
+  @keyframes ~"@{less-name}-card-rise" {
     0% {
       opacity: 0;
       transform: translateY(16px);
@@ -609,7 +609,7 @@
     }
   }
 
-  @keyframes ro-login-float {
+  @keyframes ~"@{less-name}-login-float" {
     0%,
     100% {
       transform: translate3d(0, 0, 0) scale(1);
@@ -620,7 +620,7 @@
     }
   }
 
-  @keyframes ro-button-sheen {
+  @keyframes ~"@{less-name}-button-sheen" {
     0%,
     100% {
       left: -120%;
@@ -631,7 +631,7 @@
     }
   }
 
-  @keyframes ro-aurora-drift {
+  @keyframes ~"@{less-name}-aurora-drift" {
     0%,
     100% {
       transform: translateX(-50%) rotate(0deg) scale(1);
@@ -646,7 +646,7 @@
     }
   }
 
-  @keyframes ro-pattern-pan {
+  @keyframes ~"@{less-name}-pattern-pan" {
     0% {
       background-position: 0 0, 0 0;
     }
@@ -659,16 +659,17 @@
   @media (prefers-reduced-motion: reduce) {
     &::before,
     &::after,
-    .ro-login-shell::before,
-    .ro-login-shell::after,
-    .ro-login-window,
-    .ro-login-sidebar,
-    .ro-login-main,
-    .ro-login-card,
-    .ro-preview-card,
-    .ro-proxy,
+    .@{less-name}-login-shell::before,
+    .@{less-name}-login-shell::after,
+    .@{less-name}-login-window,
+    .@{less-name}-login-sidebar,
+    .@{less-name}-login-main,
+    .@{less-name}-login-card,
+    .@{less-name}-preview-card,
+    .@{less-name}-proxy,
     button::after {
       animation: none !important;
     }
   }
 }
+

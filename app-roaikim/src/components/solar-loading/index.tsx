@@ -1,6 +1,7 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React from "react";
 import classNames from "classnames";
 import { DouyinLoading } from "components/douyin-loading";
+import { lessPrefixName, prefixCls } from "config/static-constant";
 import "./index.less";
 
 interface SolarLoadingProps {
@@ -49,15 +50,15 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
 
     return (
         <div
-            className={classNames("ro-solar-loading", className, {
+            className={classNames(prefixCls("solar-loading"), className, {
                 "is-light": theme === "light",
             })}
             role="status"
             aria-live="polite"
         >
-            <div className="ro-solar-loading-shell">
-                <div className="ro-solar-loading-system" aria-hidden="true">
-                    <div className="ro-solar-loading-sun"></div>
+            <div className={prefixCls("solar-loading-shell")}>
+                <div className={prefixCls("solar-loading-system")} aria-hidden="true">
+                    <div className={prefixCls("solar-loading-sun")}></div>
                     {PLANETS.map((planet) => {
                         const duration = `${Math.max(planet.periodYears * BASE_PERIOD_SECONDS, 2.2)}s`;
                         const offset = getPhaseOffsetDegrees(getDaysSinceEpoch(new Date()), planet.periodYears);
@@ -65,23 +66,23 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                         return (
                             <div
                                 key={planet.name}
-                                className="ro-solar-loading-orbit"
+                                className={prefixCls("solar-loading-orbit")}
                                 style={
                                     {
-                                        "--ro-orbit-radius": `${planet.radius}px`,
-                                        "--ro-orbit-duration": duration,
-                                        "--ro-orbit-offset": `${offset}deg`,
+                                        [`--${lessPrefixName}-orbit-radius`]: `${planet.radius}px`,
+                                        [`--${lessPrefixName}-orbit-duration`]: duration,
+                                        [`--${lessPrefixName}-orbit-offset`]: `${offset}deg`,
                                     } as React.CSSProperties
                                 }
                             >
                                 <span
-                                    className={classNames("ro-solar-loading-planet", {
+                                    className={classNames(prefixCls("solar-loading-planet"), {
                                         "has-ring": planet.ring,
                                     })}
                                     style={
                                         {
-                                            "--ro-planet-size": `${planet.size}px`,
-                                            "--ro-planet-color": planet.color,
+                                            [`--${lessPrefixName}-planet-size`]: `${planet.size}px`,
+                                            [`--${lessPrefixName}-planet-color`]: planet.color,
                                         } as React.CSSProperties
                                     }
                                 ></span>
@@ -89,7 +90,7 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                         );
                     })}
                 </div>
-                <div className="ro-solar-loading-text">
+                <div className={prefixCls("solar-loading-text")}>
                     <DouyinLoading text={text}></DouyinLoading>
                 </div>
             </div>

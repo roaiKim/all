@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { connect, type DispatchProp, useDispatch } from "react-redux";
 import { useLoadingStatus } from "@core";
 import { message } from "antd";
-// import { object, string } from "yup";
 import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutlined } from "@ant-design/icons";
 import { BubbleField } from "components/bubble-field";
 import { LoginClock } from "components/login-clock";
 import { ProxySelector } from "components/proxy-selector";
-import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-constant";
+import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME, prefixCls } from "config/static-constant";
 import { actions } from "module/common/login";
 import type { RootState } from "type/rootState";
-import { decrypted, encrypted, passwordEncrypted } from "utils/function/crypto";
+import { decrypted, encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 import "./index.less";
 
@@ -26,18 +25,17 @@ function Login(props: LoginProps) {
     const { logo, headerLogo, platformName } = companyInfo || {};
     const brandLogo = logo || headerLogo;
     const brandName = platformName || "Rosen CI";
-
     const loading = useLoadingStatus("login-loading");
-
     const dispatch = useDispatch();
 
     const [state, setState] = useState<LoginState>(() => {
         const userName = StorageService.get<string>(encrypted(LOGIN_REMEMBER_USERNAME));
         const password = StorageService.get<string>(encrypted(LOGIN_REMEMBER_PASSWORD));
-        const un = decrypted(userName || "");
-        const pw = decrypted(password || "");
 
-        return { username: un, password: pw };
+        return {
+            username: decrypted(userName || ""),
+            password: decrypted(password || ""),
+        };
     });
 
     const onChange = (record: Partial<LoginState>) => {
@@ -49,6 +47,7 @@ function Login(props: LoginProps) {
             message.success("请输入账号和密码");
             return;
         }
+
         StorageService.set<string>(encrypted(LOGIN_REMEMBER_USERNAME), encrypted(state.username));
         StorageService.set<string>(encrypted(LOGIN_REMEMBER_PASSWORD), encrypted(state.password));
         dispatch(actions.login(state.username, state.password));
@@ -61,10 +60,10 @@ function Login(props: LoginProps) {
     };
 
     return (
-        <div className="ro-login-module">
+        <div className={prefixCls("login-module")}>
             <BubbleField
                 bubbleCount={18}
-                className="ro-login-bubble-field"
+                className={prefixCls("login-bubble-field")}
                 density="normal"
                 horizontalRanges={[
                     [4, 60],
@@ -72,41 +71,41 @@ function Login(props: LoginProps) {
                 ]}
                 sidesOnly
             />
-            <div className="ro-login-shell">
-                <div className="ro-login-window">
-                    <div className="ro-window-toolbar">
-                        <div className="ro-window-controls">
-                            <span className="ro-window-control ro-window-close"></span>
-                            <span className="ro-window-control ro-window-minimize"></span>
-                            <span className="ro-window-control ro-window-zoom"></span>
+            <div className={prefixCls("login-shell")}>
+                <div className={prefixCls("login-window")}>
+                    <div className={prefixCls("window-toolbar")}>
+                        <div className={prefixCls("window-controls")}>
+                            <span className={`${prefixCls("window-control")} ${prefixCls("window-close")}`}></span>
+                            <span className={`${prefixCls("window-control")} ${prefixCls("window-minimize")}`}></span>
+                            <span className={`${prefixCls("window-control")} ${prefixCls("window-zoom")}`}></span>
                         </div>
-                        <div className="ro-window-title">{brandName}</div>
+                        <div className={prefixCls("window-title")}>{brandName}</div>
                     </div>
-                    <div className="ro-login-panel">
-                        <div className="ro-login-sidebar">
-                            <div className="ro-login-brand">
-                                <div className="ro-logo">
+                    <div className={prefixCls("login-panel")}>
+                        <div className={prefixCls("login-sidebar")}>
+                            <div className={prefixCls("login-brand")}>
+                                <div className={prefixCls("logo")}>
                                     {brandLogo ? <img src={brandLogo} alt={brandName}></img> : <span>{brandName.slice(0, 1)}</span>}
                                 </div>
-                                <div className="ro-login-brand-copy">
-                                    <span className="ro-login-eyebrow">macOS Workspace</span>
+                                <div className={prefixCls("login-brand-copy")}>
+                                    <span className={prefixCls("login-eyebrow")}>macOS Workspace</span>
                                     <h1>{brandName}</h1>
                                     <p>像 Mac 桌面一样干净、柔和，登录后继续你的工作流。</p>
                                 </div>
                             </div>
                             <LoginClock />
-                            <div className="ro-login-preview">
-                                <div className="ro-preview-header">
+                            <div className={prefixCls("login-preview")}>
+                                <div className={prefixCls("preview-header")}>
                                     <span>今日工作台</span>
                                     <span>实时同步</span>
                                 </div>
-                                <div className="ro-preview-card ro-preview-card-primary">
+                                <div className={`${prefixCls("preview-card")} ${prefixCls("preview-card-primary")}`}>
                                     <strong>已连接到协作空间</strong>
                                     <p>项目、订单与关键流程将在登录后同步到你的桌面视图。</p>
                                 </div>
-                                <div className="ro-preview-grid">
-                                    <div className="ro-preview-card">
-                                        <span className="ro-login-highlight-icon">
+                                <div className={prefixCls("preview-grid")}>
+                                    <div className={prefixCls("preview-card")}>
+                                        <span className={prefixCls("login-highlight-icon")}>
                                             <SafetyCertificateOutlined />
                                         </span>
                                         <div>
@@ -114,8 +113,8 @@ function Login(props: LoginProps) {
                                             <p>保持访问权限和账号校验统一管理。</p>
                                         </div>
                                     </div>
-                                    <div className="ro-preview-card">
-                                        <span className="ro-login-highlight-icon ro-login-highlight-icon-alt">
+                                    <div className={prefixCls("preview-card")}>
+                                        <span className={`${prefixCls("login-highlight-icon")} ${prefixCls("login-highlight-icon-alt")}`}>
                                             <ThunderboltOutlined />
                                         </span>
                                         <div>
@@ -126,18 +125,18 @@ function Login(props: LoginProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className="ro-login-main">
-                            <div className="ro-login-card">
-                                <div className="ro-login-card-header">
-                                    <span className="ro-login-tag">Sign In</span>
+                        <div className={prefixCls("login-main")}>
+                            <div className={prefixCls("login-card")}>
+                                <div className={prefixCls("login-card-header")}>
+                                    <span className={prefixCls("login-tag")}>Sign In</span>
                                     <h2>欢迎回来</h2>
                                     <p>请使用你的账号登录，像打开 Mac 应用一样继续当前工作。</p>
                                 </div>
-                                <div className="ro-login-container">
-                                    <label className="ro-login-field">
-                                        <span className="ro-login-field-label">用户名</span>
-                                        <div className="ro-login-input">
-                                            <span className="ro-login-input-icon">
+                                <div className={prefixCls("login-container")}>
+                                    <label className={prefixCls("login-field")}>
+                                        <span className={prefixCls("login-field-label")}>用户名</span>
+                                        <div className={prefixCls("login-input")}>
+                                            <span className={prefixCls("login-input-icon")}>
                                                 <UserOutlined />
                                             </span>
                                             <input
@@ -152,10 +151,10 @@ function Login(props: LoginProps) {
                                             ></input>
                                         </div>
                                     </label>
-                                    <label className="ro-login-field">
-                                        <span className="ro-login-field-label">密码</span>
-                                        <div className="ro-login-input">
-                                            <span className="ro-login-input-icon">
+                                    <label className={prefixCls("login-field")}>
+                                        <span className={prefixCls("login-field-label")}>密码</span>
+                                        <div className={prefixCls("login-input")}>
+                                            <span className={prefixCls("login-input-icon")}>
                                                 <LockOutlined />
                                             </span>
                                             <input
@@ -174,7 +173,7 @@ function Login(props: LoginProps) {
                                         {loading ? "登录中..." : "登录"}
                                     </button>
                                 </div>
-                                <div className="ro-login-footer">
+                                <div className={prefixCls("login-footer")}>
                                     <span>建议使用已开通权限的账号登录，如有异常请联系管理员。</span>
                                 </div>
                                 <ProxySelector />

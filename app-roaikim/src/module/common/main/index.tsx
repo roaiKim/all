@@ -1,9 +1,9 @@
-import { captureError, createModuleMethodErrorAction, Module, register, type RouterLocation, type RouterParams } from "@core";
+﻿import { captureError, createModuleMethodErrorAction, Module, register, type RouterLocation, type RouterParams } from "@core";
 import { clearToken } from "@http";
 import { shouldIgnoreLogin } from "@project/config";
 // import { LoginService } from "@api/LoginService";
 // import { clearToken } from "@http";
-import { DEV_PROXY_HOST, isDevelopment, WEB_IS_LOGIN, WEB_TOKEN } from "config/static-constant";
+import { DEV_PROXY_HOST, isDevelopment, prefixCls, WEB_IS_LOGIN, WEB_TOKEN } from "config/static-constant";
 // import { clearLocalStorageWhenLogout } from "utils/framework";
 import { GolbalService } from "service/global-api/GolbalService";
 import { LoginService } from "service/global-api/LoginService";
@@ -27,7 +27,7 @@ const initialMainState: State = {
 class MainModule extends Module<RootState, "main"> {
     @Loading("main")
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
-        // 忽略登录 仅在dev生效
+        // 忽略登录，仅在开发环境生效
         if (shouldIgnoreLogin) {
             this.setState({ appLoadingStatus: "done" });
             return;
@@ -65,7 +65,7 @@ class MainModule extends Module<RootState, "main"> {
         });
         const { location } = this.rootState.router;
         const pathname = location.pathname || "";
-        // 如果在 登录页 需要需要跳转到首页
+        // 如果在登录页，需要跳转到首页
         if (pathname === "/login") {
             this.pushHistory("/");
         }
@@ -86,7 +86,7 @@ class MainModule extends Module<RootState, "main"> {
     @Confirm("确定退出吗")
     calcPageHeight() {
         try {
-            const container = document.querySelector(".ro-main-container");
+            const container = document.querySelector(`.${prefixCls("main-container")}`);
             if (container) {
                 (container as any).style.height = `${window.innerHeight}px`;
             }

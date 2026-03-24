@@ -1,10 +1,10 @@
-.ro-bubble-field {
-  --ro-bubble-duration-multiplier: 1;
-  --ro-bubble-opacity-multiplier: 1;
-  --ro-bubble-border: rgb(147 197 253 / 82%);
-  --ro-bubble-glow: rgb(59 130 246 / 50%);
-  --ro-bubble-fill: rgb(59 130 246 / 44%);
-  --ro-bubble-ring: rgb(191 219 254 / 88%);
+.@{less-name}-bubble-field {
+  --@{less-name}-bubble-duration-multiplier: 1;
+  --@{less-name}-bubble-opacity-multiplier: 1;
+  --@{less-name}-bubble-border: rgb(147 197 253 / 82%);
+  --@{less-name}-bubble-glow: rgb(59 130 246 / 50%);
+  --@{less-name}-bubble-fill: rgb(59 130 246 / 44%);
+  --@{less-name}-bubble-ring: rgb(191 219 254 / 88%);
 
   position: absolute;
   inset: 0;
@@ -12,25 +12,25 @@
   overflow: hidden;
   pointer-events: none;
 
-  &.ro-bubble-field-sides {
+  &.@{less-name}-bubble-field-sides {
     mask-image: linear-gradient(90deg, #000 0, #000 24%, transparent 36%, transparent 64%, #000 76%, #000 100%);
   }
 
-  &.ro-bubble-field-density-sparse {
-    --ro-bubble-duration-multiplier: 1.12;
-    --ro-bubble-opacity-multiplier: 0.78;
+  &.@{less-name}-bubble-field-density-sparse {
+    --@{less-name}-bubble-duration-multiplier: 1.12;
+    --@{less-name}-bubble-opacity-multiplier: 0.78;
   }
 
-  &.ro-bubble-field-density-dense {
-    --ro-bubble-duration-multiplier: 0.9;
-    --ro-bubble-opacity-multiplier: 1.08;
+  &.@{less-name}-bubble-field-density-dense {
+    --@{less-name}-bubble-duration-multiplier: 0.9;
+    --@{less-name}-bubble-opacity-multiplier: 1.08;
   }
 
-  .ro-bubble-field-item {
+  .@{less-name}-bubble-field-item {
     position: absolute;
     bottom: -180px;
     opacity: 0;
-    animation-name: ro-bubble-rise;
+    animation-name: ~"@{less-name}-bubble-rise";
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     animation-iteration-count: infinite;
     will-change: transform, opacity;
@@ -43,7 +43,7 @@
       inset: -24%;
       content: "";
       border-radius: 50%;
-      border: 2px solid var(--ro-bubble-ring);
+      border: 2px solid var(~"--@{less-name}-bubble-ring");
       opacity: 0;
       transform: scale(0.3);
       pointer-events: none;
@@ -58,7 +58,7 @@
         radial-gradient(circle, rgb(255 255 255 / 84%) 0 36%, transparent 42%) 84% 26% / 6px 6px no-repeat,
         radial-gradient(
           circle,
-          color-mix(in srgb, var(--ro-bubble-fill) 82%, white 18%) 0 36%,
+          color-mix(in srgb, var(~"--@{less-name}-bubble-fill") 82%, white 18%) 0 36%,
           transparent 42%
         ) 70% 82% / 7px 7px no-repeat,
         radial-gradient(circle, rgb(255 255 255 / 76%) 0 36%, transparent 42%) 28% 78% / 5px 5px no-repeat;
@@ -69,7 +69,7 @@
     }
   }
 
-  .ro-bubble-field-core {
+  .@{less-name}-bubble-field-core {
     position: relative;
     display: block;
     width: 100%;
@@ -80,16 +80,16 @@
         circle at 30% 24%,
         rgb(255 255 255 / 98%),
         rgb(255 255 255 / 72%) 16%,
-        color-mix(in srgb, var(--ro-bubble-fill) 88%, white 12%) 48%,
+        color-mix(in srgb, var(~"--@{less-name}-bubble-fill") 88%, white 12%) 48%,
         transparent 100%
       ),
-      radial-gradient(circle at 68% 74%, color-mix(in srgb, var(--ro-bubble-fill) 88%, white 6%) 0, transparent 58%);
-    border: 1px solid var(--ro-bubble-border);
+      radial-gradient(circle at 68% 74%, color-mix(in srgb, var(~"--@{less-name}-bubble-fill") 88%, white 6%) 0, transparent 58%);
+    border: 1px solid var(~"--@{less-name}-bubble-border");
     box-shadow:
       inset 0 1px 10px rgb(255 255 255 / 72%),
-      inset 0 -10px 18px color-mix(in srgb, var(--ro-bubble-fill) 88%, transparent 12%),
-      0 14px 32px var(--ro-bubble-glow),
-      0 0 0 1px color-mix(in srgb, var(--ro-bubble-border) 64%, transparent 36%);
+      inset 0 -10px 18px color-mix(in srgb, var(~"--@{less-name}-bubble-fill") 88%, transparent 12%),
+      0 14px 32px var(~"--@{less-name}-bubble-glow"),
+      0 0 0 1px color-mix(in srgb, var(~"--@{less-name}-bubble-border") 64%, transparent 36%);
     backdrop-filter: blur(4px);
     transition: box-shadow 0.18s ease, border-color 0.18s ease, filter 0.18s ease, transform 0.18s ease;
 
@@ -104,7 +104,7 @@
       background: rgb(255 255 255 / 72%);
       box-shadow:
         0 0 12px rgb(255 255 255 / 38%),
-        0 0 10px color-mix(in srgb, var(--ro-bubble-fill) 48%, transparent 52%);
+        0 0 10px color-mix(in srgb, var(~"--@{less-name}-bubble-fill") 48%, transparent 52%);
       filter: blur(1px);
     }
 
@@ -113,204 +113,204 @@
       inset: 18%;
       content: "";
       border-radius: 50%;
-      border: 1px solid color-mix(in srgb, var(--ro-bubble-ring) 88%, transparent 12%);
+      border: 1px solid color-mix(in srgb, var(~"--@{less-name}-bubble-ring") 88%, transparent 12%);
       filter: blur(0.6px);
     }
   }
 
-  .ro-bubble-field-item:hover .ro-bubble-field-core {
-    border-color: color-mix(in srgb, var(--ro-bubble-ring) 86%, white 14%);
+  .@{less-name}-bubble-field-item:hover .@{less-name}-bubble-field-core {
+    border-color: color-mix(in srgb, var(~"--@{less-name}-bubble-ring") 86%, white 14%);
     box-shadow:
       inset 0 1px 12px rgb(255 255 255 / 84%),
-      inset 0 -12px 18px color-mix(in srgb, var(--ro-bubble-fill) 92%, transparent 8%),
-      0 18px 36px color-mix(in srgb, var(--ro-bubble-glow) 94%, white 6%);
+      inset 0 -12px 18px color-mix(in srgb, var(~"--@{less-name}-bubble-fill") 92%, transparent 8%),
+      0 18px 36px color-mix(in srgb, var(~"--@{less-name}-bubble-glow") 94%, white 6%);
     filter: saturate(1.38);
-    animation: ro-bubble-struggle-large 0.78s cubic-bezier(0.37, 0, 0.22, 1) infinite;
+    animation: ~"@{less-name}-bubble-struggle-large 0.78s cubic-bezier(0.37, 0, 0.22, 1) infinite";
   }
 
-  .ro-bubble-field-item:hover {
+  .@{less-name}-bubble-field-item:hover {
     animation-play-state: paused;
   }
 
-  .ro-bubble-field-item.is-popped {
+  .@{less-name}-bubble-field-item.is-popped {
     pointer-events: none;
-    animation: ro-bubble-pop 0.44s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    animation: ~"@{less-name}-bubble-pop 0.44s cubic-bezier(0.22, 1, 0.36, 1) forwards !important";
 
     &::before {
-      animation: ro-bubble-ring 0.44s ease-out forwards;
+      animation: ~"@{less-name}-bubble-ring 0.44s ease-out forwards";
     }
 
     &::after {
-      animation: ro-bubble-spark 0.44s ease-out forwards;
+      animation: ~"@{less-name}-bubble-spark 0.44s ease-out forwards";
     }
 
-    .ro-bubble-field-core {
-      animation: ro-bubble-core-burst 0.44s ease-out forwards;
+    .@{less-name}-bubble-field-core {
+      animation: ~"@{less-name}-bubble-core-burst 0.44s ease-out forwards";
     }
   }
 
-  .ro-bubble-field-item-1 {
+  .@{less-name}-bubble-field-item-1 {
     left: 4%;
     width: 22px;
     height: 22px;
-    animation-duration: calc(14s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(14s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -2s;
   }
 
-  .ro-bubble-field-item-2 {
+  .@{less-name}-bubble-field-item-2 {
     left: 11%;
     width: 44px;
     height: 44px;
-    animation-duration: calc(18s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(18s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -7s;
   }
 
-  .ro-bubble-field-item-3 {
+  .@{less-name}-bubble-field-item-3 {
     left: 16%;
     width: 18px;
     height: 18px;
-    animation-duration: calc(15s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(15s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -4s;
   }
 
-  .ro-bubble-field-item-4 {
+  .@{less-name}-bubble-field-item-4 {
     left: 18%;
     width: 54px;
     height: 54px;
-    animation-duration: calc(19s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(19s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -11s;
   }
 
-  .ro-bubble-field-item-5 {
+  .@{less-name}-bubble-field-item-5 {
     left: 12%;
     width: 28px;
     height: 28px;
-    animation-duration: calc(16s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(16s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -5s;
   }
 
-  .ro-bubble-field-item-6 {
+  .@{less-name}-bubble-field-item-6 {
     left: 68%;
     width: 62px;
     height: 62px;
-    animation-duration: calc(21s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(21s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -12s;
   }
 
-  .ro-bubble-field-item-7 {
+  .@{less-name}-bubble-field-item-7 {
     left: 82%;
     width: 20px;
     height: 20px;
-    animation-duration: calc(14s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(14s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -3s;
   }
 
-  .ro-bubble-field-item-8 {
+  .@{less-name}-bubble-field-item-8 {
     left: 76%;
     width: 48px;
     height: 48px;
-    animation-duration: calc(20s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(20s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -9s;
   }
 
-  .ro-bubble-field-item-9 {
+  .@{less-name}-bubble-field-item-9 {
     left: 84%;
     width: 18px;
     height: 18px;
-    animation-duration: calc(15s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(15s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -6s;
   }
 
-  .ro-bubble-field-item-10 {
+  .@{less-name}-bubble-field-item-10 {
     left: 91%;
     width: 38px;
     height: 38px;
-    animation-duration: calc(17s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(17s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -13s;
   }
 
-  .ro-bubble-field-item-11 {
+  .@{less-name}-bubble-field-item-11 {
     left: 86%;
     width: 16px;
     height: 16px;
-    animation-duration: calc(13s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(13s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -8s;
   }
 
-  .ro-bubble-field-item-12 {
+  .@{less-name}-bubble-field-item-12 {
     left: 84%;
     width: 34px;
     height: 34px;
-    animation-duration: calc(18s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(18s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -15s;
   }
 
-  .ro-bubble-field-item-13 {
+  .@{less-name}-bubble-field-item-13 {
     left: 8%;
     width: 9px;
     height: 9px;
-    animation-duration: calc(11s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(11s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -1s;
     opacity: 0;
   }
 
-  .ro-bubble-field-item-14 {
+  .@{less-name}-bubble-field-item-14 {
     left: 17%;
     width: 7px;
     height: 7px;
-    animation-duration: calc(10s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(10s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -6s;
     opacity: 0;
   }
 
-  .ro-bubble-field-item-15 {
+  .@{less-name}-bubble-field-item-15 {
     left: 18%;
     width: 10px;
     height: 10px;
-    animation-duration: calc(12s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(12s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -9s;
     opacity: 0;
   }
 
-  .ro-bubble-field-item-16 {
+  .@{less-name}-bubble-field-item-16 {
     left: 74%;
     width: 8px;
     height: 8px;
-    animation-duration: calc(9.5s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(9.5s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -4s;
     opacity: 0;
   }
 
-  .ro-bubble-field-item-17 {
+  .@{less-name}-bubble-field-item-17 {
     left: 79%;
     width: 11px;
     height: 11px;
-    animation-duration: calc(10.5s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(10.5s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -7s;
     opacity: 0;
   }
 
-  .ro-bubble-field-item-18 {
+  .@{less-name}-bubble-field-item-18 {
     left: 90%;
     width: 6px;
     height: 6px;
-    animation-duration: calc(8.5s * var(--ro-bubble-duration-multiplier));
+    animation-duration: calc(8.5s * var(~"--@{less-name}-bubble-duration-multiplier"));
     animation-delay: -2s;
     opacity: 0;
   }
 
-  .ro-bubble-field-item-13,
-  .ro-bubble-field-item-14,
-  .ro-bubble-field-item-15,
-  .ro-bubble-field-item-16,
-  .ro-bubble-field-item-17,
-  .ro-bubble-field-item-18 {
-    .ro-bubble-field-core {
-      border-color: var(--ro-bubble-ring);
+  .@{less-name}-bubble-field-item-13,
+  .@{less-name}-bubble-field-item-14,
+  .@{less-name}-bubble-field-item-15,
+  .@{less-name}-bubble-field-item-16,
+  .@{less-name}-bubble-field-item-17,
+  .@{less-name}-bubble-field-item-18 {
+    .@{less-name}-bubble-field-core {
+      border-color: var(~"--@{less-name}-bubble-ring");
       box-shadow:
         inset 0 1px 6px rgb(255 255 255 / 74%),
-        inset 0 -6px 10px color-mix(in srgb, var(--ro-bubble-fill) 78%, transparent 22%),
-        0 8px 16px var(--ro-bubble-glow);
+        inset 0 -6px 10px color-mix(in srgb, var(~"--@{less-name}-bubble-fill") 78%, transparent 22%),
+        0 8px 16px var(~"--@{less-name}-bubble-glow");
       filter: saturate(1.2);
 
       &::before {
@@ -328,47 +328,47 @@
     }
   }
 
-  .ro-bubble-field-item-13:hover .ro-bubble-field-core,
-  .ro-bubble-field-item-14:hover .ro-bubble-field-core,
-  .ro-bubble-field-item-15:hover .ro-bubble-field-core,
-  .ro-bubble-field-item-16:hover .ro-bubble-field-core,
-  .ro-bubble-field-item-17:hover .ro-bubble-field-core,
-  .ro-bubble-field-item-18:hover .ro-bubble-field-core {
-    animation: ro-bubble-struggle-small 0.34s cubic-bezier(0.37, 0, 0.22, 1) infinite;
+  .@{less-name}-bubble-field-item-13:hover .@{less-name}-bubble-field-core,
+  .@{less-name}-bubble-field-item-14:hover .@{less-name}-bubble-field-core,
+  .@{less-name}-bubble-field-item-15:hover .@{less-name}-bubble-field-core,
+  .@{less-name}-bubble-field-item-16:hover .@{less-name}-bubble-field-core,
+  .@{less-name}-bubble-field-item-17:hover .@{less-name}-bubble-field-core,
+  .@{less-name}-bubble-field-item-18:hover .@{less-name}-bubble-field-core {
+    animation: ~"@{less-name}-bubble-struggle-small 0.34s cubic-bezier(0.37, 0, 0.22, 1) infinite";
   }
 
   @media (max-width: 980px) {
     z-index: 0;
     pointer-events: none;
 
-    &.ro-bubble-field-sides {
+    &.@{less-name}-bubble-field-sides {
       mask-image: none;
     }
   }
 }
 
-@keyframes ro-bubble-rise {
+@keyframes ~"@{less-name}-bubble-rise" {
   0% {
     opacity: 0;
     transform: translate3d(0, 0, 0) scale(0.76);
   }
 
   10% {
-    opacity: calc(0.82 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.82 * var(~"--@{less-name}-bubble-opacity-multiplier"));
   }
 
   28% {
-    opacity: calc(0.92 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.92 * var(~"--@{less-name}-bubble-opacity-multiplier"));
     transform: translate3d(14px, -26vh, 0) scale(0.96);
   }
 
   52% {
-    opacity: calc(0.88 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.88 * var(~"--@{less-name}-bubble-opacity-multiplier"));
     transform: translate3d(-12px, -52vh, 0) scale(1.04);
   }
 
   76% {
-    opacity: calc(0.54 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.54 * var(~"--@{less-name}-bubble-opacity-multiplier"));
     transform: translate3d(12px, -78vh, 0) scale(1.1);
   }
 
@@ -378,7 +378,7 @@
   }
 }
 
-@keyframes ro-bubble-struggle-large {
+@keyframes ~"@{less-name}-bubble-struggle-large" {
   0% {
     transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg);
   }
@@ -408,7 +408,7 @@
   }
 }
 
-@keyframes ro-bubble-struggle-small {
+@keyframes ~"@{less-name}-bubble-struggle-small" {
   0% {
     transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg);
   }
@@ -434,14 +434,14 @@
   }
 }
 
-@keyframes ro-bubble-pop {
+@keyframes ~"@{less-name}-bubble-pop" {
   0% {
-    opacity: calc(0.95 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.95 * var(~"--@{less-name}-bubble-opacity-multiplier"));
     transform: scale(1);
   }
 
   35% {
-    opacity: calc(0.82 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.82 * var(~"--@{less-name}-bubble-opacity-multiplier"));
     transform: scale(1.04, 0.98);
   }
 
@@ -451,7 +451,7 @@
   }
 }
 
-@keyframes ro-bubble-core-burst {
+@keyframes ~"@{less-name}-bubble-core-burst" {
   0% {
     opacity: 1;
     transform: scale(1);
@@ -465,9 +465,9 @@
   }
 }
 
-@keyframes ro-bubble-ring {
+@keyframes ~"@{less-name}-bubble-ring" {
   0% {
-    opacity: calc(0.38 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.38 * var(~"--@{less-name}-bubble-opacity-multiplier"));
     transform: scale(0.72);
   }
 
@@ -477,9 +477,9 @@
   }
 }
 
-@keyframes ro-bubble-spark {
+@keyframes ~"@{less-name}-bubble-spark" {
   0% {
-    opacity: calc(0.36 * var(--ro-bubble-opacity-multiplier));
+    opacity: calc(0.36 * var(~"--@{less-name}-bubble-opacity-multiplier"));
     transform: scale(0.7);
   }
 
@@ -488,3 +488,4 @@
     transform: scale(1.02);
   }
 }
+
