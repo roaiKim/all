@@ -2,10 +2,10 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginLess } from "@rsbuild/plugin-less";
 import { pluginReact } from "@rsbuild/plugin-react";
 import developmentProxy from "./src/config/development.proxy";
-import { isProduntion } from "./src/config/static-constant";
+import { isProduntion, lessPrefixName } from "./src/config/static-constant";
 
 function startProxy() {
-   return Object.entries(developmentProxy).reduce(
+    return Object.entries(developmentProxy).reduce(
         (prev, [key, value]) => (
             (prev[`/${key}`] = {
                 pathRewrite: { [`^/${key}`]: "" },
@@ -18,7 +18,7 @@ function startProxy() {
             }),
             prev
         ),
-        {} as Record<string, any>
+        {} as Record<string, any>,
     );
 }
 
@@ -33,14 +33,25 @@ export default defineConfig({
         template: "./public/index.html",
         favicon: "./public/avatar.png",
     },
-    plugins: [pluginReact(), pluginLess()],
+    plugins: [
+        pluginReact(),
+        pluginLess({
+            lessLoaderOptions: {
+                lessOptions: {
+                    modifyVars: {
+                        "less-name": lessPrefixName,
+                    },
+                },
+            },
+        }),
+    ],
     performance: {
         bundleAnalyze: isProduntion
             ? {
-                  analyzerMode: "static",
-                  openAnalyzer: true,
-                  generateStatsFile: true,
-              }
+                analyzerMode: "static",
+                openAnalyzer: true,
+                generateStatsFile: true,
+            }
             : {},
     },
 });

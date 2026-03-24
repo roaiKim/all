@@ -39,12 +39,14 @@ class MainModule extends Module<RootState, "main"> {
             if (!proxyHost) {
                 clearLocalStorageWhenLogout();
                 this.pushHistory("/login");
+                this.setState({ appLoadingStatus: "done" });
                 return;
             }
         }
         if (webToken && isLogin) {
             this.fetchUser();
         } else {
+            this.setState({ appLoadingStatus: "done" });
             this.logout();
         }
     }

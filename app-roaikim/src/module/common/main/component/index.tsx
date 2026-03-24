@@ -6,7 +6,9 @@ import { ConfigProvider } from "antd";
 // import { Switch } from "react-router-dom";
 import zhCN from "antd/locale/zh_CN";
 import { Spinning } from "components/common";
+import { PageLoading } from "components/page-loading";
 import { SolarLoading } from "components/solar-loading";
+import { lessPrefixName } from "config/static-constant";
 // import { antdCSSComponentToken } from "asset/theme/antd-component-token";
 // import { antdCSSToken } from "asset/theme/antd-token";
 import { LoginComponent } from "module/common/login/type";
@@ -30,7 +32,7 @@ function Main(props: MainProps) {
     }, [appLoadingStatus]);
 
     return (
-        <div className="ro-main-container">
+        <div className={`${lessPrefixName}-page ro-main-container`}>
             {/* <Spinning text={"加载中"} loading={mainLoading} /> */}
             {/* <SolarLoading text="正在启动" loading={mainLoading} theme="light" /> */}
             {/* <PageLoading text={"加载中"} show={true} /> */}

@@ -50,6 +50,8 @@ export function clearLocalStorageWhenLogout() {
     StorageService.remove(WEB_DEPARTMENT_ID);
     StorageService.remove(WEB_REFRESH_TOKEN);
     StorageService.remove(WEB_USERNAME);
+    StorageService.remove(WEB_FULL_NAME);
+    StorageService.remove(WEB_COMMA_TENANT_ID);
     StorageService.remove(WEB_NEW_USER);
     StorageService.remove(WEB_GET_TOKEN_TIME);
     StorageService.remove(WEB_USER_INFO);
