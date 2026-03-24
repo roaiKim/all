@@ -1,6 +1,6 @@
 ﻿import React, { useState } from "react";
 import classNames from "classnames";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import "./index.less";
 
 type BubbleFieldDensity = "sparse" | "normal" | "dense";
@@ -112,8 +112,8 @@ export function BubbleField(props: BubbleFieldProps) {
 
     return (
         <div
-            className={classNames(prefixCls("bubble-field"), className, prefixCls(`bubble-field-density-${density}`), {
-                [prefixCls("bubble-field-sides")]: isSidesMode,
+            className={classNames(joinLessPrefix("bubble-field"), className, joinLessPrefix(`bubble-field-density-${density}`), {
+                [joinLessPrefix("bubble-field-sides")]: isSidesMode,
             })}
             aria-hidden="true"
         >
@@ -125,7 +125,7 @@ export function BubbleField(props: BubbleFieldProps) {
                 return (
                     <span
                         key={`${item}-${bubbleVersion}`}
-                        className={classNames(prefixCls("bubble-field-item"), prefixCls(`bubble-field-item-${item}`), {
+                        className={classNames(joinLessPrefix("bubble-field-item"), joinLessPrefix(`bubble-field-item-${item}`), {
                             "is-popped": poppedBubbles[item],
                         })}
                         style={
@@ -144,7 +144,7 @@ export function BubbleField(props: BubbleFieldProps) {
                             onBubbleClick(item);
                         }}
                     >
-                        <span className={prefixCls("bubble-field-core")}></span>
+                        <span className={joinLessPrefix("bubble-field-core")}></span>
                     </span>
                 );
             })}

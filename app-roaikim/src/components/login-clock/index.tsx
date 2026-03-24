@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import "./index.less";
 
 function formatTime(date: Date) {
@@ -50,8 +50,8 @@ export function LoginClock() {
     }, []);
 
     return (
-        <div className={prefixCls("login-clock")}>
-            <div className={prefixCls("login-clock-time")} aria-label={clock.currentTimeText}>
+        <div className={joinLessPrefix("login-clock")}>
+            <div className={joinLessPrefix("login-clock-time")} aria-label={clock.currentTimeText}>
                 {(() => {
                     let digitOrder = -1;
 
@@ -62,9 +62,9 @@ export function LoginClock() {
 
                         if (isSeparator) {
                             return (
-                                <span key={`separator-${index}`} className={prefixCls("login-clock-separator")} aria-hidden="true">
-                                    <span className={prefixCls("login-clock-separator-dot")}></span>
-                                    <span className={prefixCls("login-clock-separator-dot")}></span>
+                                <span key={`separator-${index}`} className={joinLessPrefix("login-clock-separator")} aria-hidden="true">
+                                    <span className={joinLessPrefix("login-clock-separator-dot")}></span>
+                                    <span className={joinLessPrefix("login-clock-separator-dot")}></span>
                                 </span>
                             );
                         }
@@ -75,18 +75,20 @@ export function LoginClock() {
                         return (
                             <span
                                 key={`digit-${index}`}
-                                className={classNames(prefixCls("login-clock-digit"), {
+                                className={classNames(joinLessPrefix("login-clock-digit"), {
                                     "is-flipping": isFlipping,
                                     "is-second": isSecondDigit,
                                 })}
                             >
-                                <span className={`${prefixCls("login-clock-digit-face")} ${prefixCls("login-clock-digit-face-top")}`}>
-                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>
+                                <span className={`${joinLessPrefix("login-clock-digit-face")} ${joinLessPrefix("login-clock-digit-face-top")}`}>
+                                    <span className={`${joinLessPrefix("login-clock-digit-value")} ${joinLessPrefix("login-clock-digit-value-top")}`}>
                                         {char}
                                     </span>
                                 </span>
-                                <span className={`${prefixCls("login-clock-digit-face")} ${prefixCls("login-clock-digit-face-bottom")}`}>
-                                    <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}>
+                                <span className={`${joinLessPrefix("login-clock-digit-face")} ${joinLessPrefix("login-clock-digit-face-bottom")}`}>
+                                    <span
+                                        className={`${joinLessPrefix("login-clock-digit-value")} ${joinLessPrefix("login-clock-digit-value-bottom")}`}
+                                    >
                                         {char}
                                     </span>
                                 </span>
@@ -94,30 +96,32 @@ export function LoginClock() {
                                     <>
                                         <span
                                             key={`front-${index}-${previousChar}-${char}-${clock.currentTimeText}`}
-                                            className={`${prefixCls("login-clock-digit-flap")} ${prefixCls("login-clock-digit-flap-front")}`}
+                                            className={`${joinLessPrefix("login-clock-digit-flap")} ${joinLessPrefix("login-clock-digit-flap-front")}`}
                                             aria-hidden="true"
                                         >
-                                            <span className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-top")}`}>
+                                            <span
+                                                className={`${joinLessPrefix("login-clock-digit-value")} ${joinLessPrefix("login-clock-digit-value-top")}`}
+                                            >
                                                 {previousChar}
                                             </span>
                                         </span>
                                         <span
                                             key={`back-${index}-${previousChar}-${char}-${clock.currentTimeText}`}
-                                            className={`${prefixCls("login-clock-digit-flap")} ${prefixCls("login-clock-digit-flap-back")}`}
+                                            className={`${joinLessPrefix("login-clock-digit-flap")} ${joinLessPrefix("login-clock-digit-flap-back")}`}
                                             aria-hidden="true"
                                         >
                                             <span
-                                                className={`${prefixCls("login-clock-digit-value")} ${prefixCls("login-clock-digit-value-bottom")}`}
+                                                className={`${joinLessPrefix("login-clock-digit-value")} ${joinLessPrefix("login-clock-digit-value-bottom")}`}
                                             >
                                                 {char}
                                             </span>
                                         </span>
                                         <span
-                                            className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-top")}`}
+                                            className={`${joinLessPrefix("login-clock-digit-shadow")} ${joinLessPrefix("login-clock-digit-shadow-top")}`}
                                             aria-hidden="true"
                                         ></span>
                                         <span
-                                            className={`${prefixCls("login-clock-digit-shadow")} ${prefixCls("login-clock-digit-shadow-bottom")}`}
+                                            className={`${joinLessPrefix("login-clock-digit-shadow")} ${joinLessPrefix("login-clock-digit-shadow-bottom")}`}
                                             aria-hidden="true"
                                         ></span>
                                     </>
@@ -127,7 +131,7 @@ export function LoginClock() {
                     });
                 })()}
             </div>
-            <span className={prefixCls("login-clock-date")}>{clock.dateText}</span>
+            <span className={joinLessPrefix("login-clock-date")}>{clock.dateText}</span>
         </div>
     );
 }

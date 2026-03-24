@@ -1,5 +1,5 @@
 ﻿import React, { type PropsWithChildren } from "react";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import { LoadingSVG } from "./loading-svg";
 
 interface Props {
@@ -15,13 +15,15 @@ export function GlobalMask(props: PropsWithChildren<Props>) {
 
     return (
         <React.Fragment>
-            <div className={prefixCls("global-mask")} style={{ backgroundColor, display: loading ? "block" : "none" }}>
-                <div className={`${prefixCls("develop-module")} ${prefixCls("flex")} ${prefixCls("center")} ${prefixCls("height-100")}`}>
+            <div className={joinLessPrefix("global-mask")} style={{ backgroundColor, display: loading ? "block" : "none" }}>
+                <div
+                    className={`${joinLessPrefix("develop-module")} ${joinLessPrefix("flex")} ${joinLessPrefix("center")} ${joinLessPrefix("height-100")}`}
+                >
                     <LoadingSVG>
                         <div>
                             {title}
                             {refresh && (
-                                <p onClick={refresh} className={prefixCls("a-action")}>
+                                <p onClick={refresh} className={joinLessPrefix("a-action")}>
                                     重试
                                 </p>
                             )}

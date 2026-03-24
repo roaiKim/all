@@ -1,7 +1,8 @@
 import { Select } from "antd";
 import DevProxy from "config/development.proxy";
 import { setHost } from "@http";
-import { DEV_PROXY_HOST, isDevelopment, prefixCls } from "config/static-constant";
+import { DEV_PROXY_HOST, isDevelopment } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 
 function ProxyConfigDataSource() {
@@ -22,7 +23,7 @@ export function ProxySelector() {
         }
 
         return (
-            <div className={prefixCls("proxy")}>
+            <div className={joinLessPrefix("proxy")}>
                 <Select
                     defaultValue={proxyHost}
                     size="small"

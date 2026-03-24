@@ -3,7 +3,7 @@ import { clearToken } from "@http";
 import { shouldIgnoreLogin } from "@project/config";
 // import { LoginService } from "@api/LoginService";
 // import { clearToken } from "@http";
-import { DEV_PROXY_HOST, isDevelopment, prefixCls, WEB_IS_LOGIN, WEB_TOKEN } from "config/static-constant";
+import { DEV_PROXY_HOST, isDevelopment, WEB_IS_LOGIN, WEB_TOKEN } from "config/static-constant";
 // import { clearLocalStorageWhenLogout } from "utils/framework";
 import { GolbalService } from "service/global-api/GolbalService";
 import { LoginService } from "service/global-api/LoginService";
@@ -11,6 +11,7 @@ import { LoginService } from "service/global-api/LoginService";
 import type { RootState } from "type/rootState";
 // import { getPagePermission, transformMeuns } from "utils/business/permission";
 import { Confirm, Loading } from "utils/decorator";
+import { joinLessPrefix } from "utils/framework";
 import { clearLocalStorageWhenLogout } from "utils/framework/login-storage";
 import { getPagePermission, transformMeuns } from "utils/framework/permission";
 import { removeMainLoading } from "utils/framework/remove-main-loading";
@@ -86,7 +87,7 @@ class MainModule extends Module<RootState, "main"> {
     @Confirm("确定退出吗")
     calcPageHeight() {
         try {
-            const container = document.querySelector(`.${prefixCls("main-container")}`);
+            const container = document.querySelector(`.${joinLessPrefix("main-container")}`);
             if (container) {
                 (container as any).style.height = `${window.innerHeight}px`;
             }

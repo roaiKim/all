@@ -1,6 +1,6 @@
 import React from "react";
 import { DouyinLoading } from "components/douyin-loading";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import { LoadingSVG } from "./loading-svg";
 
 interface SpinningProps {
@@ -13,7 +13,7 @@ export function Spinning(props: SpinningProps) {
     const { text, loading, backgroundColor = "#fff" } = props;
 
     return (
-        <div className={prefixCls("spaning")} style={{ backgroundColor, display: loading ? "block" : "none" }}>
+        <div className={joinLessPrefix("spaning")} style={{ backgroundColor, display: loading ? "block" : "none" }}>
             <LoadingSVG>
                 <DouyinLoading text={text}></DouyinLoading>
             </LoadingSVG>

@@ -54,8 +54,8 @@
 //     const { type, key, label } = tabItem;
 
 //     return (
-//         <div className={`${prefixCls("g-developing-container-module")} ${hidden ? "" : "active-module"}`}>
-//             <div className="${prefixCls("develop-module")} ${prefixCls("flex")} ${prefixCls("center")} ${prefixCls("height-100")}">
+//         <div className={`${joinLessPrefix("g-developing-container-module")} ${hidden ? "" : "active-module"}`}>
+//             <div className="${joinLessPrefix("develop-module")} ${joinLessPrefix("flex")} ${joinLessPrefix("center")} ${joinLessPrefix("height-100")}">
 //                 <h2></h2>
 //                 {type === HeaderTabType.B ? (
 //                     <h2>

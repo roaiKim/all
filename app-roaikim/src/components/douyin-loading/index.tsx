@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import classNames from "classnames";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import "./index.less";
 
 interface DouyinLoadingProps {
@@ -11,12 +11,12 @@ interface DouyinLoadingProps {
 
 export function DouyinLoading({ className, text = "加载中", subText }: DouyinLoadingProps) {
     return (
-        <div className={classNames(prefixCls("douyin-loading"), className)} role="status" aria-live="polite">
-            <span className={prefixCls("douyin-loading-scanlines")} aria-hidden="true"></span>
-            <span className={prefixCls("douyin-loading-text")} data-text={text}>
+        <div className={classNames(joinLessPrefix("douyin-loading"), className)} role="status" aria-live="polite">
+            <span className={joinLessPrefix("douyin-loading-scanlines")} aria-hidden="true"></span>
+            <span className={joinLessPrefix("douyin-loading-text")} data-text={text}>
                 {text}
             </span>
-            {subText ? <span className={prefixCls("douyin-loading-subtext")}>{subText}</span> : null}
+            {subText ? <span className={joinLessPrefix("douyin-loading-subtext")}>{subText}</span> : null}
         </div>
     );
 }

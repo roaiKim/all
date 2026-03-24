@@ -6,9 +6,10 @@ import { LockOutlined, SafetyCertificateOutlined, ThunderboltOutlined, UserOutli
 import { BubbleField } from "components/bubble-field";
 import { LoginClock } from "components/login-clock";
 import { ProxySelector } from "components/proxy-selector";
-import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME, prefixCls } from "config/static-constant";
+import { LOGIN_REMEMBER_PASSWORD, LOGIN_REMEMBER_USERNAME } from "config/static-constant";
 import { actions } from "module/common/login";
 import type { RootState } from "type/rootState";
+import { joinLessPrefix } from "utils/framework";
 import { decrypted, encrypted } from "utils/function/crypto";
 import { StorageService } from "utils/StorageService";
 import "./index.less";
@@ -60,10 +61,10 @@ function Login(props: LoginProps) {
     };
 
     return (
-        <div className={prefixCls("login-module")}>
+        <div className={joinLessPrefix("login-module")}>
             <BubbleField
                 bubbleCount={18}
-                className={prefixCls("login-bubble-field")}
+                className={joinLessPrefix("login-bubble-field")}
                 density="normal"
                 horizontalRanges={[
                     [4, 60],
@@ -71,41 +72,41 @@ function Login(props: LoginProps) {
                 ]}
                 sidesOnly
             />
-            <div className={prefixCls("login-shell")}>
-                <div className={prefixCls("login-window")}>
-                    <div className={prefixCls("window-toolbar")}>
-                        <div className={prefixCls("window-controls")}>
-                            <span className={`${prefixCls("window-control")} ${prefixCls("window-close")}`}></span>
-                            <span className={`${prefixCls("window-control")} ${prefixCls("window-minimize")}`}></span>
-                            <span className={`${prefixCls("window-control")} ${prefixCls("window-zoom")}`}></span>
+            <div className={joinLessPrefix("login-shell")}>
+                <div className={joinLessPrefix("login-window")}>
+                    <div className={joinLessPrefix("window-toolbar")}>
+                        <div className={joinLessPrefix("window-controls")}>
+                            <span className={`${joinLessPrefix("window-control")} ${joinLessPrefix("window-close")}`}></span>
+                            <span className={`${joinLessPrefix("window-control")} ${joinLessPrefix("window-minimize")}`}></span>
+                            <span className={`${joinLessPrefix("window-control")} ${joinLessPrefix("window-zoom")}`}></span>
                         </div>
-                        <div className={prefixCls("window-title")}>{brandName}</div>
+                        <div className={joinLessPrefix("window-title")}>{brandName}</div>
                     </div>
-                    <div className={prefixCls("login-panel")}>
-                        <div className={prefixCls("login-sidebar")}>
-                            <div className={prefixCls("login-brand")}>
-                                <div className={prefixCls("logo")}>
+                    <div className={joinLessPrefix("login-panel")}>
+                        <div className={joinLessPrefix("login-sidebar")}>
+                            <div className={joinLessPrefix("login-brand")}>
+                                <div className={joinLessPrefix("logo")}>
                                     {brandLogo ? <img src={brandLogo} alt={brandName}></img> : <span>{brandName.slice(0, 1)}</span>}
                                 </div>
-                                <div className={prefixCls("login-brand-copy")}>
-                                    <span className={prefixCls("login-eyebrow")}>macOS Workspace</span>
+                                <div className={joinLessPrefix("login-brand-copy")}>
+                                    <span className={joinLessPrefix("login-eyebrow")}>macOS Workspace</span>
                                     <h1>{brandName}</h1>
                                     <p>像 Mac 桌面一样干净、柔和，登录后继续你的工作流。</p>
                                 </div>
                             </div>
                             <LoginClock />
-                            <div className={prefixCls("login-preview")}>
-                                <div className={prefixCls("preview-header")}>
+                            <div className={joinLessPrefix("login-preview")}>
+                                <div className={joinLessPrefix("preview-header")}>
                                     <span>今日工作台</span>
                                     <span>实时同步</span>
                                 </div>
-                                <div className={`${prefixCls("preview-card")} ${prefixCls("preview-card-primary")}`}>
+                                <div className={`${joinLessPrefix("preview-card")} ${joinLessPrefix("preview-card-primary")}`}>
                                     <strong>已连接到协作空间</strong>
                                     <p>项目、订单与关键流程将在登录后同步到你的桌面视图。</p>
                                 </div>
-                                <div className={prefixCls("preview-grid")}>
-                                    <div className={prefixCls("preview-card")}>
-                                        <span className={prefixCls("login-highlight-icon")}>
+                                <div className={joinLessPrefix("preview-grid")}>
+                                    <div className={joinLessPrefix("preview-card")}>
+                                        <span className={joinLessPrefix("login-highlight-icon")}>
                                             <SafetyCertificateOutlined />
                                         </span>
                                         <div>
@@ -113,8 +114,8 @@ function Login(props: LoginProps) {
                                             <p>保持访问权限和账号校验统一管理。</p>
                                         </div>
                                     </div>
-                                    <div className={prefixCls("preview-card")}>
-                                        <span className={`${prefixCls("login-highlight-icon")} ${prefixCls("login-highlight-icon-alt")}`}>
+                                    <div className={joinLessPrefix("preview-card")}>
+                                        <span className={`${joinLessPrefix("login-highlight-icon")} ${joinLessPrefix("login-highlight-icon-alt")}`}>
                                             <ThunderboltOutlined />
                                         </span>
                                         <div>
@@ -125,18 +126,18 @@ function Login(props: LoginProps) {
                                 </div>
                             </div>
                         </div>
-                        <div className={prefixCls("login-main")}>
-                            <div className={prefixCls("login-card")}>
-                                <div className={prefixCls("login-card-header")}>
-                                    <span className={prefixCls("login-tag")}>Sign In</span>
+                        <div className={joinLessPrefix("login-main")}>
+                            <div className={joinLessPrefix("login-card")}>
+                                <div className={joinLessPrefix("login-card-header")}>
+                                    <span className={joinLessPrefix("login-tag")}>Sign In</span>
                                     <h2>欢迎回来</h2>
                                     <p>请使用你的账号登录，像打开 Mac 应用一样继续当前工作。</p>
                                 </div>
-                                <div className={prefixCls("login-container")}>
-                                    <label className={prefixCls("login-field")}>
-                                        <span className={prefixCls("login-field-label")}>用户名</span>
-                                        <div className={prefixCls("login-input")}>
-                                            <span className={prefixCls("login-input-icon")}>
+                                <div className={joinLessPrefix("login-container")}>
+                                    <label className={joinLessPrefix("login-field")}>
+                                        <span className={joinLessPrefix("login-field-label")}>用户名</span>
+                                        <div className={joinLessPrefix("login-input")}>
+                                            <span className={joinLessPrefix("login-input-icon")}>
                                                 <UserOutlined />
                                             </span>
                                             <input
@@ -151,10 +152,10 @@ function Login(props: LoginProps) {
                                             ></input>
                                         </div>
                                     </label>
-                                    <label className={prefixCls("login-field")}>
-                                        <span className={prefixCls("login-field-label")}>密码</span>
-                                        <div className={prefixCls("login-input")}>
-                                            <span className={prefixCls("login-input-icon")}>
+                                    <label className={joinLessPrefix("login-field")}>
+                                        <span className={joinLessPrefix("login-field-label")}>密码</span>
+                                        <div className={joinLessPrefix("login-input")}>
+                                            <span className={joinLessPrefix("login-input-icon")}>
                                                 <LockOutlined />
                                             </span>
                                             <input
@@ -173,7 +174,7 @@ function Login(props: LoginProps) {
                                         {loading ? "登录中..." : "登录"}
                                     </button>
                                 </div>
-                                <div className={prefixCls("login-footer")}>
+                                <div className={joinLessPrefix("login-footer")}>
                                     <span>建议使用已开通权限的账号登录，如有异常请联系管理员。</span>
                                 </div>
                                 <ProxySelector />

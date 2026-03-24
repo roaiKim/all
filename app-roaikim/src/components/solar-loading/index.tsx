@@ -1,7 +1,7 @@
 ﻿import React from "react";
 import classNames from "classnames";
 import { DouyinLoading } from "components/douyin-loading";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import "./index.less";
 
 interface SolarLoadingProps {
@@ -50,15 +50,15 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
 
     return (
         <div
-            className={classNames(prefixCls("solar-loading"), className, {
+            className={classNames(joinLessPrefix("solar-loading"), className, {
                 "is-light": theme === "light",
             })}
             role="status"
             aria-live="polite"
         >
-            <div className={prefixCls("solar-loading-shell")}>
-                <div className={prefixCls("solar-loading-system")} aria-hidden="true">
-                    <div className={prefixCls("solar-loading-sun")}></div>
+            <div className={joinLessPrefix("solar-loading-shell")}>
+                <div className={joinLessPrefix("solar-loading-system")} aria-hidden="true">
+                    <div className={joinLessPrefix("solar-loading-sun")}></div>
                     {PLANETS.map((planet) => {
                         const duration = `${Math.max(planet.periodYears * BASE_PERIOD_SECONDS, 2.2)}s`;
                         const offset = getPhaseOffsetDegrees(getDaysSinceEpoch(new Date()), planet.periodYears);
@@ -66,7 +66,7 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                         return (
                             <div
                                 key={planet.name}
-                                className={prefixCls("solar-loading-orbit")}
+                                className={joinLessPrefix("solar-loading-orbit")}
                                 style={
                                     {
                                         "--chameleon-orbit-radius": `${planet.radius}px`,
@@ -76,7 +76,7 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                                 }
                             >
                                 <span
-                                    className={classNames(prefixCls("solar-loading-planet"), {
+                                    className={classNames(joinLessPrefix("solar-loading-planet"), {
                                         "has-ring": planet.ring,
                                     })}
                                     style={
@@ -90,7 +90,7 @@ export function SolarLoading({ className, text = "正在启动", loading = true,
                         );
                     })}
                 </div>
-                <div className={prefixCls("solar-loading-text")}>
+                <div className={joinLessPrefix("solar-loading-text")}>
                     <DouyinLoading text={text}></DouyinLoading>
                 </div>
             </div>

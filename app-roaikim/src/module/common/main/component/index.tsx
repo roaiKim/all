@@ -3,9 +3,9 @@ import { connect, type DispatchProp } from "react-redux";
 import { Route, Routes } from "react-router";
 import { useLoadingStatus } from "@core";
 import { PageLoading } from "components/page-loading";
-import { prefixCls } from "config/static-constant";
 import { LoginComponent } from "module/common/login/type";
 import type { RootState } from "type/rootState";
+import { joinLessPrefix } from "utils/framework";
 import { removeMainLoading } from "utils/framework/remove-main-loading";
 import MainLayout from "./main";
 
@@ -22,7 +22,7 @@ function Main(props: MainProps) {
     }, [appLoadingStatus]);
 
     return (
-        <div className={`${prefixCls("page")} ${prefixCls("main-container")}`}>
+        <div className={`${joinLessPrefix("page")} ${joinLessPrefix("main-container")}`}>
             <PageLoading show={mainLoading} theme="light" />
             <Routes>
                 <Route path="/login/:id?" element={<LoginComponent></LoginComponent>} />

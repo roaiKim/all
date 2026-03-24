@@ -1,7 +1,7 @@
 ﻿import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 import "./index.less";
 
 type PageLoadingContainerTarget = HTMLElement | string | null | undefined;
@@ -78,7 +78,7 @@ export function PageLoading({
     const loadingNode = useMemo(
         () => (
             <div
-                className={classNames(prefixCls("page-loading"), className, {
+                className={classNames(joinLessPrefix("page-loading"), className, {
                     "is-light": theme === "light",
                     "is-dark": theme === "dark",
                     "is-fullscreen": isFullscreen,
@@ -87,26 +87,26 @@ export function PageLoading({
                 role="status"
                 aria-live="polite"
             >
-                <div className={prefixCls("page-loading-shell")}>
-                    <div className={prefixCls("page-loading-visual")} aria-hidden="true">
-                        <span className={`${prefixCls("page-loading-halo")} ${prefixCls("page-loading-halo-outer")}`}></span>
-                        <span className={`${prefixCls("page-loading-halo")} ${prefixCls("page-loading-halo-inner")}`}></span>
-                        <span className={`${prefixCls("page-loading-ring")} ${prefixCls("page-loading-ring-track")}`}></span>
-                        <span className={`${prefixCls("page-loading-ring")} ${prefixCls("page-loading-ring-primary")}`}></span>
-                        <span className={`${prefixCls("page-loading-ring")} ${prefixCls("page-loading-ring-secondary")}`}></span>
-                        <span className={prefixCls("page-loading-core")}></span>
-                        <span className={prefixCls("page-loading-pulse")}></span>
-                        <div className={prefixCls("page-loading-dots")}>
-                            <span className={prefixCls("page-loading-dot")}></span>
-                            <span className={prefixCls("page-loading-dot")}></span>
-                            <span className={prefixCls("page-loading-dot")}></span>
+                <div className={joinLessPrefix("page-loading-shell")}>
+                    <div className={joinLessPrefix("page-loading-visual")} aria-hidden="true">
+                        <span className={`${joinLessPrefix("page-loading-halo")} ${joinLessPrefix("page-loading-halo-outer")}`}></span>
+                        <span className={`${joinLessPrefix("page-loading-halo")} ${joinLessPrefix("page-loading-halo-inner")}`}></span>
+                        <span className={`${joinLessPrefix("page-loading-ring")} ${joinLessPrefix("page-loading-ring-track")}`}></span>
+                        <span className={`${joinLessPrefix("page-loading-ring")} ${joinLessPrefix("page-loading-ring-primary")}`}></span>
+                        <span className={`${joinLessPrefix("page-loading-ring")} ${joinLessPrefix("page-loading-ring-secondary")}`}></span>
+                        <span className={joinLessPrefix("page-loading-core")}></span>
+                        <span className={joinLessPrefix("page-loading-pulse")}></span>
+                        <div className={joinLessPrefix("page-loading-dots")}>
+                            <span className={joinLessPrefix("page-loading-dot")}></span>
+                            <span className={joinLessPrefix("page-loading-dot")}></span>
+                            <span className={joinLessPrefix("page-loading-dot")}></span>
                         </div>
                     </div>
-                    <div className={prefixCls("page-loading-text")}>
-                        <span className={prefixCls("page-loading-title")}>{text}</span>
-                        <span className={prefixCls("page-loading-tip")}>{tip}</span>
-                        <span className={prefixCls("page-loading-progress")} aria-hidden="true">
-                            <span className={prefixCls("page-loading-progress-bar")}></span>
+                    <div className={joinLessPrefix("page-loading-text")}>
+                        <span className={joinLessPrefix("page-loading-title")}>{text}</span>
+                        <span className={joinLessPrefix("page-loading-tip")}>{tip}</span>
+                        <span className={joinLessPrefix("page-loading-progress")} aria-hidden="true">
+                            <span className={joinLessPrefix("page-loading-progress-bar")}></span>
                         </span>
                     </div>
                 </div>
@@ -125,7 +125,7 @@ export function PageLoading({
 
     return (
         <>
-            <span ref={anchorRef} className={prefixCls("page-loading-anchor")} aria-hidden="true"></span>
+            <span ref={anchorRef} className={joinLessPrefix("page-loading-anchor")} aria-hidden="true"></span>
             {portalHost ? createPortal(loadingNode, portalHost) : null}
         </>
     );

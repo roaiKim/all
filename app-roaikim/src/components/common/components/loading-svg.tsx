@@ -1,5 +1,5 @@
 import { type CSSProperties, type PropsWithChildren } from "react";
-import { prefixCls } from "config/static-constant";
+import { joinLessPrefix } from "utils/framework";
 
 interface LoadingProps {
     className?: string;
@@ -7,7 +7,7 @@ interface LoadingProps {
 }
 
 const LoadingSVG = ({ children, className, style }: PropsWithChildren<LoadingProps>) => (
-    <div className={`${prefixCls("dv-loading")}${className ? ` ${className}` : ""}`} style={style}>
+    <div className={`${joinLessPrefix("dv-loading")}${className ? ` ${className}` : ""}`} style={style}>
         <svg width="50px" height="50px">
             <circle cx="25" cy="25" r="20" fill="transparent" strokeWidth="3" strokeDasharray="31.415, 31.415" stroke="#02bcfe" strokeLinecap="round">
                 <animateTransform attributeName="transform" type="rotate" values="0, 25 25;360, 25 25" dur="1.5s" repeatCount="indefinite" />
