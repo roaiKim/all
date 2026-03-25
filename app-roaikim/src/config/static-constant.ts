@@ -23,3 +23,5 @@ export const WEB_COMMA_TENANT_ID = "WEB_COMMA_TENANT_ID";
 export const WEB_NEW_USER = "WEB_NEW_USER";
 export const LOGIN_REMEMBER_USERNAME = "LOGIN_REMEMBER_USERNAME";
 export const LOGIN_REMEMBER_PASSWORD = "LOGIN_REMEMBER_PASSWORD";
+
+export const header_height = 46;

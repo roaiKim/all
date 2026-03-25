@@ -1,16 +1,23 @@
 import { useLocation, useParams } from "react-router";
+import { header_height } from "config/static-constant";
+import { MenuComponent } from "module/common/menus/type";
 import { joinLessPrefix } from "utils/framework";
 
 export default function (props) {
     return (
         <div className={joinLessPrefix("main-page")}>
-            <div>
-                <div>lgoo</div>
-                <div>nav</div>
-            </div>
-            <div>
-                <div>header</div>
-                <div>page</div>
+            {/* <div className={joinLessPrefix("left-nav")}>
+                <div className={joinLessPrefix("main-logo")} style={{ height: header_height }}>
+                    lgoo
+                </div>
+                <div className={joinLessPrefix("main-nav")}>nav</div>
+            </div> */}
+            <MenuComponent activeName=""></MenuComponent>
+            <div className={joinLessPrefix("right-page")}>
+                <div className={joinLessPrefix("main-header")} style={{ height: header_height }}>
+                    header
+                </div>
+                <div className={joinLessPrefix("page-container")}>page</div>
             </div>
         </div>
     );

@@ -1,0 +1,22 @@
+.@{less-name}-menus-module {
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: 200px;
+  grid-template-rows: 46px 40px auto 46px;
+
+  .@{less-name}-main-nav {
+    height: 100%;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .@{less-name}-meuns-collapsed {
+    border-top: 1px solid #e1e1e1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
