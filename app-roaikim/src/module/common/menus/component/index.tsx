@@ -1,11 +1,14 @@
 import { connect, type DispatchProp } from "react-redux";
 // import { roPushHistory } from "@core";
 import { Input, Menu } from "antd";
+import classNames from "classnames";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { When } from "components/when";
 import { header_height } from "config/static-constant";
 import { actions } from "module/common/menus";
 import type { RootState } from "type/rootState";
 import { joinLessPrefix } from "utils/framework";
+import logoUrl from "asset/image/logo.svg";
 // import { nameToPath, pathToName } from "utils/function/loadComponent";
 import type { State } from "../type";
 import "./index.less";
@@ -21,38 +24,19 @@ function MeunComponent(props: MeunComponentProps) {
 
     // const selectKey = nameToPath[activeName] || activeName;
 
+    console.log("--menus--", menus);
+
     return (
-        // <menu className={`ro-meuns-module ${!collapsed ? "collapsed" : ""}`}>
-        //     <div className="ro-meuns-container">
-        //         <Menu
-        //             // selectedKeys={[selectKey || "home"]}
-        //             onClick={({ key = "" }) => {
-        //                 // 是否有 模块path
-        //                 // const path = pathToName[key];
-        //                 // roPushHistory(path || key);
-        //             }}
-        //             items={menus || []}
-        //             mode="inline"
-        //             inlineCollapsed={collapsed}
-        //         />
-        //     </div>
-        //     <div
-        //         className="ro-meuns-collapsed"
-        //         onClick={() => {
-        //             dispatch(actions.toggleCollapsed(!collapsed));
-        //         }}
-        //     >
-        //         {collapsed ? <RightOutlined /> : <LeftOutlined />}
-        //     </div>
-        // </menu>
-        <div className={joinLessPrefix("menus-module")}>
-            <div className={joinLessPrefix("main-logo")} style={{ height: header_height }}>
-                lgoo
+        <div className={classNames(joinLessPrefix("menus-module"), { collapsed })}>
+            <div className={joinLessPrefix("menus-logo")} style={{ height: header_height }}>
+                <img src={logoUrl} alt="roaikim" width={200} height={46} />
             </div>
-            <div>
-                <Input.Search></Input.Search>
-            </div>
-            <div className={joinLessPrefix("main-nav")}>
+            <When when={!collapsed}>
+                <div className={joinLessPrefix("menus-search")}>
+                    <Input.Search></Input.Search>
+                </div>
+            </When>
+            <div className={joinLessPrefix("menus-nav")}>
                 <div className={joinLessPrefix("meuns-container")}>
                     <Menu
                         // selectedKeys={[selectKey || "home"]}

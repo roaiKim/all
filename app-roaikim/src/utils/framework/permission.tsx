@@ -1,3 +1,5 @@
+import { SettingOutlined } from "@ant-design/icons";
+
 const pagePermission = {};
 /**
  * 转换菜单 dev
@@ -21,6 +23,7 @@ export function transformMeuns(menus) {
             // key: item.type === "page" ? `/${item.id.replace(/\//g, "-")}` : item.id,
             key: item.id,
             label: item.name,
+            icon: <SettingOutlined />,
             children: children ? transformMeuns(children) : undefined,
         });
     });

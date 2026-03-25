@@ -3,8 +3,35 @@
   display: grid;
   grid-template-columns: 200px;
   grid-template-rows: 46px 40px auto 46px;
+  box-shadow: 2px 0 16px rgb(0 0 0 / 8%);
 
-  .@{less-name}-main-nav {
+  &.collapsed {
+    grid-template-columns: 40px;
+    grid-template-rows: 46px auto 46px;
+    .@{less-name}-menu-root {
+      --ant-menu-collapsed-width: 40px;
+    }
+  }
+
+  .@{less-name}-menus-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    border-bottom: 1px solid #ccc;
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: 46px;
+    }
+  }
+  .@{less-name}-menus-search {
+    padding: 0 8px;
+    margin-top: 6px;
+  }
+
+  .@{less-name}-menus-nav {
     height: 100%;
     overflow: auto;
 

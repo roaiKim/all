@@ -9,6 +9,7 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@ant-design/icons": "6.x",
     "antd": "^6.3.2",
     "axios": "^1.13.6",
     "classnames": "^2.5.1",
