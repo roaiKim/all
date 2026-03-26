@@ -3,6 +3,7 @@ import { connect, type DispatchProp } from "react-redux";
 import { Input, Menu } from "antd";
 import classNames from "classnames";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import Logo from "components/common/svg/logo";
 import { When } from "components/when";
 import { header_height } from "config/static-constant";
 import { actions } from "module/common/menus";
@@ -29,7 +30,8 @@ function MeunComponent(props: MeunComponentProps) {
     return (
         <div className={classNames(joinLessPrefix("menus-module"), { collapsed })}>
             <div className={joinLessPrefix("menus-logo")} style={{ height: header_height }}>
-                <img src={logoUrl} alt="roaikim" width={200} height={46} />
+                {/* <img src={logoUrl} alt="roaikim" width={200} height={46} /> */}
+                <Logo text={collapsed ? "R" : "ROAIKIM"} width={collapsed ? 40 : 200} fontSize={collapsed ? 40 : 30} />
             </div>
             <When when={!collapsed}>
                 <div className={joinLessPrefix("menus-search")}>
