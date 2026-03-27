@@ -26,6 +26,19 @@
     --chameleon-bubble-opacity-multiplier: 1.08;
   }
 
+  &.@{less-name}-bubble-field-paused {
+    .@{less-name}-bubble-field-item,
+    .@{less-name}-bubble-field-item::before,
+    .@{less-name}-bubble-field-item::after,
+    .@{less-name}-bubble-field-core {
+      animation-play-state: paused !important;
+    }
+
+    .@{less-name}-bubble-field-item {
+      pointer-events: none;
+    }
+  }
+
   .@{less-name}-bubble-field-item {
     position: absolute;
     bottom: -180px;
@@ -488,4 +501,3 @@
     transform: scale(1.02);
   }
 }
-

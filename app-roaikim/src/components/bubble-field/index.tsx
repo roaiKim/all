@@ -12,6 +12,7 @@ interface BubbleFieldProps {
     bubbleCount?: number;
     density?: BubbleFieldDensity;
     horizontalRanges?: BubbleHorizontalRange[];
+    paused?: boolean;
     sidesOnly?: boolean;
     variant?: "default" | "sides";
 }
@@ -81,6 +82,7 @@ export function BubbleField(props: BubbleFieldProps) {
         className,
         density = "normal",
         horizontalRanges,
+        paused = false,
         sidesOnly = false,
         variant = "default",
     } = props;
@@ -114,6 +116,7 @@ export function BubbleField(props: BubbleFieldProps) {
         <div
             className={classNames(joinLessPrefix("bubble-field"), className, joinLessPrefix(`bubble-field-density-${density}`), {
                 [joinLessPrefix("bubble-field-sides")]: isSidesMode,
+                [joinLessPrefix("bubble-field-paused")]: paused,
             })}
             aria-hidden="true"
         >
@@ -130,10 +133,10 @@ export function BubbleField(props: BubbleFieldProps) {
                         })}
                         style={
                             {
-                                ["--chameleon-bubble-border"]: bubbleTint.border,
-                                ["--chameleon-bubble-glow"]: bubbleTint.glow,
-                                ["--chameleon-bubble-fill"]: bubbleTint.fill,
-                                ["--chameleon-bubble-ring"]: bubbleTint.ring,
+                                "--chameleon-bubble-border": bubbleTint.border,
+                                "--chameleon-bubble-glow": bubbleTint.glow,
+                                "--chameleon-bubble-fill": bubbleTint.fill,
+                                "--chameleon-bubble-ring": bubbleTint.ring,
                                 left: bubbleLeft === undefined ? undefined : `${bubbleLeft}%`,
                             } as React.CSSProperties
                         }
