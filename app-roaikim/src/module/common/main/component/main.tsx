@@ -1,4 +1,5 @@
 import { useLocation, useParams } from "react-router";
+import { BookmarkTabs } from "components/bookmark-tabs";
 import { header_height } from "config/static-constant";
 import { MenuComponent } from "module/common/menus/type";
 import { joinLessPrefix } from "utils/framework";
@@ -14,8 +15,8 @@ export default function (props) {
             </div> */}
             <MenuComponent activeName=""></MenuComponent>
             <div className={joinLessPrefix("right-page")}>
-                <div className={joinLessPrefix("main-header")} style={{ height: header_height }}>
-                    header
+                <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
+                    <BookmarkTabs />
                 </div>
                 <div className={joinLessPrefix("page-container")}>page</div>
             </div>
