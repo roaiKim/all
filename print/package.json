@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "6.x",
+    "@chenglou/pretext": "^0.0.4",
     "antd": "^6.2.1",
     "classnames": "^2.5.1",
     "immer": "^11.1.3",
