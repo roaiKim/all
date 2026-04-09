@@ -25,7 +25,7 @@ function Main(props: MainProps) {
     }, [appLoadingStatus]);
 
     return (
-        <ConfigProvider prefixCls={lessPrefixName}>
+        <ConfigProvider /* prefixCls={lessPrefixName} */>
             <div className={`${joinLessPrefix("main-module")}`}>
                 <PageLoading show={mainLoading} theme="light" />
                 <Routes>

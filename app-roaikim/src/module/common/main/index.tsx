@@ -23,6 +23,7 @@ const initialMainState: State = {
     appLoadingStatus: "loading",
     navPermission: null,
     pagePermission: null,
+    initialed: false,
 };
 
 class MainModule extends Module<RootState, "main"> {
@@ -30,7 +31,7 @@ class MainModule extends Module<RootState, "main"> {
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
         // 忽略登录，仅在开发环境生效
         if (shouldIgnoreLogin) {
-            this.setState({ appLoadingStatus: "done" });
+            this.setState({ appLoadingStatus: "done", initialed: true });
             return;
         }
         const isLogin = StorageService.get(WEB_IS_LOGIN);

@@ -58,3 +58,65 @@
 //         }
 //     };
 // }
+
+import React, { useEffect, useMemo } from "react";
+import { Navigate } from "react-router-dom";
+import { ErrorBoundary } from "./ErrorBoundary";
+import { app } from "../app";
+
+interface RouteElementProps {
+    component: React.ComponentType<any>;
+    withErrorBoundary?: boolean;
+    accessCondition?: boolean;
+    unauthorizedRedirectTo?: string;
+    notFound?: boolean;
+}
+
+export function RouteElement({
+    component,
+    withErrorBoundary = true,
+    accessCondition = true,
+    unauthorizedRedirectTo = "/",
+    notFound = false,
+}: RouteElementProps) {
+    const WrappedComponent = useMemo(() => (notFound ? withNotFoundWarning(component) : component), [component, notFound]);
+
+    if (!accessCondition) {
+        return <Navigate to={unauthorizedRedirectTo} replace />;
+    }
+
+    const routeNode = <WrappedComponent />;
+
+    return withErrorBoundary ? <ErrorBoundary>{routeNode}</ErrorBoundary> : routeNode;
+}
+
+function withNotFoundWarning<T extends object>(WrappedComponent: React.ComponentType<T>): React.ComponentType<T> {
+    const ComponentWithNotFoundWarning = (props: T) => {
+        useEffect(() => {
+            app.logger.warn({
+                action: "@@framework/route-404",
+                elapsedTime: 0,
+                errorMessage: `${window.location.href} not supported by <Route>`,
+                errorCode: "ROUTE_NOT_FOUND",
+                info: {},
+            });
+        }, []);
+
+        return <WrappedComponent {...props} />;
+    };
+
+    return ComponentWithNotFoundWarning;
+}
+
+// import { Routes, Route } from "react-router-dom";
+
+// <Routes>
+//     <Route
+//         path="/home"
+//         element={<RouteElement component={HomePage} accessCondition={true} />}
+//     />
+//     <Route
+//         path="*"
+//         element={<RouteElement component={NotFoundPage} notFound />}
+//     />
+// </Routes>

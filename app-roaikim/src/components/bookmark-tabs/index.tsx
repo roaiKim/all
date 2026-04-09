@@ -212,8 +212,8 @@ export function BookmarkTabs(props: BookmarkTabsProps) {
                                             <span className={joinLessPrefix("bookmark-tabs-tab-url")}>{item.url.replace(/^https?:\/\//, "")}</span>
                                         ) : null}
                                     </span>
-                                    <button
-                                        type="button"
+                                    <div
+                                        // type="button"
                                         className={joinLessPrefix("bookmark-tabs-tab-close")}
                                         aria-label={`关闭 ${item.title}`}
                                         onClick={(event) => {
@@ -224,7 +224,7 @@ export function BookmarkTabs(props: BookmarkTabsProps) {
                                     >
                                         <span className={joinLessPrefix("bookmark-tabs-tab-close-dot")}></span>
                                         <span className={joinLessPrefix("bookmark-tabs-tab-close-x")}>×</span>
-                                    </button>
+                                    </div>
                                 </button>
                             );
                         })}
