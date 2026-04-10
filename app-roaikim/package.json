@@ -6,7 +6,8 @@
   "scripts": {
     "start": "rsbuild dev --open",
     "build": "rsbuild build",
-    "preview": "rsbuild preview"
+    "preview": "rsbuild preview",
+    "module": "node ./project/template/module.js"
   },
   "dependencies": {
     "@ant-design/icons": "6.x",
@@ -35,9 +36,12 @@
     "@rsbuild/plugin-react": "^1.4.2",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "chalk": "^5.6.2",
     "eslint-config-way": "^1.0.3",
+    "fs-extra": "^11.3.4",
     "stylelint-config-way": "^1.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "yargs": "^18.0.0"
   },
   "stylelint": {
     "extends": "stylelint-config-way"

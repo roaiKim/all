@@ -5,7 +5,7 @@ import "./debug";
 export { logger } from "./app";
 export { createActionHandlerDecorator } from "./decorator/createActionHandlerDecorator";
 export { Interval } from "./decorator/Interval";
-export { Loading } from "./decorator/Loading";
+export { Loading, MainLoading } from "./decorator/Loading";
 export { Log } from "./decorator/Log";
 export { Mutex } from "./decorator/Mutex";
 export { RetryOnNetworkConnectionError } from "./decorator/RetryOnNetworkConnectionError";

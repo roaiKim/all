@@ -34,5 +34,5 @@
     }
   },
   "include": ["./src", "./roaikim", "./project"],
-  "exclude": ["./webpack/**/*", "./z-files"]
+  "exclude": ["./webpack/**/*", "./z-files", "./project/template/**"]
 }
