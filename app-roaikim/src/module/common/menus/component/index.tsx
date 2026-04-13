@@ -25,7 +25,7 @@ function MeunComponent(props: MeunComponentProps) {
 
     // const selectKey = nameToPath[activeName] || activeName;
 
-    console.log("--menus--", menus);
+    // console.log("--menus--", menus);
 
     return (
         <div className={classNames(joinLessPrefix("menus-module"), { collapsed })}>

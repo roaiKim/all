@@ -6,13 +6,13 @@ import { moduleName, type State } from "./type";
 
 const initialState: State = {};
 
-class HomeModule extends Module<RootState, typeof moduleName> {
+class AddressModule extends Module<RootState, typeof moduleName> {
     @MainLoading()
     async onEnter(params, location) {
         //
     }
 }
 
-const module = register(new HomeModule(moduleName, initialState));
+const module = register(new AddressModule(moduleName, initialState));
 export const actions = module.getActions();
 export const MainComponent = module.connect(Main);

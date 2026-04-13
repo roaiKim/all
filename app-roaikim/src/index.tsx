@@ -2,11 +2,11 @@ import { bootstrap } from "@core";
 // import locationListener from "locationListener";
 import { MainComponent } from "module/common/main";
 import ErrorHandler from "utils/ArrorListener";
-import { modulesCache } from "utils/function/loadComponent";
+import cacheModules from "utils/function/load-modules";
 // import "./utils/function/devtowindowenv";
 import "asset/styles/index.less";
 // modulesCache
-console.log(modulesCache);
+console.log(cacheModules);
 bootstrap({
     componentType: MainComponent,
     errorListener: new ErrorHandler(),

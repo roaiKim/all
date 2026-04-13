@@ -1,8 +1,15 @@
 import { async } from "@core";
-// import { AuthTokenResponse, CompanyInfoResponse } from "type/api.type";
 
-export interface State {
-    name: string;
-}
+export const moduleName = "home";
 
-export const HomeComponent = async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent");
+export interface State {}
+
+export const MainComponent = async(() => import(/* webpackChunkName: "home" */ "./index"), "MainComponent");
+
+export const statement: ModuleStatement = {
+    name: moduleName,
+    path: "/home",
+    title: "Home",
+    order: 1,
+    component: MainComponent,
+};

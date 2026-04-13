@@ -66,7 +66,7 @@ function createModuleFolder(moduleNameInArg) {
     const moduleMainComponentName = getModulePascalName(moduleNameInArg);
     const moduleClassName = getModulePascalName(moduleNameInArg, "Module");
     const moduleClassPropsName = getModulePascalName(moduleNameInArg, "Props");
-
+    console.log("GH", moduleOriginName, moduleFullName, moduleMainComponentName, moduleClassName, moduleClassPropsName);
     const executeReplace = (relativePath, replacedTexts) => {
         const filePath = path.join(targetPath, relativePath);
         let finalContent = fs.readFileSync(filePath, "utf8");
@@ -94,36 +94,46 @@ function getGeneratedFilePaths(targetPath) {
         .filter((filePath) => fs.statSync(filePath).isFile());
 }
 
-function resolvePrettierCommand() {
-    const binName = process.platform === "win32" ? "prettier.cmd" : "prettier";
+function resolveEslintCommand() {
+    const binName = process.platform === "win32" ? "eslint.cmd" : "eslint";
     const localCommand = path.join(projectRoot, "node_modules", ".bin", binName);
     return fs.existsSync(localCommand) ? localCommand : null;
 }
 
 function formatFiles(filePaths) {
-    const prettierCommand = resolvePrettierCommand();
-    if (!prettierCommand) {
-        console.warn(chalk.yellow("Warning:"), "未找到 Prettier，跳过文件格式化");
+    const eslintCommand = resolveEslintCommand();
+    if (!eslintCommand) {
+        console.warn(chalk.yellow("Warning:"), "未找到 ESLint，跳过文件格式化");
         return;
     }
 
     const existingFiles = [...new Set(filePaths)].filter((filePath) => fs.existsSync(filePath));
-    if (existingFiles.length === 0) {
+    const eslintTargetFiles = existingFiles.filter((filePath) => [".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"].includes(path.extname(filePath)));
+
+    if (eslintTargetFiles.length === 0) {
         return;
     }
 
-    const result = spawnSync(prettierCommand, ["--write", ...existingFiles], {
-        cwd: projectRoot,
-        shell: process.platform === "win32",
-        stdio: "inherit",
-    });
+    const result = spawnSync(
+        eslintCommand,
+        ["--fix", "--config", path.join(projectRoot, "eslint.config.js"), "--no-warn-ignored", ...eslintTargetFiles],
+        {
+            cwd: projectRoot,
+            shell: process.platform === "win32",
+            stdio: "pipe",
+        },
+    );
 
     if (result.error) {
         throw result.error;
     }
 
+    if (result.status === 1) {
+        return;
+    }
+
     if (result.status !== 0) {
-        throw new Error(`文件格式化失败，退出码：${result.status}`);
+        throw new Error("文件自动格式化失败");
     }
 }
 
