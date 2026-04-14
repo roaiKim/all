@@ -1,4 +1,5 @@
 import { connect, type DispatchProp } from "react-redux";
+import { pushHistory } from "@core";
 // import { roPushHistory } from "@core";
 import { Input, Menu } from "antd";
 import classNames from "classnames";
@@ -9,8 +10,9 @@ import { header_height } from "config/static-constant";
 import { actions } from "module/common/menus";
 import type { RootState } from "type/rootState";
 import { joinLessPrefix } from "utils/framework";
+import { getPathByKey } from "utils/framework/path-mapping";
+import cacheModules from "utils/function/load-modules";
 import logoUrl from "asset/image/logo.svg";
-// import { nameToPath, pathToName } from "utils/function/loadComponent";
 import type { State } from "../type";
 import "./index.less";
 
@@ -44,8 +46,9 @@ function MeunComponent(props: MeunComponentProps) {
                         // selectedKeys={[selectKey || "home"]}
                         onClick={({ key = "" }) => {
                             // 是否有 模块path
-                            // const path = pathToName[key];
-                            // roPushHistory(path || key);
+                            const path = cacheModules.pathToName[key] || getPathByKey(key);
+                            pushHistory(path || key);
+                            console.log("---fffff", key, path);
                         }}
                         items={menus || []}
                         mode="inline"

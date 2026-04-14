@@ -4,3 +4,9 @@ import { isDevelopment } from "../src/config/static-constant";
 const ignoreLogin = false;
 
 export const shouldIgnoreLogin = isDevelopment ? ignoreLogin : false;
+
+/**
+ * tab 模式
+ */
+type TabTypeModule = "single" | "multiple";
+export const tabTypeModule: TabTypeModule = "single";

@@ -1,12 +1,14 @@
 import React from "react";
-import { connect, DispatchProp } from "react-redux";
+import { connect, type DispatchProp } from "react-redux";
 import { Dropdown } from "antd";
-import { arrayMoveImmutable } from "array-move";
+// import { arrayMoveImmutable } from "array-move";
 import { DownOutlined, EditOutlined, InfoCircleOutlined, PoweroffOutlined, RightOutlined } from "@ant-design/icons";
-import { WEB_USERNAME } from "config/static-envs";
+import { BookmarkTabs } from "components/bookmark-tabs";
+import { header_height, WEB_USERNAME } from "config/static-constant";
 import { actions } from "module/common/header/index";
 import { actions as MainActions } from "module/common/main";
-import { RootState } from "type/state";
+import type { RootState } from "type/rootState";
+import { joinLessPrefix } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 import logoimg from "asset/images/global/logoimg.png";
 import { SortableTabs } from "./HeaderTab";
@@ -54,9 +56,9 @@ function Header(props: HeaderProps) {
     const { headerTabs, activeTabName, dispatch, userName } = props;
 
     const onSortEnd = ({ oldIndex, newIndex }) => {
-        if (oldIndex === newIndex || newIndex === 0) return;
-        const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
-        dispatch(actions.sortHeaderTabs(tabs));
+        // if (oldIndex === newIndex || newIndex === 0) return;
+        // const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
+        // dispatch(actions.sortHeaderTabs(tabs));
     };
 
     const operateClick = ({ key }) => {
@@ -68,36 +70,17 @@ function Header(props: HeaderProps) {
     };
 
     return (
-        <header className="ro-header-module ro-flex">
-            <div className="ro-header-logo ro-flex ro-col-center">
-                <img alt="logo" src={logoimg} />
-                <div className="text-overflow-ellipsis">中集冷云综合服务平台</div>
+        <header className={joinLessPrefix("header-module")}>
+            <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
+                <BookmarkTabs />
             </div>
-            <SortableTabs
-                axis="x"
-                lockAxis="x"
-                lockOffset="0%"
-                lockToContainerEdges
-                hideSortableGhost
-                distance={10}
-                onSortEnd={onSortEnd}
-                helperClass="ro-header-tab-help-sort"
-                tabs={headerTabs}
-                activeKey={activeTabName}
-                onClick={({ key }) => {
-                    dispatch(actions.toggleActiveKey(key));
-                }}
-                onClose={({ key }) => {
-                    dispatch(actions.closeTabByKey(key));
-                }}
-            />
             <div className="ro-header-operate">
-                <Dropdown menu={{ items: headerOperate, onClick: operateClick }}>
+                {/* <Dropdown menu={{ items: headerOperate, onClick: operateClick }}>
                     <a onClick={(e) => e.preventDefault()}>
                         {userName}
                         <DownOutlined />
                     </a>
-                </Dropdown>
+                </Dropdown> */}
             </div>
         </header>
     );

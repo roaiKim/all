@@ -1,24 +1,19 @@
-import { useLocation, useParams } from "react-router";
+import { Outlet, useLocation, useParams } from "react-router";
 import { BookmarkTabs } from "components/bookmark-tabs";
 import { header_height } from "config/static-constant";
+import { HeaderComponent } from "module/common/header/type";
 import { MenuComponent } from "module/common/menus/type";
+import type { PropsWithChildren } from "react";
 import { joinLessPrefix } from "utils/framework";
 
-export default function (props) {
+export default function (props: PropsWithChildren) {
+    const { children } = props;
     return (
         <div className={joinLessPrefix("main-page")}>
-            {/* <div className={joinLessPrefix("left-nav")}>
-                <div className={joinLessPrefix("main-logo")} style={{ height: header_height }}>
-                    lgoo
-                </div>
-                <div className={joinLessPrefix("main-nav")}>nav</div>
-            </div> */}
             <MenuComponent activeName=""></MenuComponent>
             <div className={joinLessPrefix("right-page")}>
-                <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
-                    <BookmarkTabs />
-                </div>
-                <div className={joinLessPrefix("page-container")}>page</div>
+                <HeaderComponent></HeaderComponent>
+                {children}
             </div>
         </div>
     );

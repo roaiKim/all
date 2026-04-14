@@ -10,9 +10,8 @@ const modulesPath: string[] = mainEntryTypeFile.keys().filter((item: string) => 
 const defaultTabsModule = require.context("config/", true, /tabs.(t|j)s$/);
 const defaultTabsPath = defaultTabsModule.keys(); //.filter((item: string) => item.startsWith("config"));
 
-interface CacheModules {
-    path: string;
-    module: ModuleStatement;
+interface CacheModules extends ModuleStatement {
+    filePath: string;
 }
 
 export function loadCacheModule() {
@@ -36,14 +35,10 @@ export function loadCacheModule() {
                 pathToName[path] = name;
                 nameToPath[name] = path;
             }
-            if (systemModules[name]) {
-                const { path } = systemModules[name];
+            if (systemModules[path]) {
                 throw new Error(`模块名(${name})重复, 重复路径为${id}、${path}`);
             } else {
-                systemModules[name] = {
-                    path: id,
-                    module: statement,
-                };
+                systemModules[path] = Object.assign(statement, { filePath: id });
             }
         }
     });
@@ -56,7 +51,7 @@ export function loadCacheModule() {
             const tabsPath = AllExport.default;
             tabsPath.forEach((item) => {
                 if (systemModules[item] && isDevelopment) {
-                    const { module } = systemModules[item];
+                    const module = systemModules[item];
                     deafaultTabs.push({
                         key: module.name,
                         label: module.title,
