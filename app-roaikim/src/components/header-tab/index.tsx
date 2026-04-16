@@ -120,7 +120,7 @@ function normalizeItems(items?: BookmarkTabItem[]) {
     return items && items.length ? items : DEFAULT_ITEMS;
 }
 
-export function BookmarkTabs(props: BookmarkTabsProps) {
+export function HeaderTabs(props: BookmarkTabsProps) {
     const { className, items, activeId, initialActiveId, onChange, onClose, showUrl = true, emptyText = "暂无书签" } = props;
 
     const resolvedItems = useMemo(() => normalizeItems(items), [items]);
@@ -157,7 +157,7 @@ export function BookmarkTabs(props: BookmarkTabsProps) {
             const tabRect = tab.getBoundingClientRect();
             const centerX = tabRect.left + tabRect.width / 2;
             const offset = Math.max(32, Math.min(panelRect.width - 32, centerX - panelRect.left));
-            shell.style.setProperty("--bookmark-connector-x", `${offset}px`);
+            shell.style.setProperty("--header-connector-x", `${offset}px`);
         };
 
         updateConnector();
@@ -177,80 +177,64 @@ export function BookmarkTabs(props: BookmarkTabsProps) {
     }, [activeItem?.id, resolvedItems.length]);
 
     return (
-        <section className={classNames(joinLessPrefix("bookmark-tabs"), className)}>
-            <header className={joinLessPrefix("bookmark-tabs-header")}>
-                <div className={joinLessPrefix("bookmark-tabs-title")}>书签切换</div>
-                <div className={joinLessPrefix("bookmark-tabs-subtitle")}>像翻阅卡片一样在收藏之间切换</div>
-            </header>
+        <section className={classNames(joinLessPrefix("header-tabs"), className)}>
+            {/* <header className={joinLessPrefix("header-tabs-header")}>
+                <div className={joinLessPrefix("header-tabs-title")}>书签切换</div>
+                <div className={joinLessPrefix("header-tabs-subtitle")}>像翻阅卡片一样在收藏之间切换</div>
+            </header> */}
 
-            {resolvedItems.length === 0 ? (
-                <div className={joinLessPrefix("bookmark-tabs-empty")}>{emptyText}</div>
-            ) : (
-                <div className={joinLessPrefix("bookmark-tabs-shell")} ref={shellRef}>
-                    <div className={joinLessPrefix("bookmark-tabs-list")} role="tablist" aria-label="Bookmarks" ref={listRef}>
-                        {resolvedItems.map((item, index) => {
-                            const isActive = item.id === activeItem?.id;
-                            return (
-                                <button
-                                    key={item.id}
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={isActive}
-                                    className={classNames(joinLessPrefix("bookmark-tabs-tab"), joinLessPrefix(resolveToneClass(item, index)), {
-                                        "is-active": isActive,
-                                    })}
-                                    ref={(node) => {
-                                        tabRefs.current[item.id] = node;
-                                    }}
-                                    style={item.accent ? ({ "--bookmark-accent": item.accent } as React.CSSProperties) : undefined}
-                                    onClick={() => updateActive(item.id)}
-                                >
-                                    <span className={joinLessPrefix("bookmark-tabs-tab-top")}></span>
-                                    <span className={joinLessPrefix("bookmark-tabs-tab-main")}>
-                                        <span className={joinLessPrefix("bookmark-tabs-tab-title")}>{item.title}</span>
-                                        {showUrl && item.url ? (
-                                            <span className={joinLessPrefix("bookmark-tabs-tab-url")}>{item.url.replace(/^https?:\/\//, "")}</span>
-                                        ) : null}
-                                    </span>
-                                    <div
-                                        className={joinLessPrefix("bookmark-tabs-tab-close")}
-                                        aria-label={`关闭 ${item.title}`}
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            item.onClose?.(item.id);
-                                            onClose?.(item.id);
-                                        }}
-                                    >
-                                        <span className={joinLessPrefix("bookmark-tabs-tab-close-dot")}></span>
-                                        <span className={joinLessPrefix("bookmark-tabs-tab-close-x")}>×</span>
-                                    </div>
-                                </button>
-                            );
-                        })}
-                    </div>
+            {/* <div className={joinLessPrefix("header-tabs-shell")} ref={shellRef}> */}
+            <div className={joinLessPrefix("header-tabs-list")} role="tablist" aria-label="Bookmarks" ref={listRef}>
+                {resolvedItems.map((item, index) => {
+                    const isActive = item.id === activeItem?.id;
+                    return (
+                        <button
+                            key={item.id}
+                            aria-selected={isActive}
+                            className={classNames(joinLessPrefix("header-tabs-tab"), joinLessPrefix(resolveToneClass(item, index)), {
+                                "is-active": isActive,
+                            })}
+                            // style={item.accent ? ({ "--header-accent": item.accent } as React.CSSProperties) : undefined}
+                            onClick={() => {}}
+                        >
+                            <span className={joinLessPrefix("header-tabs-tab-top")}></span>
+                            <span className={joinLessPrefix("header-tabs-tab-title")}>{item.title}</span>
+                            <div
+                                className={joinLessPrefix("header-tabs-tab-close")}
+                                aria-label={`关闭 ${item.title}`}
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    item.onClose?.(item.id);
+                                    onClose?.(item.id);
+                                }}
+                            >
+                                <span className={joinLessPrefix("header-tabs-tab-close-dot")}></span>
+                                <span className={joinLessPrefix("header-tabs-tab-close-x")}>×</span>
+                            </div>
+                        </button>
+                    );
+                })}
+            </div>
 
-                    {/* <div className={joinLessPrefix("bookmark-tabs-panel")} role="tabpanel">
-                        <div className={joinLessPrefix("bookmark-tabs-panel-card")} ref={panelRef}>
-                            <div className={joinLessPrefix("bookmark-tabs-panel-header")}>
-                                <div>
-                                    <div className={joinLessPrefix("bookmark-tabs-panel-title")}>{activeItem?.title}</div>
-                                    {activeItem?.description ? (
-                                        <div className={joinLessPrefix("bookmark-tabs-panel-desc")}>{activeItem.description}</div>
-                                    ) : null}
-                                </div>
-                                {activeItem?.url ? (
-                                    <a className={joinLessPrefix("bookmark-tabs-panel-link")} href={activeItem.url} target="_blank" rel="noreferrer">
-                                        打开书签
-                                    </a>
+            {/* <div className={joinLessPrefix("header-tabs-panel")} role="tabpanel">
+                    <div className={joinLessPrefix("header-tabs-panel-card")} ref={panelRef}>
+                        <div className={joinLessPrefix("header-tabs-panel-header")}>
+                            <div>
+                                <div className={joinLessPrefix("header-tabs-panel-title")}>{activeItem?.title}</div>
+                                {activeItem?.description ? (
+                                    <div className={joinLessPrefix("header-tabs-panel-desc")}>{activeItem.description}</div>
                                 ) : null}
                             </div>
-                            <div className={joinLessPrefix("bookmark-tabs-panel-body")}>
-                                {activeItem?.content || <p>在这里放置书签内容或预览。</p>}
-                            </div>
+                            {activeItem?.url ? (
+                                <a className={joinLessPrefix("header-tabs-panel-link")} href={activeItem.url} target="_blank" rel="noreferrer">
+                                    打开书签
+                                </a>
+                            ) : null}
                         </div>
-                    </div> */}
-                </div>
-            )}
+                        <div className={joinLessPrefix("header-tabs-panel-body")}>{activeItem?.content || <p>在这里放置书签内容或预览。</p>}</div>
+                    </div>
+                </div> */}
+            {/* </div> */}
         </section>
     );
 }

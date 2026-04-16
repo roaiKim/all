@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import { LoginComponent } from "module/common/login/type";
+import { MainComponent as HomeComponent } from "module/home/type";
 import { joinLessPrefix } from "utils/framework";
 import cacheModules from "utils/function/load-modules";
 import MainLayout from "./main";
@@ -23,6 +24,7 @@ function SinglePage() {
                     </MainLayout>
                 }
             >
+                <Route index element={<HomeComponent></HomeComponent>} />
                 {modules.map((key) => {
                     const module = cacheModules.systemModules[key];
                     if (module) {

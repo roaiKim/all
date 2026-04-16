@@ -4,6 +4,8 @@ import { Dropdown } from "antd";
 // import { arrayMoveImmutable } from "array-move";
 import { DownOutlined, EditOutlined, InfoCircleOutlined, PoweroffOutlined, RightOutlined } from "@ant-design/icons";
 import { BookmarkTabs } from "components/bookmark-tabs";
+import { HeaderTabs } from "components/header-tab";
+// import { BookmarkTabCard } from "components/bookmark-tabs/bookmark-tab-card";
 import { header_height, WEB_USERNAME } from "config/static-constant";
 import { actions } from "module/common/header/index";
 import { actions as MainActions } from "module/common/main";
@@ -52,6 +54,33 @@ const headerOperate = [
     },
 ];
 
+const items = [
+    {
+        key: "1",
+        label: (
+            <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
+                1st menu item
+            </a>
+        ),
+    },
+    {
+        key: "2",
+        label: (
+            <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
+                2nd menu item
+            </a>
+        ),
+    },
+    {
+        key: "3",
+        label: (
+            <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+                3rd menu item
+            </a>
+        ),
+    },
+];
+
 function Header(props: HeaderProps) {
     const { headerTabs, activeTabName, dispatch, userName } = props;
 
@@ -72,15 +101,16 @@ function Header(props: HeaderProps) {
     return (
         <header className={joinLessPrefix("header-module")}>
             <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
-                <BookmarkTabs />
+                <HeaderTabs />
             </div>
             <div className="ro-header-operate">
-                {/* <Dropdown menu={{ items: headerOperate, onClick: operateClick }}>
+                ff
+                <Dropdown menu={{ items, onClick: operateClick }}>
                     <a onClick={(e) => e.preventDefault()}>
                         {userName}
                         <DownOutlined />
                     </a>
-                </Dropdown> */}
+                </Dropdown>
             </div>
         </header>
     );

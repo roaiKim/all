@@ -29,7 +29,7 @@ class HeaderModule extends Module<RootState, "header"> {
         const name = pathname.replace(/^\/|\/$/g, "");
         // this.pushTab(name);
         console.log("Header-onEnter", dayjs().format("YYYY-MM-DD HH:mm:ss"));
-        this.pushHistoryByActiveKey(name);
+        // this.pushHistoryByActiveKey(name);
     }
 
     // onLocationMatched(routeParam: object, location: Record<string, any>): void {
