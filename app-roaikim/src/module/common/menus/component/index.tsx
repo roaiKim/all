@@ -31,7 +31,7 @@ function MeunComponent(props: MeunComponentProps) {
 
     return (
         <div className={classNames(joinLessPrefix("menus-module"), { collapsed })}>
-            <div className={joinLessPrefix("menus-logo")} style={{ height: header_height }}>
+            <div className={joinLessPrefix("menus-logo")} style={{ "--headr-height": `${header_height}px` } as React.CSSProperties}>
                 {/* <img src={logoUrl} alt="roaikim" width={200} height={46} /> */}
                 <Logo text={collapsed ? "R" : "ROAIKIM"} width={collapsed ? 40 : 200} fontSize={collapsed ? 40 : 30} />
             </div>
