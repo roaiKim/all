@@ -81,6 +81,8 @@ const items = [
     },
 ];
 
+const DEFAULT_ITEMS = new Array(15).fill(1).map((item, index) => ({ id: index, title: "Not Bat " + index }));
+
 function Header(props: HeaderProps) {
     const { headerTabs, activeTabName, dispatch, userName } = props;
 
@@ -101,10 +103,9 @@ function Header(props: HeaderProps) {
     return (
         <header className={joinLessPrefix("header-module")}>
             <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
-                <HeaderTabs />
+                <HeaderTabs tabs={DEFAULT_ITEMS} activeId="inbox" />
             </div>
-            <div className="ro-header-operate">
-                ff
+            <div className={joinLessPrefix("header-operate")}>
                 <Dropdown menu={{ items, onClick: operateClick }}>
                     <a onClick={(e) => e.preventDefault()}>
                         {userName}

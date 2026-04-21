@@ -1,65 +1,11 @@
 .@{less-name}-header-tabs {
-  --header-base: #e9eef5;
-  --header-ink: #1f2937;
-  --header-muted: #6b7280;
-  --header-accent: #4f46e5;
-  --header-bg: linear-gradient(145deg, #eef3f9, #e2e8f0);
-  --header-soft-shadow: 10px 10px 24px rgb(148 163 184 / 45%);
-  --header-soft-highlight: -10px -10px 24px rgb(255 255 255 / 90%);
-  --header-inset-shadow: inset 6px 6px 12px rgb(148 163 184 / 35%), inset -6px -6px 12px rgb(255 255 255 / 90%);
-  --header-card: #e9eef5;
-
-  .tone-ink {
-    --header-accent: #1f2937;
-  }
-
-  .tone-sea {
-    --header-accent: #0ea5e9;
-  }
-
-  .tone-citrus {
-    --header-accent: #f59e0b;
-  }
-
-  .tone-orchid {
-    --header-accent: #a855f7;
-  }
-
-  .tone-slate {
-    --header-accent: #475569;
-  }
-
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 12px;
+  align-items: center;
+  // gap: 20px;
   border-radius: 4px;
-  background: var(--header-bg);
-  box-shadow: var(--header-soft-shadow), var(--header-soft-highlight);
-}
-
-.@{less-name}-header-tabs-header {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.@{less-name}-header-tabs-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--header-ink);
-  letter-spacing: 0.4px;
-}
-
-.@{less-name}-header-tabs-subtitle {
-  font-size: 13px;
-  color: var(--header-muted);
-}
-
-.@{less-name}-header-tabs-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  // background: var(--header-bg);
+  // box-shadow: var(--header-soft-shadow), var(--header-soft-highlight);
 }
 
 .@{less-name}-header-tabs-list {
@@ -121,23 +67,10 @@
   box-shadow: 4px 4px 8px rgb(148 163 184 / 45%), -3px -3px 6px rgb(255 255 255 / 85%);
 }
 
-.@{less-name}-header-tabs-tab-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 1;
-}
-
 .@{less-name}-header-tabs-tab-title {
   margin-left: 5px;
   font-weight: 600;
   color: var(--header-ink);
-}
-
-.@{less-name}-header-tabs-tab-url {
-  font-size: 11px;
-  color: var(--header-muted);
-  word-break: break-all;
 }
 
 .@{less-name}-header-tabs-tab-close {
@@ -177,96 +110,5 @@
 }
 
 .@{less-name}-header-tabs-tab-close:hover .@{less-name}-header-tabs-tab-close-dot {
-  //   box-shadow: inset 2px 2px 4px rgb(15 23 42 / 22%), inset -2px -2px 4px rgb(255 255 255 / 75%);
-}
-
-.@{less-name}-header-tabs-panel {
-  display: flex;
-  align-items: stretch;
-}
-
-.@{less-name}-header-tabs-panel-card {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 22px;
-  border-radius: 22px;
-  background: var(--header-card);
-  box-shadow: var(--header-inset-shadow);
-}
-
-.@{less-name}-header-tabs-panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-.@{less-name}-header-tabs-panel-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--header-ink);
-}
-
-.@{less-name}-header-tabs-panel-desc {
-  font-size: 13px;
-  color: var(--header-muted);
-  margin-top: 6px;
-  max-width: 420px;
-}
-
-.@{less-name}-header-tabs-panel-link {
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px solid rgb(148 163 184 / 20%);
-  background: var(--header-base);
-  color: var(--header-ink);
-  font-size: 13px;
-  text-decoration: none;
-  box-shadow: var(--header-soft-shadow), var(--header-soft-highlight);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  white-space: nowrap;
-}
-
-.@{less-name}-header-tabs-panel-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 12px 12px 22px rgb(148 163 184 / 45%), -12px -12px 22px rgb(255 255 255 / 95%);
-}
-
-.@{less-name}-header-tabs-panel-body {
-  font-size: 14px;
-  color: var(--header-ink);
-  line-height: 1.6;
-}
-
-.@{less-name}-header-tabs-panel-body ul {
-  margin: 12px 0 0 18px;
-  padding: 0;
-}
-
-.@{less-name}-header-tabs-panel-body li {
-  margin-bottom: 6px;
-}
-
-.@{less-name}-header-tabs-empty {
-  padding: 20px;
-  border-radius: 16px;
-  border: 1px dashed rgb(148 163 184 / 35%);
-  text-align: center;
-  color: var(--header-muted);
-  background: var(--header-base);
-  box-shadow: var(--header-inset-shadow);
-}
-
-@media (max-width: 960px) {
-  .@{less-name}-header-tabs-list {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
-  .@{less-name}-header-tabs-tab {
-    flex: 0 0 220px;
-  }
+  box-shadow: inset 2px 2px 4px rgb(15 23 42 / 22%), inset -2px -2px 4px rgb(255 255 255 / 75%);
 }
