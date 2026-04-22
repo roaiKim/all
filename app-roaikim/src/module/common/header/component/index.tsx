@@ -5,6 +5,7 @@ import { Dropdown } from "antd";
 import { DownOutlined, EditOutlined, InfoCircleOutlined, PoweroffOutlined, RightOutlined } from "@ant-design/icons";
 import { BookmarkTabs } from "components/bookmark-tabs";
 import { HeaderTabs } from "components/header-tab";
+import { HeaderTabCard } from "components/header-tab/header-card";
 // import { BookmarkTabCard } from "components/bookmark-tabs/bookmark-tab-card";
 import { header_height, WEB_USERNAME } from "config/static-constant";
 import { actions } from "module/common/header/index";
@@ -103,7 +104,12 @@ function Header(props: HeaderProps) {
     return (
         <header className={joinLessPrefix("header-module")}>
             <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
-                <HeaderTabs tabs={DEFAULT_ITEMS} activeId="inbox" />
+                <div className={joinLessPrefix("header-tabs-container")}>
+                    {DEFAULT_ITEMS.map((item) => {
+                        return <HeaderTabCard key={item.id} activeId="oi" tab={item} />;
+                    })}
+                </div>
+                {/* <HeaderTabs tabs={DEFAULT_ITEMS} activeId="inbox" /> */}
             </div>
             <div className={joinLessPrefix("header-operate")}>
                 <Dropdown menu={{ items, onClick: operateClick }}>
