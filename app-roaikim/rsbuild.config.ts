@@ -2,7 +2,7 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginLess } from "@rsbuild/plugin-less";
 import { pluginReact } from "@rsbuild/plugin-react";
 import developmentProxy from "./src/config/development.proxy";
-import { isProduntion, lessPrefixName } from "./src/config/static-constant";
+import { isProduction, lessPrefixName } from "./src/config/static-constant";
 
 function startProxy() {
     return Object.entries(developmentProxy).reduce(
@@ -46,7 +46,7 @@ export default defineConfig({
         }),
     ],
     performance: {
-        bundleAnalyze: isProduntion
+        bundleAnalyze: isProduction
             ? {
                 analyzerMode: "static",
                 openAnalyzer: false,

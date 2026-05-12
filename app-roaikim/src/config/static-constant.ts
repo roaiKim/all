@@ -1,7 +1,7 @@
 export const isDevelopment = process.env.NODE_ENV === "development";
-export const isProduntion = process.env.NODE_ENV === "production";
+export const isProduction = process.env.NODE_ENV === "production";
 export const noDevelopment = process.env.NODE_ENV !== "development";
-export const noProduntion = process.env.NODE_ENV !== "production";
+export const noProduction = process.env.NODE_ENV !== "production";
 
 export const BASIC_AUTH_TOKEN = "Basic Y29tbWE6Y29tbWE=";
 
@@ -26,4 +26,4 @@ export const LOGIN_REMEMBER_PASSWORD = "LOGIN_REMEMBER_PASSWORD";
 
 export const header_height = 65;
 
-export const MEUN_COLLAPSED = "MEUN_COLLAPSED";
+export const MENU_COLLAPSED = "MENU_COLLAPSED";

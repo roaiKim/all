@@ -24,7 +24,7 @@ export default class ErrorHandler implements ErrorListener {
         } else if (error instanceof NetworkConnectionException) {
             message.error(`${error.message}, ${error.originalErrorMessage}`);
         } else {
-            // const errorMessage = isProduntion ? "发生错误，请稍后重试" : error.message;
+            // const errorMessage = isProduction ? "发生错误，请稍后重试" : error.message;
             // createErrorMessage(errorMessage);
         }
     }
