@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "prestart": "rm -rf dist",
     "start": "rsbuild dev --open",
     "build": "rsbuild build",
     "preview": "rsbuild preview",

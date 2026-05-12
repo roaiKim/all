@@ -4,6 +4,7 @@ import { useLoadingStatus } from "@core";
 import { ConfigProvider } from "antd";
 import { tabTypeModule } from "@project/config";
 import { PageLoading } from "components/page-loading";
+import { lessPrefixName } from "config/static-constant";
 import type { RootState } from "type/rootState";
 import { joinLessPrefix } from "utils/framework";
 import { removeMainLoading } from "utils/framework/remove-main-loading";
@@ -24,7 +25,7 @@ function Main(props: MainProps) {
     }, [appLoadingStatus]);
 
     return (
-        <ConfigProvider /* prefixCls={lessPrefixName} */>
+        <ConfigProvider prefixCls={lessPrefixName} theme={{ cssVar: { prefix: lessPrefixName } }}>
             <div className={`${joinLessPrefix("main-module")}`}>
                 <PageLoading show={mainLoading} theme="light" />
                 {tabTypeModule === "multiple" ? <MultiplePage /> : <SinglePage />}

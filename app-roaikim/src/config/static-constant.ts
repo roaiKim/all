@@ -5,7 +5,7 @@ export const noProduction = process.env.NODE_ENV !== "production";
 
 export const BASIC_AUTH_TOKEN = "Basic Y29tbWE6Y29tbWE=";
 
-export const lessPrefixName = "TG-WEB";
+export const lessPrefixName = "mamba"; // 此处必须小写
 
 export const APP_NAME = "TG_APP";
 
