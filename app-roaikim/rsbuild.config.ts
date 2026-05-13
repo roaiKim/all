@@ -37,11 +37,7 @@ export default defineConfig({
         pluginReact(),
         pluginLess({
             lessLoaderOptions: {
-                lessOptions: {
-                    modifyVars: {
-                        "less-name": lessPrefixName,
-                    },
-                },
+                additionalData: `@less-name: ${lessPrefixName};`,
             },
         }),
     ],

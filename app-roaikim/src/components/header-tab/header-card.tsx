@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { joinLessPrefix } from "utils/framework";
+import "./index.less";
 
 interface HeaderTabCardProps {
     activeId: string;
