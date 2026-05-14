@@ -10,18 +10,32 @@
   --header-card: #e9eef5;
 
   display: flex;
+  overflow: hidden;
   background: var(--header-bg);
   box-shadow: var(--header-soft-shadow), var(--header-soft-highlight);
 
   .@{less-name}-main-header {
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
     // background: linear-gradient(180deg, rgb(248 250 252 / 92%), rgb(255 255 255 / 90%));
     // border-bottom: 1px solid rgb(148 163 184 / 18%);
+  }
+
+  .@{less-name}-header-tabs-container {
+    display: flex;
+    flex-wrap: nowrap;
   }
 
   .@{less-name}-header-operate {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     padding: 0 10px;
 
     > * {
