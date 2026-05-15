@@ -2,13 +2,15 @@ import classNames from "classnames";
 import { joinLessPrefix } from "utils/framework";
 import "./index.less";
 
-interface HeaderTabCardProps {
+interface HeaderTabCardProps<T = any> {
     activeId: string;
-    tab: any;
+    tab: T;
+    onClick: (tab: T) => void;
+    onClose: (tab: T) => void;
 }
 
 export function HeaderTabCard(props: HeaderTabCardProps) {
-    const { activeId, tab } = props;
+    const { activeId, tab, onClick, onClose } = props;
     const isActive = tab.id === activeId;
 
     return (
@@ -16,7 +18,7 @@ export function HeaderTabCard(props: HeaderTabCardProps) {
             className={classNames(joinLessPrefix("header-tabs-tab"), {
                 "is-active": isActive,
             })}
-            onClick={() => {}}
+            onClick={() => onClick(tab)}
         >
             <span className={joinLessPrefix("header-tabs-tab-top")}></span>
             <span className={joinLessPrefix("header-tabs-tab-title")}>{tab.title}</span>
@@ -25,6 +27,7 @@ export function HeaderTabCard(props: HeaderTabCardProps) {
                 aria-label={`关闭 ${tab.title}`}
                 onClick={(event) => {
                     event.stopPropagation();
+                    onClose(tab);
                 }}
             >
                 <span className={joinLessPrefix("header-tabs-tab-close-dot")}></span>

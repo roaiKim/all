@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect, type DispatchProp } from "react-redux";
 import { Dropdown } from "antd";
 // import { arrayMoveImmutable } from "array-move";
@@ -87,6 +87,8 @@ const DEFAULT_ITEMS = new Array(15).fill(1).map((item, index) => ({ id: index, t
 function Header(props: HeaderProps) {
     const { headerTabs, activeTabName, dispatch, userName } = props;
 
+    const [active, setActive] = useState(0);
+
     const onSortEnd = ({ oldIndex, newIndex }) => {
         // if (oldIndex === newIndex || newIndex === 0) return;
         // const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
@@ -106,7 +108,17 @@ function Header(props: HeaderProps) {
             <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
                 <div className={joinLessPrefix("header-tabs-container")}>
                     {DEFAULT_ITEMS.map((item) => {
-                        return <HeaderTabCard key={item.id} activeId="oi" tab={item} />;
+                        return (
+                            <HeaderTabCard
+                                key={item.id}
+                                activeId={active}
+                                tab={item}
+                                onClick={({ id }) => {
+                                    setActive(id);
+                                }}
+                                onClose={() => {}}
+                            />
+                        );
                     })}
                 </div>
                 {/* <HeaderTabs tabs={DEFAULT_ITEMS} activeId="inbox" /> */}
