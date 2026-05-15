@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { connect, type DispatchProp } from "react-redux";
 import { Dropdown } from "antd";
 // import { arrayMoveImmutable } from "array-move";
@@ -82,13 +82,13 @@ const items = [
     },
 ];
 
-const DEFAULT_ITEMS = new Array(15).fill(1).map((item, index) => ({ id: index, title: "Not Bat " + index }));
+const DEFAULT_ITEMS = new Array(25).fill(1).map((item, index) => ({ id: index, title: "Not Bat " + index }));
 
 function Header(props: HeaderProps) {
     const { headerTabs, activeTabName, dispatch, userName } = props;
 
     const [active, setActive] = useState(0);
-
+    const tabContainerRef = useRef(null);
     const onSortEnd = ({ oldIndex, newIndex }) => {
         // if (oldIndex === newIndex || newIndex === 0) return;
         // const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
@@ -103,9 +103,14 @@ function Header(props: HeaderProps) {
         }
     };
 
+    const tabContainerWheel = (event) => {
+        if (!tabContainerRef.current) return;
+        tabContainerRef.current.scrollLeft += event.deltaY;
+    };
+
     return (
         <header className={joinLessPrefix("header-module")}>
-            <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }}>
+            <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }} ref={tabContainerRef} onWheel={tabContainerWheel}>
                 <div className={joinLessPrefix("header-tabs-container")}>
                     {DEFAULT_ITEMS.map((item) => {
                         return (
@@ -123,6 +128,7 @@ function Header(props: HeaderProps) {
                 </div>
                 {/* <HeaderTabs tabs={DEFAULT_ITEMS} activeId="inbox" /> */}
             </div>
+            {/* <div style={{ width: 100 }}></div>
             <div className={joinLessPrefix("header-operate")}>
                 <Dropdown menu={{ items, onClick: operateClick }}>
                     <a onClick={(e) => e.preventDefault()}>
@@ -130,7 +136,7 @@ function Header(props: HeaderProps) {
                         <DownOutlined />
                     </a>
                 </Dropdown>
-            </div>
+            </div> */}
         </header>
     );
 }
