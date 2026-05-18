@@ -12,7 +12,7 @@ function SinglePage() {
         return Object.keys(systemModules).filter(Boolean);
     });
 
-    console.log(modules);
+    console.log("modules", modules);
     return (
         <Routes>
             <Route path="/login/:id?" element={<LoginComponent></LoginComponent>} />

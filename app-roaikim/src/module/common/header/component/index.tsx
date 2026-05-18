@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { connect, type DispatchProp } from "react-redux";
 import { Dropdown } from "antd";
+import classNames from "classnames";
 // import { arrayMoveImmutable } from "array-move";
 import { DownOutlined, EditOutlined, InfoCircleOutlined, PoweroffOutlined, RightOutlined } from "@ant-design/icons";
 import { BookmarkTabs } from "components/bookmark-tabs";
@@ -126,17 +127,18 @@ function Header(props: HeaderProps) {
                         );
                     })}
                 </div>
-                {/* <HeaderTabs tabs={DEFAULT_ITEMS} activeId="inbox" /> */}
+                <div className={joinLessPrefix("header-operate")} style={{ minHeight: header_height }}>
+                    <button className={classNames(joinLessPrefix("header-mimicry"))}>
+                        <span className={joinLessPrefix("header-tabs-tab-title")}>{1111111}</span>
+                    </button>
+                    <Dropdown menu={{ items, onClick: operateClick }} trigger={["click"]}>
+                        <button className={classNames(joinLessPrefix("header-mimicry"))}>
+                            {userName}
+                            <DownOutlined />
+                        </button>
+                    </Dropdown>
+                </div>
             </div>
-            {/* <div style={{ width: 100 }}></div>
-            <div className={joinLessPrefix("header-operate")}>
-                <Dropdown menu={{ items, onClick: operateClick }}>
-                    <a onClick={(e) => e.preventDefault()}>
-                        {userName}
-                        <DownOutlined />
-                    </a>
-                </Dropdown>
-            </div> */}
         </header>
     );
 }

@@ -15,7 +15,7 @@ export function HeaderTabCard(props: HeaderTabCardProps) {
 
     return (
         <button
-            className={classNames(joinLessPrefix("header-tabs-tab"), {
+            className={classNames(joinLessPrefix("header-tabs-tab"), joinLessPrefix("header-mimicry"), {
                 "is-active": isActive,
             })}
             onClick={() => onClick(tab)}
