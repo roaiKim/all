@@ -46,9 +46,9 @@ function MeunComponent(props: MeunComponentProps) {
                         // selectedKeys={[selectKey || "home"]}
                         onClick={({ key = "" }) => {
                             // 是否有 模块path
-                            const path = cacheModules.pathToName[key] || getPathByKey(key);
-                            pushHistory(path || key);
-                            console.log("---fffff", key, path);
+                            const cacheKey = key.startsWith("/") ? key : `/${key}`;
+                            const path = cacheModules.pathToName[cacheKey] || getPathByKey(cacheKey) || getPathByKey(key);
+                            pushHistory(path || cacheKey);
                         }}
                         items={menus || []}
                         mode="inline"

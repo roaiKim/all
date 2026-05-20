@@ -1,4 +1,5 @@
 import React from "react";
+import ComponentLoading from "./component-loading";
 import { captureError, errorToException } from "./error-util";
 import { app } from "../app";
 import { loadingAction } from "../reducer";
@@ -91,7 +92,7 @@ export function async<T, K extends ReactComponentKeyOf<T>>(
                 return ErrorComponent ? <ErrorComponent error={error} reload={this.loadComponent} /> : null;
             }
 
-            return Component ? <Component {...this.props} /> : LoadingComponent ? <LoadingComponent /> : null;
+            return Component ? <Component {...this.props} /> : LoadingComponent ? <LoadingComponent /> : <ComponentLoading />;
         }
     } as any;
 }

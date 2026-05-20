@@ -17,7 +17,7 @@ function navigateTo<HistoryState extends object = object>(urlOrState: HistorySta
         if (state) {
             app.store.dispatch(routerNavigateAction(url, { state: state === "keep-state" ? app.history.location.state : state, replace }));
         } else {
-            app.store.dispatch(routerNavigateAction(url), { replace });
+            app.store.dispatch(routerNavigateAction(url, { replace }));
         }
     } else {
         const currentURL = location.pathname + location.search;

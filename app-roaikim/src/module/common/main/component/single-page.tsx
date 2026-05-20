@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
+import { NoFountComponent } from "module/common/404/type";
 import { LoginComponent } from "module/common/login/type";
 import { MainComponent as HomeComponent } from "module/home/type";
 import { joinLessPrefix } from "utils/framework";
@@ -33,6 +34,7 @@ function SinglePage() {
                     }
                     return null;
                 })}
+                <Route path="*" element={<NoFountComponent />} />
             </Route>
         </Routes>
     );

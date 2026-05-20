@@ -9,11 +9,13 @@ import { joinLessPrefix } from "utils/framework";
 export default function (props: PropsWithChildren) {
     const { children } = props;
     return (
-        <div className={joinLessPrefix("main-page")}>
+        <div className={joinLessPrefix("container")}>
             <MenuComponent activeName=""></MenuComponent>
             <div className={joinLessPrefix("right-page")}>
                 <HeaderComponent></HeaderComponent>
-                {children}
+                <main className={joinLessPrefix("main-page")} style={{ height: `calc(100% - ${header_height}px)` }}>
+                    {children}
+                </main>
             </div>
         </div>
     );
