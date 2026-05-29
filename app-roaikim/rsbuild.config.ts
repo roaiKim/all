@@ -24,6 +24,9 @@ function startProxy() {
 
 // Docs: https://rsbuild.rs/config/
 export default defineConfig({
+    dev: {
+        lazyCompilation: false,
+    },
     server: {
         proxy: startProxy(),
         port: 10010,
