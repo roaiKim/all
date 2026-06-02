@@ -1,5 +1,5 @@
 import { isDevelopment } from "config/static-constant";
-import { HeaderTabType } from "module/common/header/type";
+import { ModuleStatus } from "module/common/header/type";
 // 这个是全局加载的功能
 // @ts-ignore webpack 提供的功能 ts 暂时无法识别
 const mainEntryTypeFile = require.context("module/", true, /\/type\.ts$/);
@@ -15,11 +15,11 @@ interface CacheModules extends ModuleStatement {
 }
 
 export function loadCacheModule() {
-    const systemModules: Record<string, CacheModules> = {};
+    const systemModules: Map<string, CacheModules> = new Map();
     // 模块path转模块name
-    const pathToName = {};
+    const pathToName: Map<string, string> = new Map();
     // 模块name转模块path
-    const nameToPath = {};
+    const nameToPath: Map<string, string> = new Map();
     modulesPath.forEach((id) => {
         const AllExport: any = mainEntryTypeFile(id);
         const statement: ModuleStatement = AllExport.statement;
@@ -32,13 +32,13 @@ export function loadCacheModule() {
                 }
             }
             if (path) {
-                pathToName[path] = name;
-                nameToPath[name] = path;
+                pathToName.set(path, name);
+                nameToPath.set(name, path);
             }
-            if (systemModules[path]) {
+            if (systemModules.has(path)) {
                 throw new Error(`模块名(${name})重复, 重复路径为${id}、${path}`);
             } else {
-                systemModules[path] = Object.assign(statement, { filePath: id });
+                systemModules.set(path, Object.assign(statement, { filePath: id }));
             }
         }
     });
@@ -50,12 +50,12 @@ export function loadCacheModule() {
         if (AllExport.default) {
             const tabsPath = AllExport.default;
             tabsPath.forEach((item) => {
-                if (systemModules[item] && isDevelopment) {
-                    const module = systemModules[item];
+                if (systemModules.has(item) && isDevelopment) {
+                    const module = systemModules.get(item);
                     deafaultTabs.push({
                         key: module.name,
                         label: module.title,
-                        type: HeaderTabType.A,
+                        type: ModuleStatus.EXIST,
                         noClosed: false,
                     });
                 }
@@ -66,6 +66,6 @@ export function loadCacheModule() {
     return { deafaultTabs, systemModules, nameToPath, pathToName };
 }
 
-const cacheModules = loadCacheModule();
+const localModules = loadCacheModule();
 
-export default cacheModules;
+export default localModules;

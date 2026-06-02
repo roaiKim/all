@@ -11,7 +11,7 @@ import { actions } from "module/common/menus";
 import type { RootState } from "type/rootState";
 import { joinLessPrefix } from "utils/framework";
 import { getPathByKey } from "utils/framework/path-mapping";
-import cacheModules from "utils/function/load-modules";
+import localModules from "utils/function/load-modules";
 import logoUrl from "asset/image/logo.svg";
 import type { State } from "../type";
 import "./index.less";
@@ -47,7 +47,7 @@ function MeunComponent(props: MeunComponentProps) {
                         onClick={({ key = "" }) => {
                             // 是否有 模块path
                             const cacheKey = key.startsWith("/") ? key : `/${key}`;
-                            const path = cacheModules.pathToName[cacheKey] || getPathByKey(cacheKey) || getPathByKey(key);
+                            const path = localModules.pathToName.get(cacheKey) || getPathByKey(cacheKey) || getPathByKey(key);
                             pushHistory(path || cacheKey);
                         }}
                         items={menus || []}

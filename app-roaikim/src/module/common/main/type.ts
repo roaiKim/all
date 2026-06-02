@@ -9,5 +9,5 @@ export interface State {
     appLoadingStatus: "loading" | "done" | "error";
     initialed: boolean;
     navPermission: NavPermission[];
-    pagePermission: Record<string, string>;
+    pagePermission: Record<string, Record<"name", string>>;
 }

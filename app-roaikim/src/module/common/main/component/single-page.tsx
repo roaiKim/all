@@ -4,13 +4,13 @@ import { NoFountComponent } from "module/common/404/type";
 import { LoginComponent } from "module/common/login/type";
 import { MainComponent as HomeComponent } from "module/home/type";
 import { joinLessPrefix } from "utils/framework";
-import cacheModules from "utils/function/load-modules";
+import localModules from "utils/function/load-modules";
 import MainLayout from "./main";
 
 function SinglePage() {
     const [modules] = useState(() => {
-        const systemModules = cacheModules.systemModules;
-        return Object.keys(systemModules).filter(Boolean);
+        const systemModules = localModules.systemModules;
+        return Array.from(systemModules.keys());
     });
 
     console.log("modules", modules);
@@ -27,7 +27,7 @@ function SinglePage() {
             >
                 <Route index element={<HomeComponent></HomeComponent>} />
                 {modules.map((key) => {
-                    const module = cacheModules.systemModules[key];
+                    const module = localModules.systemModules.get(key);
                     if (module) {
                         const { path, component: Component } = module;
                         return <Route key={key} path={path} element={<Component></Component>} />;

@@ -83,18 +83,18 @@ const items = [
     },
 ];
 
-const DEFAULT_ITEMS = new Array(25).fill(1).map((item, index) => ({ id: index, title: "Not Bat " + index }));
+// const DEFAULT_ITEMS = new Array(25).fill(1).map((item, index) => ({ id: index, title: "Not Bat " + index }));
 
 function Header(props: HeaderProps) {
     const { headerTabs, activeTabName, dispatch, userName } = props;
 
     const [active, setActive] = useState(0);
     const tabContainerRef = useRef(null);
-    const onSortEnd = ({ oldIndex, newIndex }) => {
-        // if (oldIndex === newIndex || newIndex === 0) return;
-        // const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
-        // dispatch(actions.sortHeaderTabs(tabs));
-    };
+    // const onSortEnd = ({ oldIndex, newIndex }) => {
+    //     // if (oldIndex === newIndex || newIndex === 0) return;
+    //     // const tabs = arrayMoveImmutable(headerTabs, oldIndex, newIndex);
+    //     // dispatch(actions.sortHeaderTabs(tabs));
+    // };
 
     const operateClick = ({ key }) => {
         // console.log("--item", item);
@@ -113,11 +113,11 @@ function Header(props: HeaderProps) {
         <header className={joinLessPrefix("header-module")}>
             <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }} ref={tabContainerRef} onWheel={tabContainerWheel}>
                 <div className={joinLessPrefix("header-tabs-container")}>
-                    {DEFAULT_ITEMS.map((item) => {
+                    {headerTabs.map((item) => {
                         return (
                             <HeaderTabCard
-                                key={item.id}
-                                activeId={active}
+                                key={item.key}
+                                activeTabName={activeTabName}
                                 tab={item}
                                 onClick={({ id }) => {
                                     setActive(id);

@@ -27,6 +27,7 @@ function navigateTo<HistoryState extends object = object>(urlOrState: HistorySta
 }
 
 export function pushHistory<HistoryState extends object = object>(urlOrState: HistoryState | string, state?: object | "keep-state") {
+    console.log("--pushHistory--");
     return navigateTo(urlOrState, false, state);
 }
 

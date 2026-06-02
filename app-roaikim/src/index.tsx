@@ -1,18 +1,18 @@
 import { bootstrap } from "@core";
-// import locationListener from "locationListener";
 import { MainComponent } from "module/common/main";
 import ErrorHandler from "utils/ArrorListener";
-import cacheModules from "utils/function/load-modules";
+import locationListener from "utils/framework/locationListener";
+import localModules from "utils/function/load-modules";
 // import "./utils/function/devtowindowenv";
 import "asset/styles/index.less";
 // modulesCache
-console.log(cacheModules);
+console.log(localModules);
 bootstrap({
     componentType: MainComponent,
     errorListener: new ErrorHandler(),
     idleTimeoutInSecond: 600,
     rootContainer: document.getElementById("app-root"),
-    // browserConfig: {
-    //     onLocationChange: locationListener,
-    // },
+    browserConfig: {
+        onLocationChange: locationListener,
+    },
 });

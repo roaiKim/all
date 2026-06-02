@@ -3,15 +3,15 @@ import { joinLessPrefix } from "utils/framework";
 import "./index.less";
 
 interface HeaderTabCardProps<T = any> {
-    activeId: string;
+    activeTabName: string;
     tab: T;
     onClick: (tab: T) => void;
     onClose: (tab: T) => void;
 }
 
 export function HeaderTabCard(props: HeaderTabCardProps) {
-    const { activeId, tab, onClick, onClose } = props;
-    const isActive = tab.id === activeId;
+    const { activeTabName, tab, onClick, onClose } = props;
+    const isActive = tab.key === activeTabName;
 
     return (
         <button

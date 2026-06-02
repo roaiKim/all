@@ -1,7 +1,7 @@
 ﻿// import { useEffect, useRef, useState } from "react";
 // import { roDispatchAction, roPushHistory } from "@core";
 // import { actions } from "module/common/header";
-// import { HeaderTab, HeaderTabType } from "module/common/header/type";
+// import { HeaderTab, ModuleStatus } from "module/common/header/type";
 
 // function NoFoundModule(props) {
 //     const { keyPath } = props;
@@ -57,7 +57,7 @@
 //         <div className={`${joinLessPrefix("g-developing-container-module")} ${hidden ? "" : "active-module"}`}>
 //             <div className="${joinLessPrefix("develop-module")} ${joinLessPrefix("flex")} ${joinLessPrefix("center")} ${joinLessPrefix("height-100")}">
 //                 <h2></h2>
-//                 {type === HeaderTabType.B ? (
+//                 {type === ModuleStatus.B ? (
 //                     <h2>
 //                         {label} 暂无权限
 //                         <a
@@ -69,9 +69,9 @@
 //                             返回首页
 //                         </a>
 //                     </h2>
-//                 ) : type === HeaderTabType.C ? (
+//                 ) : type === ModuleStatus.C ? (
 //                     <h2>{label} 开发中...</h2>
-//                 ) : type === HeaderTabType.D ? (
+//                 ) : type === ModuleStatus.D ? (
 //                     <NoFoundModule keyPath={key} />
 //                 ) : (
 //                     <h2>-</h2>

@@ -10,6 +10,7 @@ class ManagementModule extends Module<RootState, typeof moduleName> {
     @MainLoading()
     async onEnter(params, location) {
         //
+        console.log("--rr--");
     }
 }
 

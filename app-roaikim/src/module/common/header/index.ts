@@ -2,10 +2,11 @@ import { Module, pushHistory, register } from "@core";
 import dayjs from "dayjs";
 import { isDevelopment, WEB_USERNAME } from "config/static-constant";
 import type { RootState } from "type/rootState";
+import localModules from "utils/function/load-modules";
 // import { deafaultTabs, modulesCache, nameToPath } from "utils/function/loadComponent";
 import { StorageService } from "utils/StorageService";
 import Main from "./component";
-import { type HeaderTab, HeaderTabType } from "./type";
+import { type HeaderTab, ModuleStatus } from "./type";
 
 const initialHeaderState = {
     userName: null,
@@ -14,8 +15,8 @@ const initialHeaderState = {
     headerTabs: [
         {
             key: "home",
-            label: "首页",
-            type: HeaderTabType.A,
+            title: "首页",
+            type: ModuleStatus.EXIST,
             noClosed: true,
         },
         // ...(deafaultTabs || []),
@@ -26,10 +27,11 @@ class HeaderModule extends Module<RootState, "header"> {
     onEnter(): void | Promise<void> {
         const { location } = this.rootState.router;
         const pathname = (location as any).pathname || "";
-        const name = pathname.replace(/^\/|\/$/g, "");
+        const name = pathname; //.replace(/^\/|\/$/g, "");
+        console.log("---333");
         // this.pushTab(name);
-        console.log("Header-onEnter", dayjs().format("YYYY-MM-DD HH:mm:ss"));
-        // this.pushHistoryByActiveKey(name);
+        console.log("Header-onEnter", name, dayjs().format("YYYY-MM-DD HH:mm:ss"));
+        this.pushHistoryByActiveKey(name);
     }
 
     // onLocationMatched(routeParam: object, location: Record<string, any>): void {
@@ -37,44 +39,45 @@ class HeaderModule extends Module<RootState, "header"> {
     // }
 
     pushTab(keyPath: string) {
-        // const { headerTabs, activeTabName } = this.state;
-        // if (!keyPath || keyPath === activeTabName) return;
-        // const cacheModule = modulesCache[keyPath];
-        // const currentTabIndex = headerTabs.findIndex((item) => item.key === activeTabName);
-        // const hasTab = headerTabs.find((item) => item.key === keyPath);
-        // let activeKey = activeTabName;
-        // const newTabs = [...headerTabs];
-        // // 有本地模块
-        // if (cacheModule) {
-        //     const { module } = cacheModule;
-        //     const { name, title } = module;
-        //     activeKey = name;
-        //     const { pagePermission } = this.rootState.app.main || {};
-        //     const hasPermission = isDevelopment ? true : pagePermission[nameToPath[name] || name];
-        //     const type = hasPermission ? HeaderTabType.A : HeaderTabType.B;
-        //     if (!hasTab) {
-        //         const newTab = {
-        //             key: name,
-        //             label: title,
-        //             type,
-        //         };
-        //         newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
-        //     }
-        // } else {
-        //     activeKey = keyPath;
-        //     if (!hasTab) {
-        //         const tabKey = keyPath;
-        //         const { pagePermission } = this.rootState.app.main || {};
-        //         const pageName = pagePermission[tabKey]?.name;
-        //         const newTab = {
-        //             key: tabKey,
-        //             label: pageName || "404-nofound",
-        //             type: pageName ? HeaderTabType.C : HeaderTabType.D,
-        //         };
-        //         newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
-        //     }
-        // }
-        // this.setState({ headerTabs: newTabs, activeTabName: activeKey });
+        const { headerTabs, activeTabName } = this.state;
+        if (!keyPath || keyPath === activeTabName) return;
+        const cacheModule = localModules.systemModules.get(keyPath);
+        const currentTabIndex = headerTabs.findIndex((item) => item.key === activeTabName);
+        const hasTab = headerTabs.find((item) => item.key === keyPath);
+        let activeKey = activeTabName;
+        const newTabs = [...headerTabs];
+        // 有本地模块
+        if (cacheModule) {
+            // const { module } = cacheModule;
+            const { name, title } = cacheModule;
+            activeKey = name;
+            const { pagePermission } = this.rootState.app.main || {};
+            const hasPermission = isDevelopment ? true : pagePermission[localModules.nameToPath.get(name) || name];
+            const type = hasPermission ? ModuleStatus.EXIST : ModuleStatus.EXIST_NO_AUTH;
+            if (!hasTab) {
+                const newTab = {
+                    key: name,
+                    title,
+                    type,
+                };
+                newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
+            }
+        } else {
+            activeKey = keyPath;
+            if (!hasTab) {
+                const tabKey = keyPath;
+                const { pagePermission } = this.rootState.app.main || {};
+                console.log("---555");
+                const pageName = pagePermission[tabKey]?.name;
+                const newTab = {
+                    key: tabKey,
+                    title: pageName || "404-nofound",
+                    type: pageName ? ModuleStatus.DEVELOPING : ModuleStatus.NON_EXIST,
+                };
+                newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
+            }
+        }
+        this.setState({ headerTabs: newTabs, activeTabName: activeKey });
         // this.pushHistoryByActiveKey(activeKey);
     }
 
