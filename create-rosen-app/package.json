@@ -1,0 +1,14 @@
+{
+  "name": "create-rosen-app",
+  "version": "1.0.0",
+  "description": "Scaffold a new Rosen App project — yarn create rosen-app my-app",
+  "main": "index.js",
+  "bin": {
+    "create-rosen-app": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "template/"
+  ],
+  "license": "MIT"
+}
