@@ -8,8 +8,8 @@ import { gunzipSync, inflateSync } from 'zlib';
 import { get } from 'http';
 
 const LOG_FILE = join(__dirname, '../log.txt');
-const TARGET = 'http://120.24.232.253:50122';
-const STARTUP_URL = '/api/mobile/user/sendCode?phone=13381737850';
+const TARGET = 'http://120.24.232.253:9009';
+const STARTUP_URL = '/api/mobile/user/sendCode?phone=123';
 
 function log(entry: string): void {
   // try {
