@@ -9,7 +9,7 @@ import { When } from "components/when";
 import { header_height } from "config/static-constant";
 import { actions } from "module/common/menus";
 import type { RootState } from "type/rootState";
-import { joinLessPrefix } from "utils/framework";
+import { clickMenuToTab, joinLessPrefix } from "utils/framework";
 import { getPathByKey } from "utils/framework/path-mapping";
 import localModules from "utils/function/load-modules";
 import logoUrl from "asset/image/logo.svg";
@@ -46,9 +46,10 @@ function MeunComponent(props: MeunComponentProps) {
                         // selectedKeys={[selectKey || "home"]}
                         onClick={({ key = "" }) => {
                             // 是否有 模块path
-                            const cacheKey = key.startsWith("/") ? key : `/${key}`;
-                            const path = localModules.pathToName.get(cacheKey) || getPathByKey(cacheKey) || getPathByKey(key);
-                            pushHistory(path || cacheKey);
+                            // const cacheKey = key.startsWith("/") ? key : `/${key}`;
+                            // const path = localModules.pathToName.get(cacheKey) || getPathByKey(cacheKey) || getPathByKey(key);
+                            // pushHistory(path || cacheKey);
+                            clickMenuToTab(key);
                         }}
                         items={menus || []}
                         mode="inline"

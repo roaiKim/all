@@ -22,7 +22,7 @@ import type { State } from "./type";
 const initialMainState: State = {
     appLoadingStatus: "loading",
     navPermission: null,
-    pagePermission: null,
+    pagePermission: {},
     initialed: false,
 };
 
@@ -30,8 +30,9 @@ class MainModule extends Module<RootState, "main"> {
     @Loading("main")
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
         // 忽略登录，仅在开发环境生效
+        console.log("0", routeParam.location.pathname);
         if (shouldIgnoreLogin) {
-            this.setState({ appLoadingStatus: "done", initialed: true });
+            this.devPage(routeParam);
             return;
         }
         const isLogin = StorageService.get(WEB_IS_LOGIN);
@@ -94,6 +95,22 @@ class MainModule extends Module<RootState, "main"> {
             }
         } catch (e) {
             console.error("获取文档高度失败", e);
+        }
+    }
+
+    async devPage(routeParam: RouterParams) {
+        if (process.env.NODE_ENV === "development") {
+            const { default: permission } = await import("@project/JSON/meuns.json");
+            const navPermission = transformMeuns(permission);
+            this.setState({
+                initialed: true,
+                appLoadingStatus: "done",
+                navPermission,
+                pagePermission: getPagePermission(),
+            });
+            if (routeParam.location.pathname === "/login") {
+                this.pushHistory("/");
+            }
         }
     }
 }

@@ -27,6 +27,7 @@ const SET_STATE_ACTION = "@@framework/setState";
 export interface Action<P> extends OriginalReduxAction {
     payload: P;
     name?: typeof SET_STATE_ACTION;
+    [extraProps: string]: unknown;
 }
 
 // Redux Action: SetState (to update state.app)

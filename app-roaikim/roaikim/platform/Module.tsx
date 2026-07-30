@@ -1,6 +1,7 @@
 import { enablePatches, produce } from "immer";
 import type { Location } from "history";
 import type { Params } from "react-router";
+import type { ResolvedRouteState } from "./ModuleProxy";
 import { app } from "../app";
 import { pushHistory } from "../dispatch";
 import type { Logger } from "../Logger";
@@ -12,7 +13,7 @@ if (process.env.NODE_ENV === "development") enablePatches();
 export type PromiseGenerator<T = unknown> = T | Promise<T>;
 
 export type RouterLocation = Location;
-export type RouterParams<T extends string = string> = Params<T>;
+export type RouterParams = ResolvedRouteState; //<T extends string = string> = Params<T>;
 
 export interface ModuleLifecycleListener {
     onEnter: (params: RouterParams, location: RouterLocation) => PromiseGenerator;

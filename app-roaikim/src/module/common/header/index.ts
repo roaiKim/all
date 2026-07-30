@@ -67,7 +67,7 @@ class HeaderModule extends Module<RootState, "header"> {
             if (!hasTab) {
                 const tabKey = keyPath;
                 const { pagePermission } = this.rootState.app.main || {};
-                console.log("---555");
+                console.log("---555", pagePermission);
                 const pageName = pagePermission[tabKey]?.name;
                 const newTab = {
                     key: tabKey,

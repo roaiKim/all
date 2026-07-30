@@ -8,7 +8,7 @@ import { navigationPreventionAction, type State } from "../../reducer";
 import { stringifyWithMask } from "../../util/json-util";
 import { Module, type ModuleLifecycleListener } from "../Module";
 
-interface ResolvedRouteState {
+export interface ResolvedRouteState {
     isRouteComponent: boolean;
     location: Location | null;
     params: Params<string>;
