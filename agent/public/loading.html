@@ -1,0 +1,375 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --ro-solar-bg:
+        radial-gradient(circle at 50% 20%, rgb(255 210 120 / 15%), transparent 45%),
+        radial-gradient(circle at 20% 80%, rgb(110 170 255 / 18%), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgb(190 140 255 / 16%), transparent 42%),
+        #07080f;
+      --ro-solar-text: #e7ebff;
+      --ro-solar-ring: rgb(255 255 255 / 8%);
+      --ro-solar-sun: radial-gradient(circle, #fff6d6 0%, #ffd26c 40%, rgb(255 166 61 / 95%) 70%);
+      --ro-solar-sun-glow: 0 0 30px rgb(255 200 120 / 80%), 0 0 80px rgb(255 120 40 / 50%);
+      --ro-douyin-cyan: rgb(0 242 234 / 90%);
+      --ro-douyin-pink: rgb(255 0 80 / 88%);
+      --ro-douyin-glow-cyan: rgb(0 242 234 / 35%);
+      --ro-douyin-glow-pink: rgb(255 0 80 / 30%);
+      --ro-douyin-scanline: rgb(255 255 255 / 4%);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--ro-solar-bg);
+      color: var(--ro-solar-text);
+      font-family: "ZCOOL KuaiLe", "Alibaba PuHuiTi", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    .ro-solar-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      min-height: 100vh;
+      padding: 24px;
+      background: var(--ro-solar-bg);
+      color: var(--ro-solar-text);
+    }
+
+    .ro-solar-loading.is-light {
+      --ro-solar-bg:
+        radial-gradient(circle at 50% 0%, rgb(255 220 170 / 25%), transparent 45%),
+        radial-gradient(circle at 20% 80%, rgb(150 200 255 / 25%), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgb(210 170 255 / 22%), transparent 42%),
+        #f6f7fb;
+      --ro-solar-text: #3b3f5c;
+      --ro-solar-ring: rgb(60 72 120 / 8%);
+      --ro-solar-sun: radial-gradient(circle, #fff3d4 0%, #ffd89a 45%, rgb(255 179 78 / 95%) 75%);
+      --ro-solar-sun-glow: 0 0 24px rgb(255 198 120 / 60%), 0 0 50px rgb(255 140 40 / 35%);
+      --ro-douyin-cyan: rgb(0 186 180 / 82%);
+      --ro-douyin-pink: rgb(230 54 120 / 82%);
+      --ro-douyin-glow-cyan: rgb(0 186 180 / 24%);
+      --ro-douyin-glow-pink: rgb(230 54 120 / 20%);
+      --ro-douyin-scanline: rgb(59 63 92 / 4%);
+    }
+
+    .ro-solar-loading-shell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 32px 28px;
+      border-radius: 26px;
+      backdrop-filter: blur(12px);
+    }
+
+    .ro-solar-loading-system {
+      position: relative;
+      width: 420px;
+      height: 420px;
+    }
+
+    .ro-solar-loading-sun {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--ro-solar-sun);
+      box-shadow: var(--ro-solar-sun-glow);
+      animation: ro-solar-loading-sun-pulse 2.6s ease-in-out infinite;
+    }
+
+    .ro-solar-loading-orbit {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: calc(var(--ro-orbit-radius) * 2);
+      height: calc(var(--ro-orbit-radius) * 2);
+      border-radius: 50%;
+      border: 1px dashed var(--ro-solar-ring);
+      animation: ro-solar-loading-orbit var(--ro-orbit-duration) linear infinite;
+      transform: translate(-50%, -50%) rotate(var(--ro-orbit-offset, 0deg));
+    }
+
+    .ro-solar-loading-planet {
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      width: var(--ro-planet-size);
+      height: var(--ro-planet-size);
+      border-radius: 50%;
+      background: var(--ro-planet-color);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgb(255 255 255 / 20%);
+    }
+
+    .ro-solar-loading-planet.has-ring::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: calc(var(--ro-planet-size) * 1.8);
+      height: calc(var(--ro-planet-size) * 0.65);
+      border-radius: 50%;
+      border: 1px solid rgb(255 230 180 / 70%);
+      transform: translate(-50%, -50%) rotate(-18deg);
+    }
+
+    .ro-solar-loading-text {
+      opacity: 0.92;
+    }
+
+    .ro-douyin-loading {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: "ZCOOL KuaiLe", "Alibaba PuHuiTi", "PingFang SC", "Microsoft YaHei", sans-serif;
+      letter-spacing: 0.2em;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .ro-douyin-loading-text {
+      position: relative;
+      z-index: 2;
+      font-size: 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      text-shadow: 0 0 12px var(--ro-douyin-glow-cyan), 0 0 16px var(--ro-douyin-glow-pink);
+      animation: ro-douyin-loading-text-flicker 2s infinite steps(2, end);
+    }
+
+    .ro-douyin-loading-text::before,
+    .ro-douyin-loading-text::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.9;
+      mix-blend-mode: screen;
+      filter: blur(0.5px);
+    }
+
+    .ro-douyin-loading-text::before {
+      color: var(--ro-douyin-cyan);
+      transform: translate(-2px, -1px);
+      clip-path: inset(0 0 55% 0);
+      animation: ro-douyin-loading-glitch-1 1.7s infinite linear;
+    }
+
+    .ro-douyin-loading-text::after {
+      color: var(--ro-douyin-pink);
+      transform: translate(2px, 1px);
+      clip-path: inset(45% 0 0 0);
+      animation: ro-douyin-loading-glitch-2 2.1s infinite linear;
+    }
+
+    .ro-douyin-loading-subtext {
+      position: relative;
+      z-index: 2;
+      font-size: 12px;
+      letter-spacing: 0.35em;
+      opacity: 0.65;
+    }
+
+    .ro-douyin-loading-scanlines {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          var(--ro-douyin-scanline),
+          var(--ro-douyin-scanline) 1px,
+          rgb(0 0 0 / 0%) 1px,
+          rgb(0 0 0 / 0%) 3px
+        );
+      opacity: 0.35;
+      mix-blend-mode: overlay;
+      animation: ro-douyin-loading-jitter 0.9s steps(2, end) infinite;
+      z-index: 1;
+    }
+
+    @keyframes ro-solar-loading-orbit {
+      from {
+        transform: translate(-50%, -50%) rotate(var(--ro-orbit-offset, 0deg));
+      }
+      to {
+        transform: translate(-50%, -50%) rotate(calc(var(--ro-orbit-offset, 0deg) + 360deg));
+      }
+    }
+
+    @keyframes ro-solar-loading-sun-pulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(0.95);
+        opacity: 0.85;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 1;
+      }
+    }
+
+    @keyframes ro-douyin-loading-text-flicker {
+      0%, 100% { opacity: 0.75; }
+      15% { opacity: 0.95; }
+      30% { opacity: 0.6; }
+      45% { opacity: 0.9; }
+      60% { opacity: 0.7; }
+      75% { opacity: 1; }
+    }
+
+    @keyframes ro-douyin-loading-jitter {
+      0% {
+        transform: translateY(0);
+        opacity: 0.25;
+      }
+      50% {
+        transform: translateY(1px);
+        opacity: 0.45;
+      }
+      100% {
+        transform: translateY(-1px);
+        opacity: 0.3;
+      }
+    }
+
+    @keyframes ro-douyin-loading-glitch-1 {
+      0%, 100% {
+        clip-path: inset(0 0 55% 0);
+        transform: translate(-2px, -1px);
+        opacity: 0.85;
+      }
+      20% {
+        clip-path: inset(10% 0 40% 0);
+        transform: translate(-4px, 0);
+        opacity: 0.7;
+      }
+      40% {
+        clip-path: inset(0 0 70% 0);
+        transform: translate(-1px, -1px);
+        opacity: 0.95;
+      }
+      60% {
+        clip-path: inset(20% 0 35% 0);
+        transform: translate(-3px, 1px);
+        opacity: 0.75;
+      }
+      80% {
+        clip-path: inset(0 0 50% 0);
+        transform: translate(-2px, -2px);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes ro-douyin-loading-glitch-2 {
+      0%, 100% {
+        clip-path: inset(45% 0 0 0);
+        transform: translate(2px, 1px);
+        opacity: 0.85;
+      }
+      25% {
+        clip-path: inset(60% 0 0 0);
+        transform: translate(4px, 0);
+        opacity: 0.65;
+      }
+      50% {
+        clip-path: inset(35% 0 10% 0);
+        transform: translate(1px, 2px);
+        opacity: 0.95;
+      }
+      75% {
+        clip-path: inset(55% 0 0 0);
+        transform: translate(3px, -1px);
+        opacity: 0.7;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .ro-solar-loading-system {
+        width: 300px;
+        height: 300px;
+      }
+
+      .ro-douyin-loading-text {
+        font-size: 16px;
+        letter-spacing: 0.18em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ro-solar-loading is-light" role="status" aria-live="polite">
+    <div class="ro-solar-loading-shell">
+      <div class="ro-solar-loading-system" aria-hidden="true">
+        <div class="ro-solar-loading-sun"></div>
+
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 40px; --ro-orbit-duration: 2.2s; --ro-orbit-offset: 18deg;">
+          <span class="ro-solar-loading-planet" style="--ro-planet-size: 6px; --ro-planet-color: #c9b8a5;"></span>
+        </div>
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 56px; --ro-orbit-duration: 2.3s; --ro-orbit-offset: 64deg;">
+          <span class="ro-solar-loading-planet" style="--ro-planet-size: 8px; --ro-planet-color: #e8c27a;"></span>
+        </div>
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 76px; --ro-orbit-duration: 3.6s; --ro-orbit-offset: 0deg;">
+          <span class="ro-solar-loading-planet" style="--ro-planet-size: 9px; --ro-planet-color: #6fb6ff;"></span>
+        </div>
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 94px; --ro-orbit-duration: 6.77s; --ro-orbit-offset: 132deg;">
+          <span class="ro-solar-loading-planet" style="--ro-planet-size: 7px; --ro-planet-color: #f1a07a;"></span>
+        </div>
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 122px; --ro-orbit-duration: 42.7s; --ro-orbit-offset: 210deg;">
+          <span class="ro-solar-loading-planet" style="--ro-planet-size: 14px; --ro-planet-color: #f3c7a1;"></span>
+        </div>
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 150px; --ro-orbit-duration: 106.06s; --ro-orbit-offset: 280deg;">
+          <span class="ro-solar-loading-planet has-ring" style="--ro-planet-size: 12px; --ro-planet-color: #f6d08a;"></span>
+        </div>
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 176px; --ro-orbit-duration: 302.44s; --ro-orbit-offset: 320deg;">
+          <span class="ro-solar-loading-planet" style="--ro-planet-size: 10px; --ro-planet-color: #9fe0ff;"></span>
+        </div>
+        <div class="ro-solar-loading-orbit" style="--ro-orbit-radius: 200px; --ro-orbit-duration: 593.28s; --ro-orbit-offset: 24deg;">
+          <span class="ro-solar-loading-planet" style="--ro-planet-size: 10px; --ro-planet-color: #6f8bff;"></span>
+        </div>
+      </div>
+
+      <div class="ro-solar-loading-text">
+        <div class="ro-douyin-loading">
+          <span class="ro-douyin-loading-scanlines" aria-hidden="true"></span>
+          <span class="ro-douyin-loading-text" data-text="Starting up"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 需要亮色主题时，把上面的 ro-solar-loading 改成 ro-solar-loading is-light -->
+  <!-- To enable the light theme, change the root class above to: ro-solar-loading is-light -->
+  <script>
+    (function () {
+      var textNode = document.querySelector(".ro-douyin-loading-text");
+      if (!textNode) return;
+
+      var language = (navigator.language || "").toLowerCase();
+      var zh = language.startsWith("zh");
+      var text = zh ? "正在启动" : "Starting up";
+
+      textNode.textContent = text; 
+    })();
+  </script>
+</body>
+</html>

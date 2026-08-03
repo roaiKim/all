@@ -1,0 +1,143 @@
+.@{less-name}-solar-loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--chameleon-solar-bg);
+  z-index: 999;
+  color: var(--chameleon-solar-text);
+  font-family: "ZCOOL KuaiLe", "Alibaba PuHuiTi", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  --chameleon-solar-bg:
+    radial-gradient(circle at 50% 20%, rgb(255 210 120 / 15%), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgb(110 170 255 / 18%), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgb(190 140 255 / 16%), transparent 42%),
+    #07080f;
+  --chameleon-solar-text: #e7ebff;
+  --chameleon-solar-shell: rgb(10 12 20 / 72%);
+  --chameleon-solar-border: rgb(255 255 255 / 8%);
+  --chameleon-solar-ring: rgb(255 255 255 / 8%);
+  --chameleon-solar-sun: radial-gradient(circle, #fff6d6 0%, #ffd26c 40%, rgb(255 166 61 / 95%) 70%);
+  --chameleon-solar-sun-glow: 0 0 30px rgb(255 200 120 / 80%), 0 0 80px rgb(255 120 40 / 50%);
+}
+
+.@{less-name}-solar-loading-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 32px 28px;
+  border-radius: 26px;
+  // background: var(--chameleon-solar-shell);
+  // border: 1px solid var(--chameleon-solar-border);
+  // box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+}
+
+.@{less-name}-solar-loading-system {
+  position: relative;
+  width: 420px;
+  height: 420px;
+}
+
+.@{less-name}-solar-loading-sun {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--chameleon-solar-sun);
+  box-shadow: var(--chameleon-solar-sun-glow);
+  animation: ball-solar-loading-sun-pulse 2.6s ease-in-out infinite;
+}
+
+.@{less-name}-solar-loading-orbit {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: calc(var(--chameleon-orbit-radius) * 2);
+  height: calc(var(--chameleon-orbit-radius) * 2);
+  border-radius: 50%;
+  border: 1px dashed var(--chameleon-solar-ring);
+  animation: ball-solar-loading-orbit var(--chameleon-orbit-duration) linear infinite;
+}
+
+.@{less-name}-solar-loading-planet {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  width: var(--chameleon-planet-size);
+  height: var(--chameleon-planet-size);
+  border-radius: 50%;
+  background: var(--chameleon-planet-color);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgb(255 255 255 / 20%);
+}
+
+.@{less-name}-solar-loading-planet.has-ring::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: calc(var(--chameleon-planet-size) * 1.8);
+  height: calc(var(--chameleon-planet-size) * 0.65);
+  border-radius: 50%;
+  border: 1px solid rgb(255 230 180 / 70%);
+  transform: translate(-50%, -50%) rotate(-18deg);
+}
+
+.@{less-name}-solar-loading-text {
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 14px;
+  opacity: 0.78;
+}
+
+.@{less-name}-solar-loading.is-light {
+  --chameleon-solar-bg:
+    radial-gradient(circle at 50% 0%, rgb(255 220 170 / 25%), transparent 45%),
+    radial-gradient(circle at 20% 80%, rgb(150 200 255 / 25%), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgb(210 170 255 / 22%), transparent 42%),
+    #f6f7fb;
+  --chameleon-solar-text: #3b3f5c;
+  --chameleon-solar-shell: rgb(255 255 255 / 90%);
+  --chameleon-solar-border: rgb(60 72 120 / 12%);
+  --chameleon-solar-ring: rgb(60 72 120 / 8%);
+  --chameleon-solar-sun: radial-gradient(circle, #fff3d4 0%, #ffd89a 45%, rgb(255 179 78 / 95%) 75%);
+  --chameleon-solar-sun-glow: 0 0 24px rgb(255 198 120 / 60%), 0 0 50px rgb(255 140 40 / 35%);
+}
+
+@keyframes ball-solar-loading-orbit {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--chameleon-orbit-offset, 0deg));
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(calc(var(--chameleon-orbit-offset, 0deg) + 360deg));
+  }
+}
+
+@keyframes ball-solar-loading-sun-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.95);
+    opacity: 0.85;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .@{less-name}-solar-loading-system {
+    width: 300px;
+    height: 300px;
+  }
+
+  .@{less-name}-solar-loading-text {
+    letter-spacing: 0.18em;
+  }
+}

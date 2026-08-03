@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ch">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/avatar.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>roaikim</title>
+    <style>
+      #main-loading-iframe iframe {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 999999;
+        border: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body class="main-web">
+    <div id="main-loading-iframe">
+      <iframe
+        src="/loading.html"
+        frameborder="0"
+        style="border: none"
+        loading="eager"
+        allow="accelerometer; autoplay; clipboard-write"
+      >
+      </iframe>
+    </div>
+    <div id="app-root"></div>
+  </body>
+</html>

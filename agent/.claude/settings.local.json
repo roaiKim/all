@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx electron *)",
+      "Bash(npx tsc *)",
+      "Bash(where electron *)",
+      "Bash(npx cross-env *)",
+      "Bash(npx concurrently *)",
+      "Bash(cat \"C:\\\\\\\\Users\\\\\\\\鱼\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\claude\\\\\\\\F--a-work-all-agent\\\\\\\\319d280a-24ff-42ad-97ae-f674265151a5\\\\\\\\tasks\\\\\\\\bwkgz0h3s.output\")",
+      "Bash(cat \"C:\\\\\\\\Users\\\\\\\\鱼\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\claude\\\\\\\\F--a-work-all-agent\\\\\\\\319d280a-24ff-42ad-97ae-f674265151a5\\\\\\\\tasks\\\\\\\\bvw0paye2.output\")",
+      "Bash(npx kill-port *)",
+      "Bash(cat \"C:\\\\\\\\Users\\\\\\\\鱼\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\claude\\\\\\\\F--a-work-all-agent\\\\\\\\319d280a-24ff-42ad-97ae-f674265151a5\\\\\\\\tasks\\\\\\\\brpajbgj9.output\")",
+      "Bash(npm install *)",
+      "Bash(taskkill //F //IM electron.exe)"
+    ]
+  }
+}
