@@ -28,7 +28,7 @@ class HeaderModule extends Module<RootState, "header"> {
         const { location } = this.rootState.router;
         const pathname = (location as any).pathname || "";
         const name = pathname; //.replace(/^\/|\/$/g, "");
-        console.log("---333");
+        console.log("---333", name);
         // this.pushTab(name);
         console.log("Header-onEnter", name, dayjs().format("YYYY-MM-DD HH:mm:ss"));
         this.pushHistoryByActiveKey(name);

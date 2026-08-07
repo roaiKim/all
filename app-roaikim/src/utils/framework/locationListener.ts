@@ -1,7 +1,7 @@
 import { dispatchAction } from "@core";
 import { actions } from "module/common/header/index";
 
-export const ignoreName = ["login"];
+export const ignoreName = ["/", "login"];
 
 export default function locationListener(location) {
     console.log("----location----", location);
