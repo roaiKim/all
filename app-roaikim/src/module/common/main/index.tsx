@@ -30,7 +30,7 @@ class MainModule extends Module<RootState, "main"> {
     @Loading("main")
     async onEnter(routeParam: RouterParams, location: RouterLocation) {
         // 忽略登录，仅在开发环境生效
-        console.log("0", routeParam.location.pathname);
+        // console.log("0", routeParam.location.pathname);
         if (shouldIgnoreLogin) {
             this.devPage(routeParam);
             return;

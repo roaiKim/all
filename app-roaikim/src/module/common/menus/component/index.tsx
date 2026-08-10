@@ -44,12 +44,13 @@ function MeunComponent(props: MeunComponentProps) {
                 <div className={joinLessPrefix("meuns-container")}>
                     <Menu
                         // selectedKeys={[selectKey || "home"]}
-                        onClick={({ key = "" }) => {
+                        onClick={(par) => {
                             // 是否有 模块path
                             // const cacheKey = key.startsWith("/") ? key : `/${key}`;
                             // const path = localModules.pathToName.get(cacheKey) || getPathByKey(cacheKey) || getPathByKey(key);
                             // pushHistory(path || cacheKey);
-                            clickMenuToTab(key);
+                            console.log("菜单点击", par);
+                            clickMenuToTab(par.key);
                         }}
                         items={menus || []}
                         mode="inline"

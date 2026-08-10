@@ -28,9 +28,9 @@ class HeaderModule extends Module<RootState, "header"> {
         const { location } = this.rootState.router;
         const pathname = (location as any).pathname || "";
         const name = pathname; //.replace(/^\/|\/$/g, "");
-        console.log("---333", name);
+        console.log("--header-main--", name);
         // this.pushTab(name);
-        console.log("Header-onEnter", name, dayjs().format("YYYY-MM-DD HH:mm:ss"));
+        // console.log("Header-onEnter", name, dayjs().format("YYYY-MM-DD HH:mm:ss"));
         this.pushHistoryByActiveKey(name);
     }
 
@@ -49,14 +49,14 @@ class HeaderModule extends Module<RootState, "header"> {
         // 有本地模块
         if (cacheModule) {
             // const { module } = cacheModule;
-            const { name, title } = cacheModule;
-            activeKey = name;
+            const { path, title } = cacheModule;
+            activeKey = path;
             const { pagePermission } = this.rootState.app.main || {};
-            const hasPermission = isDevelopment ? true : pagePermission[localModules.nameToPath.get(name) || name];
+            const hasPermission = isDevelopment ? true : pagePermission[localModules.nameToPath.get(path) || path];
             const type = hasPermission ? ModuleStatus.EXIST : ModuleStatus.EXIST_NO_AUTH;
             if (!hasTab) {
                 const newTab = {
-                    key: name,
+                    key: path,
                     title,
                     type,
                 };

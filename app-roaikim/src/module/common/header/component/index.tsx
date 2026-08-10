@@ -108,7 +108,7 @@ function Header(props: HeaderProps) {
         if (!tabContainerRef.current) return;
         tabContainerRef.current.scrollLeft += event.deltaY;
     };
-
+    console.log("header-tabs", headerTabs);
     return (
         <header className={joinLessPrefix("header-module")}>
             <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }} ref={tabContainerRef} onWheel={tabContainerWheel}>
@@ -119,8 +119,9 @@ function Header(props: HeaderProps) {
                                 key={item.key}
                                 activeTabName={activeTabName}
                                 tab={item}
-                                onClick={({ key }) => {
-                                    clickMenuToTab(key);
+                                onClick={(par) => {
+                                    console.log("header-点击", par.key);
+                                    clickMenuToTab(par.key);
                                 }}
                                 onClose={() => {}}
                             />

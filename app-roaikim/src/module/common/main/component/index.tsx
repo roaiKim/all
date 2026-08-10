@@ -23,11 +23,11 @@ function Main(props: MainProps) {
     useEffect(() => {
         if (appLoadingStatus === "done" || appLoadingStatus === "error") {
             setInitialed(true);
-            console.log("---222");
+            // console.log("---222");
             removeMainLoading();
         }
     }, [appLoadingStatus]);
-    console.log("---111");
+    // console.log("---111");
     return (
         <ConfigProvider prefixCls={lessPrefixName} theme={{ cssVar: { prefix: lessPrefixName } }}>
             <When when={initialed}>
