@@ -1,6 +1,6 @@
 import { Module, pushHistory, register } from "@core";
 import dayjs from "dayjs";
-import { isDevelopment, WEB_USERNAME } from "config/static-constant";
+import { isDevelopment, NON_EXIST_PATH, WEB_USERNAME } from "config/static-constant";
 import type { RootState } from "type/rootState";
 import localModules from "utils/function/load-modules";
 // import { deafaultTabs, modulesCache, nameToPath } from "utils/function/loadComponent";
@@ -11,10 +11,10 @@ import { type HeaderTab, ModuleStatus } from "./type";
 const initialHeaderState = {
     userName: null,
     prevPathname: null,
-    activeTabName: "home",
+    activeTabName: "/home",
     headerTabs: [
         {
-            key: "home",
+            key: "/home",
             title: "首页",
             type: ModuleStatus.EXIST,
             noClosed: true,
@@ -29,8 +29,6 @@ class HeaderModule extends Module<RootState, "header"> {
         const pathname = (location as any).pathname || "";
         const name = pathname; //.replace(/^\/|\/$/g, "");
         console.log("--header-main--", name);
-        // this.pushTab(name);
-        // console.log("Header-onEnter", name, dayjs().format("YYYY-MM-DD HH:mm:ss"));
         this.pushHistoryByActiveKey(name);
     }
 
@@ -43,7 +41,6 @@ class HeaderModule extends Module<RootState, "header"> {
         if (!keyPath || keyPath === activeTabName) return;
         const cacheModule = localModules.systemModules.get(keyPath);
         const currentTabIndex = headerTabs.findIndex((item) => item.key === activeTabName);
-        const hasTab = headerTabs.find((item) => item.key === keyPath);
         let activeKey = activeTabName;
         const newTabs = [...headerTabs];
         // 有本地模块
@@ -54,6 +51,7 @@ class HeaderModule extends Module<RootState, "header"> {
             const { pagePermission } = this.rootState.app.main || {};
             const hasPermission = isDevelopment ? true : pagePermission[localModules.nameToPath.get(path) || path];
             const type = hasPermission ? ModuleStatus.EXIST : ModuleStatus.EXIST_NO_AUTH;
+            const hasTab = headerTabs.find((item) => item.key === keyPath);
             if (!hasTab) {
                 const newTab = {
                     key: path,
@@ -63,15 +61,15 @@ class HeaderModule extends Module<RootState, "header"> {
                 newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);
             }
         } else {
-            activeKey = keyPath;
+            activeKey = NON_EXIST_PATH;
+            const hasTab = headerTabs.find((item) => item.key === activeKey);
             if (!hasTab) {
-                const tabKey = keyPath;
+                const tabKey = NON_EXIST_PATH;
                 const { pagePermission } = this.rootState.app.main || {};
-                console.log("---555", pagePermission);
                 const pageName = pagePermission[tabKey]?.name;
                 const newTab = {
                     key: tabKey,
-                    title: pageName || "404-nofound",
+                    title: pageName || "404-Nofound",
                     type: pageName ? ModuleStatus.DEVELOPING : ModuleStatus.NON_EXIST,
                 };
                 newTabs.splice((currentTabIndex || 0) + 1, 0, newTab);

@@ -27,3 +27,5 @@ export const LOGIN_REMEMBER_PASSWORD = "LOGIN_REMEMBER_PASSWORD";
 export const header_height = 65;
 
 export const MENU_COLLAPSED = "MENU_COLLAPSED";
+
+export const NON_EXIST_PATH = "/non_exist_path";
