@@ -194,24 +194,25 @@ if (fs.existsSync(targetPath)) {
 // 第三步：定位模板目录
 // ============================================================================
 /**
- * __dirname 是当前脚本文件所在的绝对目录
- * template/ 是同目录下的模板文件夹（即 app-bot 项目去掉 node_modules 等后的副本）
+ * __dirname 是当前脚本文件所在的绝对目录（create-rosen-app/）
+ * 模板直接指向同仓库下的 app-roaikim 项目，执行时实时从中拉取，
+ * 这样模板有任何改动都能立刻生效，无需每次手动复制。
  *
  * 结构示意：
- *   create-rosen-app/
- *   ├── index.js          ← 本文件（__dirname = 这里）
- *   ├── package.json
- *   └── template/         ← 模板目录
+ *   all/
+ *   ├── create-rosen-app/
+ *   │   └── index.js       ← 本文件（__dirname = 这里）
+ *   └── app-roaikim/       ← 模板源目录
  *       ├── src/
  *       ├── roaikim/
  *       └── ...
  */
-const templatePath = path.resolve(__dirname, "template");
+const templatePath = path.resolve(__dirname, "../app-roaikim");
 
-// 模板目录不存在 = 包安装不完整或被损坏，直接拒绝执行
+// 模板源目录不存在 = 路径不对或仓库结构变化，直接拒绝执行
 if (!fs.existsSync(templatePath)) {
   console.error(
-    "❌ Template directory not found. The package may be corrupted."
+    "❌ Template directory not found. Please make sure app-roaikim exists next to create-rosen-app."
   );
   process.exit(1);
 }
@@ -236,6 +237,8 @@ const skipFiles = new Set([
   "node_modules",
   "dist",
   ".git",
+  ".claude",
+  "core",
   "yarn.lock",
   "AGENTS.md",
   "CLAUDE.md",
