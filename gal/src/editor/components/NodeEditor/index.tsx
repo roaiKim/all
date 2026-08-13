@@ -4,7 +4,7 @@ import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../../stores/projectStore';
 import { useEditorStore } from '../../stores/editorStore';
 import { v4 as uuid } from 'uuid';
-import type { Scene, SceneType, Choice } from '@shared/types/game';
+import type { Scene, Choice } from '@shared/types/game';
 
 /**
  * NodeEditor — right sidebar panel for editing the selected scene's properties.

@@ -148,6 +148,39 @@ export class GameEngine {
     this.emit();
   }
 
+  /**
+   * Hot-reload project data (for editor live preview).
+   * Preserves the current scene and variable values where possible,
+   * so editing a scene refreshes the preview without losing progress.
+   */
+  reloadProject(project: GameProject): void {
+    this.project = project;
+
+    // Merge variables: keep existing values, apply defaults for new vars
+    const newVars = this.initVariables();
+    for (const [id, val] of Object.entries(this.state.variables)) {
+      if (id in newVars) newVars[id] = val;
+    }
+    this.state.variables = newVars;
+
+    // If the current scene was deleted, fall back to the first scene
+    if (!this.project.scenes.some((s) => s.id === this.state.currentSceneId)) {
+      this.state.currentSceneId = this.project.meta.firstSceneId;
+    }
+
+    this.emit();
+  }
+
+  /** Jump to a specific scene (for "preview from current scene") */
+  jumpTo(sceneId: string): void {
+    if (!this.project.scenes.some((s) => s.id === sceneId)) return;
+    this.state.currentSceneId = sceneId;
+    this.state.history = [];
+    this.state.isPlaying = true;
+    this.state.isPaused = false;
+    this.emit();
+  }
+
   /** Cleanup */
   destroy(): void {
     this.listeners.clear();

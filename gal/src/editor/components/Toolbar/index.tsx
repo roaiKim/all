@@ -1,25 +1,21 @@
 import { useCallback } from 'react';
-import { Button, Space, message } from 'antd';
+import { Button, Space, message, Tooltip } from 'antd';
 import {
   SaveOutlined,
-  PlayCircleOutlined,
   ExportOutlined,
   FileAddOutlined,
   UndoOutlined,
-  SendOutlined,
+  PlayCircleOutlined,
 } from '@ant-design/icons';
 import { useProjectStore } from '../../stores/projectStore';
 import { useEditorStore } from '../../stores/editorStore';
-import { broadcastPreview } from '@shared/utils/broadcast';
 
 /**
  * Top toolbar with main actions:
- * - New / Save / Preview / Export
+ * - New / Demo / Save / Export
  *
- * Preview modes:
- * - Tauri desktop: opens a new OS window (via Rust IPC)
- * - Browser dev:   sends data via BroadcastChannel to the player tab
- * - Fallback:       opens inline bottom panel
+ * 预览已内嵌在右侧面板（实时同步），无需按钮。
+ * 「全屏试玩」按钮用于在独立窗口中以完整播放器体验游戏（可选）。
  */
 export function Toolbar() {
   const project = useProjectStore((s) => s.project);
@@ -28,7 +24,6 @@ export function Toolbar() {
   const loadDemo = useProjectStore((s) => s.loadDemo);
   const newProject = useProjectStore((s) => s.newProject);
   const getValidationErrors = useProjectStore((s) => s.getValidationErrors);
-  const togglePreviewPanel = useEditorStore((s) => s.togglePreviewPanel);
   const toggleExportDialog = useEditorStore((s) => s.toggleExportDialog);
 
   const handleSave = useCallback(async () => {
@@ -60,33 +55,15 @@ export function Toolbar() {
     }
   }, [project, filePath, getValidationErrors]);
 
-  const handlePreview = useCallback(async () => {
-    // Strategy 1: Tauri desktop — open new OS window
+  // 可选：在独立 Tauri 窗口中全屏试玩（完整播放器 UI）
+  const handleFullscreenPreview = useCallback(async () => {
     try {
       const { invoke } = await import('@tauri-apps/api/core');
       await invoke('open_preview', { gameData: project });
-      message.success('已打开预览窗口');
-      return;
     } catch {
-      // Not in Tauri, try browser dev approaches
+      message.info('全屏试玩需要在 Tauri 桌面环境（yarn tauri dev）');
     }
-
-    // Strategy 2: Browser dev — BroadcastChannel to player tab
-    try {
-      broadcastPreview(project);
-      message.success(
-        '已推送到播放器标签页！请打开 http://localhost:1420/player/index.html',
-        3,
-      );
-      return;
-    } catch {
-      // BroadcastChannel not available (very old browser)
-    }
-
-    // Strategy 3: Fallback — inline bottom panel
-    togglePreviewPanel(true);
-    message.info('使用内置预览面板（建议打开播放器标签页以获得完整体验）');
-  }, [project, togglePreviewPanel]);
+  }, [project]);
 
   return (
     <div className="editor-toolbar">
@@ -108,9 +85,11 @@ export function Toolbar() {
         <Button icon={<SaveOutlined />} onClick={handleSave} type="primary" size="small">
           保存 {isDirty && '*'}
         </Button>
-        <Button icon={<PlayCircleOutlined />} onClick={handlePreview} size="small">
-          预览
-        </Button>
+        <Tooltip title="在独立窗口中全屏试玩（完整播放器）">
+          <Button icon={<PlayCircleOutlined />} onClick={handleFullscreenPreview} size="small">
+            全屏试玩
+          </Button>
+        </Tooltip>
         <Button icon={<ExportOutlined />} onClick={() => toggleExportDialog(true)} size="small">
           导出
         </Button>
