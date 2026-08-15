@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p create-rosen-app/template)",
+      "Bash(cp -r app-roaikim/. create-rosen-app/template/)",
+      "Read(//f/tmp/**)",
+      "Bash(rm -rf __rosen_smoke__)",
+      "Bash(node F:/a_work/all/create-rosen-app/index.js __rosen_smoke__)",
+      "Read(//tmp/**)",
+      "Read(//tmp/__rosen_smoke__/**)",
+      "Bash(rm -rf /tmp/__rosen_smoke__)",
+      "Bash(rm -rf rosen-smoke-test)",
+      "Bash(node F:/a_work/all/create-rosen-app/index.js rosen-smoke-test)",
+      "Bash(ls -la .git)",
+      "Bash(ls -la .claude)",
+      "Bash(du -sh node_modules dist)",
+      "Bash(yarn --version)",
+      "Bash(yarn install *)",
+      "Bash(npx electron *)",
+      "Bash(ELECTRON_MIRROR=\"https://npmmirror.com/mirrors/electron/\" node node_modules/electron/install.js)"
+    ]
+  }
+}

@@ -1,0 +1,233 @@
+import { app } from "./app";
+import { APIException, Exception, JavaScriptException, NetworkConnectionException } from "./Exception";
+import { loggerContext } from "./platform/logger-context";
+import { errorToException } from "./util/error-util";
+
+type LogResult = "OK" | "WARN" | "ERROR";
+
+interface Log {
+    date: string;
+    action: string;
+    result: LogResult;
+    elapsedTime: number;
+    context: { [key: string]: string }; // Indexed data for Elastic Search, key in lowercase with underscore, e.g: some_field
+    info: { [key: string]: string }; // Text data for view only, key in lowercase with underscore, e.g: some_field
+    stats: { [key: string]: number }; // Numerical data for Elastic Search and statistics, key in lowercase with underscore, e.g: some_field
+    errorCode?: string | undefined; // Naming in uppercase with underscore, e.g: SOME_ERROR
+    errorMessage?: string | undefined;
+}
+
+interface InfoLogEntry {
+    action: string;
+    elapsedTime?: number | undefined;
+    info?: { [key: string]: string | undefined };
+    stats?: { [key: string]: number | undefined };
+    context?: { [key: string]: string | undefined };
+}
+
+interface ErrorLogEntry extends InfoLogEntry {
+    errorCode: string;
+    errorMessage: string;
+}
+
+/**
+ * If eventLogger config is provided in non-DEV environment.
+ * All collected logs will automatically sent to {serverURL} in a regular basis.
+ *
+ * The request will be PUT to the server in the following format:
+ *      {events: Log[]}
+ */
+export interface LoggerConfig {
+    serverURL: string;
+    slowStartupThresholdInSecond?: number; // Default: 5
+    frequencyInSecond?: number; // Default: 20
+    maskedKeywords?: RegExp[];
+}
+
+export interface Logger {
+    addContext(context: { [key: string]: string | (() => string) }): void;
+    removeContext(key: string): void;
+    info(entry: InfoLogEntry): void;
+    warn(data: ErrorLogEntry): void;
+    error(data: ErrorLogEntry): void;
+}
+
+export class LoggerImpl implements Logger {
+    private contextMap: { [key: string]: string | (() => string) } = {};
+    private logQueue: Log[] = [];
+    private collectPosition = 0;
+
+    constructor() {
+        this.contextMap = loggerContext;
+    }
+
+    addContext(context: { [key: string]: string | (() => string) }): void {
+        const newContextMap = { ...this.contextMap, ...context };
+        const contextSize = Object.keys(newContextMap).length;
+        if (contextSize > 20) {
+            console.warn(`[framework] Logger context size ${contextSize} is too large`);
+        }
+        this.contextMap = newContextMap;
+    }
+
+    removeContext(key: string): void {
+        if (this.contextMap[key] !== undefined) {
+            delete this.contextMap[key];
+        } else {
+            console.warn(`[framework] Logger context key ${key} does not exist`);
+        }
+    }
+
+    info(entry: InfoLogEntry): void {
+        this.createLog("OK", entry);
+    }
+
+    warn(entry: ErrorLogEntry): void {
+        this.createLog("WARN", entry);
+    }
+
+    error(entry: ErrorLogEntry): void {
+        this.createLog("ERROR", entry);
+    }
+
+    exception(exception: Exception, entry: InfoLogEntry): void {
+        let isWarning: boolean;
+        let errorCode: string;
+        const info: { [key: string]: string | undefined } = entry.info || {};
+
+        if (exception instanceof NetworkConnectionException) {
+            isWarning = true;
+            errorCode = "NETWORK_FAILURE";
+            info["api_url"] = exception.requestURL;
+            info["original_message"] = exception.originalErrorMessage;
+        } else if (exception instanceof APIException) {
+            if (exception.statusCode === 400 && exception.errorCode === "VALIDATION_ERROR") {
+                isWarning = false;
+                errorCode = "API_VALIDATION_ERROR";
+            } else {
+                isWarning = true;
+                errorCode = `API_ERROR_${exception.statusCode}`;
+            }
+            info["api_url"] = exception.requestURL;
+            info["api_response"] = JSON.stringify(exception.responseData);
+            if (exception.errorId) {
+                info["api_error_id"] = exception.errorId;
+            }
+            if (exception.errorCode) {
+                info["api_error_code"] = exception.errorCode;
+            }
+        } else if (exception instanceof JavaScriptException) {
+            isWarning = false;
+            errorCode = "JAVASCRIPT_ERROR";
+            info["app_state"] = JSON.stringify(app.store.getState().app);
+        } else {
+            console.warn("[framework] Exception class should not be extended, throw Error instead");
+            isWarning = false;
+            errorCode = "JAVASCRIPT_ERROR";
+        }
+
+        this.createLog(isWarning ? "WARN" : "ERROR", {
+            ...entry,
+            errorCode,
+            errorMessage: exception.message,
+            info,
+        });
+    }
+
+    collect(maxSize: number = 0): ReadonlyArray<Log> {
+        const totalLength = this.logQueue.length;
+        if (maxSize > 0 && maxSize < totalLength) {
+            this.collectPosition = maxSize;
+            return this.logQueue.slice(0, maxSize);
+        } else {
+            this.collectPosition = totalLength;
+            return this.logQueue;
+        }
+    }
+
+    emptyLastCollection(): void {
+        this.logQueue = this.logQueue.slice(this.collectPosition);
+    }
+
+    private createLog(result: "OK", entry: InfoLogEntry): void;
+    private createLog(result: "ERROR" | "WARN", entry: ErrorLogEntry): void;
+    private createLog(result: LogResult, entry: InfoLogEntry | ErrorLogEntry): void {
+        if (result === "OK") {
+            const errorEntry = entry as ErrorLogEntry; // function overloading for type safety
+            if (this.isContinuousDuplicateError(errorEntry.action, errorEntry.errorCode, errorEntry.errorMessage)) {
+                return;
+            }
+        }
+
+        // Generate context
+        const context: { [key: string]: string } = {};
+        Object.entries(this.contextMap).forEach(([key, value]) => {
+            if (typeof value === "string") {
+                context[key] = value.substring(0, 1000);
+            } else {
+                try {
+                    context[key] = value();
+                } catch (e) {
+                    const message = errorToException(e).message;
+                    context[key] = "ERR# " + message;
+                    console.warn("[framework] Fail to execute logger context: " + message);
+                }
+            }
+        });
+        if (entry.context) {
+            Object.entries(entry.context).forEach(([key, value]) => {
+                if (typeof value === "string") {
+                    context[key] = value.substring(0, 1000);
+                }
+            });
+        }
+
+        // Generate info
+        const info: { [key: string]: string } = {};
+        if (entry.info) {
+            Object.entries(entry.info).forEach(([key, value]) => {
+                if (value !== undefined) {
+                    const isBuiltinInfo = ["app_state", "stacktrace", "extra_stacktrace"].includes(key);
+                    const stringValue = value.toString();
+                    info[key] = isBuiltinInfo ? stringValue.substring(0, 500000) : stringValue.substring(0, 500);
+                }
+            });
+        }
+
+        // Generate stats
+        const stats: { [key: string]: number } = {};
+        if (entry.stats) {
+            Object.entries(entry.stats).map(([key, value]) => {
+                if (value !== undefined) {
+                    stats[key] = value;
+                }
+            });
+        }
+
+        const event: Log = {
+            date: new Date().toISOString(),
+            action: entry.action,
+            elapsedTime: entry.elapsedTime || 0,
+            result,
+            context,
+            info,
+            stats,
+            errorCode: "errorCode" in entry ? entry.errorCode : undefined,
+            errorMessage: "errorMessage" in entry ? entry.errorMessage.substring(0, 1000) : undefined,
+        };
+        this.logQueue.push(event);
+    }
+
+    private isContinuousDuplicateError(action: string, errorCode: string, errorMessage: string): boolean {
+        if (this.logQueue.length > 0) {
+            const lastLog = this.logQueue[this.logQueue.length - 1];
+            return (
+                new Date().getTime() - new Date(lastLog.date).getTime() <= 1000 && // only 1 same error log per 1s
+                lastLog.action === action &&
+                lastLog.errorCode === errorCode &&
+                lastLog.errorMessage === errorMessage
+            );
+        }
+        return false;
+    }
+}

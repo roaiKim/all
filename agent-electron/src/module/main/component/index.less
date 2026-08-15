@@ -1,0 +1,58 @@
+// .@{less-name}-main-page {
+//   box-sizing: border-box;
+//   padding: 10px;
+//   background: linear-gradient(145deg, #eef3f9, #e2e8f0);
+
+//   > [class*="@{less-name}-"] {
+//     background-color: #fffbf5;
+//     height: 100%;
+//     padding: 10px;
+//     box-sizing: border-box;
+//     border-radius: 10px;
+//   }
+// }
+
+.@{less-name}-main-module {
+  --split-pane-divider-size: 8px;
+  --split-pane-divider-color: #e0e0e0;
+  --split-pane-divider-color-hover: #b0b0b0;
+  --split-pane-focus-color: #2196f3;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  @split-pix: 30px;
+
+  height: calc(100% - @split-pix);
+  width: calc(100% - @split-pix);
+  // padding: 10px;
+  // box-sizing: border-box;
+  // display: flex;
+
+  .@{less-name}-left-page {
+    height: 100%;
+  }
+
+  .@{less-name}-right-page {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .@{less-name}-pane {
+    // height: calc(100% - @split-pix);
+    // width: calc(100% - @split-pix);
+
+    > * {
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      // border-radius: 6px;
+    }
+
+    &.@{less-name}-pane-children {
+      background: #262626;
+      border-radius: 6px;
+    }
+  }
+}

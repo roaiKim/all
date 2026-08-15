@@ -62,7 +62,10 @@ export function loadCacheModule() {
             });
         }
     }
-
+    if (process.env.NODE_ENV === "development") {
+        // @ts-ignore
+        window.__DEV_ROSEN__ = { deafaultTabs, systemModules, nameToPath, pathToName };
+    }
     return { deafaultTabs, systemModules, nameToPath, pathToName };
 }
 

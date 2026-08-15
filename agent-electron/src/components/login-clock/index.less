@@ -1,0 +1,406 @@
+.@{less-name}-login-clock {
+  --chameleon-clock-digit-height: 54px;
+  --chameleon-clock-digit-half: calc(var(--chameleon-clock-digit-height) / 2);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 18px 20px;
+  border: 1px solid rgb(255 255 255 / 52%);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 76%), rgb(244 248 255 / 46%)),
+    radial-gradient(circle at top, rgb(255 255 255 / 38%), transparent 65%);
+  box-shadow:
+    0 12px 28px rgb(148 163 184 / 12%),
+    inset 0 1px 0 rgb(255 255 255 / 90%);
+  backdrop-filter: blur(12px);
+}
+
+.@{less-name}-login-clock-time {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.@{less-name}-login-clock-digit {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: var(--chameleon-clock-digit-height);
+  perspective: 340px;
+  border: 1px solid rgb(71 85 105 / 42%);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #607287, #3f5063 18%, #2a3745 100%);
+  box-shadow:
+    0 12px 24px rgb(71 85 105 / 22%),
+    0 2px 0 rgb(255 255 255 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 16%),
+    inset 0 -1px 0 rgb(15 23 42 / 32%);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+
+  &.is-flipping {
+    box-shadow:
+      0 14px 28px rgb(71 85 105 / 28%),
+      0 2px 0 rgb(255 255 255 / 10%),
+      inset 0 1px 0 rgb(255 255 255 / 16%),
+      inset 0 -1px 0 rgb(15 23 42 / 36%);
+  }
+
+  &.is-second {
+    border-color: rgb(96 165 250 / 28%);
+    box-shadow:
+      0 12px 26px rgb(71 85 105 / 24%),
+      0 0 0 1px rgb(191 219 254 / 8%),
+      inset 0 1px 0 rgb(255 255 255 / 18%),
+      inset 0 -1px 0 rgb(15 23 42 / 36%);
+  }
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    content: "";
+    border-radius: inherit;
+    background:
+      radial-gradient(
+        circle at 5px 6px,
+        rgb(255 255 255 / 28%) 0 1px,
+        rgb(88 104 122 / 90%) 1.2px 2.8px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at calc(100% - 5px) 6px,
+        rgb(255 255 255 / 28%) 0 1px,
+        rgb(88 104 122 / 90%) 1.2px 2.8px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 5px calc(100% - 6px),
+        rgb(255 255 255 / 16%) 0 1px,
+        rgb(59 72 88 / 92%) 1.2px 2.8px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at calc(100% - 5px) calc(100% - 6px),
+        rgb(255 255 255 / 16%) 0 1px,
+        rgb(59 72 88 / 92%) 1.2px 2.8px,
+        transparent 3px
+      ),
+      linear-gradient(180deg, rgb(255 255 255 / 12%), transparent 18%, transparent 76%, rgb(15 23 42 / 18%)),
+      linear-gradient(90deg, rgb(255 255 255 / 5%), transparent 14%, transparent 86%, rgb(15 23 42 / 6%));
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  &::after {
+    position: absolute;
+    top: calc(50% - 0.5px);
+    left: 3px;
+    right: 3px;
+    height: 2px;
+    content: "";
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 10%), rgb(15 23 42 / 40%)),
+      linear-gradient(90deg, transparent, rgb(191 219 254 / 30%), transparent);
+    box-shadow:
+      0 -1px 0 rgb(15 23 42 / 34%),
+      0 1px 0 rgb(255 255 255 / 10%);
+    z-index: 6;
+    pointer-events: none;
+  }
+}
+
+.@{less-name}-login-clock-digit-face,
+.@{less-name}-login-clock-digit-flap {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--chameleon-clock-digit-half);
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.@{less-name}-login-clock-digit-face {
+  z-index: 1;
+}
+
+.@{less-name}-login-clock-digit-face-top {
+  top: 0;
+  border-radius: 10px 10px 0 0;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 2%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #788ba0, #586a7e 34%, #445467 76%, #3b495b);
+}
+
+.@{less-name}-login-clock-digit-face-bottom {
+  bottom: 0;
+  border-radius: 0 0 10px 10px;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 1.5%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #536476, #425264 42%, #364353);
+}
+
+.@{less-name}-login-clock-digit-value {
+  position: absolute;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: var(--chameleon-clock-digit-height);
+  align-items: center;
+  justify-content: center;
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 1;
+  color: #f8fbff;
+  text-shadow:
+    0 1px 0 rgb(255 255 255 / 14%),
+    0 2px 6px rgb(0 0 0 / 34%);
+  letter-spacing: -0.03em;
+}
+
+.@{less-name}-login-clock-digit-value-top {
+  top: 0;
+}
+
+.@{less-name}-login-clock-digit-value-bottom {
+  top: calc(-1 * var(--chameleon-clock-digit-half));
+}
+
+.@{less-name}-login-clock-digit-flap {
+  z-index: 3;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 10%),
+    inset 0 -1px 0 rgb(15 23 42 / 20%),
+    0 10px 18px rgb(71 85 105 / 18%);
+  will-change: transform, filter;
+}
+
+.@{less-name}-login-clock-digit-flap-front {
+  top: 0;
+  border-radius: 10px 10px 0 0;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 2%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #8196ad, #607286 34%, #445366 86%);
+  transform-origin: center bottom;
+  animation: ball-clock-flip-front 0.64s cubic-bezier(0.37, 0.01, 0.2, 1) both;
+}
+
+.@{less-name}-login-clock-digit-flap-back {
+  bottom: 0;
+  border-radius: 0 0 10px 10px;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 1.5%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #5a6d82, #415163 40%, #334151);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 10%),
+    0 10px 18px rgb(71 85 105 / 20%);
+  transform: rotateX(88deg);
+  transform-origin: center top;
+  animation: ball-clock-flip-back 0.64s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-face-top {
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 2.5%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #8ca1b8, #6a7f95 34%, #4a5c71 76%, #415062);
+}
+
+.@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-face-bottom {
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 2%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #62758a, #4b5d71 42%, #384758);
+}
+
+.@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-flap-front {
+  animation-duration: 0.74s;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 2.5%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #95aac2, #70849a 34%, #495b70 86%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 14%),
+    inset 0 -1px 0 rgb(15 23 42 / 22%),
+    0 12px 22px rgb(71 85 105 / 22%);
+}
+
+.@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-flap-back {
+  animation-duration: 0.74s;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 2%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #698096, #4a5b6e 40%, #384758);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 12%),
+    0 12px 22px rgb(71 85 105 / 24%);
+}
+
+.@{less-name}-login-clock-digit-shadow {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: var(--chameleon-clock-digit-half);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.@{less-name}-login-clock-digit-shadow-top {
+  top: 0;
+  background: linear-gradient(180deg, transparent, rgb(51 65 85 / 16%) 72%, rgb(30 41 59 / 30%));
+  opacity: 0;
+  animation: ball-clock-shadow-top 0.64s ease-out both;
+}
+
+.@{less-name}-login-clock-digit-shadow-bottom {
+  bottom: 0;
+  background: linear-gradient(180deg, rgb(255 255 255 / 18%), rgb(219 234 254 / 8%) 24%, transparent);
+  opacity: 0;
+  animation: ball-clock-shadow-bottom 0.64s ease-out both;
+}
+
+.@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-shadow-top {
+  animation-duration: 0.74s;
+  background: linear-gradient(180deg, transparent, rgb(51 65 85 / 20%) 70%, rgb(30 41 59 / 34%));
+}
+
+.@{less-name}-login-clock-digit.is-second .@{less-name}-login-clock-digit-shadow-bottom {
+  animation-duration: 0.74s;
+  background: linear-gradient(180deg, rgb(255 255 255 / 22%), rgb(219 234 254 / 10%) 24%, transparent);
+}
+
+.@{less-name}-login-clock-separator {
+  display: inline-flex;
+  height: 40px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 2px;
+  animation: ball-clock-separator-blink 1.5s ease-in-out infinite;
+}
+
+.@{less-name}-login-clock-separator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #495a70; //radial-gradient(circle at 35% 35%, #f8fbff, #dbeafe 54%, #8aa4bf 100%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 22%),
+    0 1px 4px rgb(71 85 105 / 18%);
+}
+
+.@{less-name}-login-clock-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7b90;
+  letter-spacing: 0.02em;
+}
+
+@keyframes ball-clock-flip-front {
+  0% {
+    filter: brightness(1);
+    transform: rotateX(0deg) translateZ(0);
+  }
+
+  35% {
+    filter: brightness(0.94);
+  }
+
+  68% {
+    filter: brightness(0.9);
+  }
+
+  100% {
+    filter: brightness(0.74);
+    transform: rotateX(-88deg) translateZ(0.5px);
+  }
+}
+
+@keyframes ball-clock-flip-back {
+  0% {
+    filter: brightness(0.72);
+    transform: rotateX(88deg) translateZ(0.5px);
+  }
+
+  46% {
+    filter: brightness(0.92);
+  }
+
+  72% {
+    filter: brightness(1.08);
+  }
+
+  100% {
+    filter: brightness(1);
+    transform: rotateX(0deg) translateZ(0);
+  }
+}
+
+@keyframes ball-clock-shadow-top {
+  0% {
+    opacity: 0;
+  }
+
+  24%,
+  72% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ball-clock-shadow-bottom {
+  0%,
+  28% {
+    opacity: 0;
+  }
+
+  68% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ball-clock-separator-blink {
+  0%,
+  100% {
+    opacity: 0.95;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (max-width: 640px) {
+  .@{less-name}-login-clock {
+    --chameleon-clock-digit-height: 48px;
+  }
+
+  .@{less-name}-login-clock-digit {
+    width: 36px;
+  }
+
+  .@{less-name}-login-clock-digit-value {
+    font-size: 26px;
+  }
+
+  .@{less-name}-login-clock-separator {
+    gap: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .@{less-name}-login-clock-separator,
+  .@{less-name}-login-clock-digit-flap-front,
+  .@{less-name}-login-clock-digit-flap-back,
+  .@{less-name}-login-clock-digit-shadow-top,
+  .@{less-name}-login-clock-digit-shadow-bottom {
+    animation: none !important;
+  }
+}

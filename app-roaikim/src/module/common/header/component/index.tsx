@@ -12,7 +12,7 @@ import { header_height, WEB_USERNAME } from "config/static-constant";
 import { actions } from "module/common/header/index";
 import { actions as MainActions } from "module/common/main";
 import type { RootState } from "type/rootState";
-import { joinLessPrefix } from "utils/framework";
+import { clickMenuToTab, joinLessPrefix } from "utils/framework";
 import { StorageService } from "utils/StorageService";
 import logoimg from "asset/images/global/logoimg.png";
 import { SortableTabs } from "./HeaderTab";
@@ -108,7 +108,7 @@ function Header(props: HeaderProps) {
         if (!tabContainerRef.current) return;
         tabContainerRef.current.scrollLeft += event.deltaY;
     };
-
+    console.log("header-tabs", headerTabs);
     return (
         <header className={joinLessPrefix("header-module")}>
             <div className={joinLessPrefix("main-header")} style={{ minHeight: header_height }} ref={tabContainerRef} onWheel={tabContainerWheel}>
@@ -119,8 +119,9 @@ function Header(props: HeaderProps) {
                                 key={item.key}
                                 activeTabName={activeTabName}
                                 tab={item}
-                                onClick={({ id }) => {
-                                    setActive(id);
+                                onClick={(par) => {
+                                    console.log("header-点击", par.key);
+                                    clickMenuToTab(par.key);
                                 }}
                                 onClose={() => {}}
                             />
