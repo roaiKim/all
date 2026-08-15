@@ -154,6 +154,7 @@ export class MoveBaseEventManager {
         // 边界问题
         const _x = Math.min(Math.max(0, x - this.stageState.x), this.stageState.width - this.state.width);
         const _y = Math.min(Math.max(0, y - this.stageState.y), this.stageState.height - this.state.height);
+        // console.log("-_x-_y", _x, _y);
         this.state.x = ToolManager.numberPrecision(_x);
         this.state.y = ToolManager.numberPrecision(_y);
     };

@@ -41,8 +41,12 @@ export class MoveEventManager extends MoveBaseEventManager {
             if (this.options.onMoving) {
                 this.options.onMoving(this.state);
             }
+            // console.log("this.state", this.state);
             this.printModule.moveEvent("moving", this.state.id, {}, this.state);
         } else if (this.eventType === "resize") {
+            if (this.options.onResizing) {
+                this.options.onResizing(this.state);
+            }
             this.printModule.resizeEvent("resizing", this.state.id, {}, this.state);
         }
     };

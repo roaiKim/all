@@ -24,9 +24,8 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
     useEffect(() => {
         if (id) {
             if (protagonist.id === id) {
-                // const { moving, resizing } = protagonist;
-                // const { x, y, width, height } = dramaActor;
-                // // console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
+                const { moving, resizing } = protagonist;
+                // console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
                 // setPosition(() => ({ left: x, top: y, width, height, moving, resizing }));
             }
         }
@@ -47,10 +46,23 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
     //     }
     // }, [spotlighting]);
 
+    const onMoving = useCallback((state) => {
+        const { x, y, width, height, moving, resizing } = state;
+        // console.log(/* `当前${type}元素(${id})正在移动`,  */ protagonist);
+        setPosition(() => ({ left: x, top: y, width, height, moving, resizing }));
+    }, []);
+
     useEffect(() => {
         if (printModule) {
             new MoveEventManager(
-                { state: element, container: printModule.domManger.printTemplateDom, mover: directorRef.current, initMousedownEvent: true },
+                {
+                    state: element,
+                    container: printModule.domManger.printTemplateDom,
+                    mover: directorRef.current,
+                    initMousedownEvent: true,
+                    onMoving,
+                    onResizing: onMoving,
+                },
                 printModule
             );
         }
@@ -61,7 +73,7 @@ export function Director(props: PropsWithChildren<DirectorProps>) {
         spotlighting,
         moving: position.moving,
     });
-    // console.log("element--", element);
+    console.log("position--", position.moving, position.resizing);
     return (
         <div id="printControlDom" ref={directorRef} className={`${className}`} style={position} data-draggable-id={id}>
             {children}

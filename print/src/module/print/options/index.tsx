@@ -28,7 +28,7 @@ export default function StageScenery(props: SceneryProps) {
     return (
         <div className="scenery-option">
             <div className="scenery-header">属性</div>
-            {/* <MajorScenery printModule={printModule}></MajorScenery> */}
+            <MajorScenery printModule={printModule}></MajorScenery>
 
             <SceneryController printModule={printModule} protagonist={protagonist} />
         </div>
