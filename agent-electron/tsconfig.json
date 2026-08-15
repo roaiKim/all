@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "outDir": "./build",
+    "lib": ["DOM", "ES2020"],
+    "jsx": "react-jsx",
+    "target": "ES2020",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+
+    /* modules */
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "noUncheckedSideEffectImports": true,
+
+    /* type checking */
+    "strict": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "paths": {
+        // "@src/*": ["src/*"],
+        // "@module/*": ["src/module/*"],
+        // "@asset/*": ["src/asset/*"],
+        "@core": ["../roaikim"],
+        "@http": ["./http"],
+        "@icon": ["../node_modules/@ant-design/icons"],
+        "@project/*": ["../project/*"],
+        "@api/*": ["./service/api/*"]
+    }
+  },
+  "include": ["./src", "./roaikim", "./project"],
+  "exclude": ["./webpack/**/*", "./z-files", "./project/template/**"]
+}

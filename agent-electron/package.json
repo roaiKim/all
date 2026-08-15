@@ -1,0 +1,99 @@
+{
+  "name": "agent-electron",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist-electron/main.cjs",
+  "scripts": {
+    "start": "rsbuild dev",
+    "dev:all": "concurrently -k \"npm run start\" \"npm run dev:main\" \"npm run dev:electron\"",
+    "dev:main": "node electron/build.mjs --watch",
+    "dev:electron": "wait-on tcp:10010 dist-electron/main.cjs dist-electron/preload.cjs && cross-env ELECTRON_START_URL=http://localhost:10010 electron .",
+    "build": "rsbuild build && node electron/build.mjs",
+    "build:renderer": "rsbuild build",
+    "build:electron": "node electron/build.mjs",
+    "dist": "rsbuild build && node electron/build.mjs && electron-builder",
+    "preview": "rsbuild preview",
+    "module": "node ./project/template/module.js"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "6.x",
+    "@rsbuild/core": "^1.7.1",
+    "@rsbuild/plugin-less": "^1.6.2",
+    "@rsbuild/plugin-react": "^1.4.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "antd": "^6.3.2",
+    "axios": "^1.13.6",
+    "chalk": "^5.6.2",
+    "classnames": "^2.5.1",
+    "concurrently": "^10.0.4",
+    "cross-env": "^10.1.0",
+    "crypto-js": "^4.2.0",
+    "electron": "^43.4.0",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "eslint-config-way": "^1.0.3",
+    "eventsource": "^4.1.0",
+    "fs-extra": "^11.3.4",
+    "history": "^5.3.0",
+    "immer": "^11.1.4",
+    "jsencrypt": "^3.5.4",
+    "querystring": "^0.2.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-redux": "^9.2.0",
+    "react-router": "^7.13.1",
+    "react-router-dom": "^7.13.1",
+    "redux": "^5.0.1",
+    "redux-router-bridge": "^0.1.0",
+    "regenerator-runtime": "^0.14.1",
+    "stylelint-config-way": "^1.0.0",
+    "typescript": "^5.9.3",
+    "uuid": "^13.0.0",
+    "wait-on": "^9.1.0",
+    "yargs": "^18.0.0"
+  },
+  "build": {
+    "appId": "com.roaikim.agent-electron",
+    "productName": "agent-electron",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    }
+  },
+  "stylelint": {
+    "extends": "stylelint-config-way"
+  },
+  "dependencies": {
+    "react-split-pane": "^3.2.0"
+  }
+}
