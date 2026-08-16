@@ -1,13 +1,14 @@
-interface NavPermission {
-    key: string;
-    label: string;
-    children?: NavPermission[];
+export interface MainLoyoutRatio {
+    left: number;
+    center: number;
+    right: number;
+    top: number;
+    bottom: number;
 }
 
 export interface State {
     name?: string;
     appLoadingStatus: "loading" | "done" | "error";
     initialed: boolean;
-    navPermission: NavPermission[];
-    pagePermission: Record<string, Record<"name", string>>;
+    mainLoyoutRatio: MainLoyoutRatio;
 }

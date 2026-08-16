@@ -5,7 +5,7 @@ import "./index.less";
 interface ScenarioProps {}
 
 function Scenario(props: ScenarioProps) {
-    return <div className={joinLessPrefix("scenario-page")}>Hello Scenario</div>;
+    return <div className={joinLessPrefix("scenario-page")}></div>;
 }
 
 export default Scenario;
