@@ -35,8 +35,6 @@ export default function (props: PropsWithChildren<HomeProps>) {
         dispatch(actions.setMainLoyoutRatio(patch));
     };
 
-    // console.log("===ratios==", mainLoyoutRatio);
-
     return (
         <SplitPane
             direction="vertical"

@@ -1,3 +1,68 @@
 .@{less-name}-material-page {
   color: inherits;
+  padding: 0 10px;
+  height: 100%;
+  overflow: hidden;
+
+  .scenery-tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .@{less-name}-tabs-nav {
+      flex-shrink: 0;
+    }
+
+    .@{less-name}-tabs-content-holder {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .@{less-name}-tabs-content {
+      height: 100%;
+    }
+
+    .@{less-name}-tabs-tabpane {
+      height: 100%;
+    }
+  }
+}
+
+/***  sceen  **/
+.@{less-name}-sceen-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(120px, 100%), 1fr));
+  gap: 12px;
+  height: 100%;
+  align-content: start;
+  overflow-y: auto;
+  padding-bottom: 15px;
+
+  .sceen {
+    aspect-ratio: 3 / 4;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &:hover {
+      border-color: #00b96b;
+    }
+
+    &.active {
+      border-color: #00b96b;
+    }
+  }
+
+  .sceen-add {
+    border: 1px dotted #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &:hover {
+      color: #00b96b;
+    }
+  }
 }

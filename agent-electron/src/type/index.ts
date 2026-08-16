@@ -9,3 +9,7 @@ export enum ModuleStatus {
     // 项目不存在的模块
     NON_EXIST = "non_exist",
 }
+export enum ScenariosElementType {
+    TEXT = "TEXT",
+    BUTTON = "BUTTON",
+}

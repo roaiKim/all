@@ -3,7 +3,9 @@ import { connect, type DispatchProp } from "react-redux";
 import { useLoadingStatus } from "@core";
 import { ConfigProvider } from "antd";
 import { tabTypeModule } from "@project/config";
+import { cssToken } from "asset/styles/css-config";
 import { PageLoading } from "components/page-loading";
+import { SolarLoading } from "components/solar-loading";
 import { When } from "components/when";
 import { lessPrefixName } from "config/static-constant";
 import type { RootState } from "type/rootState";
@@ -23,13 +25,12 @@ function Main(props: MainProps) {
     useEffect(() => {
         if (appLoadingStatus === "done" || appLoadingStatus === "error") {
             setInitialed(true);
-            // console.log("---222");
             removeMainLoading();
         }
     }, [appLoadingStatus]);
-    // console.log("---111");
+
     return (
-        <ConfigProvider prefixCls={lessPrefixName} theme={{ cssVar: { prefix: lessPrefixName } }}>
+        <ConfigProvider prefixCls={lessPrefixName} theme={{ cssVar: { prefix: lessPrefixName }, token: cssToken }}>
             <When when={initialed}>
                 <div className={`${joinLessPrefix("main-module")}`}>
                     <PageLoading show={mainLoading} theme="light" />
