@@ -1,9 +1,24 @@
-import { app, BrowserWindow } from "electron";
-import { createWindow } from "./main/window";
+import { app, BrowserWindow, protocol } from "electron";
 import { registerIpc } from "./main/ipc";
+import { registerMediaProtocol } from "./main/protocol";
+import { createWindow } from "./main/window";
+
+protocol.registerSchemesAsPrivileged([
+    {
+        scheme: "media",
+        privileges: {
+            standard: true,
+            secure: true,
+            supportFetchAPI: true,
+            stream: true,
+            bypassCSP: true,
+        },
+    },
+]);
 
 app.whenReady().then(() => {
     registerIpc();
+    registerMediaProtocol();
     createWindow();
 
     app.on("activate", () => {

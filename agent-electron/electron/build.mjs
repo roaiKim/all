@@ -1,3 +1,4 @@
+import path from "node:path";
 import { context } from "esbuild";
 
 const watch = process.argv.includes("--watch");
@@ -10,6 +11,9 @@ const options = {
     outdir: "dist-electron",
     outExtension: { ".js": ".cjs" },
     external: ["electron"],
+    alias: {
+        "utils/framework/uid": path.resolve("src/utils/framework/uid"),
+    },
     logLevel: "info",
 };
 

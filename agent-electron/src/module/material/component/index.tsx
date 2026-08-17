@@ -2,6 +2,7 @@ import { Tabs } from "antd";
 import type { RootState } from "type/rootState";
 import { joinLessPrefix } from "utils/framework";
 import Sceen from "./sceen";
+import Asset from "./asset";
 import "./index.less";
 
 interface MaterialProps {}
@@ -22,7 +23,7 @@ function Material(props: MaterialProps) {
                     {
                         key: "material",
                         label: "素材",
-                        children: "Content of Tab Pane 2",
+                        children: <Asset />,
                     },
                     {
                         key: "component",

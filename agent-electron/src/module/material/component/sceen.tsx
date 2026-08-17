@@ -5,6 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { actions } from "module/material";
 import type { RootState } from "type/rootState";
 import { joinLessPrefix } from "utils/framework";
+import Thumbnail from "./thumbnail";
 
 interface SceenProps {}
 
@@ -24,16 +25,7 @@ function Sceen(props: SceenProps) {
                 <PlusOutlined style={{ fontSize: 24, marginTop: 5 }} />
             </div>
             {scenariosOrder.map((uid) => (
-                <div
-                    key={uid}
-                    className={classNames("sceen", { active: uid === activeScenarioKey })}
-                    onClick={() => {
-                        if (uid === activeScenarioKey) return;
-                        dispatch(actions.setActiveScenarioKey(uid));
-                    }}
-                >
-                    Add
-                </div>
+                <Thumbnail key={uid} activeScenarioKey={activeScenarioKey} scenario={scenarios.get(uid)}></Thumbnail>
             ))}
         </div>
     );

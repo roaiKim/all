@@ -13,4 +13,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
         write: (filePath: string, content: string) => ipcRenderer.invoke("file:write", filePath, content),
         list: (dirPath: string) => ipcRenderer.invoke("file:list", dirPath),
     },
+    media: {
+        importMaterials: () => ipcRenderer.invoke("media:import"),
+    },
 });

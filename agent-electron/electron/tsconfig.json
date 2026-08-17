@@ -3,6 +3,9 @@
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "paths": {
+      "utils/*": ["../src/utils/*"]
+    },
     "lib": ["ES2020"],
     "strict": false,
     "esModuleInterop": true,

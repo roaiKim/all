@@ -1,15 +1,13 @@
 import { v4 } from "uuid";
-import type { Scenarios } from "module/material/type";
+import type { ScenarioState } from "module/material/type";
+import { generateUid } from "utils/framework";
 
-export function generateUid() {
-    return v4();
-}
-
-export function initialScenario(): Scenarios {
+export function initialScenario(): ScenarioState {
     return {
         uid: generateUid(),
         name: "新建幕章",
         background: "",
-        scenario: [],
+        main: [],
+        children: [],
     };
 }

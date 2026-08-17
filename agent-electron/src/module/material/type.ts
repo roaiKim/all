@@ -31,10 +31,19 @@ export interface ScenarioState {
     children: Scenario[];
 }
 
+export interface MaterialItem {
+    uid: string;
+    name: string;
+    path: string;
+    thumb: string;
+    type: "image" | "video";
+}
+
 export interface State {
     activeScenarioKey: string;
     scenarios: Map<string, ScenarioState>;
     scenariosOrder: string[];
+    materials: MaterialItem[];
 }
 
 export const MainComponent = async(() => import(/* webpackChunkName: "material" */ "./index"), "MainComponent");

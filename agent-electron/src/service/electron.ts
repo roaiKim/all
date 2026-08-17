@@ -27,11 +27,11 @@ function unwrap<T>(result: IpcResult<T>): T {
     return result.data as T;
 }
 
-function assertElectron(fileAPI: ElectronFileAPI | null): ElectronFileAPI {
-    if (!fileAPI) {
+function assertElectron<T>(api: T | null): T {
+    if (!api) {
         throw new Error("当前环境不支持文件操作（需在 Electron 桌面端运行）");
     }
-    return fileAPI;
+    return api;
 }
 
 export const electronFile = {
@@ -45,3 +45,30 @@ export const electronFile = {
         return unwrap(await assertElectron(getFileAPI()).list(dirPath));
     },
 };
+
+export interface ImportedMaterial {
+    uid: string;
+    name: string;
+    path: string;
+    thumb: string;
+    type: "image" | "video";
+}
+
+interface ElectronMediaAPI {
+    importMaterials: () => Promise<IpcResult<ImportedMaterial[]>>;
+}
+
+function getMediaAPI(): ElectronMediaAPI | null {
+    return (window as any).electronAPI?.media ?? null;
+}
+
+export const mediaFile = {
+    async importMaterials(): Promise<ImportedMaterial[]> {
+        return unwrap(await assertElectron(getMediaAPI()).importMaterials());
+    },
+};
+
+// 将素材目录下的相对路径转换为 media:// 协议地址（主进程通过自定义协议流式读取，视频可直接播放/拖动）
+export function mediaUrl(filePath: string): string {
+    return `media://local/${encodeURIComponent(filePath)}`;
+}

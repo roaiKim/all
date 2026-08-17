@@ -3,6 +3,8 @@ import { lessPrefixName, NON_EXIST_PATH } from "config/static-constant";
 import localModules from "utils/function/load-modules";
 import { getPathByKey } from "./path-mapping";
 
+export { generateUid } from "./uid";
+
 export const joinLessPrefix = (suffix: string | string[]) => {
     if (Array.isArray(suffix)) {
         return suffix.map((item) => `${lessPrefixName}-${item}`).join(" ");
