@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Pane, SplitPane } from "react-split-pane";
 import { MAIN_LAYOUT_FILE } from "config/file.path";
 import defaultLayout from "service/JSON/layout.json";
+import { When } from "components/when";
 import { DIVIDER_SIZE } from "config/static-constant";
 import { MainComponent as Attribute } from "module/attribute";
 import { actions } from "module/main";
@@ -30,6 +31,7 @@ export default function (props: PropsWithChildren<HomeProps>) {
     const { children } = props;
     const dispatch = useDispatch();
     const mainLoyoutRatio = useSelector((state: RootState) => state.app.main.mainLoyoutRatio);
+    const activeScenarioKey = useSelector((state: RootState) => state.app.material.activeScenarioKey);
 
     const saveLayout = (patch: Partial<MainLoyoutRatio>) => {
         dispatch(actions.setMainLoyoutRatio(patch));
@@ -67,7 +69,9 @@ export default function (props: PropsWithChildren<HomeProps>) {
                 </SplitPane>
             </Pane>
             <Pane minSize="20%" size={ratiosPer(mainLoyoutRatio.bottom)} className={joinLessPrefix(["pane", "pane-children"])}>
-                <Scenery></Scenery>
+                <When when={!!activeScenarioKey}>
+                    <Scenery></Scenery>
+                </When>
             </Pane>
         </SplitPane>
     );

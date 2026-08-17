@@ -23,16 +23,18 @@ export interface Scenario {
     element: ScenariosElement[];
 }
 
-export interface Scenarios {
+export interface ScenarioState {
     uid: string;
     name: string;
     background: string;
-    scenario: Scenario[];
+    main: Scenario[];
+    children: Scenario[];
 }
 
 export interface State {
     activeScenarioKey: string;
-    scenarios: Scenarios[];
+    scenarios: Map<string, ScenarioState>;
+    scenariosOrder: string[];
 }
 
 export const MainComponent = async(() => import(/* webpackChunkName: "material" */ "./index"), "MainComponent");

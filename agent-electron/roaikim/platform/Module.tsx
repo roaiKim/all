@@ -1,4 +1,4 @@
-import { enablePatches, produce } from "immer";
+import { enableMapSet, enablePatches, produce } from "immer";
 import type { Location } from "history";
 import type { Params } from "react-router";
 import type { ResolvedRouteState } from "./ModuleProxy";
@@ -9,6 +9,8 @@ import type { TickIntervalDecoratorFlag } from "../module";
 import { navigationPreventionAction, setStateAction, type State } from "../reducer";
 
 if (process.env.NODE_ENV === "development") enablePatches();
+
+enableMapSet();
 
 export type PromiseGenerator<T = unknown> = T | Promise<T>;
 

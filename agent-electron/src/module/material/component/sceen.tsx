@@ -11,7 +11,7 @@ interface SceenProps {}
 function Sceen(props: SceenProps) {
     const dispatch = useDispatch();
     const material = useSelector((state: RootState) => state.app.material);
-    const { activeScenarioKey, scenarios } = material;
+    const { activeScenarioKey, scenarios, scenariosOrder } = material;
     return (
         <div className={joinLessPrefix("sceen-container")}>
             <div
@@ -23,13 +23,13 @@ function Sceen(props: SceenProps) {
                 <span>新增幕章</span>
                 <PlusOutlined style={{ fontSize: 24, marginTop: 5 }} />
             </div>
-            {scenarios.map((item) => (
+            {scenariosOrder.map((uid) => (
                 <div
-                    key={item.uid}
-                    className={classNames("sceen", { active: item.uid === activeScenarioKey })}
+                    key={uid}
+                    className={classNames("sceen", { active: uid === activeScenarioKey })}
                     onClick={() => {
-                        if (item.uid === activeScenarioKey) return;
-                        dispatch(actions.setActiveScenarioKey(item.uid));
+                        if (uid === activeScenarioKey) return;
+                        dispatch(actions.setActiveScenarioKey(uid));
                     }}
                 >
                     Add
