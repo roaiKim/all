@@ -58,6 +58,7 @@ interface ElectronMediaAPI {
     importMaterials: () => Promise<IpcResult<ImportedMaterial[]>>;
     readJson: (fileName: string) => Promise<IpcResult<string>>;
     writeJson: (fileName: string, content: string) => Promise<IpcResult<{ path: string }>>;
+    saveThumbnail: (fileName: string, dataUrl: string) => Promise<IpcResult<string>>;
 }
 
 function getMediaAPI(): ElectronMediaAPI | null {
@@ -73,6 +74,9 @@ export const mediaFile = {
     },
     async writeJson(fileName: string, content: string): Promise<void> {
         await unwrap(await assertElectron(getMediaAPI()).writeJson(fileName, content));
+    },
+    async saveThumbnail(fileName: string, dataUrl: string): Promise<string> {
+        return unwrap(await assertElectron(getMediaAPI()).saveThumbnail(fileName, dataUrl));
     },
 };
 

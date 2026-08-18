@@ -68,6 +68,14 @@ async function generateThumbnail(srcPath: string, fileName: string): Promise<str
     return thumbName;
 }
 
+export async function saveThumbnail(fileName: string, dataUrl: string): Promise<string> {
+    const thumbName = fileName.replace(/\.[^.]+$/, "") + "_thumb.png";
+    const base64 = dataUrl.replace(/^data:image\/[a-zA-Z0-9.+-]+;base64,/, "");
+    await fs.mkdir(getMediaImagesDir(), { recursive: true });
+    await fs.writeFile(path.join(getMediaImagesDir(), thumbName), Buffer.from(base64, "base64"));
+    return thumbName;
+}
+
 export async function readJson(fileName: string): Promise<string> {
     const absolutePath = resolveMediaJsonPath(fileName);
     return fs.readFile(absolutePath, "utf8");

@@ -36,7 +36,12 @@ function Thumbnail(props: ThumbnailProps) {
                 />
             </When>
             <When when={!!background.path}>
-                <img src={mediaUrl(background.path)}></img>
+                {/* <img src={mediaUrl(background.path)}></img> */}
+                {background.type === "image" ? (
+                    <img src={mediaUrl(background.thumb)} alt={background.name} />
+                ) : (
+                    <video src={mediaUrl(background.path)} muted preload="metadata" playsInline />
+                )}
             </When>
         </div>
     );

@@ -62,6 +62,7 @@ interface Window {
             importMaterials: () => Promise<any>;
             readJson: (fileName: string) => Promise<any>;
             writeJson: (fileName: string, content: string) => Promise<any>;
+            saveThumbnail: (fileName: string, dataUrl: string) => Promise<any>;
         };
     };
 }

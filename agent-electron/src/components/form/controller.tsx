@@ -7,8 +7,9 @@ interface ControllerProps extends Pick<SceneryProps<ValueType>, "value" | "port"
 }
 
 function Controller(props: PropsWithChildren<ControllerProps>) {
-    const { port, value, onChange, children, ...washLight } = props;
+    const { port, value, onChange = () => void 0, children, ...washLight } = props;
 
+    // const onChange = change ?? (() => void 0);
     switch (port) {
         case CollectionType.INPUT:
             return (

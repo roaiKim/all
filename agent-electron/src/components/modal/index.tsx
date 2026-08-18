@@ -1,6 +1,8 @@
 import { type CSSProperties, type PropsWithChildren, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Button } from "antd";
 import classNames from "classnames";
+import { CloseOutlined } from "@ant-design/icons";
 import { When } from "components/when";
 import { joinLessPrefix } from "utils/framework";
 import "./index.less";
@@ -50,10 +52,10 @@ export function Modal(props: PropsWithChildren<ModalProps>) {
     const {
         open = false,
         title,
-        width = 520,
-        maskClosable = true,
+        width = "70%",
+        maskClosable = false,
         closable = true,
-        footer = false,
+        footer = true,
         okText = "确定",
         cancelText = "取消",
         okLoading = false,
@@ -148,32 +150,33 @@ export function Modal(props: PropsWithChildren<ModalProps>) {
 
     const modalNode = (
         <div
-            className={classNames(joinLessPrefix("modal-root"), className, {
+            className={classNames(joinLessPrefix("modal-container"), className, {
                 "is-visible": visible,
                 "is-centered": centered,
             })}
             style={{ zIndex, ...style }}
         >
             <div className={joinLessPrefix("modal-mask")} onClick={handleMaskClick}></div>
-            <div className={joinLessPrefix("modal-wrap")} role="dialog" aria-modal="true">
-                <div className={joinLessPrefix("modal-content")} style={{ width }}>
-                    <When when={closable}>
-                        <button type="button" className={joinLessPrefix("modal-close")} aria-label="关闭" onClick={handleClose}>
-                            ×
-                        </button>
-                    </When>
+            <div className={joinLessPrefix("modal-content")} style={{ width }}>
+                <div className={joinLessPrefix("modal-title")}>
                     <When when={Boolean(title)}>
                         <div className={joinLessPrefix("modal-header")}>{title}</div>
                     </When>
-                    <div className={joinLessPrefix("modal-body")}>{children}</div>
-                    {/* footer === true 时渲染默认按钮 */}
-                    <When when={footer === true}>
-                        <div className={joinLessPrefix("modal-footer")}>
-                            <button type="button" className={joinLessPrefix("modal-btn")} onClick={handleClose}>
+                    <div className={joinLessPrefix("title-space")}></div>
+                    <When when={closable}>
+                        <CloseOutlined style={{ fontSize: 18 }} className={joinLessPrefix("modal-close")} aria-label="关闭" onClick={handleClose} />
+                    </When>
+                </div>
+                <div className={classNames(joinLessPrefix("modal-body"), { "has-footer": footer === true })}>{children}</div>
+                <When when={footer === true}>
+                    <div className={joinLessPrefix("modal-footer")}>
+                        <div className={joinLessPrefix("title-space")}></div>
+                        <div className={joinLessPrefix("btn-container")}>
+                            <Button type="default" className={joinLessPrefix("modal-btn")} onClick={handleClose}>
                                 {cancelText}
-                            </button>
-                            <button
-                                type="button"
+                            </Button>
+                            <Button
+                                type="primary"
                                 className={classNames(joinLessPrefix("modal-btn"), "is-primary")}
                                 disabled={okLoading}
                                 onClick={onOk}
@@ -182,17 +185,61 @@ export function Modal(props: PropsWithChildren<ModalProps>) {
                                     <span className={joinLessPrefix("modal-btn-loading")}></span>
                                 </When>
                                 {okText}
-                            </button>
+                            </Button>
                         </div>
-                    </When>
-                    {/* 自定义 footer（非布尔值） */}
-                    <When when={typeof footer !== "boolean"}>
-                        <div className={joinLessPrefix("modal-footer")}>{footer}</div>
-                    </When>
-                </div>
+                    </div>
+                </When>
+                <When when={typeof footer !== "boolean"}>
+                    <div className={joinLessPrefix("modal-footer")}>{footer}</div>
+                </When>
             </div>
         </div>
     );
+    // const modalNode = (
+    //     <div
+    //         className={classNames(joinLessPrefix("modal-container"), className, {
+    //             "is-visible": visible,
+    //             "is-centered": centered,
+    //         })}
+    //         style={{ zIndex, ...style }}
+    //     >
+    //         <div className={joinLessPrefix("modal-mask")} onClick={handleMaskClick}></div>
+    //         <div className={joinLessPrefix("modal-wrap")} role="dialog" aria-modal="true">
+    //             <div className={joinLessPrefix("modal-content")} style={{ width }}>
+    //                 <When when={closable}>
+    //                     <button type="button" className={joinLessPrefix("modal-close")} aria-label="关闭" onClick={handleClose}>
+    //                         ×
+    //                     </button>
+    //                 </When>
+    //                 <When when={Boolean(title)}>
+    //                     <div className={joinLessPrefix("modal-header")}>{title}</div>
+    //                 </When>
+    //                 <div className={joinLessPrefix("modal-body")}>{children}</div>
+    //                 <When when={footer === true}>
+    //                     <div className={joinLessPrefix("modal-footer")}>
+    //                         <button type="button" className={joinLessPrefix("modal-btn")} onClick={handleClose}>
+    //                             {cancelText}
+    //                         </button>
+    //                         <button
+    //                             type="button"
+    //                             className={classNames(joinLessPrefix("modal-btn"), "is-primary")}
+    //                             disabled={okLoading}
+    //                             onClick={onOk}
+    //                         >
+    //                             <When when={okLoading}>
+    //                                 <span className={joinLessPrefix("modal-btn-loading")}></span>
+    //                             </When>
+    //                             {okText}
+    //                         </button>
+    //                     </div>
+    //                 </When>
+    //                 <When when={typeof footer !== "boolean"}>
+    //                     <div className={joinLessPrefix("modal-footer")}>{footer}</div>
+    //                 </When>
+    //             </div>
+    //         </div>
+    //     </div>
+    // );
 
     return createPortal(modalNode, document.body);
 }

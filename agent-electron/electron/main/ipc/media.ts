@@ -26,4 +26,12 @@ export function registerMediaIpc(): void {
             return fail(error);
         }
     });
+
+    ipcMain.handle("media:saveThumbnail", async (_event, fileName: string, dataUrl: string) => {
+        try {
+            return ok(await mediaService.saveThumbnail(fileName, dataUrl));
+        } catch (error) {
+            return fail(error);
+        }
+    });
 }

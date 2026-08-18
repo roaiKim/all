@@ -17,5 +17,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
         importMaterials: () => ipcRenderer.invoke("media:import"),
         readJson: (fileName: string) => ipcRenderer.invoke("media:readJson", fileName),
         writeJson: (fileName: string, content: string) => ipcRenderer.invoke("media:writeJson", fileName, content),
+        saveThumbnail: (fileName: string, dataUrl: string) => ipcRenderer.invoke("media:saveThumbnail", fileName, dataUrl),
     },
 });

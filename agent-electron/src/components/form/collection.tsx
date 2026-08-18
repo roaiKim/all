@@ -19,9 +19,9 @@ export type ValueType = string | number;
 
 export interface SceneryProps<T> {
     port: CollectionType | keyof typeof CollectionType;
-    value: T;
+    value?: T;
     label: string | React.ReactNode;
-    onChange: (value: T) => void;
+    onChange?: (value: T) => void;
     /**
      * form 表单控件的原始参数
      */
