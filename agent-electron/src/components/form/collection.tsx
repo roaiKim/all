@@ -1,5 +1,6 @@
 import { Input, InputNumber, type InputNumberProps, type InputProps, type SelectProps, Tooltip } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import type { PropsWithChildren } from "react";
 import Controller from "./controller";
 import "./index.less";
 
@@ -7,6 +8,7 @@ export enum CollectionType {
     NUMBER = "NUMBER",
     SELECT = "SELECT",
     INPUT = "INPUT",
+    CUSTOM = "CUSTOM",
 }
 
 type RemoveDefaultController<T> = Omit<T, "value" | "onChange">;
@@ -31,8 +33,8 @@ export interface SceneryProps<T> {
     powered?: boolean;
 }
 
-export function Collection<T extends ValueType = ValueType>(props: SceneryProps<T>) {
-    const { port, value, label, onChange, washLight = {}, description, powered = true } = props;
+export function Collection<T extends ValueType = ValueType>(props: PropsWithChildren<SceneryProps<T>>) {
+    const { port, value, label, onChange, washLight = {}, description, powered = true, children } = props;
     if (!powered) {
         return null;
     }
@@ -41,7 +43,9 @@ export function Collection<T extends ValueType = ValueType>(props: SceneryProps<
         <div className={`scenery-row ${description ? "scenery-row-description" : ""}`}>
             <div>{label}：</div>
             <div>
-                <Controller port={port} value={value} onChange={onChange} {...washLight} />
+                <Controller port={port} value={value} onChange={onChange} {...washLight}>
+                    {children}
+                </Controller>
             </div>
             {description && (
                 <Tooltip placement="left" title={description}>

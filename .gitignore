@@ -12,3 +12,5 @@ wechat-core/pure
 wechat-core/**.tgz
 npm-package/**/**.tgz
 **/src/config/dev-tabs.ts
+
+agent-electron/media

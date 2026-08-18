@@ -5,7 +5,7 @@ import { initialScenario } from "service/initial-data";
 import type { RootState } from "type/rootState";
 import { Confirm, MainLoading } from "utils/decorator";
 import Main from "./component";
-import { type MaterialItem, moduleName, type ScenarioState, type State } from "./type";
+import { type AssetMaterial, moduleName, type ScenarioState, type State } from "./type";
 
 const initialState: State = {
     activeScenarioKey: "",
@@ -61,7 +61,7 @@ class MaterialModule extends Module<RootState, typeof moduleName> {
         });
     }
 
-    addMaterials(materials: MaterialItem[]) {
+    addMaterials(materials: AssetMaterial[]) {
         this.setState((state) => {
             state.materials.push(...materials);
         });

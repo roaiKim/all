@@ -35,8 +35,8 @@ function Thumbnail(props: ThumbnailProps) {
                     className="sceen-delete"
                 />
             </When>
-            <When when={!!background}>
-                <img src={mediaUrl(background)}></img>
+            <When when={!!background.path}>
+                <img src={mediaUrl(background.path)}></img>
             </When>
         </div>
     );

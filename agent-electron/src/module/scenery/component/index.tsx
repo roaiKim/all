@@ -4,6 +4,7 @@ import { actions } from "module/material";
 import type { ScenarioState } from "module/material/type";
 import type { RootState } from "type/rootState";
 import { joinLessPrefix } from "utils/framework";
+import MainScenery from "./main-scenery";
 import "./index.less";
 
 interface SceneryProps {}
@@ -19,20 +20,7 @@ function Scenery(props: SceneryProps) {
 
     return (
         <div className={joinLessPrefix("scenery-page")}>
-            <div className={joinLessPrefix("main-scenario")}>
-                <Collection
-                    port={CollectionType.INPUT}
-                    label="幕章名称"
-                    value={currentScenarios.name}
-                    onChange={(value) => {
-                        // stageChange({ pageNoFormat: value });
-                        updateScenarios({ name: value });
-                    }}
-                    // washLight={{
-                    //     placeholder: "index/total",
-                    // }}
-                />
-            </div>
+            <MainScenery currentScenarios={currentScenarios} updateScenarios={updateScenarios} />
             <div></div>
         </div>
     );
