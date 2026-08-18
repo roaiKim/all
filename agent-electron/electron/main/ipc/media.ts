@@ -34,4 +34,12 @@ export function registerMediaIpc(): void {
             return fail(error);
         }
     });
+
+    ipcMain.handle("media:listFiles", async () => {
+        try {
+            return ok(await mediaService.listFiles());
+        } catch (error) {
+            return fail(error);
+        }
+    });
 }

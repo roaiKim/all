@@ -59,6 +59,7 @@ interface ElectronMediaAPI {
     readJson: (fileName: string) => Promise<IpcResult<string>>;
     writeJson: (fileName: string, content: string) => Promise<IpcResult<{ path: string }>>;
     saveThumbnail: (fileName: string, dataUrl: string) => Promise<IpcResult<string>>;
+    listFiles: () => Promise<IpcResult<string[]>>;
 }
 
 function getMediaAPI(): ElectronMediaAPI | null {
@@ -77,6 +78,9 @@ export const mediaFile = {
     },
     async saveThumbnail(fileName: string, dataUrl: string): Promise<string> {
         return unwrap(await assertElectron(getMediaAPI()).saveThumbnail(fileName, dataUrl));
+    },
+    async listFiles(): Promise<string[]> {
+        return unwrap(await assertElectron(getMediaAPI()).listFiles());
     },
 };
 

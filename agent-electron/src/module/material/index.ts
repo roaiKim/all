@@ -21,14 +21,18 @@ class MaterialModule extends Module<RootState, typeof moduleName> {
     }
 
     async readMaterials() {
-        return mediaFile
-            .readJson(MATERIAL_FILE)
-            .then((content) => {
-                this.setState({ materials: JSON.parse(content) });
-            })
-            .catch(() => {
-                // 首次运行尚无清单文件，保持空列表
-            });
+        try {
+            const content = await mediaFile.readJson(MATERIAL_FILE);
+            const materials: AssetMaterial[] = JSON.parse(content);
+            const existing = new Set(await mediaFile.listFiles());
+            const valid = materials.filter((item) => existing.has(item.path));
+            this.setState({ materials: valid });
+            if (valid.length !== materials.length) {
+                this.persistMaterials();
+            }
+        } catch {
+            // 首次运行尚无清单文件，保持空列表
+        }
     }
 
     addScenario() {

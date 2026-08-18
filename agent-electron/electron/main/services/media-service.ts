@@ -87,3 +87,13 @@ export async function writeJson(fileName: string, content: string): Promise<{ pa
     await fs.writeFile(absolutePath, content, "utf8");
     return { path: absolutePath };
 }
+
+export async function listFiles(): Promise<string[]> {
+    const dir = getMediaImagesDir();
+    try {
+        const entries = await fs.readdir(dir, { withFileTypes: true });
+        return entries.filter((entry) => entry.isFile()).map((entry) => entry.name);
+    } catch {
+        return [];
+    }
+}
