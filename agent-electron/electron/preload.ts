@@ -15,5 +15,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
     },
     media: {
         importMaterials: () => ipcRenderer.invoke("media:import"),
+        readJson: (fileName: string) => ipcRenderer.invoke("media:readJson", fileName),
+        writeJson: (fileName: string, content: string) => ipcRenderer.invoke("media:writeJson", fileName, content),
     },
 });

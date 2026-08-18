@@ -1,7 +1,7 @@
 import { BrowserWindow, dialog, nativeImage } from "electron";
 import fs from "fs/promises";
 import path from "path";
-import { getMediaDir } from "../config";
+import { getMediaImagesDir, resolveMediaJsonPath } from "../config";
 import { generateUid } from "utils/framework/uid";
 
 const IMAGE_EXT = new Set([".png", ".jpg", ".jpeg", ".gif", ".webp", ".bmp", ".svg"]);
@@ -28,14 +28,14 @@ export async function importMaterials(): Promise<ImportedMaterial[]> {
     });
     if (result.canceled) return [];
 
-    const mediaDir = getMediaDir();
-    await fs.mkdir(mediaDir, { recursive: true });
+    const imagesDir = getMediaImagesDir();
+    await fs.mkdir(imagesDir, { recursive: true });
 
     const imported: ImportedMaterial[] = [];
     for (const source of result.filePaths) {
         const ext = path.extname(source).toLowerCase();
         const fileName = `${generateUid()}${ext}`;
-        const dest = path.join(mediaDir, fileName);
+        const dest = path.join(imagesDir, fileName);
         await fs.copyFile(source, dest);
 
         const isImage = IMAGE_EXT.has(ext);
@@ -64,6 +64,18 @@ async function generateThumbnail(srcPath: string, fileName: string): Promise<str
 
     const thumb = image.resize({ width: 320 });
     const thumbName = fileName.replace(/\.[^.]+$/, "") + "_thumb.png";
-    await fs.writeFile(path.join(getMediaDir(), thumbName), thumb.toPNG());
+    await fs.writeFile(path.join(getMediaImagesDir(), thumbName), thumb.toPNG());
     return thumbName;
+}
+
+export async function readJson(fileName: string): Promise<string> {
+    const absolutePath = resolveMediaJsonPath(fileName);
+    return fs.readFile(absolutePath, "utf8");
+}
+
+export async function writeJson(fileName: string, content: string): Promise<{ path: string }> {
+    const absolutePath = resolveMediaJsonPath(fileName);
+    await fs.mkdir(path.dirname(absolutePath), { recursive: true });
+    await fs.writeFile(absolutePath, content, "utf8");
+    return { path: absolutePath };
 }

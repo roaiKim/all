@@ -19,6 +19,7 @@ function Asset(props: AssetProps) {
         }
     };
 
+    console.log("materials", materials);
     return (
         <div className={joinLessPrefix("asset-container")}>
             <div className="asset asset-add" onClick={handleUpload}>

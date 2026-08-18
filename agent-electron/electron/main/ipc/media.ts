@@ -10,4 +10,20 @@ export function registerMediaIpc(): void {
             return fail(error);
         }
     });
+
+    ipcMain.handle("media:readJson", async (_event, fileName: string) => {
+        try {
+            return ok(await mediaService.readJson(fileName));
+        } catch (error) {
+            return fail(error);
+        }
+    });
+
+    ipcMain.handle("media:writeJson", async (_event, fileName: string, content: string) => {
+        try {
+            return ok(await mediaService.writeJson(fileName, content));
+        } catch (error) {
+            return fail(error);
+        }
+    });
 }

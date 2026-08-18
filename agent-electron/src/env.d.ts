@@ -60,6 +60,8 @@ interface Window {
         };
         media: {
             importMaterials: () => Promise<any>;
+            readJson: (fileName: string) => Promise<any>;
+            writeJson: (fileName: string, content: string) => Promise<any>;
         };
     };
 }
