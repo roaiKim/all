@@ -1,4 +1,4 @@
-import { Input, InputNumber, type InputNumberProps, type InputProps, type SelectProps, type SwitchProps, Tooltip } from "antd";
+import { type InputNumberProps, type InputProps, type SelectProps, type SwitchProps, Tooltip } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import type { PropsWithChildren } from "react";
 import Controller from "./controller";
@@ -14,32 +14,50 @@ export enum CollectionType {
 
 type RemoveDefaultController<T> = Omit<T, "value" | "onChange">;
 
-type ScenerWashLight =
-    | RemoveDefaultController<InputNumberProps>
-    | RemoveDefaultController<InputProps>
-    | RemoveDefaultController<SelectProps>
-    | RemoveDefaultController<SwitchProps>;
-
 export type ValueType = string | number | boolean;
 
-export interface SceneryProps<T> {
-    port: CollectionType | keyof typeof CollectionType;
-    value?: T;
+type CommonSceneryProps = {
     label: string | React.ReactNode;
-    onChange?: (value: T) => void;
-    /**
-     * form 表单控件的原始参数
-     */
-    washLight?: ScenerWashLight;
     description?: string;
-    /**
-     * 是否显示
-     */
     powered?: boolean;
-}
+};
 
-export function Collection<T extends ValueType = ValueType>(props: PropsWithChildren<SceneryProps<T>>) {
-    const { port, value, label, onChange, washLight = {}, description, powered = true, children } = props;
+type ValueByPort = {
+    [CollectionType.INPUT]: string;
+    [CollectionType.NUMBER]: number | null;
+    [CollectionType.SELECT]: ValueType;
+    [CollectionType.SWITCH]: boolean;
+    [CollectionType.CUSTOM]: ValueType;
+};
+
+type WashLightByPort = {
+    [CollectionType.INPUT]: RemoveDefaultController<InputProps>;
+    [CollectionType.NUMBER]: RemoveDefaultController<InputNumberProps>;
+    [CollectionType.SELECT]: RemoveDefaultController<SelectProps>;
+    [CollectionType.SWITCH]: RemoveDefaultController<SwitchProps>;
+    [CollectionType.CUSTOM]: Record<string, never>;
+};
+
+type SceneryPropsByPort<P extends CollectionType> = CommonSceneryProps & {
+    port: P;
+    value?: ValueByPort[P];
+    onChange?: (value: ValueByPort[P]) => void;
+    washLight?: WashLightByPort[P];
+};
+
+export type SceneryProps = {
+    [P in CollectionType]: SceneryPropsByPort<P>;
+}[CollectionType];
+
+type SelectSceneryProps<T extends ValueType> = Omit<SceneryPropsByPort<CollectionType.SELECT>, "value" | "onChange"> & {
+    value?: T;
+    onChange?: (value: T) => void;
+};
+
+export function Collection<T extends ValueType>(props: PropsWithChildren<SelectSceneryProps<T>>): React.ReactElement | null;
+export function Collection<P extends CollectionType>(props: PropsWithChildren<SceneryPropsByPort<P>>): React.ReactElement | null;
+export function Collection(props: PropsWithChildren<SceneryProps>) {
+    const { label, description, powered = true } = props;
     if (!powered) {
         return null;
     }
@@ -48,9 +66,7 @@ export function Collection<T extends ValueType = ValueType>(props: PropsWithChil
         <div className={`scenery-row ${description ? "scenery-row-description" : ""}`}>
             <div>{label}：</div>
             <div>
-                <Controller port={port} value={value} onChange={onChange} {...washLight}>
-                    {children}
-                </Controller>
+                <Controller {...props} />
             </div>
             {description && (
                 <Tooltip placement="left" title={description}>
