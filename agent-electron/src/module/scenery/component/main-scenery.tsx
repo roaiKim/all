@@ -40,7 +40,7 @@ function MainScenery(props: MainSceneryProps) {
             </Collection>
             <Modal
                 open={open}
-                title="超级萝莉"
+                title="素材选择"
                 onClose={() => {
                     setOpen(!open);
                 }}
