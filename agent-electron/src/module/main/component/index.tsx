@@ -3,7 +3,7 @@ import { connect, type DispatchProp } from "react-redux";
 import { useLoadingStatus } from "@core";
 import { ConfigProvider } from "antd";
 import { tabTypeModule } from "@project/config";
-import { cssToken } from "asset/styles/css-config";
+import { cssToken, themeToken } from "asset/styles/css-config";
 import { PageLoading } from "components/page-loading";
 import { SolarLoading } from "components/solar-loading";
 import { When } from "components/when";
@@ -30,7 +30,7 @@ function Main(props: MainProps) {
     }, [appLoadingStatus]);
 
     return (
-        <ConfigProvider prefixCls={lessPrefixName} theme={{ cssVar: { prefix: lessPrefixName }, token: cssToken }}>
+        <ConfigProvider prefixCls={lessPrefixName} theme={{ cssVar: { prefix: lessPrefixName }, token: cssToken, components: themeToken }}>
             <When when={initialed}>
                 <div className={`${joinLessPrefix("main-module")}`}>
                     <PageLoading show={mainLoading} theme="light" />

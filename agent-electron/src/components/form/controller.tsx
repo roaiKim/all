@@ -1,4 +1,4 @@
-import { Input, InputNumber, Select } from "antd";
+import { Input, InputNumber, Select, Switch } from "antd";
 import type { PropsWithChildren } from "react";
 import { CollectionType, type SceneryProps, type ValueType } from "./collection";
 
@@ -24,9 +24,11 @@ function Controller(props: PropsWithChildren<ControllerProps>) {
             );
 
         case CollectionType.NUMBER:
-            return <InputNumber size="small" value={value} onChange={onChange} {...washLight}></InputNumber>;
+            return <InputNumber size="small" value={value} onChange={onChange} style={{ width: "100%" }} {...washLight}></InputNumber>;
         case CollectionType.SELECT:
-            return <Select size="small" value={value} onChange={onChange} options={[]} {...washLight} />;
+            return <Select size="small" value={value} onChange={onChange} style={{ width: "100%" }} options={[]} {...washLight} />;
+        case CollectionType.SWITCH:
+            return <Switch size="small" value={Boolean(value)} onChange={onChange as any} style={{ width: "100%" }} {...washLight} />;
         case CollectionType.CUSTOM:
             return children;
     }

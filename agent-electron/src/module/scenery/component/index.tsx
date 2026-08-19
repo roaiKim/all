@@ -10,17 +10,19 @@ import "./index.less";
 interface SceneryProps {}
 
 function Scenery(props: SceneryProps) {
-    const { scenarios, activeScenarioKey } = useSelector((state: RootState) => state.app.material);
-    const currentScenarios = scenarios.get(activeScenarioKey);
-    const dispatch = useDispatch();
-    const updateScenarios = (state: Partial<ScenarioState>) => {
-        const scenarios = Object.assign({}, currentScenarios, state);
-        dispatch(actions.updateScenario(activeScenarioKey, scenarios));
-    };
+    // const { scenarios, activeScenarioKey } = useSelector((state: RootState) => state.app.material);
+    // const currentScenarios = scenarios.get(activeScenarioKey);
+    // const dispatch = useDispatch();
+
+    // const updateScenarios = (state: Partial<ScenarioState>) => {
+    //     const scenarios = Object.assign({}, currentScenarios, state);
+    //     console.log("--scenarios--", scenarios);
+    //     dispatch(actions.updateScenario(activeScenarioKey, scenarios));
+    // };
 
     return (
         <div className={joinLessPrefix("scenery-page")}>
-            <MainScenery currentScenarios={currentScenarios} updateScenarios={updateScenarios} />
+            <MainScenery />
             <div></div>
         </div>
     );

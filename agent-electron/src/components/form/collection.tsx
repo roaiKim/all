@@ -1,4 +1,4 @@
-import { Input, InputNumber, type InputNumberProps, type InputProps, type SelectProps, Tooltip } from "antd";
+import { Input, InputNumber, type InputNumberProps, type InputProps, type SelectProps, type SwitchProps, Tooltip } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import type { PropsWithChildren } from "react";
 import Controller from "./controller";
@@ -8,14 +8,19 @@ export enum CollectionType {
     NUMBER = "NUMBER",
     SELECT = "SELECT",
     INPUT = "INPUT",
+    SWITCH = "SWITCH",
     CUSTOM = "CUSTOM",
 }
 
 type RemoveDefaultController<T> = Omit<T, "value" | "onChange">;
 
-type ScenerWashLight = RemoveDefaultController<InputNumberProps> | RemoveDefaultController<InputProps> | RemoveDefaultController<SelectProps>;
+type ScenerWashLight =
+    | RemoveDefaultController<InputNumberProps>
+    | RemoveDefaultController<InputProps>
+    | RemoveDefaultController<SelectProps>
+    | RemoveDefaultController<SwitchProps>;
 
-export type ValueType = string | number;
+export type ValueType = string | number | boolean;
 
 export interface SceneryProps<T> {
     port: CollectionType | keyof typeof CollectionType;

@@ -16,18 +16,27 @@ export interface ScenariosElement {
     rect: RectPosition;
 }
 
+export enum BackgroundShowModal {
+    "contain" = "contain",
+    "cover" = "cover",
+    "scale-down" = "scale-down",
+    "fill" = "fill",
+    "none" = "none",
+}
+
 export interface Scenario {
     uid: string;
     name: string;
     background: AssetMaterial;
+    backgroundShowModal: BackgroundShowModal | keyof typeof BackgroundShowModal;
+    autoPlay: boolean;
     element: ScenariosElement[];
 }
 
 export interface ScenarioState {
     uid: string;
     name: string;
-    background: AssetMaterial;
-    main: Scenario[];
+    main: Scenario;
     children: Scenario[];
 }
 

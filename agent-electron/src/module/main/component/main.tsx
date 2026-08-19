@@ -61,7 +61,9 @@ export default function (props: PropsWithChildren<HomeProps>) {
                         <Material></Material>
                     </Pane>
                     <Pane minSize="25%" size={ratiosPer(mainLoyoutRatio.center)} className={joinLessPrefix(["pane", "pane-children"])}>
-                        <Scenario></Scenario>
+                        <When when={!!activeScenarioKey}>
+                            <Scenario></Scenario>
+                        </When>
                     </Pane>
                     <Pane minSize="15%" size={ratiosPer(mainLoyoutRatio.right)} className={joinLessPrefix(["pane", "pane-children"])}>
                         <Attribute></Attribute>

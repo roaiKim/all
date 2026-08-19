@@ -14,7 +14,7 @@ interface ThumbnailProps {
 function Thumbnail(props: ThumbnailProps) {
     const { activeScenarioKey, scenario } = props;
     const dispatch = useDispatch();
-    const { background, name, uid } = scenario;
+    const { main, name, uid } = scenario;
 
     return (
         <div
@@ -35,12 +35,11 @@ function Thumbnail(props: ThumbnailProps) {
                     className="sceen-delete"
                 />
             </When>
-            <When when={!!background.path}>
-                {/* <img src={mediaUrl(background.path)}></img> */}
-                {background.type === "image" ? (
-                    <img src={mediaUrl(background.thumb)} alt={background.name} />
+            <When when={!!main.background.path}>
+                {main.background.type === "image" ? (
+                    <img src={mediaUrl(main.background.thumb)} alt={main.background.name} />
                 ) : (
-                    <video src={mediaUrl(background.path)} muted preload="metadata" playsInline />
+                    <video src={mediaUrl(main.background.thumb)} muted preload="metadata" playsInline />
                 )}
             </When>
         </div>
