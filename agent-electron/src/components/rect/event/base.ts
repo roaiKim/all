@@ -45,7 +45,7 @@ export class DragBaseEventManager {
 
         this.#options = props;
 
-        this.initialDragTargetState(defaultState);
+        this.dragState = this.initialDragTargetState(defaultState);
 
         this.#registerMousemove = throttle(this.#mousemoveHander, frequency);
 
@@ -66,6 +66,13 @@ export class DragBaseEventManager {
 
     #init() {
         this.#dragger.addEventListener("mousedown", this.#registerMousedown);
+    }
+
+    destroy() {
+        this.#dragger?.removeEventListener("mousedown", this.#registerMousedown);
+        this.container?.removeEventListener("mousemove", this.#registerMousemove);
+        this.container?.removeEventListener("mouseup", this.#registerMouseup);
+        this.container?.removeEventListener("mouseleave", this.#registerMouseup);
     }
 
     #registerMousedown = (event: MouseEvent) => {

@@ -9,25 +9,32 @@ import { DragEventManager, type DragEventManagerProps } from "../event/drag-even
 
 export function useDrag(props: DragBaseEventManagerProps) {
     const [state, setState] = useState({ x: 0, y: 0, width: 0, height: 0, draging: false, moving: false });
-
+    const dragEventManagement = useRef<DragEventManager>(null);
     const onDragStart = useCallback((dragState) => {
-        setState(Object.assign(state, dragState));
+        setState((prev) => ({ ...prev, ...dragState }));
     }, []);
     const onDragMove = useCallback((dragState) => {
-        setState(Object.assign(state, dragState));
+        setState((prev) => ({ ...prev, ...dragState }));
     }, []);
     const onDragEnd = useCallback((dragState) => {
-        setState(Object.assign(state, dragState));
+        setState((prev) => ({ ...prev, ...dragState }));
     }, []);
 
-    const dragEventManagement = useMemo(() => {
-        return new DragEventManager({
-            ...props,
-            onDragStart,
-            onDragMove,
-            onDragEnd,
-        });
-    }, []);
+    useEffect(() => {
+        if (props.dragger) {
+            dragEventManagement.current = new DragEventManager({
+                ...props,
+                onDragStart,
+                onDragMove,
+                onDragEnd,
+            });
+        }
+        return () => {
+            if (dragEventManagement.current) {
+                return dragEventManagement.current.destroy();
+            }
+        };
+    }, [props.dragger]);
 
     const options = useRef({
         attribute: { role: "drag-role", "aria-disabled": true },

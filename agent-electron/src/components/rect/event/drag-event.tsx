@@ -17,7 +17,7 @@ export class DragEventManager extends DragBaseEventManager {
         // const { dragId, containerId } = props;
         super(props);
         this.options = props;
-
+        console.log("--init-");
         // this.printModule = printModule;
 
         // this.shape = this.printModule.getPluginByName(props.draggableType);
