@@ -79,6 +79,10 @@ export class DragBaseEventManager {
         event.preventDefault();
         const dragTarget = this.targetElement(event);
         if (!dragTarget) return;
+        console.log("--dragTarget-", dragTarget);
+        const dragTargetRect = dragTarget.getBoundingClientRect();
+        this.dragState.width = dragTargetRect.width;
+        this.dragState.height = dragTargetRect.height;
         this.dragTarget = dragTarget;
         const { offsetX, offsetY } = event;
         this.offsetX = ToolManager.numberPrecision(offsetX || 0);
@@ -132,7 +136,7 @@ export class DragBaseEventManager {
 
     targetElement = (event: MouseEvent): HTMLElement => {
         const { target } = this.#options;
-        if (!target) {
+        if (target) {
             const eventTarget = event.target as HTMLElement;
             if (typeof target === "string") {
                 return eventTarget.closest(target);
