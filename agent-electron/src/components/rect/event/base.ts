@@ -29,7 +29,6 @@ export class DragBaseEventManager {
     offsetX: number = 0;
     offsetY: number = 0;
     #options: DragBaseEventManagerProps;
-    // draging: boolean;
     constructor(props: DragBaseEventManagerProps) {
         const { dragger, container, frequency = 40, defaultState } = props;
 
@@ -114,6 +113,10 @@ export class DragBaseEventManager {
         this.dragState.draging = false;
         const isWrap = this.validateWhole(this.#options.shouldWholeContain);
         this.mouseupListener(event, isWrap);
+
+        // this.dragState = this.initialDragTargetState();
+        // this.offsetX = 0;
+        // this.offsetY = 0;
         this.container.removeEventListener("mousemove", this.#registerMousemove);
         this.container.removeEventListener("mouseup", this.#registerMouseup);
         this.container.removeEventListener("mouseleave", this.#registerMouseup);
