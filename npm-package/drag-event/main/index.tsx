@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import { Button } from "../src";
+import Rect from "../src/rect";
 
 function injectRootContainer(): HTMLElement {
     const rootContainer = document.createElement("div");
@@ -9,4 +9,4 @@ function injectRootContainer(): HTMLElement {
 }
 
 const root = createRoot(injectRootContainer());
-    root.render(<Button label="rui" />);
+root.render(<Rect />);
