@@ -48,6 +48,7 @@
     "react-dom": "^19.3.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.68.0",
+    "stylelint-config-way": "^1.0.0",
     "uuid": "^14.0.2"
   },
   "peerDependencies": {
@@ -57,5 +58,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "private": true
+  "private": true,
+  "stylelint": {
+    "extends": "stylelint-config-way"
+  }
 }

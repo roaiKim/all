@@ -19,6 +19,7 @@
     /* type checking */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "strictNullChecks": false,
 
     "paths": {
       "@/*": ["./src/*"]

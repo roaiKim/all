@@ -61,6 +61,52 @@ export class PositionManager {
 
     /**
      * @description 检测 A Element 是否在 B Element 中
+     * @param children state x y width height
+     * @param container HTMLElement
+     * @param config 是否完全包含
+     * @returns boolean
+     */
+    static stateByContainer(state: Record<"x" | "y" | "width" | "height", number>, containerElement: HTMLElement, config: boolean = false) {
+        if (!state || !containerElement) return false;
+        const childrenX = state.x;
+        const childrenY = state.y;
+        const containerX = this.getPageXByAbsolute(containerElement);
+        const containerY = this.getPageYByAbsolute(containerElement);
+        const containerWidth = this.getElementWidth(containerElement);
+        const containerHeight = this.getElementHeight(containerElement);
+        const childrenWidth = state.width;
+        const childrenHeight = state.height;
+        const childrenRectXRange = [childrenX, childrenX + childrenWidth]; // children X range
+        const childrenRectYRange = [childrenY, childrenY + childrenHeight];
+        const containerRectXRange = [containerX, containerX + containerWidth];
+        const containerRectYRange = [containerY, containerY + containerHeight];
+
+        let byIn = false;
+
+        if (config) {
+            byIn =
+                childrenRectXRange[0] > containerRectXRange[0] &&
+                childrenRectXRange[0] < containerRectXRange[1] &&
+                childrenRectYRange[0] > containerRectYRange[0] &&
+                childrenRectYRange[0] < containerRectYRange[1] &&
+                //
+                childrenRectXRange[1] < containerRectXRange[1] &&
+                childrenRectYRange[1] < containerRectYRange[1];
+        } else {
+            byIn =
+                childrenRectXRange[0] > containerRectXRange[0] &&
+                childrenRectXRange[0] < containerRectXRange[1] &&
+                childrenRectYRange[0] > containerRectYRange[0] &&
+                childrenRectYRange[0] < containerRectYRange[1];
+        }
+        if (byIn) {
+            return [childrenRectXRange[0] - containerRectXRange[0], childrenRectYRange[0] - containerRectYRange[0]];
+        }
+        return null;
+    }
+
+    /**
+     * @description 检测 State 是否在 B Element 中
      * @param children HTMLElement
      * @param container HTMLElement
      * @param config 是否完全包含

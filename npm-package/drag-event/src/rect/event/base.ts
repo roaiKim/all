@@ -3,6 +3,7 @@ import { throttle } from "@/utils/throttle";
 import { ToolManager } from "@/utils/tool-manager";
 
 export interface DragTargetState {
+    _uid: string;
     x: number;
     y: number;
     width: number;
@@ -13,33 +14,28 @@ export interface DragTargetState {
 
 export interface DragBaseEventManagerProps {
     dragger: string | HTMLElement;
-    container?: string | HTMLElement;
-    target?: string | HTMLElement;
     frequency?: number;
     defaultState?: Partial<DragTargetState>;
     shouldWholeContain?: boolean;
 }
 
 export class DragBaseEventManager {
-    container: HTMLElement;
     #dragger: HTMLElement;
-    dragTarget: HTMLElement;
     dragState: DragTargetState;
     #registerMousemove: (event: any) => void;
     offsetX: number = 0;
     offsetY: number = 0;
     #options: DragBaseEventManagerProps;
     constructor(props: DragBaseEventManagerProps) {
-        const { dragger, container, frequency = 40, defaultState } = props;
+        const { dragger, frequency = 40, defaultState } = props;
 
         this.#dragger = this.#getTarget(dragger);
-        this.container = this.#getTarget(container || document.body);
+        this.container = this.#getTarget(document.body);
 
         // this.#body = document.body;
 
         if (!this.#dragger) {
             console.error(dragger + "元素不存在");
-            return;
         }
 
         this.#options = props;
@@ -52,7 +48,6 @@ export class DragBaseEventManager {
     }
 
     #getTarget = (element?: string | HTMLElement) => {
-        console.log("--getTarget-", element);
         if (!element) {
             return null;
         }
@@ -134,7 +129,7 @@ export class DragBaseEventManager {
     };
 
     initialDragTargetState(dragState?: Partial<DragTargetState>): DragTargetState {
-        return { x: 0, y: 0, width: 0, height: 0, draging: false, moving: false, ...dragState };
+        return { _uid: "", x: 0, y: 0, width: 0, height: 0, draging: false, moving: false, ...dragState };
     }
 
     targetElement = (event: MouseEvent): HTMLElement => {
