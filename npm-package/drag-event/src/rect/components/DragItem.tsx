@@ -21,14 +21,16 @@ export interface DragItemProps {
 }
 
 export function DragItem(props: PropsWithChildren<DragItemProps>) {
-    const { className, style, id, mode = "move", width, height, x, y } = props;
+    const { className, style, id, mode, width, height, x, y } = props;
     const dragItemId = useMemo(() => id || v4(), [id]);
     const ref = useRef(null);
     const dragAgent = useContext(DragAgentContext);
     const container = useContext(DragContainerContext);
+    const dragMode = useRef<"drag" | "move">(mode || (container ? "move" : "drag"));
+
     const dragEventManager = useRef<DragEventManager>(null);
 
-    const [state, setState] = useState(initialDragState(dragItemId, mode));
+    const [state, setState] = useState(initialDragState(dragItemId, dragMode.current));
 
     if (!dragAgent) {
         console.error("DragItem 组件需要包裹在 DragContext");
@@ -36,24 +38,24 @@ export function DragItem(props: PropsWithChildren<DragItemProps>) {
     }
 
     useEffect(() => {
-        dragAgent.pushDragTargetState(initialDragState(dragItemId, mode));
+        dragAgent.pushDragTargetState(initialDragState(dragItemId, dragMode.current));
         return () => {
             dragAgent.deleteDragTargetState(dragItemId);
         };
     }, [dragItemId]);
 
     const onMouseDown = (event: React.MouseEvent) => {
-        dragAgent.dragStart(event, dragItemId);
+        dragAgent.dragStart(event, dragItemId, dragMode.current === "move" ? container.element : undefined);
     };
 
     const onStateChange = useCallback((state: EventState) => {
         if (state.state?._uid === dragItemId) {
             // if (state.changeType === "end") {
-            //     setState(initialDragState(dragItemId, mode));
+            //     setState(initialDragState(dragItemId, dragMode.current));
             // } else {
             setState(state.state);
             // }
-            // console.log("-item-change-state---", state.changeType, state);
+            console.log("-item-change-state---", state.state);
         }
     }, []);
 
@@ -68,8 +70,8 @@ export function DragItem(props: PropsWithChildren<DragItemProps>) {
     return (
         <div
             className={classNames("rosen-item", className, {
-                "is-draging": state.mode === "drag" && state.draging,
-                "is-move": state.mode === "move",
+                "is-draging": dragMode.current === "drag" && state.draging,
+                "is-move": dragMode.current === "move",
             })}
             style={{
                 ...style,

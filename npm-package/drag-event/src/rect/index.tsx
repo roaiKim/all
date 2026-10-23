@@ -50,8 +50,8 @@ function Rect(props: RectProps) {
                                 ...item,
                                 width: state.state.width,
                                 height: state.state.height,
-                                y: state.wraps[0].offsetY,
-                                x: state.wraps[0].offsetX,
+                                y: state.state.y,
+                                x: state.state.x,
                             };
                         }
                         return item;
@@ -60,28 +60,31 @@ function Rect(props: RectProps) {
             }
         }
     };
-    console.log("state00", state);
+    // console.log("state00", state);
     return (
         <DragContext onDragMoving={onDragMoving} onDragEnd={onDragEnd}>
             <div ref={contaienr} className={"rect-container"}>
-                <DragItem mode="drag">
+                <DragItem>
                     <div className={"rect-box"}></div>
                 </DragItem>
-                <DragItem mode="drag">
+                <DragItem>
                     <div className={"rect-box"}></div>
                 </DragItem>
             </div>
-            <DragContainer>
-                <div className="rosen-container-1">
-                    {state.map((item) => (
-                        <DragItem key={item.uid} id={item.uid} width={item.width} height={item.height} y={item.y} x={item.x}>
-                            <div
-                                className="rosen-item-1" /* style={{ width: item.width, height: item.height, top: item.top, left: item.left }} */
-                            ></div>
-                        </DragItem>
-                    ))}
-                </div>
-            </DragContainer>
+            <div style={{ display: "flex" }}>
+                <div style={{ marginRight: 20, width: 30, height: 40 }}></div>
+                <DragContainer>
+                    <div className="rosen-container-1">
+                        {state.map((item) => (
+                            <DragItem key={item.uid} id={item.uid} width={item.width} height={item.height} y={item.y} x={item.x}>
+                                <div
+                                    className="rosen-item-1" /* style={{ width: item.width, height: item.height, top: item.top, left: item.left }} */
+                                ></div>
+                            </DragItem>
+                        ))}
+                    </div>
+                </DragContainer>
+            </div>
         </DragContext>
     );
 }

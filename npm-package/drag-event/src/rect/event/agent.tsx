@@ -208,17 +208,17 @@ export class DragAgent {
         //         return null;
         //     }
         // }
-        return event.target as HTMLElement;
+        return event.currentTarget as HTMLElement;
     };
 
-    dragStart = (event: React.MouseEvent, id: string) => {
+    dragStart = (event: React.MouseEvent, id: string, curtain?: HTMLElement) => {
         const state = this.getDragTargetState(id);
         if (state) {
             this.setActiveState(id);
             this.dragEventManagement.setDragState(state);
             const target = this.getEventTarget(event);
             this.currentTarget = target;
-            this.dragEventManagement.mousedownEvent(event, target);
+            this.dragEventManagement.mousedownEvent(event, target, curtain);
         }
     };
 
