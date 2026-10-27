@@ -16,24 +16,25 @@ export function DragContext(props: PropsWithChildren<DragContextProps>) {
 
     const [dragTemplateState, setDragTemplateState] = useState<EventState["state"]>(null);
 
-    const onStateChange = useCallback((state: EventState) => {
-        // console.log("content", state);
-        if (state.changeType === "end") {
-            setDragTemplateState(null);
-        } else {
-            setDragTemplateState(state.state);
+    const draging = useCallback((state: EventState) => {
+        if (state.state.mode === "drag") {
+            if (state.changeType === "end") {
+                setDragTemplateState(null);
+            } else {
+                setDragTemplateState(state.state);
+            }
         }
     }, []);
 
     useEffect(() => {
         if (dragAgent) {
             Register(dragAgent, props);
-            dragAgent.subscribe("onStateChange", onStateChange);
+            dragAgent.subscribe("onStateChange", draging);
         }
         return () => {
             if (dragAgent) {
                 Unregister(dragAgent, props);
-                dragAgent.unsubscribe("onStateChange", onStateChange);
+                dragAgent.unsubscribe("onStateChange", draging);
             }
         };
     }, [dragAgent]);

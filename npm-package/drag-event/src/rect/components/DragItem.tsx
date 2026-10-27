@@ -48,20 +48,22 @@ export function DragItem(props: PropsWithChildren<DragItemProps>) {
         dragAgent.dragStart(event, dragItemId, dragMode.current === "move" ? container.element : undefined);
     };
 
-    const onStateChange = useCallback((state: EventState) => {
+    const dragMove = useCallback((state: EventState) => {
+        // 非拖拽
+        if (state.state.mode === "drag") return;
         if (state.state?._uid === dragItemId) {
-            // if (state.changeType === "end") {
-            //     setState(initialDragState(dragItemId, dragMode.current));
-            // } else {
             setState(state.state);
-            // }
-            console.log("-item-change-state---", state.state);
         }
     }, []);
 
     useEffect(() => {
-        dragAgent.subscribe("onStateChange", onStateChange);
-    }, [dragAgent]);
+        if (dragMode.current === "move") {
+            dragAgent.subscribe("onStateChange", dragMove);
+        }
+        return () => {
+            dragAgent.unsubscribe("onStateChange", dragMove);
+        };
+    }, [dragAgent, dragMode]);
 
     useEffect(() => {
         setState((prevState) => ({ ...prevState, width, height, y, x }));

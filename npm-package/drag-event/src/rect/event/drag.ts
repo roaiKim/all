@@ -56,16 +56,10 @@ export class DragEventManagement {
         const dragTargetRect = this.dragTarget.getBoundingClientRect();
         this.#dragState.width = dragTargetRect.width;
         this.#dragState.height = dragTargetRect.height;
-        console.log("width-height", this.#dragState.width, this.#dragState.height);
-        // const { offsetX, offsetY } = event as unknown as MouseEvent;
-        // this.offsetX = ToolManager.numberPrecision(offsetX || 0);
-        // this.offsetY = ToolManager.numberPrecision(offsetY || 0);
         if (curtain) {
             const { top, left } = curtain.getBoundingClientRect();
             this.offsetX = ToolManager.numberPrecision(left || 0);
             this.offsetY = ToolManager.numberPrecision(top || 0);
-
-            console.log("getBoundingClientRect", top, left);
         }
         // console.log("---offset--", this.offsetX, this.offsetY);
         const x = event.pageX - this.offsetX - this.#dragState.width / 2;
