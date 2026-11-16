@@ -1,0 +1,51 @@
+.ro-nav-list-component {
+  padding: 5px 44px 0 32px;
+  border-radius: 16px;
+  background: #fff;
+  text-align: left;
+
+  &.ro-nav-border {
+    .ro-nav-list-item {
+      border-bottom: 1px solid #ebecf2;
+    }
+  }
+
+  .ro-nav-list-item {
+    font-size: 28px;
+    height: 128px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ebecf2;
+
+    .ro-nl-title-body {
+      flex-grow: 1;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .ro-nl-title-children {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      text-align: right;
+      justify-content: flex-end;
+    }
+
+    .ro-nl-title {
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    .ro-nl-description {
+      color: gray;
+      font-size: 24px;
+    }
+
+    .ro-nl-arrow {
+      margin-right: 10px;
+    }
+  }
+}

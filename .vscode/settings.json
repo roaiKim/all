@@ -21,6 +21,7 @@
     "template",
     "vue-core-app",
     "wechat-app",
+    "wechat-app-4",
     "rsbuild-base",
 ],
   "editor.codeActionsOnSave": {

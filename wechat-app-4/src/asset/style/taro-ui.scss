@@ -1,0 +1,23 @@
+// taro-ui 按需样式聚合入口
+// 项目本身用 Less，这里只作为第三方 SCSS 样式的统一出口，业务代码不直接引入组件样式
+//
+// 说明：taro-ui/dist/style/index.scss 会打包 40+ 个组件样式（约 309KB wxss），
+// 因此只引入实际用到的组件；新增 taro-ui 组件时在此补充对应文件。
+// 每个组件的 scss 自带 variables / mixins 依赖，可单独引入。
+
+// AtIcon（内含 iconfont base64）
+@import "taro-ui/dist/style/components/icon.scss";
+// AtButton
+@import "taro-ui/dist/style/components/button.scss";
+// AtModal / AtModalContent / AtModalHeader / AtModalAction
+@import "taro-ui/dist/style/components/modal.scss";
+// AtInput
+@import "taro-ui/dist/style/components/input.scss";
+// AtSwitch
+@import "taro-ui/dist/style/components/switch.scss";
+// AtTabs / AtTabsPane
+@import "taro-ui/dist/style/components/tabs.scss";
+// 通用 flex 工具类
+@import "taro-ui/dist/style/components/flex.scss";
+// AtModal 打开时锁定页面滚动
+@import "taro-ui/dist/style/components/frozen.scss";

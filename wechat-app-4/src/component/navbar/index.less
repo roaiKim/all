@@ -1,0 +1,32 @@
+.ro-nav-custom-bar {
+  width: 100%;
+  background: linear-gradient(90deg, #ffa15b, #ff7954);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  flex-shrink: 0;
+
+  .nav-back {
+    position: absolute;
+    bottom: 20px;
+    left: 22px;
+    width: 32px;
+    height: 32px;
+
+    &.hidden {
+      display: none;
+    }
+  }
+
+  .nav-title {
+    font-size: 32px;
+    /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+    font-family: "Microsoft YaHei";
+    font-weight: 400;
+    text-align: left;
+    color: #f7f7f7;
+    margin-bottom: 20px;
+  }
+}

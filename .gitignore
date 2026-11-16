@@ -4,7 +4,7 @@
 **/node_modules
 **/build
 **/lib
-**/dist
+**/dist**
 **/z-files
 **/.eslintcache
 wechat-core/lib
@@ -14,3 +14,4 @@ npm-package/**/**.tgz
 **/src/config/dev-tabs.ts
 
 agent-electron/media
+wechat-app-4.orig
