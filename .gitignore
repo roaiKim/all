@@ -15,3 +15,4 @@ npm-package/**/**.tgz
 
 agent-electron/media
 wechat-app-4.orig
+**/.swc

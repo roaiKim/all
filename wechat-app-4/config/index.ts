@@ -4,8 +4,25 @@ import { defineConfig, type UserConfigExport } from '@tarojs/cli'
 
 import devConfig from './dev'
 import prodConfig from './prod'
+import createAnalyzer from './analyze'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 const resolve = (...paths: string[]) => path.resolve(__dirname, '..', ...paths)
+
+/**
+ * Taro 4.x 的 vite 小程序编译器（taro:vite-assets 插件）用
+ * `id.replace(sourceDir + '/', '')` 计算被引用的图片产物名：
+ * sourceDir 在 Windows 上是反斜杠路径，而模块 id 是正斜杠，替换不生效，
+ * 产物名就变成绝对路径，rollup 直接抛
+ * `The "fileName" or "name" properties of emitted chunks and assets ...`。
+ * 这里改用官方的 imageUrlLoaderOption.name 自己算「相对 src 的正斜杠路径」，
+ * 图片会落到 dist/asset/...，和 app.json 里 tabBar 的 iconPath 对得上。
+ */
+const toDistAssetPath = (filePath: string) =>
+  path
+    .relative(resolve('src'), filePath)
+    .replace(/\\/g, '/')
+    .replace(/^(?:\.\.\/)+/, '')
 
 // https://taro-docs.jd.com/docs/next/config#defineconfig-辅助函数
 export default defineConfig<'vite'>(async (merge, { command, mode }) => {
@@ -51,8 +68,25 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       }
     },
     framework: 'react',
-    compiler: 'vite',
+    compiler: {
+      type: 'vite',
+      /** 每次 build 自动生成打包分析报告（.analyze/stats-<平台>.html），见 config/analyze.ts */
+      vitePlugins: [createAnalyzer()]
+    },
     mini: {
+      /**
+       * 图片/字体/音视频产物名统一走自定义 name，绕开上面说的 Windows 路径分隔符 bug
+       * （limit 仍走 Taro 默认：图片 2KB 以内内联成 base64，超过才落盘）
+       */
+      imageUrlLoaderOption: {
+        name: toDistAssetPath
+      },
+      fontUrlLoaderOption: {
+        name: toDistAssetPath
+      },
+      mediaUrlLoaderOption: {
+        name: toDistAssetPath
+      },
       /**
        * taro-ui 的样式是 scss 且内部大量使用 @import，sass 1.x 会打印
        * deprecation（@import / legacy-js-api）警告。这些能力要到 sass 3.0 才移除，
