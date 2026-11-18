@@ -1,7 +1,7 @@
 import { roApp, roDispatch } from "@core";
-import { actions } from "@pages/main/index.module";
 import miniConfig from "@config/mini-config";
-import { isDevelopment } from "@config/static-envs";
+import { isDevelopment, loginPage } from "@config/static-envs";
+import { actions } from "@pages/main";
 import Taro from "@tarojs/taro";
 import auth from "@type/auth-file";
 import { roEvent } from "@utils/events";
@@ -57,7 +57,7 @@ export function roPushHistory(
             success: (response) => {
                 if (response.confirm) {
                     roDispatch(actions.clearLoginState());
-                    roPushHistory("/pages/login/index");
+                    roPushHistory(loginPage);
                 }
             },
         });

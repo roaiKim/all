@@ -45,7 +45,7 @@ export default defineConfig<"vite">(async (merge, { command, mode }) => {
         alias: {
             "@core": resolve("node_modules/wechat-core-app"),
             "@http": resolve("src/http"),
-            "@api": resolve("src/service/api"),
+            "@api": resolve("src/service/public-api"),
             "@utils": resolve("src/utils"),
             "@pages": resolve("src/pages"),
             "@asset": resolve("src/asset"),

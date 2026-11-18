@@ -15,7 +15,7 @@ export default defineConfig([
             "babel.config.js",
             "commitlint.config.mjs",
             "stylelint.config.js",
-            // "config/**",
+            "script/**",
             "types/**",
         ],
     },

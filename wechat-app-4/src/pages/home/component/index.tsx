@@ -27,7 +27,7 @@ function Main() {
             <AtButton
                 className="btn"
                 onClick={() => {
-                    roPushHistory("/pages/webview/index");
+                    roPushHistory("/pages/common/webview/index");
                 }}
             >
                 <View className="btn-text">

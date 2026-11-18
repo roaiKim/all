@@ -1,15 +1,14 @@
 export default {
     pages: [
         "pages/home/index",
-        "pages/login/index",
-        "pages/login/password",
+        "pages/common/change-password/index",
+        "pages/common/login/password-login/index",
+        "pages/common/login/wechat-login/index",
+        "pages/common/profile-center/profile/index",
+        "pages/common/profile-center/user/index",
+        "pages/common/webview/index",
+        "pages/main/index",
         "pages/order-search/index",
-        "pages/profile-center/profile/index",
-        "pages/profile-center/user/index",
-        "pages/profile-center/user/addition",
-        "pages/profile-center/address/index",
-        "pages/profile-center/address/addition",
-        "pages/webview/index",
     ],
     window: {
         backgroundTextStyle: "light",
@@ -35,7 +34,7 @@ export default {
                 selectedIconPath: "asset/img/tab-bar/searcha.png",
             },
             {
-                pagePath: "pages/profile-center/profile/index",
+                pagePath: "pages/common/profile-center/profile/index",
                 text: "个人中心",
                 iconPath: "asset/img/tab-bar/profile.png",
                 selectedIconPath: "asset/img/tab-bar/profilea.png",

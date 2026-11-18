@@ -20,3 +20,5 @@ export const LOGIN_REMEMBER_USERNAME = `${APP_NAME}_LOGIN_USERNAME`;
 export const LOGIN_REMEMBER_PASSWORD = `${APP_NAME}_LOGIN_PASSWORD`;
 
 export const ignoreName = ["login"];
+
+export const loginPage = "/pages/common/login/wechat-login/index";

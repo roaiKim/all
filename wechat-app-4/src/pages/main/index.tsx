@@ -1,4 +1,117 @@
+// import { module } from "./index.module";
+import { Loading, Module, register } from "@core";
+import { loginPage, WEB_COMMA_TENANT_ID, WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "@config/static-envs";
+import { clearCommonTanentId, clearToken } from "@http/static";
+import { LoginService, LoginServiceLoginResponse } from "@service/public-api/LoginService";
+import Taro from "@tarojs/taro";
+import { RootState } from "@type/state";
+import { roPushHistory } from "@utils";
+import { withConfirm } from "@utils/decorator/withConfirm";
+import { delayToast } from "@utils/functions";
+import { Toast } from "@utils/ui/toast";
 import Main from "./component";
-import { module } from "./index.module";
+import { State } from "./type";
+
+const initialMainState: State = {
+    name: "main",
+    accessToken: null,
+    loggedin: false,
+    loginInfo: null,
+};
+
+class MainModule extends Module<RootState, "main"> {
+    async onEnter(params: Record<string, any>): Promise<void> {
+        const accessToken = Taro.getStorageSync(WEB_TOKEN);
+        const loggedin = Taro.getStorageSync(WEB_ISLOGIN);
+        const loginInfo = Taro.getStorageSync(WEB_USER_INFO);
+        this.setState({ loggedin, accessToken, loginInfo });
+        if (!loggedin) {
+            const ast = await LoginService.getAccount();
+        }
+    }
+
+    @Loading()
+    async login(username: string, password: string) {
+        const request = {
+            // grant_type: "social",
+            username: `${username}@@wxpassword`,
+            password,
+        };
+        const response = await LoginService.login(request).catch((error) => {
+            let content = "";
+            if (error.statusCode === 426) {
+                content = "登录密码错误";
+            } else if (error.statusCode === 401) {
+                content = "账号不存在";
+            }
+            Taro.showModal({
+                title: "错误",
+                content: JSON.stringify(error),
+                showCancel: false,
+            });
+            return Promise.reject("ignore");
+        });
+
+        this.setState({
+            loggedin: true,
+            accessToken: response.access_token,
+            loginInfo: response,
+        });
+        this.setLoginState(response);
+
+        // await delayToast("登录成功");
+        Taro.showToast({
+            title: "登录成功",
+            success: () => {
+                roPushHistory("/pages/home/index");
+            },
+        });
+    }
+
+    @withConfirm("确定退出登录吗？")
+    logOutConfirm() {
+        this.exit();
+    }
+
+    async exit() {
+        await LoginService.logout();
+        await delayToast("退出成功");
+        this.clearLoginState();
+        roPushHistory(loginPage);
+    }
+
+    async exitByPasswordChanged() {
+        await LoginService.logout();
+        await delayToast("密码修改成功, 请重新登录");
+        this.clearLoginState();
+        roPushHistory(loginPage);
+    }
+
+    setLoginState(response: LoginServiceLoginResponse) {
+        Taro.setStorageSync(WEB_TOKEN, response.access_token);
+        Taro.setStorageSync(WEB_ISLOGIN, true);
+        Taro.setStorageSync(WEB_USER_INFO, response);
+        Taro.setStorageSync(WEB_COMMA_TENANT_ID, response.extra?.["Comma-Tenant-Id"]);
+    }
+
+    clearLoginState() {
+        this.setState({
+            accessToken: null,
+            loggedin: false,
+            loginInfo: null,
+        });
+        Taro.removeStorageSync(WEB_TOKEN);
+        Taro.removeStorageSync(WEB_ISLOGIN);
+        Taro.removeStorageSync(WEB_USER_INFO);
+        Taro.removeStorageSync(WEB_COMMA_TENANT_ID);
+        clearToken();
+        clearCommonTanentId();
+    }
+}
+
+const module = register(new MainModule("main", initialMainState));
+const actions = module.getActions();
+
+export { actions, module };
 
 export default module.connect(Main);

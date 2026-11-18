@@ -1,5 +1,6 @@
 import { APIException, ErrorListener, Exception, NetworkConnectionException, roDispatch } from "@core";
-import { actions } from "@pages/main/index.module";
+import { loginPage } from "@config/static-envs";
+import { actions } from "@pages/main";
 import Taro from "@tarojs/taro";
 import { roBackHistory, roPushHistory } from "@utils";
 
@@ -19,7 +20,7 @@ export default class ErrorHandler implements ErrorListener {
                     confirmText: "登录",
                     success: (response) => {
                         if (response.confirm) {
-                            roPushHistory("/pages/login/index", null, { redirection: true });
+                            roPushHistory(loginPage, null, { redirection: true });
                             roDispatch(actions.clearLoginState());
                         } else if (response.cancel) {
                             roDispatch(actions.clearLoginState());
@@ -46,7 +47,7 @@ export default class ErrorHandler implements ErrorListener {
                     success: (response) => {
                         if (error.message?.includes("授权登录")) {
                             if (response.confirm) {
-                                roPushHistory("/pages/login/index", null, { redirection: true });
+                                roPushHistory(loginPage, null, { redirection: true });
                                 roDispatch(actions.clearLoginState());
                             } else if (response.cancel) {
                                 roDispatch(actions.clearLoginState());
