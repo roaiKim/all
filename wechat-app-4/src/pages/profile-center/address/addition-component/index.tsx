@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { roDispatch } from "@core";
-import { roPushHistory } from "utils";
 import { AtButton, AtInput, AtSwitch } from "taro-ui";
+import { NavList } from "@component/nav-list";
 import { Button, Image, Picker, Text, Textarea, View } from "@tarojs/components";
-import { NavList } from "component/nav-list";
-import { RootState } from "type/state";
-import { Toast } from "utils/ui/toast";
-import logo from "asset/img/global/logo.png";
+import { RootState } from "@type/state";
+import { roPushHistory } from "@utils";
+import { Toast } from "@utils/ui/toast";
+import logo from "@asset/img/global/logo.png";
 import { actions } from "../index.module";
 import { AddressService$addAddress$Request } from "../service";
 import "./index.less";

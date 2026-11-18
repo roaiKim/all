@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { roPushHistory } from "utils";
 import { AtButton, AtIcon, AtModal, AtModalContent } from "taro-ui";
 import { Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import homeBg from "asset/img/home/bg.png";
+import { roPushHistory } from "@utils";
+import homeBg from "@asset/img/home/bg.png";
 import "./index.less";
 
 function Main() {

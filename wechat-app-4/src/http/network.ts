@@ -1,6 +1,7 @@
 import { APIException, NetworkConnectionException } from "@core";
 import Taro from "@tarojs/taro";
-import { ContentType, getAuthorization, joinUrl, RequestMethod, urlwhitelist } from "./static";
+import { interceptor } from "./interceptor";
+import { ContentType, getAuthorization, getCommonTanentId, joinUrl, RequestMethod, urlwhitelist } from "./static";
 
 interface AjaxConfig {
     headers: Record<string, any>;
@@ -9,6 +10,8 @@ interface AjaxConfig {
 }
 
 // Taro.addInterceptor(interceptor);
+
+const ignoreValidatePath = ["auth/oauth2/token?grant_type=social"];
 
 export function ajax<Request, Response, Path extends string>(
     method: RequestMethod,
@@ -28,6 +31,7 @@ export function ajax<Request, Response, Path extends string>(
             Authorization: getAuthorization(),
             "Auth-Sub": "MINI_APP",
             "content-type": ContentType[contentType],
+            "Comma-Tenant-id": getCommonTanentId(),
             ...headers,
         },
         data: request,
@@ -35,6 +39,7 @@ export function ajax<Request, Response, Path extends string>(
     });
 
     return requestTask.then((response) => {
+        console.log("response--->", response);
         const { data: responseData = {}, statusCode } = response;
         const errorMessage: string = responseData?.msg || `[No Response]`;
 
@@ -54,6 +59,10 @@ export function ajax<Request, Response, Path extends string>(
 
         // 接口返回的 code非200为业务报错
         if (responseData.code !== 200) {
+            // 有些接口不是标准 返回
+            if (ignoreValidatePath.some((item) => path.includes(item))) {
+                return responseData;
+            }
             const isInWhitelist = urlwhitelist.filter((item) => url.includes(item))?.length;
             if (isInWhitelist) {
                 return responseData;

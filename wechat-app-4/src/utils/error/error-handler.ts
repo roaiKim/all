@@ -1,6 +1,5 @@
-import { ErrorListener, roApp } from "@core";
+import { captureError, ErrorListener, GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION, roApp } from "@core";
 import Taro from "@tarojs/taro";
-import { captureError, GLOBAL_ERROR_ACTION, GLOBAL_PROMISE_REJECTION_ACTION } from "./error-util";
 
 export function setupGlobalErrorHandler(errorListener?: ErrorListener) {
     if (errorListener) {

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
-import { roPushHistory } from "utils";
 import { Button, Checkbox, CheckboxGroup, Image, Picker, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { RootState } from "type/state";
-import logo from "asset/img/global/logo.png";
+import { RootState } from "@type/state";
+import { roPushHistory } from "@utils";
+import logo from "@asset/img/global/logo.png";
 import { actions } from "../index.module";
 import "./index.less";
 
@@ -37,7 +37,6 @@ function Login(props: LoginProps) {
     return (
         <View className="ro-login-page">
             <Image src={logo}></Image>
-            <View className="title">华药冷链</View>
             <Button
                 className="btn bluebg"
                 type="primary"
@@ -59,20 +58,15 @@ function Login(props: LoginProps) {
                 <View className="btntext">微信手机号登录</View>
             </Button>
 
-            <View className="enter-box">
-                <View
-                    className="checkbox"
-                    onClick={() => {
-                        setCheck(!check);
-                    }}
-                >
-                    <CheckboxGroup>
-                        <Checkbox color="#3579ff" value="1" checked={check}>
-                            <View className="check-content">登录华药冷链，阅读并同意</View>
-                        </Checkbox>
-                    </CheckboxGroup>
-                    <View>《上维天宫服务协议》</View>
-                </View>
+            <View
+                className="enter-box"
+                onClick={() => {
+                    setCheck(!check);
+                }}
+            >
+                <Checkbox className="checkbox" color="#3579ff" value="1" checked={check} harmonyDirection="flex"></Checkbox>
+                <View>阅读并同意</View>
+                <View className="check-content">隐私政策</View>
             </View>
         </View>
     );

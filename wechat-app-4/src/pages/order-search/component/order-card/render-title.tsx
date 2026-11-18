@@ -1,8 +1,8 @@
 import { Image, View } from "@tarojs/components";
-import arrhalf from "asset/img/order/arrhalf.png";
-import arrnone from "asset/img/order/arrnone.png";
-import arrok from "asset/img/order/arrok.png";
-import arrred from "asset/img/order/arrred.png";
+import arrhalf from "@asset/img/order/arrhalf.png";
+import arrnone from "@asset/img/order/arrnone.png";
+import arrok from "@asset/img/order/arrok.png";
+import arrred from "@asset/img/order/arrred.png";
 
 interface RenderTitleProps {
     status: number;

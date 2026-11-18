@@ -1,14 +1,13 @@
 import { connect } from "react-redux";
 import { roDispatch } from "@core";
-import { roPushHistory } from "utils";
 import { AtButton, AtIcon, AtTabs, AtTabsPane } from "taro-ui";
+import { actions } from "@pages/profile-center/address/index.module";
+import Empty from "@component/Empty";
 import { View } from "@tarojs/components";
-import Empty from "component/Empty";
-import { RootState } from "type/state";
+import { RootState } from "@type/state";
+import { roPushHistory } from "@utils";
 import AddressCard from "./address-card";
 import "./index.less";
-
-import { actions } from "pages/profile-center/address/index.module";
 
 type AddressProps = ReturnType<typeof mapStateToProps>;
 

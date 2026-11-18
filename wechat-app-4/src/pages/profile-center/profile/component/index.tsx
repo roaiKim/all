@@ -1,14 +1,14 @@
 import { connect, useDispatch } from "react-redux";
 import { showLoading } from "@core";
-import { roPushHistory } from "utils";
 import { AtButton, AtIcon } from "taro-ui";
+import { actions } from "@pages/main/index.module";
+import { Background } from "@component/background";
 import { Button, Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { RootState } from "type/state";
-import logo from "asset/img/global/logo.png";
+import { RootState } from "@type/state";
+import { roPushHistory } from "@utils";
+import logo from "@asset/img/global/logo.png";
 import "./index.less";
-
-import { actions } from "pages/main/index.module";
 
 interface ProfileProps extends ReturnType<typeof mapStateToProps> {
     name: string;
@@ -19,65 +19,71 @@ function Profile(props: ProfileProps) {
     const dispatch = useDispatch();
 
     return (
-        <View className="ro-profile-page">
-            <View className="ro-top-bg">
-                <View className="ro-user-info">
-                    <Image src={logo}></Image>
-                    {loggedin ? (
-                        <View>{loginInfo.username}</View>
-                    ) : (
+        <Background>
+            <View className="ro-profile-page">
+                <View className="ro-top-bg">
+                    <View className="ro-user-info">
+                        {/* <Image src={logo}></Image> */}
+                        <AtIcon value="user" color="#fff"></AtIcon>
+                        {loggedin ? (
+                            <View>
+                                <View>{loginInfo.full_name}</View>
+                                <View className="user-cars">粤B.123456</View>
+                            </View>
+                        ) : (
+                            <View
+                                onClick={() => {
+                                    roPushHistory("/pages/login/index");
+                                }}
+                            >
+                                立即登录
+                            </View>
+                        )}
+                    </View>
+                </View>
+                <View className="ro-bottom-user">
+                    <View className="ro-user-line">功能管理</View>
+                    <View className="ro-user-line">
+                        <AtIcon size={20} value="user"></AtIcon>
                         <View
+                            className="ro-title"
                             onClick={() => {
-                                roPushHistory("/pages/login/index");
+                                roPushHistory("/pages/profile-center/user/index");
                             }}
                         >
-                            立即登录
+                            个人信息
                         </View>
-                    )}
+                        <AtIcon size={18} value="chevron-right"></AtIcon>
+                    </View>
+                    <View className="ro-user-line">
+                        <AtIcon size={20} value="shopping-bag"></AtIcon>
+                        <View
+                            className="ro-title"
+                            onClick={() => {
+                                roPushHistory("/pages/profile-center/address/index");
+                            }}
+                        >
+                            收货地址
+                        </View>
+                        <AtIcon size={18} value="chevron-right"></AtIcon>
+                    </View>
                 </View>
-            </View>
-            <View className="ro-bottom-user">
-                <View className="ro-user-line">功能管理</View>
-                <View className="ro-user-line">
-                    <AtIcon size={20} value="user"></AtIcon>
-                    <View
-                        className="ro-title"
+                {loggedin && (
+                    <AtButton
+                        circle
+                        className="ro-logout-btn"
+                        size="small"
                         onClick={() => {
-                            roPushHistory("/pages/profile-center/user/index");
+                            dispatch(actions.logOutConfirm());
                         }}
                     >
-                        个人信息
-                    </View>
-                    <AtIcon size={18} value="chevron-right"></AtIcon>
-                </View>
-                <View className="ro-user-line">
-                    <AtIcon size={20} value="shopping-bag"></AtIcon>
-                    <View
-                        className="ro-title"
-                        onClick={() => {
-                            roPushHistory("/pages/profile-center/address/index");
-                        }}
-                    >
-                        收货地址
-                    </View>
-                    <AtIcon size={18} value="chevron-right"></AtIcon>
-                </View>
+                        <View className="ro-logout-text">
+                            <AtIcon className="infoicon" size={16} value="share-2"></AtIcon>退出当前账号
+                        </View>
+                    </AtButton>
+                )}
             </View>
-            {loggedin && (
-                <AtButton
-                    circle
-                    className="ro-logout-btn"
-                    size="small"
-                    onClick={() => {
-                        dispatch(actions.logOutConfirm());
-                    }}
-                >
-                    <View className="ro-logout-text">
-                        <AtIcon className="infoicon" size={16} value="share-2"></AtIcon>退出当前账号
-                    </View>
-                </AtButton>
-            )}
-        </View>
+        </Background>
     );
 }
 

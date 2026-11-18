@@ -3,6 +3,7 @@ import { Module, ModuleLifecycleListener } from "./platform/Module";
 import { ModuleProxy } from "./platform/ModuleProxy";
 import { Action, setStateAction } from "./reducer";
 import { Exception } from "./exception";
+import { captureError } from "./util/error-util";
 
 export interface ErrorListener {
     onError: ErrorHandler;
@@ -51,6 +52,7 @@ export async function executeAction(actionName: string, handler: ActionHandler, 
     } catch (error) {
         // const actionPayload = stringifyWithMask(app.loggerConfig?.maskedKeywords || [], "***", ...payload) || "[No Parameter]";
         // captureError(error, actionName, { actionPayload });
+        captureError(error, actionName);
     }
 }
 

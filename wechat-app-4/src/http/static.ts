@@ -1,8 +1,8 @@
+import { WEB_COMMA_TENANT_ID, WEB_TOKEN } from "@config/static-envs";
 import Taro from "@tarojs/taro";
-import { WEB_TOKEN } from "config/static-envs";
 import { baseApi } from "./config";
 
-export const BASIC_AUTH_TOKEN = "Basic Y2xpZW50OjBhNmNkNjhmYWJhOTQzMjhhNzQzMjg2YjFjZjE0ZTkz";
+export const BASIC_AUTH_TOKEN = "Basic Y29tbWE6Y29tbWE=";
 
 export enum ContentType {
     JSON = "application/json",
@@ -17,6 +17,7 @@ export const urlwhitelist = ["auth/oauth/token"];
 
 let host = "";
 let TOKEN = "";
+let commaTanentId = "";
 
 export const getUrl = (path: string) => {
     const url = joinUrl(path);
@@ -28,7 +29,7 @@ export function joinUrl(path) {
     if (path && (path.startsWith("http://") || path.startsWith("https://"))) {
         return path;
     }
-    return (host || getHost() || "") + path;
+    return (host || getHost() || "") + "/api" + path;
 }
 
 // 获取 ip
@@ -57,4 +58,18 @@ export function getAuthorization() {
 // 退出时 清空 TOKEN 否者下次请求 TOKEN 还是以前的
 export function clearToken() {
     TOKEN = "";
+}
+
+// 获取 租户id
+export function getCommonTanentId() {
+    if (commaTanentId) {
+        return commaTanentId;
+    }
+    commaTanentId = Taro.getStorageSync(WEB_COMMA_TENANT_ID) || "";
+    return commaTanentId;
+}
+
+// 退出时 租户id
+export function clearCommonTanentId() {
+    commaTanentId = "";
 }

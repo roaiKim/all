@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import Empty from "@component/Empty";
 import { Button, Input, ScrollView, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import Empty from "component/Empty";
-import { RootState } from "type/state";
+import { RootState } from "@type/state";
 import OrderCard from "./order-card";
 import "./index.less";
 

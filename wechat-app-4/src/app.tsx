@@ -1,13 +1,13 @@
 import { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import { roApp } from "@core";
-import MainComponent from "pages/main";
-import { bootstrap } from "utils/bootstrap";
+import MainComponent from "@pages/main";
+import { bootstrap } from "@utils/bootstrap";
 import AppLoading from "./app.loading";
-import "asset/less/index.less";
+import "@asset/less/index.less";
 import "./app.less";
 
-import "asset/style/taro-ui.scss";
+import "@asset/style/taro-ui.scss";
 
 bootstrap();
 

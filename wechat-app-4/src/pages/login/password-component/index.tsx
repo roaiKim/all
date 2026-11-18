@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { actions as mainActions } from "@pages/main/index.module";
+import { LOGIN_REMEMBER_USERNAME } from "@config/static-envs";
 import { Button, Image, Input, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import logo from "asset/img/global/logo.png";
-import eye from "asset/img/template/eye.png";
-import noeye from "asset/img/template/noeye.png";
+import { encrypted } from "@utils/functions/encrypted";
+import logo from "@asset/img/global/logo.png";
+import eye from "@asset/img/template/eye.png";
+import noeye from "@asset/img/template/noeye.png";
 import "./index.less";
 
-import { actions as mainActions } from "pages/main/index.module";
-
 /**
- * 
+ *
  * @returns grant_type: password
 username: gongchao
 password: FXhi3+aMlwbivn8EPBWrgQ==
@@ -18,12 +19,14 @@ password: FXhi3+aMlwbivn8EPBWrgQ==
 
 function Main() {
     const [showPassword, setShowPassword] = useState(true);
-    const [userName, setUserName] = useState("");
+    const [userName, setUserName] = useState(() => Taro.getStorageSync(LOGIN_REMEMBER_USERNAME));
     const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+
     const togglePassword = () => {
         setShowPassword(!showPassword);
     };
-    const dispatch = useDispatch();
+
     const login = () => {
         if (!userName) {
             return Taro.showToast({
@@ -39,45 +42,54 @@ function Main() {
                 duration: 2000,
             });
         }
-        dispatch(mainActions.login(userName, password));
+        Taro.setStorageSync(LOGIN_REMEMBER_USERNAME, userName);
+        dispatch(mainActions.login(userName, encrypted(password)));
     };
 
     return (
         <View className="ro-login-page">
-            <Image src={logo}></Image>
-            <View className="title">华药冷链</View>
-            <View className="eye-father">
-                <View className="input-title">账号</View>
-                <Input
-                    controlled
-                    value={userName}
-                    onInput={(e) => {
-                        setUserName(e.detail.value);
-                    }}
-                    placeholder="请输入您的账号"
-                    placeholderClass="placeholder"
-                ></Input>
-                <View className="eye"></View>
+            <View className="login-header">
+                <Image className="logo" src={logo}></Image>
             </View>
 
-            <View className="eye-father">
-                <View className="input-title">密码</View>
-                <Input
-                    controlled
-                    value={password}
-                    onInput={(e) => {
-                        setPassword(e.detail.value);
-                    }}
-                    password={showPassword}
-                    placeholder="请输入您的密码"
-                    placeholderClass="placeholder"
-                ></Input>
-                <View className="eye" onClick={togglePassword}>
-                    <>{showPassword ? <Image src={noeye}></Image> : <Image src={eye}></Image>}</>
+            <View className="form">
+                <View className="field">
+                    <View className="label">账号</View>
+                    <Input
+                        className="input"
+                        controlled
+                        value={userName}
+                        onInput={(e) => {
+                            setUserName(e.detail.value);
+                        }}
+                        placeholder="请输入您的账号"
+                        placeholderClass="placeholder"
+                    ></Input>
+                </View>
+
+                <View className="field">
+                    <View className="label">密码</View>
+                    <View className="input-wrap">
+                        <Input
+                            className="input input-password"
+                            controlled
+                            value={password}
+                            onInput={(e) => {
+                                setPassword(e.detail.value);
+                            }}
+                            password={showPassword}
+                            placeholder="请输入您的密码"
+                            placeholderClass="placeholder"
+                        ></Input>
+                        <View className="eye" onClick={togglePassword}>
+                            <Image className="eye-icon" src={showPassword ? noeye : eye}></Image>
+                        </View>
+                    </View>
                 </View>
             </View>
-            <Button className="btn bluebg" type="primary" onClick={login}>
-                <View className="btntext">登录</View>
+
+            <Button className="btn" onClick={login}>
+                登录
             </Button>
         </View>
     );

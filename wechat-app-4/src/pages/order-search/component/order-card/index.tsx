@@ -1,14 +1,13 @@
 import { useDispatch } from "react-redux";
 import { AtButton, AtIcon } from "taro-ui";
+import { actions } from "@pages/order-search/index.module";
 import { Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { copyToClipboard } from "utils/functions";
-import paiIcon from "asset/img/order/pai.png";
-import quIcon from "asset/img/order/qu.png";
+import { copyToClipboard } from "@utils/functions";
+import paiIcon from "@asset/img/order/pai.png";
+import quIcon from "@asset/img/order/qu.png";
 import { RenderTitle } from "./render-title";
 import "./index.less";
-
-import { actions } from "pages/order-search/index.module";
 
 function OrderCard(props) {
     const { info } = props;

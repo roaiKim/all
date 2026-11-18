@@ -11,7 +11,7 @@ export const baseApi = {
 
     // 体验版
     trial: "http://192.168.2.46:31142/tms",
-    
+
     // 正式版
     release: "http://192.168.2.46:31142/tms",
 };

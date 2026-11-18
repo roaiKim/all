@@ -1,5 +1,5 @@
 import { Image, View } from "@tarojs/components";
-import EmptyImg from "asset/img/template/empty.png";
+import EmptyImg from "@asset/img/template/empty.png";
 import "./index.less";
 
 function Empty(props) {

@@ -1,13 +1,13 @@
 import { Loading, Module, register } from "@core";
-import { roPushHistory } from "utils";
+import { WEB_COMMA_TENANT_ID, WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "@config/static-envs";
+import { clearCommonTanentId, clearToken } from "@http/static";
+import { LoginService, LoginServiceLoginResponse } from "@service/public-api/LoginService";
 import Taro from "@tarojs/taro";
-import { WEB_ISLOGIN, WEB_TOKEN, WEB_USER_INFO } from "config/static-envs";
-import { clearToken } from "http/static";
-import { LoginService } from "service/public-api/LoginService";
-import { RootState } from "type/state";
-import { withConfirm } from "utils/decorator/withConfirm";
-import { delayToast } from "utils/functions";
-import { Toast } from "utils/ui/toast";
+import { RootState } from "@type/state";
+import { roPushHistory } from "@utils";
+import { withConfirm } from "@utils/decorator/withConfirm";
+import { delayToast } from "@utils/functions";
+import { Toast } from "@utils/ui/toast";
 import { State } from "./type";
 
 const initialMainState: State = {
@@ -18,20 +18,22 @@ const initialMainState: State = {
 };
 
 class MainModule extends Module<RootState, "main"> {
-    onEnter(params: Record<string, any>): void | Promise<void> {
+    async onEnter(params: Record<string, any>): Promise<void> {
         const accessToken = Taro.getStorageSync(WEB_TOKEN);
         const loggedin = Taro.getStorageSync(WEB_ISLOGIN);
         const loginInfo = Taro.getStorageSync(WEB_USER_INFO);
         this.setState({ loggedin, accessToken, loginInfo });
+        if (!loggedin) {
+            const ast = await LoginService.getAccount();
+        }
     }
 
     @Loading()
     async login(username: string, password: string) {
         const request = {
-            grant_type: "password",
-            username: "gongchao",
-            password: `FXhi3+aMlwbivn8EPBWrgQ==`,
-            // password: `dHK1PiBQM/moZ0YnSUsViQ==`,
+            // grant_type: "social",
+            username: `${username}@@wxpassword`,
+            password,
         };
         const response = await LoginService.login(request).catch((error) => {
             let content = "";
@@ -53,9 +55,7 @@ class MainModule extends Module<RootState, "main"> {
             accessToken: response.access_token,
             loginInfo: response,
         });
-        Taro.setStorageSync(WEB_TOKEN, response.access_token);
-        Taro.setStorageSync(WEB_ISLOGIN, true);
-        Taro.setStorageSync(WEB_USER_INFO, response);
+        this.setLoginState(response);
 
         // await delayToast("登录成功");
         Taro.showToast({
@@ -75,7 +75,7 @@ class MainModule extends Module<RootState, "main"> {
         await LoginService.logout();
         await delayToast("退出成功");
         this.clearLoginState();
-        roPushHistory("/pages/home/index");
+        roPushHistory("/pages/login/index");
     }
 
     async exitByPasswordChanged() {
@@ -85,14 +85,25 @@ class MainModule extends Module<RootState, "main"> {
         roPushHistory("/pages/login/index");
     }
 
+    setLoginState(response: LoginServiceLoginResponse) {
+        Taro.setStorageSync(WEB_TOKEN, response.access_token);
+        Taro.setStorageSync(WEB_ISLOGIN, true);
+        Taro.setStorageSync(WEB_USER_INFO, response);
+        Taro.setStorageSync(WEB_COMMA_TENANT_ID, response.extra?.["Comma-Tenant-Id"]);
+    }
+
     clearLoginState() {
         this.setState({
             accessToken: null,
             loggedin: false,
             loginInfo: null,
         });
-        Taro.clearStorageSync();
+        Taro.removeStorageSync(WEB_TOKEN);
+        Taro.removeStorageSync(WEB_ISLOGIN);
+        Taro.removeStorageSync(WEB_USER_INFO);
+        Taro.removeStorageSync(WEB_COMMA_TENANT_ID);
         clearToken();
+        clearCommonTanentId();
     }
 }
 

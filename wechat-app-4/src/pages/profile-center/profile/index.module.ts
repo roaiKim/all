@@ -1,5 +1,5 @@
 import { Module, register } from "@core";
-import { RootState } from "type/state";
+import { RootState } from "@type/state";
 import { State } from "./type";
 
 const initialProfileState: State = {

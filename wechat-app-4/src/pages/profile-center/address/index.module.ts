@@ -1,9 +1,9 @@
 import { KeepState, Loading, Module, register } from "@core";
-import { roBackHistory, roPushHistory } from "utils";
-import { RootState } from "type/state";
-import { verifiable } from "utils/decorator/verifiable";
-import { withConfirm } from "utils/decorator/withConfirm";
-import { Toast } from "utils/ui/toast";
+import { RootState } from "@type/state";
+import { roBackHistory, roPushHistory } from "@utils";
+import { verifiable } from "@utils/decorator/verifiable";
+import { withConfirm } from "@utils/decorator/withConfirm";
+import { Toast } from "@utils/ui/toast";
 import { AddressService, AddressService$addAddress$Request } from "./service";
 import { State } from "./type";
 

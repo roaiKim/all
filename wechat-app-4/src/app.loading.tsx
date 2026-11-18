@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect } from "react";
 import { useLoadingStatus } from "@core";
 import { View } from "@tarojs/components";
-import { autoShowLoading } from "utils/functions";
+import { autoShowLoading } from "@utils/functions";
 
 function AppLoading(props: PropsWithChildren<any>) {
     const globalLoading = useLoadingStatus();

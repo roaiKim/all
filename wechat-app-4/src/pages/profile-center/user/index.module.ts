@@ -1,11 +1,10 @@
 import { Loading, Module, register } from "@core";
-import { RootState } from "type/state";
-import { verifiable } from "utils/decorator/verifiable";
-import { Toast } from "utils/ui/toast";
+import { actions as mainActions } from "@pages/main/index.module";
+import { RootState } from "@type/state";
+import { verifiable } from "@utils/decorator/verifiable";
+import { Toast } from "@utils/ui/toast";
 import { UserService } from "./service";
 import { State } from "./type";
-
-import { actions as mainActions } from "pages/main/index.module";
 
 const initialUserState: State = {
     name: "user",

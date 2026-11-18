@@ -45,12 +45,13 @@
     "@tarojs/taro": "4.3.3",
     "dayjs": "^1.11.7",
     "immer": "^9.0.19",
+    "jsencrypt": "3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "taro-ui": "^3.1.0-beta.7",
-    "wechat-core-app": "file:tgz/wechat-core-app-v1.0.3.tgz"
+    "wechat-core-app": "file:tgz/wechat-core-app-v1.0.7.tgz"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4",

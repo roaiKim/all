@@ -16,3 +16,5 @@ npm-package/**/**.tgz
 agent-electron/media
 wechat-app-4.orig
 **/.swc
+frame-core/wechat/pure
+frame-core/wechat/wechat**

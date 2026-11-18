@@ -1,7 +1,6 @@
-import { Loading, Module, register } from "@core";
-import { captureError } from "utils";
-import { OrderService } from "service/public-api/OrderService";
-import { RootState } from "type/state";
+import { captureError, Loading, Module, register } from "@core";
+import { OrderService } from "@service/public-api/OrderService";
+import { RootState } from "@type/state";
 import { State } from "./type";
 
 const initialOrderSearchState: State = {

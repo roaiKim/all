@@ -1,5 +1,5 @@
 import { ajax } from "@http";
-import { AdvancedPageRequest, AdvancedPageResponse } from "type/global";
+import { AdvancedPageRequest, AdvancedPageResponse } from "@type/global";
 
 export class AddressService {
     static getAddressList(request: AdvancedPageRequest): Promise<AdvancedPageResponse<AddressService$addAddress$Request>> {

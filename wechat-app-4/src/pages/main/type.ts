@@ -1,4 +1,4 @@
-import { LoginServiceLoginResponse } from "service/public-api/LoginService";
+import { LoginServiceLoginResponse } from "@service/public-api/LoginService";
 
 export interface State {
     name: string;

@@ -1,6 +1,6 @@
 {
     "name": "wechat-core-app",
-    "version": "1.0.3",
+    "version": "1.0.7",
     "main": "lib/index.js",
     "module": "lib/index.js",
     "types": "lib/index.d.ts",
@@ -9,7 +9,7 @@
         "lib"
     ],
     "scripts": {
-        "build": "tsc -p ./tsconfig.json",
+        "build": "tsc --sourceMap false -p ./tsconfig.json",
         "pure": "tsc --declaration false --target esnext --sourceMap false --outDir pure --jsx Preserve --useDefineForClassFields true -p ./tsconfig.json"
     },
     "devDependencies": {

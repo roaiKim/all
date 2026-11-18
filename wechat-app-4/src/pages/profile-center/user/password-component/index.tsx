@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { roDispatch } from "@core";
 import { AtButton, AtInput } from "taro-ui";
+import { actions } from "@pages/profile-center/user/index.module";
 import { Image, Input, View } from "@tarojs/components";
-import { RootState } from "type/state";
-import { Toast } from "utils/ui/toast";
+import { RootState } from "@type/state";
+import { Toast } from "@utils/ui/toast";
 import "./index.less";
-
-import { actions } from "pages/profile-center/user/index.module";
 
 type PhoneNumberProps = ReturnType<typeof mapStateToProps>;
 
