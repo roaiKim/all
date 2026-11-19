@@ -2,9 +2,9 @@
   color: inherit;
 
   .ro-top-bg {
-    background-color: #357aff;
+    // background-color: #357aff;
     width: 100vw;
-    height: 450px;
+    height: 350px;
 
     image {
       width: 68px;
@@ -18,13 +18,17 @@
     .ro-user-info {
       display: flex;
       align-items: center;
-      color: #fff;
+      color: #333;
       font-size: 42px;
       padding-top: 230px;
 
       .at-icon-user {
         font-size: 100px !important;
         margin: 0 20px 0 50px;
+      }
+
+      .user-name {
+        font-weight: bold;
       }
 
       .user-cars {
@@ -34,10 +38,19 @@
     }
   }
 
+  .user-client {
+    background-image: url("@asset/img/global/background-user.png");
+    background-size: cover;
+    color: white;
+    margin: 30px;
+    padding: 30px 40px;
+    border-radius: 16px;
+  }
+
   .ro-bottom-user {
     padding: 36px 44px 0 32px;
     box-shadow: 6px 10px 12px #e3e3e33b;
-    margin: -50px 30px 54px;
+    margin: 20px 30px 54px;
     border-radius: 16px;
     background: #fff;
     text-align: left;

@@ -1,5 +1,5 @@
 import { Loading, Module, register } from "@core";
-import { UserService } from "@api/UserService";
+import { UserService, UserService$getUser$Response } from "@api/UserService";
 import { actions as mainActions } from "@pages/main";
 import { RootState } from "@type/state";
 import { verifiable } from "@utils/decorator/verifiable";
@@ -10,7 +10,6 @@ import { State } from "./type";
 const initialUserState: State = {
     name: "user",
     profile: null,
-    validatePassword: true,
 };
 
 @verifiable
@@ -23,27 +22,16 @@ class UserModule extends Module<RootState, "user"> {
 
     @Loading()
     async fetchUserInfo() {
-        const user = await UserService.getUser();
+        const id = this.rootState.app.main?.loginInfo?.extra?.partnerId;
+        const user = await UserService.getUser(id);
         this.setState({ profile: user });
     }
 
     @Loading()
-    async editUserInfo(info) {
+    async editUserInfo(info: Partial<UserService$getUser$Response>) {
         await UserService.editProfile({ ...this.state.profile, ...info });
         Toast.text();
         this.fetchUserInfo();
-    }
-
-    @Loading()
-    async validatePassword(password) {
-        await UserService.validatePassword(password);
-        this.setState({ validatePassword: false });
-    }
-
-    @Loading()
-    async changePassword(password) {
-        await UserService.changePassword(password);
-        this.dispatch(mainActions.exitByPasswordChanged());
     }
 }
 

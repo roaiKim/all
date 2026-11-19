@@ -1,3 +1,3 @@
 export default definePageConfig({
-    navigationBarTitleText: "密码更改",
+    navigationBarTitleText: "修改密码",
 });

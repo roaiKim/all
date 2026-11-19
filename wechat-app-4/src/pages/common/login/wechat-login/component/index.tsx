@@ -42,7 +42,7 @@ function Login(props: LoginProps) {
                 type="primary"
                 onClick={() => {
                     if (check) {
-                        roPushHistory(loginPage);
+                        roPushHistory("/pages/common/login/password-login/index");
                     } else {
                         Taro.showToast({
                             title: "请先阅读并同意隐私政策与服务指南",

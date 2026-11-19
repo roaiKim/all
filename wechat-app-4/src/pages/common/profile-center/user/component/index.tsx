@@ -25,31 +25,45 @@ function User(props: UserProps) {
     return (
         <View className="ro-user-page">
             <NavList>
-                <NavList.NavListItem title="头像">
+                {/* <NavList.NavListItem title="头像">
                     <Image style={{ width: 35, height: 35 }} src={logo} mode="aspectFit"></Image>
-                </NavList.NavListItem>
+                </NavList.NavListItem> */}
                 <NavList.NavListItem
-                    title="电话"
-                    rightValue={profile?.phoneNumber}
-                    onClick={() => {
-                        showVisiable((prev) => ({ ...prev, showNumber: true, phoneNumber: profile?.phoneNumber }));
-                    }}
+                    title="姓名"
+                    rightValue={profile?.name}
+                    // onClick={() => {
+                    //     showVisiable((prev) => ({ ...prev, phoneNumber: profile?.name }));
+                    // }}
                 />
                 <NavList.NavListItem
+                    title="电话"
+                    rightValue={profile?.phone}
+                    // onClick={() => {
+                    //     showVisiable((prev) => ({ ...prev, phoneNumber: profile?.phone }));
+                    // }}
+                />
+                <NavList.NavListItem
+                    title="所属企业"
+                    rightValue={profile?.serviceSupplierName}
+                    // onClick={() => {
+                    //     showVisiable((prev) => ({ ...prev, phoneNumber: profile?.phone }));
+                    // }}
+                />
+                {/* <NavList.NavListItem
                     title="邮箱"
                     rightValue={profile?.mail}
                     onClick={() => {
                         showVisiable((prev) => ({ ...prev, showEmail: true, email: profile?.mail }));
                     }}
-                />
+                /> */}
                 <NavList.NavListItem
                     arrow="right"
                     title="修改密码"
                     onClick={() => {
-                        roPushHistory("/pages/common/profile-center/user/index");
+                        roPushHistory("/pages/common/change-password/index");
                     }}
                 />
-                <AtModal isOpened={visiable.showNumber} onClose={() => {}}>
+                {/* <AtModal isOpened={visiable.showNumber} onClose={() => {}}>
                     <AtModalHeader>修改电话</AtModalHeader>
                     <AtModalContent>
                         {visiable.showNumber && (
@@ -111,8 +125,8 @@ function User(props: UserProps) {
                         >
                             确认保存
                         </Button>
-                    </AtModalAction>
-                </AtModal>
+                    </AtModalAction> 
+                </AtModal> */}
             </NavList>
         </View>
     );

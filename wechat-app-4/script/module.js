@@ -52,7 +52,7 @@ function createModuleFolder(moduleNameInArg) {
         fs.writeFileSync(targetPath + relPath, finalContent);
     };
 
-    executeReplace("/index.module.ts", [moduleClassName, moduleFullName, moduleMainComponentName]);
+    executeReplace("/index.tsx", [moduleClassName, moduleFullName, moduleMainComponentName]);
     executeReplace("/type.ts", [moduleOriginName, moduleMainComponentName, moduleFullName]);
     executeReplace("/component/index.tsx", [moduleClassPropsName, moduleMainComponentName, moduleFullName, moduleOriginName]);
     executeReplace("/component/index.less", [moduleOriginName]);

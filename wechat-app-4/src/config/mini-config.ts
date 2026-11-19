@@ -23,19 +23,19 @@ export default {
         list: [
             {
                 pagePath: "pages/home/index",
-                text: "订单下单",
+                text: "任务",
                 iconPath: "asset/img/tab-bar/home.png",
                 selectedIconPath: "asset/img/tab-bar/homea.png",
             },
-            {
-                pagePath: "pages/order-search/index",
-                text: "订单查询",
-                iconPath: "asset/img/tab-bar/search.png",
-                selectedIconPath: "asset/img/tab-bar/searcha.png",
-            },
+            // {
+            //     pagePath: "pages/order-search/index",
+            //     text: "任务",
+            //     iconPath: "asset/img/tab-bar/search.png",
+            //     selectedIconPath: "asset/img/tab-bar/searcha.png",
+            // },
             {
                 pagePath: "pages/common/profile-center/profile/index",
-                text: "个人中心",
+                text: "我的",
                 iconPath: "asset/img/tab-bar/profile.png",
                 selectedIconPath: "asset/img/tab-bar/profilea.png",
             },

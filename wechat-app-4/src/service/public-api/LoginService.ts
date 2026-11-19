@@ -19,7 +19,7 @@ export interface UserExtraInfo {
     "Comma-Tenant-Id": string;
     "Tenant-Driver-Ids": Record<string, number>;
     projectDataPermission: string;
-    partnerId: number;
+    partnerId: string;
     userType: number;
 }
 

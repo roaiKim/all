@@ -1,31 +1,46 @@
 import { ajax } from "@http";
 
 export interface UserService$getUser$Response {
-    account: string;
-    accountAttributionId: string;
-    accountType: number;
-    activeStatus: number;
-    createTime: number;
-    createUserId: string;
-    createUserName: string;
-    customerUser: string;
-    dueDate: number;
     id: string;
-    mail: string;
-    openId: string;
-    password: string;
-    phoneNumber: string;
-    postCode: string;
-    postName: string;
-    source: number;
+    name: string;
+    phone: string;
+    idCard: string;
+    activeStatus: number;
+    authenticationStatus: number;
+    autoRegister: boolean;
+    carSize: number;
+    reviewStatus: string;
+    driverTypeCode: string;
+    driverTypeName: string;
+    enterpriseType: string;
+    serviceSupplierId: string;
+    serviceSupplierName: string;
+    tenantId: string;
+    // attachments: unknown[];
+    // certificateList: unknown[];
+    // recordList: unknown[];
+    driverSuppliers: DriverSupplier[];
     updateTime: number;
     updateUserId: string;
     updateUserName: string;
 }
 
+export interface DriverSupplier {
+    id: string;
+    driverId: string;
+    supplierId: string;
+}
+
+export interface UserService$changePassword$Request {
+    id: string;
+    oldPassword: string;
+    password: string;
+    rePassword: string;
+}
+
 export class UserService {
-    static getUser(): Promise<UserService$getUser$Response> {
-        return ajax("GET", "/client/personalCenter/getPersonalInformation", null, "JSON");
+    static getUser(id: string): Promise<UserService$getUser$Response> {
+        return ajax("GET", "/driver/driverManagement/detail", { id }, "JSON");
     }
 
     static editProfile(request): Promise<void> {
@@ -38,7 +53,7 @@ export class UserService {
     }
 
     // 修改密码
-    static changePassword(password): Promise<void> {
-        return ajax("PUT", "/client/customer-user/updatePassword", { password }, "FORM");
+    static changePassword(request: UserService$changePassword$Request): Promise<void> {
+        return ajax("POST", "/admin/account/password/change", request);
     }
 }

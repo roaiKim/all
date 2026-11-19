@@ -23,7 +23,8 @@
     "stylelint:fix": "stylelint \"src/**/*.less\" --fix",
     "module": "node script/module.js",
     "auth": "node script/auth.js",
-    "path": "node script/path.js"
+    "path": "node script/path.js",
+    "remove-module": "node script/remove-module.js"
   },
   "browserslist": [
     "last 3 versions",

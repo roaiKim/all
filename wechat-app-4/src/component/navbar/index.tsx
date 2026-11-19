@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Image, Text, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import Left from "@asset/global/left.png";
+import { roBackHistory } from "@utils";
+import Left from "@asset/img/global/left.png";
 import "./index.less";
 
 interface NavBarProps {
@@ -30,7 +31,7 @@ export default function NavBar(props: NavBarProps) {
     }, []);
 
     const backPage = useCallback(() => {
-        Taro.navigateBack({ delta: 1 });
+        roBackHistory();
     }, []);
 
     return (

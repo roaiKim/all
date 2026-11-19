@@ -1,6 +1,6 @@
 export const baseHostH5 = {
     dev: "http://192.168.2.46:31142/tms",
-    test: "",
+    test: "http://kinwong.smartcomma.cn:8081/tms",
     uat: "",
     pro: "",
 };

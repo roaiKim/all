@@ -16,7 +16,7 @@ interface ProfileProps extends ReturnType<typeof mapStateToProps> {
 }
 
 function Profile(props: ProfileProps) {
-    const { loggedin, loginInfo } = props;
+    const { loggedin, loginInfo, profile } = props;
     const dispatch = useDispatch();
 
     return (
@@ -25,10 +25,10 @@ function Profile(props: ProfileProps) {
                 <View className="ro-top-bg">
                     <View className="ro-user-info">
                         {/* <Image src={logo}></Image> */}
-                        <AtIcon value="user" color="#fff"></AtIcon>
+                        <AtIcon value="user" color="#357aff"></AtIcon>
                         {loggedin ? (
                             <View>
-                                <View>{loginInfo.full_name}</View>
+                                <View className="user-name">{loginInfo.full_name}</View>
                                 <View className="user-cars">粤B.123456</View>
                             </View>
                         ) : (
@@ -42,6 +42,9 @@ function Profile(props: ProfileProps) {
                         )}
                     </View>
                 </View>
+                <view className="user-client">
+                    <view className="">{profile?.serviceSupplierName}</view>
+                </view>
                 <View className="ro-bottom-user">
                     <View className="ro-user-line">功能管理</View>
                     <View className="ro-user-line">
@@ -60,11 +63,23 @@ function Profile(props: ProfileProps) {
                         <AtIcon size={20} value="shopping-bag"></AtIcon>
                         <View
                             className="ro-title"
+                            onClick={() => {
+                                roPushHistory("/pages/home/index");
+                            }}
+                        >
+                            我的任务
+                        </View>
+                        <AtIcon size={18} value="chevron-right"></AtIcon>
+                    </View>
+                    <View className="ro-user-line">
+                        <AtIcon size={20} value="map-pin"></AtIcon>
+                        <View
+                            className="ro-title"
                             // onClick={() => {
                             //     roPushHistory("/pages/common/profile-center/address/index");
                             // }}
                         >
-                            收货地址
+                            运输任务
                         </View>
                         <AtIcon size={18} value="chevron-right"></AtIcon>
                     </View>
@@ -92,6 +107,7 @@ const mapStateToProps = (state: RootState) => {
     return {
         loggedin: state.app.main.loggedin,
         loginInfo: state.app.main.loginInfo,
+        profile: state.app.profile.profile,
     };
 };
 

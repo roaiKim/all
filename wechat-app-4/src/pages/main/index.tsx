@@ -81,10 +81,16 @@ class MainModule extends Module<RootState, "main"> {
     }
 
     async exitByPasswordChanged() {
-        await LoginService.logout();
-        await delayToast("密码修改成功, 请重新登录");
-        this.clearLoginState();
-        roPushHistory(loginPage);
+        Taro.showModal({
+            title: "提示",
+            content: "密码修改成功, 请重新登录",
+            confirmText: "登录",
+            showCancel: false,
+            success: () => {
+                this.clearLoginState();
+                roPushHistory(loginPage);
+            },
+        });
     }
 
     setLoginState(response: LoginServiceLoginResponse) {
