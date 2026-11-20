@@ -23,7 +23,9 @@
     "stylelint:fix": "stylelint \"src/**/*.less\" --fix",
     "module": "node script/module.js",
     "auth": "node script/auth.js",
+    "auth:ast": "node script/auth-ast.js",
     "path": "node script/path.js",
+    "path:ast": "node script/path-ast.js",
     "remove-module": "node script/remove-module.js"
   },
   "browserslist": [

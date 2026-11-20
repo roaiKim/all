@@ -5,15 +5,21 @@ const spawn = require("./tool/index");
 const paths = [];
 
 const srcFolderName = "src";
-const fileSuffix = ["ts", "tsx", "js", "jsx"];
+const sourceFileReg = /\.(?:ts|tsx|js|jsx)$/;
+
+/**
+ * 页面 Module 的鉴权标记：同一个页面目录内，类需要同时满足
+ * `@verifiable` 和 `extends Module`。
+ *
+ * 这里允许任意空白（包括 LF / CRLF），不再依赖固定的文件名或换行符。
+ */
+const verifiableModuleReg = /@verifiable\s*class\s+(?<moduleName>[A-Za-z_$][\w$]*)\s+extends\s+Module\b/g;
 
 const getModuleToPageMap = (dirPath, componentPath) => {
-    const dirfiles = fs.readdirSync(dirPath);
-    const moduleFiles = dirfiles.filter((item) => new RegExp("^\\w+?\\.module\\.tsx?$").test(item));
-    moduleFiles.forEach((item) => {
-        const rels = fs.readFileSync(path.join(dirPath, item)).toString();
-        const modulesReg = new RegExp("\r\n@verifiable\r\nclass (?<moduleName>\\w+?) extends").exec(rels);
-        if (modulesReg) {
+    const sourceFiles = fs.readdirSync(dirPath).filter((item) => sourceFileReg.test(item));
+    sourceFiles.forEach((item) => {
+        const source = fs.readFileSync(path.join(dirPath, item), "utf8");
+        for (const modulesReg of source.matchAll(verifiableModuleReg)) {
             paths.push({
                 name: modulesReg.groups.moduleName,
                 path: `/${componentPath}`,
@@ -22,22 +28,11 @@ const getModuleToPageMap = (dirPath, componentPath) => {
     });
 };
 
-const matchMainComponent = (pagePaths) => {
-    const ablativePath = path.join(srcFolderName, pagePaths);
-    let suffix = null;
-    for (const pageSuffix of fileSuffix) {
-        if (fs.existsSync(ablativePath + "." + pageSuffix)) {
-            suffix = pageSuffix;
-            break;
-        }
-    }
-    if (suffix) {
-        const completePath = ablativePath + "." + suffix;
-        const rels = fs.readFileSync(completePath).toString();
-        const modulesReg = new RegExp("export default module.connect\\(\\w+?\\);").exec(rels);
-        if (modulesReg) {
-            getModuleToPageMap(path.dirname(ablativePath), pagePaths);
-        }
+const matchPageModules = (pagePaths) => {
+    const pagePath = path.join(srcFolderName, pagePaths);
+    const pageDir = path.dirname(pagePath);
+    if (fs.existsSync(pageDir)) {
+        getModuleToPageMap(pageDir, pagePaths);
     }
 };
 
@@ -54,7 +49,7 @@ const getPagePathsByConfig = () => {
         console.error("获取mini-config信息失败");
     }
     if (pages?.length) {
-        pages.forEach((item) => matchMainComponent(item));
+        pages.forEach((item) => matchPageModules(item));
     }
 };
 
