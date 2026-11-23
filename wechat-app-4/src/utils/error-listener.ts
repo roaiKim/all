@@ -1,5 +1,5 @@
 import { APIException, ErrorListener, Exception, NetworkConnectionException, roDispatch } from "@core";
-import { loginPage } from "@config/static-envs";
+import { isProduntion, loginPage } from "@config/static-envs";
 import { actions } from "@pages/main";
 import Taro from "@tarojs/taro";
 import { roBackHistory, roPushHistory } from "@utils";
@@ -70,8 +70,11 @@ export default class ErrorHandler implements ErrorListener {
                 showCancel: false,
             });
         } else {
-            // const errorMessage = isProduntion ? "发生错误，请稍后重试" : error.message;
-            // createErrorMessage(errorMessage);
+            Taro.showModal({
+                title: "错误",
+                content: isProduntion ? "发生错误，请稍后重试" : error.message,
+                showCancel: false,
+            });
         }
     }
 }
