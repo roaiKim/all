@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AtButton, AtIcon, AtModal, AtModalContent } from "taro-ui";
 import { Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { roPushHistory } from "@utils";
+import { pushHistory } from "@utils";
 import homeBg from "@asset/img/home/bg.png";
 import "./index.less";
 
@@ -27,7 +27,7 @@ function Main() {
             <AtButton
                 className="btn"
                 onClick={() => {
-                    roPushHistory("/pages/common/webview/index");
+                    pushHistory("/pages/common/webview/index");
                 }}
             >
                 <View className="btn-text">

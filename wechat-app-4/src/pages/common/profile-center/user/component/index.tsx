@@ -5,7 +5,7 @@ import { AtInput, AtModal, AtModalAction, AtModalContent, AtModalHeader } from "
 import { NavList } from "@component/nav-list";
 import { Button, Image, View } from "@tarojs/components";
 import { RootState } from "@type/state";
-import { roPushHistory } from "@utils";
+import { pushHistory } from "@utils";
 import { Toast } from "@utils/ui/toast";
 import logo from "@asset/img/global/logo.png";
 import { actions } from "../index";
@@ -60,7 +60,7 @@ function User(props: UserProps) {
                     arrow="right"
                     title="修改密码"
                     onClick={() => {
-                        roPushHistory("/pages/common/change-password/index");
+                        pushHistory("/pages/common/change-password/index");
                     }}
                 />
                 {/* <AtModal isOpened={visiable.showNumber} onClose={() => {}}>

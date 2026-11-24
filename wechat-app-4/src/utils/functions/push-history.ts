@@ -16,7 +16,7 @@ export const HISTORY_REDIRECT_TO = "@@HISTORY_REDIRECT_TO";
  * @param delta 返回页面数
  * @param success 成功回调
  */
-export function roBackHistory(success?: () => void, delta = 1) {
+export function backHistory(success?: () => void, delta = 1) {
     Taro.navigateBack({
         delta,
         success: () => {
@@ -39,7 +39,7 @@ type VerifyPath<R> = R extends `${infer Rest}` ? `/${Rest}` : never;
  * @param config.redirection 是否使用重定向
  * @returns
  */
-export function roPushHistory(
+export function pushHistory(
     path: VerifyPath<HistoryPath>,
     pathParams?: Record<string, string | number>,
     config?: {
@@ -57,7 +57,7 @@ export function roPushHistory(
             success: (response) => {
                 if (response.confirm) {
                     roDispatch(actions.clearLoginState());
-                    roPushHistory(loginPage);
+                    pushHistory(loginPage);
                 }
             },
         });

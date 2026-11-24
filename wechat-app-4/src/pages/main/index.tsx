@@ -5,7 +5,7 @@ import { clearCommonTanentId, clearToken } from "@http/static";
 import { LoginService, LoginServiceLoginResponse } from "@service/public-api/LoginService";
 import Taro from "@tarojs/taro";
 import { RootState } from "@type/state";
-import { roPushHistory } from "@utils";
+import { pushHistory } from "@utils";
 import { withConfirm } from "@utils/decorator/withConfirm";
 import { delayToast } from "@utils/functions";
 import { Toast } from "@utils/ui/toast";
@@ -63,7 +63,7 @@ class MainModule extends Module<RootState, "main"> {
         Taro.showToast({
             title: "登录成功",
             success: () => {
-                roPushHistory("/pages/home/index");
+                pushHistory("/pages/home/index");
             },
         });
     }
@@ -77,7 +77,7 @@ class MainModule extends Module<RootState, "main"> {
         await LoginService.logout();
         await delayToast("退出成功");
         this.clearLoginState();
-        roPushHistory(loginPage);
+        pushHistory(loginPage);
     }
 
     async exitByPasswordChanged() {
@@ -88,7 +88,7 @@ class MainModule extends Module<RootState, "main"> {
             showCancel: false,
             success: () => {
                 this.clearLoginState();
-                roPushHistory(loginPage);
+                pushHistory(loginPage);
             },
         });
     }

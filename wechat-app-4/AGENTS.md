@@ -16,7 +16,7 @@
 7. 新增 taro-ui 组件时，必须同步在 `src/asset/style/taro-ui.scss` 补对应组件样式，否则组件“能渲染但没样式”。
 8. **不要动 `jsencrypt` 的版本**（锁死 `3.3.2`，原因见第 12 节）。
 9. **改完不要执行 `build` / `dev` / 全量 `typecheck` / 全量 `lint`**；只对本次改动的文件做格式与类型检查（见第 9 节）。
-10. **页面跳转必须使用 `roPushHistory`**（返回用 `roBackHistory`）；禁止直接调用 `Taro.navigateTo` / `redirectTo` / `switchTab` / `reLaunch` / `navigateBack`（`src/utils/functions/push-history.ts` 内部实现除外）。
+10. **页面跳转必须使用 `pushHistory`**（返回用 `backHistory`）；禁止直接调用 `Taro.navigateTo` / `redirectTo` / `switchTab` / `reLaunch` / `navigateBack`（`src/utils/functions/push-history.ts` 内部实现除外）。
 
 ---
 
@@ -241,11 +241,11 @@ tabBar: {
 
 规则：
 
-- 注册到 `mini-config` 时路径不带前导 `/`、不带扩展名，源码必须在 `src/<path>.tsx`；而调用 `roPushHistory` 时路径要带前导 `/`（如 `/pages/home/index`）。
+- 注册到 `mini-config` 时路径不带前导 `/`、不带扩展名，源码必须在 `src/<path>.tsx`；而调用 `pushHistory` 时路径要带前导 `/`（如 `/pages/home/index`）。
 - **tabBar 页面必须在 `pages` 里**；`switchTab` 不能带参数。
 - 原生 tabBar 没有 height 配置；要改高度只能 `custom: true` + `src/custom-tab-bar/`。
-- **页面跳转统一用 `roPushHistory("/pages/xxx/index", params?, { redirection? })`**，参数会拼成 query；返回用 `roBackHistory(delta?)`。禁止直接调用 `Taro.navigateTo` / `redirectTo` / `switchTab` / `reLaunch` / `navigateBack`（`push-history.ts` 内部实现除外）。
-- `roPushHistory` 内部按目标自动选择：tabBar 页面走 `switchTab`、普通页走 `navigateTo`、`redirection: true` 走 `redirectTo`；并会先做登录校验。
+- **页面跳转统一用 `pushHistory("/pages/xxx/index", params?, { redirection? })`**，参数会拼成 query；返回用 `backHistory(delta?)`。禁止直接调用 `Taro.navigateTo` / `redirectTo` / `switchTab` / `reLaunch` / `navigateBack`（`push-history.ts` 内部实现除外）。
+- `pushHistory` 内部按目标自动选择：tabBar 页面走 `switchTab`、普通页走 `navigateTo`、`redirection: true` 走 `redirectTo`；并会先做登录校验。
 - 新增/删除页面后跑一次 `yarn path` 更新 `src/type/paths.ts`（当前未被业务引用）。
 
 ---
@@ -587,7 +587,7 @@ rm tsconfig.check.json
 3. 在 `src/config/mini-config.ts` 的 `pages` 注册；tab 页再改 `tabBar.list`。
 4. 需要登录态：给 Module 类加 `@verifiable`，并跑 `yarn auth`。
 5. `yarn path` 更新路径表。
-6. 页面间跳转用 `roPushHistory`，返回用 `roBackHistory`，不要直接调用 `Taro` 的跳转 API。
+6. 页面间跳转用 `pushHistory`，返回用 `backHistory`，不要直接调用 `Taro` 的跳转 API。
 7. 只检查改动文件：`npx eslint <改动文件>`、`npx stylelint <改动的 less>`；类型用第 9 节的临时 tsconfig。不要执行 build。
 
 ### 删除页面/模块
@@ -622,7 +622,7 @@ rm tsconfig.check.json
 | --- | --- | --- |
 | 1 | **jsencrypt 必须锁 3.3.2** | 3.4.0+ 的 `rng.js` 用 `self.crypto`；Taro 注入了 `window` 但没有 `self`，小程序启动即崩 `Cannot read properties of undefined (reading 'crypto')`。升级前必须先 polyfill `self`/`self.crypto`（建议用 `wx.getRandomValues`） |
 | 2 | **生命周期异常被吞** | `@core` 的 `executeAction` 空 catch；`onEnter/onShow` 里 `await` 的接口报错不会进全局错误 UI。关键请求显式 `.catch(captureError)` |
-| 3 | **`yarn auth` 正则写死 CRLF** | `script/auth.js` 用 `\r\n@verifiable\r\nclass` 匹配，LF 文件匹配不到 → `src/type/auth-file.ts` 恒为空 → `roPushHistory` 的登录校验实际不生效 |
+| 3 | **`yarn auth` 正则写死 CRLF** | `script/auth.js` 用 `\r\n@verifiable\r\nclass` 匹配，LF 文件匹配不到 → `src/type/auth-file.ts` 恒为空 → `pushHistory` 的登录校验实际不生效 |
 | 4 | **生成器模板使用裸导入** | `script/module-boilerplate` 用 `type/state`；`script/module.js` 写 RootState 时用 `pages/...`。生成后必须手动改成 `@type`、`@pages` |
 | 5 | **taro-ui 按需样式** | 新组件不补 `taro-ui.scss` 会“没样式”；全量引入会多 ~270KB wxss |
 | 6 | **webview 页写死百度** | `src/pages/common/webview/component/index.tsx` 的 `src="https://www.baidu.com"`，上线前换真实地址并配业务域名 |
@@ -645,5 +645,5 @@ rm tsconfig.check.json
 - 不要改 `dist/`、`node_modules/`、`tgz/`；不要提交 `dist/analyzer-*.html`。
 - 不要为了让编译通过而把类型改成 `any` 或关闭 lint 规则；确有必要时在说明里写清原因。
 - 改完不要执行 `build` / `dev` / 全量 `typecheck` / 全量 `lint`；只对改动文件做格式与类型检查（第 9 节），并在回复里说明检查了哪些文件、结果如何。
-- 页面跳转只使用 `roPushHistory` / `roBackHistory`，不直接调用 `Taro` 的跳转 API。
+- 页面跳转只使用 `pushHistory` / `backHistory`，不直接调用 `Taro` 的跳转 API。
 - 涉及 UI 的改动，说明预期效果；涉及接口的改动，说明请求路径、方法、参数与错误处理方式。

@@ -2,7 +2,7 @@ import { APIException, ErrorListener, Exception, NetworkConnectionException, roD
 import { isProduntion, loginPage } from "@config/static-envs";
 import { actions } from "@pages/main";
 import Taro from "@tarojs/taro";
-import { roBackHistory, roPushHistory } from "@utils";
+import { backHistory, pushHistory } from "@utils";
 
 const createErrorMessage = (title) => {
     Taro.showToast({ title, icon: "none", duration: 3000 });
@@ -20,11 +20,11 @@ export default class ErrorHandler implements ErrorListener {
                     confirmText: "登录",
                     success: (response) => {
                         if (response.confirm) {
-                            roPushHistory(loginPage, null, { redirection: true });
+                            pushHistory(loginPage, null, { redirection: true });
                             roDispatch(actions.clearLoginState());
                         } else if (response.cancel) {
                             roDispatch(actions.clearLoginState());
-                            roPushHistory("/pages/home/index");
+                            pushHistory("/pages/home/index");
                         }
                     },
                 });
@@ -35,7 +35,7 @@ export default class ErrorHandler implements ErrorListener {
                     showCancel: false,
                     success: (response) => {
                         if (response.confirm) {
-                            roBackHistory();
+                            backHistory();
                         }
                     },
                 });
@@ -47,11 +47,11 @@ export default class ErrorHandler implements ErrorListener {
                     success: (response) => {
                         if (error.message?.includes("授权登录")) {
                             if (response.confirm) {
-                                roPushHistory(loginPage, null, { redirection: true });
+                                pushHistory(loginPage, null, { redirection: true });
                                 roDispatch(actions.clearLoginState());
                             } else if (response.cancel) {
                                 roDispatch(actions.clearLoginState());
-                                roPushHistory("/pages/home/index");
+                                pushHistory("/pages/home/index");
                             }
                         }
                     },

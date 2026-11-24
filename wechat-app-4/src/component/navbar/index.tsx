@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Image, Text, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { roBackHistory } from "@utils";
+import { backHistory } from "@utils";
 import Left from "@asset/img/global/left.png";
 import "./index.less";
 
@@ -31,7 +31,7 @@ export default function NavBar(props: NavBarProps) {
     }, []);
 
     const backPage = useCallback(() => {
-        roBackHistory();
+        backHistory();
     }, []);
 
     return (

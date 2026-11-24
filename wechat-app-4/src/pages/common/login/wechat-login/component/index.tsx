@@ -5,7 +5,7 @@ import { loginPage } from "@config/static-envs";
 import { Button, Checkbox, CheckboxGroup, Image, Picker, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { RootState } from "@type/state";
-import { roPushHistory } from "@utils";
+import { pushHistory } from "@utils";
 import logo from "@asset/img/global/logo.png";
 import "./index.less";
 
@@ -42,7 +42,7 @@ function Login(props: LoginProps) {
                 type="primary"
                 onClick={() => {
                     if (check) {
-                        roPushHistory("/pages/common/login/password-login/index");
+                        pushHistory("/pages/common/login/password-login/index");
                     } else {
                         Taro.showToast({
                             title: "请先阅读并同意隐私政策与服务指南",

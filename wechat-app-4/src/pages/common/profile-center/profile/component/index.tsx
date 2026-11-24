@@ -7,7 +7,7 @@ import { actions } from "@pages/main";
 import { Button, Image, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
 import { RootState } from "@type/state";
-import { roPushHistory } from "@utils";
+import { pushHistory } from "@utils";
 import logo from "@asset/img/global/logo.png";
 import "./index.less";
 
@@ -34,7 +34,7 @@ function Profile(props: ProfileProps) {
                         ) : (
                             <View
                                 onClick={() => {
-                                    roPushHistory(loginPage);
+                                    pushHistory(loginPage);
                                 }}
                             >
                                 立即登录
@@ -52,7 +52,7 @@ function Profile(props: ProfileProps) {
                         <View
                             className="ro-title"
                             onClick={() => {
-                                roPushHistory("/pages/common/profile-center/user/index");
+                                pushHistory("/pages/common/profile-center/user/index");
                             }}
                         >
                             个人信息
@@ -64,7 +64,7 @@ function Profile(props: ProfileProps) {
                         <View
                             className="ro-title"
                             onClick={() => {
-                                roPushHistory("/pages/home/index");
+                                pushHistory("/pages/home/index");
                             }}
                         >
                             我的任务
@@ -76,7 +76,7 @@ function Profile(props: ProfileProps) {
                         <View
                             className="ro-title"
                             // onClick={() => {
-                            //     roPushHistory("/pages/common/profile-center/address/index");
+                            //     pushHistory("/pages/common/profile-center/address/index");
                             // }}
                         >
                             运输任务

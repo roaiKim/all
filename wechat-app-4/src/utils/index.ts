@@ -1,2 +1,2 @@
 // export { captureError } from "./error/error-util";
-export { roBackHistory, roPushHistory } from "./functions/push-history";
+export { backHistory, pushHistory } from "./functions/push-history";

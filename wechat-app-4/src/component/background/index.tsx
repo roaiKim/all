@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View } from "@tarojs/components";
 import Taro, { usePageScroll } from "@tarojs/taro";
-import { roBackHistory } from "@utils";
+import { backHistory } from "@utils";
 import "./index.less"; // 假设您将样式放在单独的 scss 文件中
 
 export interface PropsType {
@@ -45,7 +45,7 @@ export const Background: React.FC<PropsType> = (props) => {
     });
 
     const toBack = () => {
-        roBackHistory();
+        backHistory();
     };
 
     return (
