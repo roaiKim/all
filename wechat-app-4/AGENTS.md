@@ -17,6 +17,8 @@
 8. **不要动 `jsencrypt` 的版本**（锁死 `3.3.2`，原因见第 12 节）。
 9. **改完不要执行 `build` / `dev` / 全量 `typecheck` / 全量 `lint`**；只对本次改动的文件做格式与类型检查（见第 9 节）。
 10. **页面跳转必须使用 `pushHistory`**（返回用 `backHistory`）；禁止直接调用 `Taro.navigateTo` / `redirectTo` / `switchTab` / `reLaunch` / `navigateBack`（`src/utils/functions/push-history.ts` 内部实现除外）。
+11. 必须以可读性优先，不为“看起来复用”而提前抽方法。禁止写太多防御性代码，不明确的提出来。
+12. 原则上不要改公共方法，如果确有必要 应当询问和确认
 
 ---
 
