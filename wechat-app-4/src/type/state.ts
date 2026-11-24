@@ -5,6 +5,10 @@ import { State as UserState } from "@pages/common/profile-center/user/type";
 import { State as HomeState } from "@pages/home/type";
 import { State as MainState } from "@pages/main/type";
 import { State as OrderSearchState } from "@pages/order-search/type";
+import { State as TaskAbnormalState } from "@pages/task/abnormal/type";
+import { State as TaskPickupDetailState } from "@pages/task/pickup/type";
+import { State as TaskReceiptDetailState } from "@pages/task/receipt/type";
+import { State as TaskState } from "@pages/task/task/type";
 
 export interface RootState extends State {
     app: {
@@ -14,5 +18,9 @@ export interface RootState extends State {
         user?: UserState;
         profile?: ProfileState;
         changePassword?: ChangePasswordState;
+        task: TaskState;
+        taskPickupDetail?: TaskPickupDetailState;
+        taskReceiptDetail?: TaskReceiptDetailState;
+        taskAbnormal?: TaskAbnormalState;
     };
 }

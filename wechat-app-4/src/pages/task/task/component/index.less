@@ -1,0 +1,258 @@
+.ro-task-page {
+  min-height: 100vh;
+  color: #1f2937;
+  background: #f5f6f8;
+}
+
+.ro-task-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 92px;
+  padding-top: 44px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.ro-task-title {
+  font-size: 34px;
+  font-weight: 600;
+}
+
+.ro-task-business-tabs {
+  display: flex;
+  height: 92px;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ro-task-business-tab {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.ro-task-business-tab.selected {
+  color: #3478ed;
+}
+
+.ro-task-business-tab.selected::after {
+  position: absolute;
+  right: 48px;
+  bottom: -1px;
+  left: 48px;
+  height: 4px;
+  background: #3478ed;
+  content: "";
+}
+
+.ro-task-scroll {
+  background: #f5f6f8;
+}
+
+.ro-task-summary-row {
+  display: flex;
+  gap: 16px;
+  padding: 24px 24px 16px;
+}
+
+.ro-task-summary-card {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 144px;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.ro-task-summary-count {
+  font-size: 42px;
+  line-height: 50px;
+  font-weight: 700;
+}
+
+.ro-task-summary-label {
+  margin-top: 10px;
+  color: #6b7280;
+  font-size: 24px;
+}
+
+.ro-task-filter-row {
+  display: flex;
+  gap: 18px;
+  padding: 8px 26px 22px;
+}
+
+.ro-task-filter {
+  padding: 8px 24px;
+  border-radius: 28px;
+  color: #4b5563;
+  background: #fff;
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.ro-task-filter.selected {
+  color: #fff;
+  background: #3478ed;
+}
+
+.ro-task-list {
+  padding: 0 24px;
+}
+
+.ro-task-card {
+  margin-bottom: 24px;
+  padding: 30px 28px 24px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgb(31 41 55 / 4%);
+}
+
+.ro-task-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.ro-task-number {
+  color: #111827;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.ro-task-status {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.status-pending-sign {
+  color: #f07816;
+  background: #fff4df;
+}
+
+.status-pending-pickup {
+  color: #3478ed;
+  background: #eaf2ff;
+}
+
+.status-picked {
+  color: #1aaf4b;
+  background: #edfaef;
+}
+
+.ro-task-line {
+  display: flex;
+  min-height: 46px;
+  color: #647084;
+  font-size: 24px;
+  line-height: 46px;
+}
+
+.ro-task-line text:first-child {
+  flex-shrink: 0;
+  color: #6b7280;
+}
+
+.ro-task-quantity-row {
+  display: flex;
+  margin-top: 14px;
+  padding: 16px 0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.ro-task-quantity-row > view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  color: #9ca3af;
+  font-size: 22px;
+}
+
+.ro-task-quantity-row .value {
+  margin-top: 6px;
+  color: #111827;
+  font-size: 24px;
+}
+
+.ro-task-quantity-row .done {
+  color: #16a34a;
+}
+
+.ro-task-quantity-row .pending {
+  color: #f15b16;
+}
+
+.ro-task-cargo {
+  display: flex;
+  padding: 18px 0 14px;
+  border-bottom: 1px solid #edf0f3;
+  color: #111827;
+  font-size: 24px;
+  line-height: 38px;
+}
+
+.ro-task-cargo .label {
+  flex-shrink: 0;
+  margin-right: 10px;
+  color: #9ca3af;
+}
+
+.ro-task-action-row {
+  display: flex;
+  gap: 18px;
+  padding-top: 16px;
+}
+
+.ro-task-action {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 56px;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  font-size: 22px;
+}
+
+.ro-task-action.exception {
+  color: #f15b16;
+  border: 1px solid #f15b16;
+}
+
+.ro-task-action.detail {
+  color: #3478ed;
+  border: 1px solid #3478ed;
+}
+
+.ro-task-state {
+  padding: 120px 0;
+  color: #9ca3af;
+  text-align: center;
+  font-size: 26px;
+}
+
+.ro-task-loadmore {
+  padding: 12px 0 20px;
+  color: #9ca3af;
+  text-align: center;
+  font-size: 22px;
+}
+
+.ro-task-bottom-space {
+  height: 80px;
+}
