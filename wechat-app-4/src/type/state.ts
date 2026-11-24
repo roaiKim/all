@@ -5,6 +5,7 @@ import { State as UserState } from "@pages/common/profile-center/user/type";
 import { State as HomeState } from "@pages/home/type";
 import { State as MainState } from "@pages/main/type";
 import { State as OrderSearchState } from "@pages/order-search/type";
+import { State as ExampleState } from "@pages/zz-example/type";
 
 export interface RootState extends State {
     app: {
@@ -14,5 +15,6 @@ export interface RootState extends State {
         user?: UserState;
         profile?: ProfileState;
         changePassword?: ChangePasswordState;
+        example?: ExampleState;
     };
 }
