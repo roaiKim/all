@@ -6,7 +6,7 @@
 ---
 
 ## 0. 硬规则（TL;DR）
-
+0. 具体的页面格式请参考 pages/zz-example, 这个是列子，实际不参与
 1. **只改 `src/`、`config/`、`types/`、`script/`**；不要手改 `dist/`、`node_modules/`、`tgz/`。
 2. **所有内部模块必须走 `@` 前缀别名**（`@pages/...`、`@utils/...`），不要写 `pages/xxx`、`utils/xxx` 这类裸模块。
 3. 别名只有两处定义：`config/index.ts` 的 `alias` 与 `tsconfig.json` 的 `paths`。**改一处必须同步另一处**。
@@ -126,7 +126,7 @@ wechat-app-4/
 │     ├─ index.ts          # 对外工具出口（roPushHistory / roBackHistory）
 │     ├─ bootstrap.ts      # 启动：注册全局错误处理
 │     ├─ functions/        # autoShowLoading、delayToast、copyToClipboard、encrypted
-│     ├─ decorator/        # withConfirm、verifiable、asyncActionHandler
+│     ├─ decorator/        # WithConfirm、verifiable、asyncActionHandler
 │     ├─ error/            # captureError / setupGlobalErrorHandler
 │     ├─ error-listener.ts # 全局错误 UI（401/403/404/400…）
 │     ├─ events/           # roEvent 事件总线
@@ -208,14 +208,22 @@ export default module.connect(Main);
 class XxxModule extends Module<RootState, "xxx"> {
     onEnter(params) {
         this.fetchDetail(params.id);
+        this.fetchCargo(params.id);
     }
 
     @Loading()
     async fetchDetail(id: string) {
+        const response = await XxxService.getDetail(id)；
+        this.setState({ detail: response });
+    }
+
+    @Loading()
+    async fetchCargo(id: string) {
         const response = await XxxService.getDetail(id).catch((error) => {
             captureError(error);
+            // ...other
             return Promise.reject();
-        });
+        })；
         this.setState({ detail: response });
     }
 }
@@ -248,7 +256,6 @@ tabBar: {
 - 原生 tabBar 没有 height 配置；要改高度只能 `custom: true` + `src/custom-tab-bar/`。
 - **页面跳转统一用 `pushHistory("/pages/xxx/index", params?, { redirection? })`**，参数会拼成 query；返回用 `backHistory(delta?)`。禁止直接调用 `Taro.navigateTo` / `redirectTo` / `switchTab` / `reLaunch` / `navigateBack`（`push-history.ts` 内部实现除外）。
 - `pushHistory` 内部按目标自动选择：tabBar 页面走 `switchTab`、普通页走 `navigateTo`、`redirection: true` 走 `redirectTo`；并会先做登录校验。
-- 新增/删除页面后跑一次 `yarn path` 更新 `src/type/paths.ts`（当前未被业务引用）。
 
 ---
 
@@ -268,7 +275,6 @@ register(new XxxModule(name, initialState))
 - `actions` 通过 redux dispatch 触发，实际执行的是 Module 上的同名方法（由 `@core` 的中间件绑定）。
 - 页面组件取状态用 `connect(mapStateToProps)`；动作优先 `useDispatch()`（组件内）或 `roDispatch`（工具/其他模块）。
 
-**为什么要有数据模型层**：把组件和数据隔离开。组件不应该关心数据怎么请求、状态放哪里；一个模块的所有请求动作集中在一处，便于维护和复用。
 
 ### 5.2 生命周期
 
@@ -287,7 +293,7 @@ register(new XxxModule(name, initialState))
 | 装饰器 | 作用 | 说明 |
 | --- | --- | --- |
 | `@Loading(identifier?)` | 标记方法执行中，用于 loading | 只能修饰 `async` 函数；不传名称 = 全局 loading（由 `app.loading.tsx` 自动展示） |
-| `@withConfirm(text?)` | 执行前二次确认 | 删除、退出等动作使用 |
+| `@WithConfirm(text?)` | 执行前二次确认 | 删除、退出等动作使用 |
 | `@Mutex()` | 互斥锁，防重复点击 | 只能修饰 `async` 函数；上一次未结束时的调用会被忽略 |
 | `@KeepState(keep?)` | `onDestroy` 时保留 State | `keep` 默认 `true` |
 | `@Interval(seconds)` | 设置 `onTick` 的间隔 | 单位秒，配合 `onTick` 使用 |
@@ -330,10 +336,10 @@ const saveLoading = useLoadingStatus("saveButton");
 
 > 同名 loading 可跨页面复用；同一页面中不同按钮应使用不同名称。
 
-#### @withConfirm
+#### @WithConfirm
 
 ```ts
-@withConfirm("确定删除吗？")
+@WithConfirm("确定删除吗？")
 async remove() {
     await removeApi();
     this.setState({ list: [] });
@@ -473,15 +479,35 @@ ajax(method, path, request?, contentType = "JSON", ajaxConfig?: {
 
 ### 6.4 错误处理约定
 
-- 业务里必须 `catch` 并调用 `captureError(error)`，否则不会进入全局错误 UI：
-
+- 业务请求中`await XxxService.getDetail`类似这种一般不用写`catch`，会自动捕获错误。  
+如果业务里有对错误的特殊处理分支，比如错误时自动跳转到其他地方的逻辑，这种确实有必要用`catch`的情况，则内部需要调用用 `captureError(error)`并返回`return Promise.reject()`，参考下面的fetchCargo，否则不会进入全局错误 UI：
 ```ts
 import { captureError } from "@core";
+
+
+class HomeModule extends Module<RootState, "home"> {
+    @Loading()
+    async fetchDetail(id: string) {
+        const response = await XxxService.getDetail(id)；
+        this.setState({ detail: response });
+    }
+
+    @Loading()
+    async fetchCargo(id: string) {
+        const response = await XxxService.getDetail(id).catch((error) => {
+            captureError(error);
+            // ...other
+            return Promise.reject();
+        })；
+        this.setState({ detail: response });
+    }
+}
 
 const res = await UserService.getUser(id).catch((error) => {
     captureError(error);
     return Promise.reject();
 });
+
 ```
 
 - 全局入口在 `src/utils/error/error-handler.ts`（`roApp.errorHandler` + `Taro.onError` + `Taro.onUnhandledRejection`），UI 在 `src/utils/error-listener.ts`：
@@ -489,7 +515,6 @@ const res = await UserService.getUser(id).catch((error) => {
   - 404 → 提示资源不存在，可返回上一页；
   - 400 且 message 含“授权登录” → 跳登录；
   - 其他 `APIException` / `NetworkConnectionException` → 通用弹窗。
-- **已知限制**：`@core` 的 `executeAction` 会吞掉生命周期方法（onEnter/onShow）里 `await` 的异常；这类错误既不会走全局，也不会 `captureError`。关键请求请在业务里显式 catch。
 - 不需要全局报错时传 `{ globalHold: false }`，自行处理返回值。
 
 ### 6.5 环境与存储
