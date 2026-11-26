@@ -643,26 +643,6 @@ rm tsconfig.check.json
 
 ---
 
-## 12. 已知问题与坑（AI 必读）
-
-| # | 问题 | 影响 / 规避 |
-| --- | --- | --- |
-| 1 | **jsencrypt 必须锁 3.3.2** | 3.4.0+ 的 `rng.js` 用 `self.crypto`；Taro 注入了 `window` 但没有 `self`，小程序启动即崩 `Cannot read properties of undefined (reading 'crypto')`。升级前必须先 polyfill `self`/`self.crypto`（建议用 `wx.getRandomValues`） |
-| 2 | **生命周期异常被吞** | `@core` 的 `executeAction` 空 catch；`onEnter/onShow` 里 `await` 的接口报错不会进全局错误 UI。关键请求显式 `.catch(captureError)` |
-| 3 | **`yarn auth` 正则写死 CRLF** | `script/auth.js` 用 `\r\n@verifiable\r\nclass` 匹配，LF 文件匹配不到 → `src/type/auth-file.ts` 恒为空 → `pushHistory` 的登录校验实际不生效 |
-| 4 | **生成器模板使用裸导入** | `script/module-boilerplate` 用 `type/state`；`script/module.js` 写 RootState 时用 `pages/...`。生成后必须手动改成 `@type`、`@pages` |
-| 5 | **taro-ui 按需样式** | 新组件不补 `taro-ui.scss` 会“没样式”；全量引入会多 ~270KB wxss |
-| 6 | **webview 页写死百度** | `src/pages/common/webview/component/index.tsx` 的 `src="https://www.baidu.com"`，上线前换真实地址并配业务域名 |
-| 7 | **首页「预约下单」空实现** | `src/pages/home/component/index.tsx` 的 `onClick` 只有 `//` |
-| 8 | **appid 为 touristappid** | `getPhoneNumber`、真机预览/上传受限；需要换真实已认证 appid |
-| 9 | **死代码/空文件** | `src/utils/service-register.ts`（被 tree-shake）、`src/service/api-decorator.ts`（`export {}`）、`src/type/paths.ts`（生成但未引用） |
-| 10 | **lint warning 基线 63 条** | 主要是 `console.log` 与未使用变量；新增代码不要增加 warning |
-| 11 | **H5 下 taro-ui 尺寸** | taro-ui 的 px 不转 rpx，弹窗等固定宽度在 H5 会溢出；小程序端正常 |
-| 12 | **`pages/main/index` 双重身份** | 既是全局壳组件（`app.tsx` 渲染），又注册在 `pages` 里；页面本体为空，勿当普通页面改 |
-| 13 | **`order-search` 标题为「首页」** | `src/pages/order-search/index.config.ts` 的 `navigationBarTitleText` 疑似复制错误 |
-| 14 | **`.husky` 缺失** | commitlint 配置在，但钩子文件不在；需要时 `yarn prepare` 重建 |
-
----
 
 ## 13. 给 AI 的行为约定
 
@@ -674,3 +654,5 @@ rm tsconfig.check.json
 - 改完不要执行 `build` / `dev` / 全量 `typecheck` / 全量 `lint`；只对改动文件做格式与类型检查（第 9 节），并在回复里说明检查了哪些文件、结果如何。
 - 页面跳转只使用 `pushHistory` / `backHistory`，不直接调用 `Taro` 的跳转 API。
 - 涉及 UI 的改动，说明预期效果；涉及接口的改动，说明请求路径、方法、参数与错误处理方式。
+- 必须以可读性优先，不为“看起来复用”而提前抽方法。禁止写太多防御性代码，不明确的提出来。
+- 原则上不要改公共方法，如果确有必要 应当询问和确认
