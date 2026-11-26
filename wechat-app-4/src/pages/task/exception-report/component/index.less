@@ -1,0 +1,217 @@
+.ro-exception-page {
+  min-height: 100vh;
+  padding: 20px 24px 60px;
+  background: #f5f6f8;
+  box-sizing: border-box;
+
+  .empty-tip {
+    padding: 120px 0;
+    color: #c0c4cc;
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .info-card {
+    padding: 26px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgb(31 32 51 / 4%);
+  }
+
+  .info-title {
+    margin-bottom: 14px;
+    color: #1f2033;
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  .info-line {
+    display: flex;
+    margin-top: 10px;
+    color: #303133;
+    font-size: 24px;
+    line-height: 1.5;
+
+    .label {
+      flex-shrink: 0;
+      color: #909399;
+    }
+  }
+
+  .order-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .order-chip {
+    padding: 6px 14px;
+    color: #606266;
+    font-size: 20px;
+    background: #f2f3f5;
+    border-radius: 6px;
+  }
+
+  .section-title {
+    margin: 30px 0 14px;
+    color: #1f2033;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  .chip-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .chip {
+    padding: 14px 28px;
+    color: #606266;
+    font-size: 24px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    &.chip-active {
+      color: #fff;
+      background: #fa8c16;
+      border-color: #fa8c16;
+    }
+
+    &.chip-disabled {
+      color: #c0c4cc;
+      background: #f5f6f8;
+      border-color: #ebeef5;
+    }
+  }
+
+  .section-hint {
+    width: 100%;
+    margin-top: 12px;
+    color: #c0c4cc;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+
+  .textarea-card {
+    padding: 20px;
+    background: #fff;
+    border-radius: 16px;
+  }
+
+  .description-input {
+    width: 100%;
+    height: 200px;
+    padding: 14px;
+    color: #303133;
+    font-size: 24px;
+    border: 1px solid #ebeef5;
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+
+  .counter {
+    margin-top: 10px;
+    color: #c0c4cc;
+    font-size: 20px;
+    text-align: right;
+  }
+
+  .photo-card {
+    padding: 20px;
+    background: #fff;
+    border-radius: 16px;
+  }
+
+  .upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    color: #909399;
+    border: 2px dashed #dcdfe6;
+    border-radius: 12px;
+  }
+
+  .upload-text {
+    margin-top: 10px;
+    color: #606266;
+    font-size: 24px;
+  }
+
+  .upload-desc {
+    margin-top: 6px;
+    color: #c0c4cc;
+    font-size: 20px;
+  }
+
+  .photo-empty {
+    padding: 20px 0 4px;
+    color: #c0c4cc;
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .photo-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f7f8fa;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .at-icon {
+      color: #fa8c16;
+    }
+  }
+
+  .photo-name {
+    flex: 1;
+    min-width: 0;
+    margin-left: 8px;
+    overflow: hidden;
+    color: #303133;
+    font-size: 22px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .photo-action {
+    margin-left: 18px;
+    color: #3579ff;
+    font-size: 22px;
+
+    &.danger {
+      color: #f5222d;
+    }
+  }
+
+  .photo-hint {
+    margin-top: 14px;
+    color: #fa8c16;
+    font-size: 20px;
+  }
+
+  .submit-btn {
+    margin-top: 40px;
+    padding: 22px 0;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    background: #fa8c16;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgb(250 140 22 / 25%);
+
+    &.disabled {
+      color: #c0c4cc;
+      background: #f0f1f5;
+      box-shadow: none;
+    }
+  }
+}

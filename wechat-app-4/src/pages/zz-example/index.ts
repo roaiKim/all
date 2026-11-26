@@ -1,6 +1,7 @@
 import { Interval, KeepState, Loading, Module, register } from "@core";
 import { RootState } from "@type/state";
 import { WithConfirm } from "@utils/decorator/WithConfirm";
+import { Toast } from "@utils/ui/toast";
 import Main from "./component";
 import { State } from "./type";
 
@@ -57,6 +58,7 @@ class ExampleModule extends Module<RootState, "example"> {
     @WithConfirm()
     async delete() {
         console.info("--delete--");
+        Toast.text();
     }
 }
 

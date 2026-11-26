@@ -9,6 +9,11 @@ export default {
         "pages/common/webview/index",
         "pages/main/index",
         "pages/order-search/index",
+        "pages/task/cargo-detail/index",
+        "pages/task/exception-report/index",
+        "pages/task/pickup-detail/index",
+        "pages/task/receipt-detail/index",
+        "pages/task/receipt-records/index",
     ],
     window: {
         backgroundTextStyle: "light",

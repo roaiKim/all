@@ -21,3 +21,8 @@
 @import "taro-ui/dist/style/components/flex.scss";
 // AtModal 打开时锁定页面滚动
 @import "taro-ui/dist/style/components/frozen.scss";
+
+// AtModalContent 自带 max-height 但没有滚动，业务弹窗内容较多时会被裁掉
+.at-modal__content {
+  overflow-y: auto;
+}

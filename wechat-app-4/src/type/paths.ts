@@ -15,6 +15,12 @@ const paths = [
     "pages/home/index",
     "pages/main/index",
     "pages/order-search/index",
+    "pages/task/cargo-detail/index",
+    "pages/task/exception-report/index",
+    "pages/task/pickup-detail/index",
+    "pages/task/receipt-detail/index",
+    "pages/task/receipt-records/index",
+    "pages/zz-example/index",
 ];
 
 export default paths;

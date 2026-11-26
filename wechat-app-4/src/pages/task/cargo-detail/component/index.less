@@ -1,0 +1,130 @@
+.ro-cargo-page {
+  min-height: 100vh;
+  padding: 20px 24px 60px;
+  background: #f5f6f8;
+  box-sizing: border-box;
+
+  .task-block {
+    margin-bottom: 16px;
+  }
+
+  .task-title {
+    margin: 8px 0 14px;
+    color: #1f2033;
+    font-size: 26px;
+    font-weight: 600;
+  }
+
+  .order-card {
+    margin-bottom: 16px;
+    padding: 24px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgb(31 32 51 / 4%);
+  }
+
+  .order-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .order-no {
+    color: #1f2033;
+    font-size: 26px;
+    font-weight: 600;
+    word-break: break-all;
+  }
+
+  .source-tag {
+    flex-shrink: 0;
+    margin-left: 12px;
+    padding: 4px 12px;
+    font-size: 20px;
+    border-radius: 6px;
+
+    &.actual {
+      color: #3579ff;
+      background: #e8f1ff;
+    }
+
+    &.plan {
+      color: #909399;
+      background: #f2f3f5;
+    }
+  }
+
+  .order-sub {
+    margin-top: 8px;
+    color: #909399;
+    font-size: 22px;
+    line-height: 1.5;
+    word-break: break-all;
+  }
+
+  .cargo-table {
+    margin-top: 18px;
+    border: 1px solid #f0f1f5;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .table-head {
+    display: flex;
+    padding: 12px 16px;
+    color: #909399;
+    font-size: 20px;
+    background: #f7f8fa;
+  }
+
+  .table-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-top: 1px solid #f7f8fa;
+  }
+
+  .col-main {
+    flex: 1;
+    min-width: 0;
+    font-size: 22px;
+    word-break: break-all;
+  }
+
+  .col-box {
+    flex-shrink: 0;
+    width: 120px;
+    padding-left: 12px;
+    color: #606266;
+    font-size: 22px;
+    text-align: left;
+    word-break: break-all;
+  }
+
+  .col-qty {
+    flex-shrink: 0;
+    width: 130px;
+    color: #303133;
+    font-size: 22px;
+    text-align: right;
+  }
+
+  .material-name {
+    color: #303133;
+    font-size: 22px;
+  }
+
+  .material-code {
+    margin-top: 4px;
+    color: #c0c4cc;
+    font-size: 20px;
+    word-break: break-all;
+  }
+
+  .cargo-empty {
+    padding: 40px 0;
+    color: #c0c4cc;
+    font-size: 22px;
+    text-align: center;
+  }
+}
