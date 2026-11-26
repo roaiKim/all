@@ -6,7 +6,7 @@ import { LoginService, LoginServiceLoginResponse } from "@service/public-api/Log
 import Taro from "@tarojs/taro";
 import { RootState } from "@type/state";
 import { pushHistory } from "@utils";
-import { withConfirm } from "@utils/decorator/withConfirm";
+import { WithConfirm } from "@utils/decorator/WithConfirm";
 import { delayToast } from "@utils/functions";
 import { Toast } from "@utils/ui/toast";
 import Main from "./component";
@@ -68,7 +68,7 @@ class MainModule extends Module<RootState, "main"> {
         });
     }
 
-    @withConfirm("确定退出登录吗？")
+    @WithConfirm("确定退出登录吗？")
     logOutConfirm() {
         this.exit();
     }

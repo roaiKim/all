@@ -1,6 +1,6 @@
 import { Interval, KeepState, Loading, Module, register } from "@core";
 import { RootState } from "@type/state";
-import { withConfirm } from "@utils/decorator/withConfirm";
+import { WithConfirm } from "@utils/decorator/WithConfirm";
 import Main from "./component";
 import { State } from "./type";
 
@@ -54,7 +54,7 @@ class ExampleModule extends Module<RootState, "example"> {
     }
 
     // WithConfirm 装饰器 用于二次确认 比如删除 退出功能.可以传 参数 提示内容
-    @withConfirm()
+    @WithConfirm()
     async delete() {
         console.info("--delete--");
     }
