@@ -47,8 +47,8 @@ export interface DragAgentProps extends ListenerEvent {
     resizeDirection?: "x" | "y" | "all";
 }
 
-export function initialDragState(uid: string, mode: DragTargetMoveType) {
-    return { _uid: uid || "", x: 0, y: 0, width: 0, height: 0, draging: false, moving: false, mode };
+export function initialDragState(uid: string, mode: DragTargetMoveType, containerId: string) {
+    return { _uid: uid || "", x: 0, y: 0, width: 0, height: 0, draging: false, moving: false, containerId, mode };
 }
 
 export class DragAgent {
@@ -227,7 +227,7 @@ export class DragAgent {
     }
 
     #triggerListener(type: ListenerType | keyof typeof ListenerType, ...state: any[]) {
-        this.listenerAgent.triggerListener(type, ...state);
+        this.listenerAgent.trigger(type, ...state);
     }
 
     unsubscribe(type: ListenerType | keyof typeof ListenerType, listeners?: ListenerHolder<EventState>) {

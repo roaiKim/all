@@ -1,16 +1,18 @@
 import React, { createContext, PropsWithChildren, useCallback, useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import { DragAgent, DragAgentProps, EventState } from "../event/agent";
+import { DragState } from "../event/drag";
 import { Register, Unregister } from "../event/register";
 import "./index.less";
 
 export interface DragContextProps extends DragAgentProps {
-    //
+    items: DragState[];
 }
 
 export const DragAgentContext = createContext<DragAgent | null>(null);
 
 export function DragContext(props: PropsWithChildren<DragContextProps>) {
+    const { items } = props;
     const dragAgent = useMemo(() => new DragAgent(props || {}), []);
     const activeState = dragAgent.getActiveState();
 

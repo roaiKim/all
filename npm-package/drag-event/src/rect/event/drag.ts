@@ -11,6 +11,7 @@ export interface DragState {
     height: number;
     draging: boolean;
     moving: boolean;
+    containerId?: string; // containerIdRef
     mode: DragTargetMoveType;
 }
 

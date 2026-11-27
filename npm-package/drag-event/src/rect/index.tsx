@@ -62,7 +62,7 @@ function Rect(props: RectProps) {
     };
     // console.log("state00", state);
     return (
-        <DragContext onDragMoving={onDragMoving} onDragEnd={onDragEnd}>
+        <DragContext items={state} onDragMoving={onDragMoving} onDragEnd={onDragEnd}>
             <div ref={contaienr} className={"rect-container"}>
                 <DragItem>
                     <div className={"rect-box"}></div>
@@ -77,9 +77,7 @@ function Rect(props: RectProps) {
                     <div className="rosen-container-1">
                         {state.map((item) => (
                             <DragItem key={item.uid} id={item.uid} width={item.width} height={item.height} y={item.y} x={item.x}>
-                                <div
-                                    className="rosen-item-1" /* style={{ width: item.width, height: item.height, top: item.top, left: item.left }} */
-                                ></div>
+                                <div className="rosen-item-1"></div>
                             </DragItem>
                         ))}
                     </div>

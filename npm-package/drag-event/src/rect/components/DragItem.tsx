@@ -4,6 +4,7 @@ import { v4 } from "uuid";
 import { DragContainerContext } from "./DragContainer";
 import { DragAgentContext } from "./DragContext";
 import { EventState, initialDragState } from "../event/agent";
+import { DragState } from "../event/drag";
 import { DragEventManager } from "../event/drag-event";
 
 export interface DragItemProps {
@@ -30,7 +31,7 @@ export function DragItem(props: PropsWithChildren<DragItemProps>) {
 
     const dragEventManager = useRef<DragEventManager>(null);
 
-    const [state, setState] = useState(initialDragState(dragItemId, dragMode.current));
+    const [state, setState] = useState<DragState>(initialDragState(dragItemId, dragMode.current, container?._uid));
 
     if (!dragAgent) {
         console.error("DragItem 组件需要包裹在 DragContext");
@@ -38,7 +39,7 @@ export function DragItem(props: PropsWithChildren<DragItemProps>) {
     }
 
     useEffect(() => {
-        dragAgent.pushDragTargetState(initialDragState(dragItemId, dragMode.current));
+        dragAgent.pushDragTargetState(initialDragState(dragItemId, dragMode.current, container?._uid));
         return () => {
             dragAgent.deleteDragTargetState(dragItemId);
         };
@@ -68,7 +69,7 @@ export function DragItem(props: PropsWithChildren<DragItemProps>) {
     useEffect(() => {
         setState((prevState) => ({ ...prevState, width, height, y, x }));
     }, [width, height, x, y]);
-    // console.log("-item-state--", state);
+    console.log("-item-state-container-", container);
     return (
         <div
             className={classNames("rosen-item", className, {
